@@ -5,6 +5,7 @@ export default {
 	  extend: {
 		colors: {
 		  azul: '#0E347D',
+		  accent: '#1666FF',
 		  amarillo: '#FFC700',
 		  gris: '#383836',
 		  blanco: '#FFFFFF',
