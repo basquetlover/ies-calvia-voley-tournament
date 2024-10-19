@@ -1,0 +1,42 @@
+---
+export const ENLAZES_IMPORTANTE = [
+    {
+        name: "equipos",
+        href: "",
+    },
+    {
+        name: "instalacion",
+        href: "",
+    },
+    {
+        name: "reglamento",
+        href: "",
+    },
+    {
+        name: "inscripcion",
+        href: "",
+    }
+]
+---
+
+<section class="max-w-xl  h-[600px] m-auto my-10 grid grid-cols-2 grid-rows-2 gap-6 xs:gap-2 xs:h-[300px] s:gap-2 s:h-[450px] sm:gap-4 sm:h-[400px] md:gap-5 md:h-[600px] place-items-center overflow-hidden">
+    {ENLAZES_IMPORTANTE.map(({ name, href }) => (
+        <a class={`w-[250px] h-[250px] grid grid-rows-[1fr_40px] grid-cols-1fr place-content-center rounded-xl bg-amarillo p-10 m-0 group cursor-pointer  transform transition-transform duration-300 ease-in-out scale-100 xs:scale-50 sm:scale-75 md:scale-90   ${href && href.trim() !== "" ? '' : 'cursor-not-allowed'} `}>
+            <img src={`img/icons/${name}.png`} alt={`icono de ${name}`} class="w-[100px] h-auto m-0" /> {/* Imagen ocupa 1fr */}
+            <div class="flex-col justify-center items-center text-center m-0"> {/* Centrar contenido del div */}
+                <p class="text-azul uppercase font-bold text-lg">{name}</p>
+
+                {href && href.trim() !== "" ? (
+                    <p class="text-azul text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">Más info</p>
+                ) : (
+                    <p class="text-azul text-xs">Próximamente</p>
+                )}
+            </div>
+        </a>
+
+))}
+</section>
+<!-- 
+transform transition-transform duration-300 ease-in-out scale-100 xs:scale-50 sm:scale-75 md:scale-90 
+ xs:grid-cols-1 xs:grid-rows-4 xs:gap-2 s:grid-cols-1 s:grid-rows-4 s:gap-2 sm:grid-cols-2 sm:grid-rows-2 sm:gap-3 md:grid-cols-2  md:grid-rows-2 md:gap-4
+-->
