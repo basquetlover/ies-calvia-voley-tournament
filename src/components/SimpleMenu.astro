@@ -24,12 +24,12 @@ export const ENLAZES_IMPORTANTE = [
         <a class={`w-[250px] h-[250px] grid grid-rows-[1fr_40px] grid-cols-1fr place-content-center rounded-xl bg-amarillo p-10 m-0 group cursor-pointer  transform transition-transform duration-300 ease-in-out scale-100 xs:scale-50 sm:scale-75 md:scale-90   ${href && href.trim() !== "" ? '' : 'cursor-not-allowed'} `}>
             <img src={`img/icons/${name}.png`} alt={`icono de ${name}`} class="w-[100px] h-auto m-0" /> {/* Imagen ocupa 1fr */}
             <div class="flex-col justify-center items-center text-center m-0"> {/* Centrar contenido del div */}
-                <p class="text-azul uppercase font-bold text-lg">{name}</p>
+                <p class="text-azul uppercase font-bold text-2xl">{name}</p>
 
                 {href && href.trim() !== "" ? (
-                    <p class="text-azul text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">Más info</p>
+                    <p class="text-azul text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">Más info</p>
                 ) : (
-                    <p class="text-azul text-xs">Próximamente</p>
+                    <p class="text-azul text-lg font-medium">Próximamente</p>
                 )}
             </div>
         </a>
