@@ -12,7 +12,7 @@ export default {
 		  blanco: '#FFFFFF',
 		},
 		screens: {
-		  xs: '220px',  // Agrega un breakpoint para pantallas más pequeñas
+		  xs: '250px',  // Agrega un breakpoint para pantallas más pequeñas
 		  sm: '640px',   // Pantallas pequeñas
 		  md: '768px',   // Pantallas medianas
 		  lg: '1024px',  // Pantallas grandes
