@@ -1,4 +1,5 @@
 ---
+import Boton from "@components/Boton.astro";
 import Layout from "@layouts/Layout.astro";
 ---
 
@@ -8,7 +9,7 @@ import Layout from "@layouts/Layout.astro";
         <div class="flex flex-col items-center justify-center">
             <h4 class="text-accent text-4xl text-center">PÁGINA NO ENCONTRADA</h4>
             <p class="text-2xl text-center text-blanco">¡Hola! Lo sentimos, pero no pudimos encontrar lo que buscabas. Verifica que la dirección URL sea correcta.</p>
-            <a href="/" class="h-max w-max py-2 px-4 mt-10 text-2xl bg-amarillo rounded-full text-azul font-medium text-center hover:scale-110 transition-all ">Volver al inicio</a>
+            <Boton href="/"> Volver al inicio</Boton>
         </div>
     </section>
 </Layout>
