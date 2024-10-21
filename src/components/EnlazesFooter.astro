@@ -1,0 +1,16 @@
+---
+import { ENLAZES } from "@const/enlazes"
+---
+
+<section class=" w-full h-max flex flex-col place-items-center justify-center transform scale-90 ">
+    <h4 class="text-accent text-3xl font-semibold uppercase my-2">Enlazes</h4>
+    <nav class="flex flex-col">
+        {
+            ENLAZES.map(({nombre, href}) => (
+                <a href={href} class="text-blanco text-2xl hover:text-amarillo duration-300">
+                    {nombre}
+                </a>
+            ))
+        }
+    </nav>
+</section>

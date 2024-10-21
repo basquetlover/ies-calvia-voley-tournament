@@ -1,6 +1,6 @@
 export const ENLAZES = [
     {
-        href: '/404',
+        href: '',
         nombre: 'Contacto',
     },
     {

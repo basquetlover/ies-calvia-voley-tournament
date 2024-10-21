@@ -9,6 +9,9 @@
       "@sections/*": [
         "src/sections/*"
       ],
+      "@const/*": [
+        "src/const/*"
+      ],
       "@layouts/*": [
         "src/layouts/*"
       ]
