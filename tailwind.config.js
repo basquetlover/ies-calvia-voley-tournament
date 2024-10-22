@@ -7,7 +7,7 @@ export default {
 		  azul: '#0E347D',
 		  accent: '#1666FF',
 		  amarillo: '#FFC700',
-		//   gris: '#383836',
+		  'gris-claro': '#313131',
 		  gris: '#1B1D20',
 		  blanco: '#FFFFFF',
 		},
