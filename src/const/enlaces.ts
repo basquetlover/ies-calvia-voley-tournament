@@ -17,6 +17,6 @@ export const ENLACES = [
     },
     {
         href: '',
-        nombre: '',
+        nombre: 'Normativa',
     }
 ]
