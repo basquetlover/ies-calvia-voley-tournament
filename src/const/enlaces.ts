@@ -1,6 +1,6 @@
 export const ENLACES = [
     {
-        href: '',
+        href: '/contacto',
         nombre: 'Contacto',
     },
     {
