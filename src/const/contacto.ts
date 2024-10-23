@@ -19,9 +19,9 @@ export const CONTACTO = [
     },
     {
         nombre: 'Santino Bonavera',
-        cargo: '',
+        cargo: 'Responsable de Voluntarios',
         email: 's_bonavera@a.iescalvia.com',
-        descripcion: '',
+        descripcion: 'Santi coordina al equipo de voluntarios que ayuda en el desarrollo del torneo. Si estás interesado en colaborar o tienes preguntas sobre las funciones de los voluntarios, puedes hablar con el.',
     },
     {
         nombre: 'Luca Emanuel Lopez',
