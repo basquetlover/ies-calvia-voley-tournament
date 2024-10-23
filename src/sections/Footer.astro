@@ -18,11 +18,12 @@ import Organizadores from "@components/Organizadores.astro";
     <EnlazesFooter />
     <section class=" w-full h-full flex flex-col gap-10 place-items-center justify-center transform scale-90 xs:row-start-2 sm:row-start-2 md:row-start-1 md:col-start-3 ">
         <!--Boton inscribirse -->
-        <div>
-            <Boton href="">
+        
+            <Boton href="" class:list={`hover:scale-100 cursor-not-allowed px-10 transition-transform transform duration-300`}>
               INSCRIBIRSE
+              <p class="text-base">Próximamente</p>
             </Boton>
-        </div> 
+        
         <!--redes sociales -->
         <div>
             <!-- <h4 class="text-accent text-3xl whitespace-nowrap font-semibold uppercase my-2">Redes sociales</h4>
@@ -32,7 +33,7 @@ import Organizadores from "@components/Organizadores.astro";
                 </svg>
                 @repte_ies_calvia
             </a> -->
-            <a href="" class="w-24 h-auto group ">
+            <a class="w-24 h-auto group ">
               <img class="w-24 group-hover:scale-125 transition-transform transform duration-300 h-auto" src="img/icons/instagram.png" alt="Logo instagram" />
             </a>
         </div>

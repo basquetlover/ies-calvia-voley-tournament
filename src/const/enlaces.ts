@@ -4,7 +4,7 @@ export const ENLACES = [
         nombre: 'Contacto',
     },
     {
-        href: '',
+        href: '/equipos',
         nombre: 'Equipos',
     },
     {

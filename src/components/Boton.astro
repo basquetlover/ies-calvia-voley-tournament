@@ -1,13 +1,14 @@
 ---
 interface Props {
     href?: string
+    class?: string
 }
 
 const props: Props = Astro.props;
-const { href } = props;
+const { href, class: ClassAdicional } = props;
 ---
 
-<a href={href} class="h-max w-max py-2 px-4 mt-10 text-2xl bg-amarillo rounded-full text-azul font-medium text-center hover:scale-110 transition-all">
+<a href={href} class={`h-max w-max py-2 px-4 mt-10 text-2xl bg-amarillo rounded-full text-azul font-medium text-center hover:scale-110 duration-300 transition-transform ${ClassAdicional}`}>
     <slot />
 </a>
 
