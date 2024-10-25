@@ -74,10 +74,10 @@ cerrar.addEventListener('click', function() {
    <!-- Menu Movil -->
 
     <!--Menu desactivado -->
-   <section class="w-full h-auto flex flex-col  relative ">
+   <section class="hidden xs:flex sm:flex md:hidden w-full h-auto flex-col  relative ">
     <div class="w-[95%] h-auto flex flex-row justify-between py-5 m-auto">
-        <a href="/" title="Pàgina actual" class="relative w-20 flex place-content-center justify-center cursor-pointer">
-            <img src="img/logo_torneo.png" alt="logo torneo" class="w-20 h-20"/>
+        <a href="/" title="Pàgina actual" class="relative w-20 flex place-content-center justify-center cursor-pointer group">
+            <img src="img/logo_torneo.png" alt="logo torneo" class="w-20 h-20 group-hover:scale-125 transform transition-transform duration-300"/>
         </a>
         <div class="w-20 h-20 fill-blanco hover:fill-amarillo duration-300 transition-all" id="menu-boton-abrir">
             <svg class="w-20 h-20" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
@@ -85,25 +85,29 @@ cerrar.addEventListener('click', function() {
     </div>
 </section>
 <!--Menu activado -->
-<div class="menu hidden bg-gris w-full h-full fixed z-10 grid-cols-1 grid-rows-[100px_1fr] m-0 p-0" id="menu-content">
-  <div>
-    <h4>MENÚ</h4>
-    <a href="/" title="Pàgina d'inici">
-      <img src="img/logo-web.png" alt="logo web">
+<div class="menu hidden bg-gris w-full h-full fixed z-10 grid-cols-1 grid-rows-[100px_1fr] place-items-center m-0 p-0" id="menu-content">
+  <div class="w-[95%] py-3 h-auto flex flex-row justify-around content-center">
+    <h4 class="text-center my-auto text-blanco text-xl">MENÚ</h4>
+    <a href="/" title="Pàgina de inicio" class="w-16 h-16 flex place-content-center justify-center cursor-pointer group">
+      <img src="img/logo_torneo.png" alt="logo web" class="w-16 h-16 group-hover:scale-125 transform transition-transform duration-300" />
     </a>
-    <div id="menu-boton-cerrar" class="z-20">
-      <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" ><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+    <div id="menu-boton-cerrar" class="w-16 h-16 flex place-content-center justify-center cursor-pointer fill-blanco hover:fill-amarillo duration-300 transition-all">
+      <svg class="w-16 h-16" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" ><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
     </div>
   </div>
-  <nav>
+
+  <nav class="w-[95%] h-[85%] flex flex-col place-content-center justify-between place-items-center">
     {pages.slice().map((page) => (
-      <hr />
+      <hr class="h-[2px] border-none bg-amarillo rounded-full w-[75%] m-0" />    
       <a
           href={page.href}
-          class={`redirect ${page.isActive ? 'actual' : ''}`}
+          class={`redirect ${page.isActive ? 'actual' : ''} group relative flex flex-col items-center w-max text-center text-2xl text-white transition-all hover:text-amarillo ${!page.href ? 'pointer-events-none ' : ''}`}
           title={`Pàgina ${page.name.toLowerCase()}`}
       >
           {page.name}
+          {!page.href && <p class="text-base text-accent">Próximamente</p>}
+          <span class="absolute top-[-5px] left-[-10px] w-[40px] h-[20px] border-[2px] border-accent border-r-0 border-b-0 rounded-tl-[10px] opacity-0 transform scale-100 transition-all duration-300 group-hover:opacity-100 group-hover:scale-[1.2]"></span>
+          <span class="absolute bottom-[-5px] right-[-10px] w-[40px] h-[20px] border-[2px] border-accent border-t-0 border-l-0 rounded-br-[10px] opacity-0 transform scale-100 transition-all duration-300 group-hover:opacity-100 group-hover:scale-[1.2]"></span>
       </a>
   ))}
 
