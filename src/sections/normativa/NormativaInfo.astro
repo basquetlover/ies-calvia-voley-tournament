@@ -1,0 +1,56 @@
+---
+const LISTA_NORMAS = [
+    {
+        texto_norma: 'El uso de los dispositivos móviles seguirá estando prohibido en el recinto, al igual que en el instituto.',
+    },
+    {
+        texto_norma: 'La salida del recinto está terminantemente prohibida en todo momento hasta la hora de finalización del torneo. En casos urgentes, la salida será junto a un profesor. Excepto los alumnos de 2º Bach si está justificado por un exámen.',
+    },
+    {
+        texto_norma: 'Está prohibido comer en las pistas, por lo tanto solo se podrá comer en las gradas (al estar cerrado el bar, es necesario traer comida y bebida desde casa).',
+    },
+    {
+        texto_norma: 'Cada participante se hará responsable de sus pertenencias en caso de pérdida, daño o robo.',
+    },
+    {
+        texto_norma: 'Todo el profesorado avisará a sus grupos si NO permite que falten a su clase, ya que tiene preparada otra actividad',
+    },
+    {
+        texto_norma: 'Ningún profesor puede participar en el torneo si tiene clases ese día.',
+    }
+]
+---
+
+<section class="max-w-[1600px] h-auto m-auto my-10">
+    <h3 class="text-accent text-4xl font-bold">Normas</h3>
+    <p class="text-amarillo text-xl font-bold ml-4 mt-2">
+        Al ser IES Calvià Voley Tournament una actividad del centro, se debran seguir todas las normas de la institución.
+    </p>
+    <ul class="text-blanco text-lg ml-6 mt-4 custom-punto">
+        {
+            LISTA_NORMAS.map(({texto_norma}) => (
+                <li class="my-2">
+                    {texto_norma}
+                </li>
+            ))
+        }
+    </ul>
+    <p class="text-amarillo text-xl font-bold ml-4 mt-2 text-center">
+        EL INCUMPLIMIENTO DE LAS NORMAS VIGENTES SERÁ MOTIVO DE AMONESTACIÓN INMEDIATA
+    </p>
+</section>
+<style>
+    .custom-punto li {
+    position: relative;
+    padding-left: 1rem; /* Espacio para el nuevo "bullet" */
+}
+
+.custom-punto li::before {
+    content: '•'; /* El símbolo del "bullet" */
+    color: #FFC700; /* Color amarillo */
+    position: absolute;
+    left: 0;
+    font-size: 1.125em; /* Tamaño del punto similar al texto */
+}
+
+</style>
