@@ -32,9 +32,9 @@ cerrar.addEventListener('click', function() {
 });
 </script>
 
-<header class=" w-full flex flex-row content-center justify-center bg-gris-claro ">
+<header class=" w-full flex flex-row content-center justify-center  ">
     <!-- Menu Desktop -->
-    <section class="w-full h-auto flex flex-col content-center xs:hidden sm:hidden md:flex">
+    <section class="w-full h-auto flex flex-col content-center xs:hidden sm:hidden md:flex bg-gris-claro">
         <nav class="w-[95%] h-auto mb-2 grid grid-cols-5 grid-rows-1 place-items-center justify-center m-auto">
             {pages.slice(0, 2).map((page) => (
                 <a
@@ -74,15 +74,16 @@ cerrar.addEventListener('click', function() {
    <!-- Menu Movil -->
 
     <!--Menu desactivado -->
-   <section class="hidden xs:flex sm:flex md:hidden w-full h-auto flex-col  relative ">
-    <div class="w-[95%] h-auto flex flex-row justify-between py-5 m-auto">
-        <a href="/" title="Pàgina actual" class="relative w-20 flex place-content-center justify-center cursor-pointer group">
-            <img src="img/logo_torneo.png" alt="logo torneo" class="w-20 h-20 group-hover:scale-125 transform transition-transform duration-300"/>
+   <section class="shadow hidden xs:flex sm:flex md:hidden w-full max-h-25 h-full flex-col  relative ">
+    <div class="w-[95%] h-auto flex flex-row justify-between py-5 mx-auto">
+        <a href="/" title="Pàgina actual" class="relative w-16 flex place-content-center justify-center cursor-pointer group">
+            <img src="img/logo_torneo.png" alt="logo torneo" class="w-16 h-16 group-hover:scale-125 transform transition-transform duration-300"/>
         </a>
-        <div class="w-20 h-20 fill-blanco hover:fill-amarillo duration-300 transition-all" id="menu-boton-abrir">
-            <svg class="w-20 h-20" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+        <div class="w-16 h-16 fill-blanco hover:fill-amarillo duration-300 transition-all" id="menu-boton-abrir">
+            <svg class="w-16 h-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
         </div>
     </div>
+    <div class="mt-3 w-[95%] h-[2px] bg-amarillo mx-auto"></div>
 </section>
 <!--Menu activado -->
 <div class="menu hidden bg-gris w-full h-full fixed z-10 grid-cols-1 grid-rows-[100px_1fr] place-items-center m-0 p-0" id="menu-content">
@@ -118,5 +119,8 @@ cerrar.addEventListener('click', function() {
 <style>
     .active{
         display: grid;
+    }
+    .shadow{
+        box-shadow: 10px 0 0 #1B1D20;
     }
 </style>
