@@ -9,7 +9,7 @@ export const ENLACES = [
     },
     {
         href: '',
-        nombre: 'Reglamento',
+        nombre: 'Bases de Competición',
     },
     {
         href: '',
