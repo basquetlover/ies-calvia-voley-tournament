@@ -16,7 +16,7 @@ export const ENLACES = [
         nombre: 'Instalación',
     },
     {
-        href: '',
+        href: '/normativa',
         nombre: 'Normativa',
     }
 ]
