@@ -15,11 +15,11 @@ const { title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="description" content="Torneo de Voleyball del IES Calvià - Edicion Navidad. Organizado por el TEAM Teto" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon"  href="img/logo_torneo.png"/>
+		<link rel="icon"  href="/img/logo_torneo.png"/>
 		<!-- Favicon para navegadores móviles -->
-		<link rel="apple-touch-icon" sizes="180x180" href="img/logo_torneo.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="img/logo_torneo.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="img/logo_torneo.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/img/logo_torneo.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/img/logo_torneo.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/img/logo_torneo.png">
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
@@ -36,4 +36,18 @@ const { title } = Astro.props;
 	</body>
 
 </html>
+<style>
+	
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 900
+
+*{
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+</style>
 

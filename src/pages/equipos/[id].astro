@@ -1,0 +1,104 @@
+---
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+import { EQUIPOS_INSCRITOS } from "@const/equipos-inscritos";
+import Equipo404 from "@sections/errores/Equipo404.astro";
+
+
+const { id } = Astro.params;
+const equipo = EQUIPOS_INSCRITOS.find((team) => team.id === id);
+---
+
+<LayoutMenu title={equipo ? `${equipo.nombre} | IES Calvià Voley Tournament` : 'Equipo no encontrado | IES Calvià Voley Tournament'}>
+  {equipo ? (
+    <>
+    <section class="max-w-6xl h-auto p-2 m-auto my-10">
+  <a href="/equipos" class="inline-flex items-center gap-2 px-4 py-2 bg-amarillo text-gray-800 rounded-full hover:scale-110 transition-all duration-300" aria-label="Volver a la página de equipos">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 -960 960 960" class="fill-current">
+      <path d="M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+    </svg>
+    Volver a equipos
+  </a>
+</section>
+
+      {/* <!-- Sección jugadores --> */}
+      <section class="max-w-[1600px] h-auto m-auto my-10">
+        <h1 class="text-accent text-6xl font-bold text-center">{equipo.nombre}</h1>
+        
+        <img src={`/img/${equipo.escudo}`} alt={`${equipo.nombre} escudo`} class="w-72 h-72 mx-auto my-10" />
+        
+      </section>
+      
+      <section class="max-w-6xl h-auto m-auto my-10">
+        <p class=" text-xl text-blanco font-medium"><span class="text-amarillo font-bold">Capitán</span> {equipo.capitan}</p>
+        <p class=" text-xl text-blanco font-medium"><span class="text-amarillo font-bold">Entrenador</span> {equipo.entrenador}</p>
+
+        <div class="w-full h-[2px] my-4 rounded-full bg-accent"></div>
+
+        <h2 class=" text-xl text-amarillo font-bold">Jugadores</h2>
+        <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2">
+            <tr><td><h4 class="text-accent font-bold">Nombre</h4></td>    <td><h4 class="text-accent font-bold">Curso</h4></td></tr>
+            {
+                equipo.jugadores.map((jugador) => (
+                    <tr><td>{jugador.nombre}</td>   <td>{jugador.curso}</td></tr>
+                ))
+            }
+        </table>
+        
+      </section>
+    </>
+  ) : (
+    <Equipo404 /> 
+  )}
+</LayoutMenu>
+
+
+
+<!-- ---
+import type { GetStaticPaths } from "astro";
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+import { EQUIPOS_INSCRITOS } from "@const/equipos-inscritos";
+
+export const getStaticPaths: GetStaticPaths = () => {
+    return EQUIPOS_INSCRITOS.map((equipo) => ({
+        params: { equipo: equipo.id },
+    }));   
+};
+
+const { equipo } = Astro.params;
+const currentEquipo = EQUIPOS_INSCRITOS.find((e) => e.id === equipo);
+---
+<LayoutMenu title={``}>
+    <h1>Hola</h1>
+    <p>Param equipo: {Astro.params.equipo}</p>
+
+    {currentEquipo ? <p>Equipo: {currentEquipo.nombre}</p> : <p>Equipo no encontrado</p>}
+</LayoutMenu> -->
+
+
+
+<!-- 
+ ---
+import type { GetStaticPaths } from "astro";
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+
+import { EQUIPOS_INSCRITOS } from "@const/equipos-inscritos";
+
+
+export function getStaticPaths() {
+    
+    return EQUIPOS_INSCRITOS.map((equipo) =>({
+        params: {EQUIPOS_INSCRITOS: equipo.id},
+    }));   
+}
+
+const { equipo } = Astro.params;
+const currentEquipo = EQUIPOS_INSCRITOS.find((e) => e.id === equipo)
+---
+<LayoutMenu title="">
+<h1>Hola</h1>
+</LayoutMenu> 
+-->
+
+
+
+
