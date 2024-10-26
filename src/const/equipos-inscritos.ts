@@ -1,7 +1,7 @@
 export const EQUIPOS_INSCRITOS = [
     {
         id: 'team-teto',
-        nombre: 'TEAM Teto',
+        nombre: 'Team Teto',
         escudo: 'team-teto.png',
         capitan: 'Miguel Socias',
         entrenador: 'Pere Alemany',
@@ -17,6 +17,28 @@ export const EQUIPOS_INSCRITOS = [
             {
                 nombre: 'Luca Emanuel',
                 curso: '2n Batch'
+            }
+        ]
+  
+    },
+    {
+        id: 'fc-barcelona',
+        nombre: 'FC Barcelona',
+        escudo: 'fcbarcelona.jpeg',
+        capitan: 'R. Lewandoski',
+        entrenador: 'Hansi Flick',
+        jugadores:[
+            {
+                nombre: 'R. Lewandoski',
+                curso: ''
+            },
+            {
+                nombre: 'Lamine Yamal',
+                curso: '1º Batch'
+            },
+            {
+                nombre: 'Raphina',
+                curso: ''
             }
         ]
   
