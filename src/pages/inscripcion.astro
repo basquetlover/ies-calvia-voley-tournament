@@ -1,0 +1,62 @@
+---
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+
+import InscripcionDescripcion from "@sections/inscripcion/InscripcionDescripcion.astro";
+import RequisitosInscripcion from "@sections/inscripcion/RequisitosInscripcion.astro";
+import CountdownInscripcion from "@sections/inscripcion/CountdownInscripcion.astro";
+
+import DescripcionSection from "@components/DescripcionSection.astro";
+import Boton from "@components/Boton.astro";
+---
+
+<LayoutMenu title="Inscripción | IES Calvià Voley Tournament">
+    <InscripcionDescripcion />
+    <!-- <CountdownInscripcion /> -->
+    <RequisitosInscripcion />
+
+   <!--
+        <a class="w-full h-auto flex relative transform overflow-hidden xs:hidden scale-100 sm:shidden md:scale-100">
+            <img class="w-full h-auto rounded-xl sombra " src="/img/formulario_inscripcion.png" alt="Imagen Formulario inscripción"/>
+            <div class="centrar w-full h-full opacidad"></div>
+            <div class="centrar">
+                <p class="texto-rotado text-4xl  text-amarillo font-bold">Próximamente</p>
+            </div>
+        </a>
+
+    
+    <div class="w-max h-max m-auto overflow-hidden">
+        <a href="/contacto" class="h-max w-max py-2 px-4 mx-auto mt-10  text-2xl bg-amarillo rounded-full text-azul font-medium text-center transform hover:scale-110 duration-300 transition-transform ">
+            ¿Tienes Dudas sobre la Inscripción?
+        </a>
+    </div>
+     -->
+     
+    
+    
+</LayoutMenu>
+
+<style>
+    .sombra {
+        mask-image: linear-gradient(#000 95%, transparent);
+    }
+
+    .centrar {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .opacidad {
+        background-color: rgba(27, 29, 32, 0.8);
+        color: #1B1D20;
+    }
+
+    .texto-rotado {
+        transform: rotate(-25deg);
+        transform-origin: center;
+    }
+</style>
