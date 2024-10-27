@@ -13,7 +13,7 @@ const equipo = EQUIPOS_INSCRITOS.find((team) => team.id === id);
   {equipo ? (
     <>
     <section class="max-w-6xl h-auto p-2 m-auto my-10">
-  <a href="/equipos" class="inline-flex items-center gap-2 px-4 py-2 bg-amarillo text-gray-800 rounded-full hover:scale-110 transition-all duration-300" aria-label="Volver a la página de equipos">
+  <a href="/equipos#inscritos" class="inline-flex items-center gap-2 px-4 py-2 bg-amarillo text-gray-800 rounded-full hover:scale-110 transition-all duration-300" aria-label="Volver a la página de equipos">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 -960 960 960" class="fill-current">
       <path d="M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
     </svg>
@@ -25,7 +25,7 @@ const equipo = EQUIPOS_INSCRITOS.find((team) => team.id === id);
       <section class="max-w-[1600px] h-auto m-auto my-10">
         <h1 class="text-accent text-6xl font-bold text-center">{equipo.nombre}</h1>
         
-        <img src={`/img/escudos/${equipo.escudo}`} alt={`${equipo.nombre} escudo`} class="w-72 h-72 mx-auto my-10" />
+        <img transition:name="equipo-escudo" src={`/img/escudos/${equipo.escudo}`} alt={`${equipo.nombre} escudo`} class="w-72 h-72 mx-auto my-10" />
         
       </section>
       

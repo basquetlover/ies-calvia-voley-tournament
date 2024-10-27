@@ -7,6 +7,8 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+import { ViewTransitions } from 'astro:transitions';
 ---
 
 <!doctype html>
@@ -22,6 +24,8 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/png" sizes="16x16" href="/img/logo_torneo.png">
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+
+		<ViewTransitions />
 	</head>
 
 	<body class="bg-gris ">
