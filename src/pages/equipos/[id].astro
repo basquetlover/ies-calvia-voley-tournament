@@ -6,6 +6,7 @@ import Equipo404 from "@sections/errores/Equipo404.astro";
 
 const { id } = Astro.params;
 const equipo = EQUIPOS_INSCRITOS.find((team) => team.id === id);
+
 ---
 
 <LayoutMenu title={equipo ? `${equipo.nombre} | IES Calvià Voley Tournament` : 'Equipo no encontrado | IES Calvià Voley Tournament'}>
