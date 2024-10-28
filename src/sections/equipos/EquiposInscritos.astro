@@ -10,7 +10,15 @@ import { EQUIPOS_INSCRITOS } from "@const/equipos-inscritos"
                 <a href={`equipos/${id}`}  class=" w-64 h-w-64 p-4 rounded-lg bg-amarillo grid grid-cols-1 grid-rows-[auto_1fr_auto] hover:scale-105 transition-all duration-300">
                     <p class="text-azul text-2xl font-semibold">{nombre}</p>
                     <div class="flex place-content-center justify-center w-full h-full ">
-                        <img transition:name="equipo-escudo" class="w-40 h-40" src={`/img/escudos/${escudo}`} alt={`escudo equipo ${nombre}`} />
+                        {escudo && escudo.trim() !== "" ?  (
+                            <img transition:name="equipo-escudo" class="w-40 h-40" src={`/img/escudos/${escudo}`} alt={`escudo equipo ${nombre}`} />
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-w-40" fill="none" viewBox="0 0 650 650">
+                                    <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                    <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                </svg>
+                        )}
+                        
                     </div>
                     <p class="text-azul text-xl"><span class="font-semibold">Capitan:</span> {capitan}</p>
                 </a>

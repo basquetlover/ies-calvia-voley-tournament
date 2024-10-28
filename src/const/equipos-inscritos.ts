@@ -24,7 +24,7 @@ export const EQUIPOS_INSCRITOS = [
     // {
     //     id: 'fc-barcelona',
     //     nombre: 'FC Barcelona',
-    //     escudo: 'fcbarcelona.jpeg',
+    //     escudo: '',
     //     capitan: 'R. Lewandoski',
     //     entrenador: 'Hansi Flick',
     //     jugadores:[
