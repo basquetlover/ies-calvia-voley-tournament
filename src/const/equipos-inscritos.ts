@@ -20,27 +20,5 @@ export const EQUIPOS_INSCRITOS = [
             }
         ]
   
-    },
-  //   {
-    //     id: 'fc-barcelona',
-    //   nombre: 'FC Barcelona',
-    //   escudo: '',
-//   capitan: 'R. Lewandoski',
-  //       entrenador: 'Hansi Flick',
-    //     jugadores:[
-      //       {
-  //               nombre: 'R. Lewandoski',
-   //              curso: ''
-    //         },
-          //   {
-            //     nombre: 'Lamine Yamal',
-        //         curso: '1º Batch'
-      //       },
-    //         {
-           //      nombre: 'Raphina',
-         //        curso: ''
-             }
-        // ]
-  
-    // }
+    }
 ];
