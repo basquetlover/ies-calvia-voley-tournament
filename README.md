@@ -1,4 +1,4 @@
-# IES Calvia Voley Tournament <img src="public/img/logo_torneo.png" alt="IES Calvia Voley Tournament" width="30">
+# IES Calvia Voley Tournament <img src="public/img/logo_torneo.png" alt="IES Calvia Voley Tournament" width="60">
 
 
 Bienvenido a la página oficial del **IES Calvia Voley Tournament**, el torneo de voleibol que se celebra en el IES Calvia. Este evento reúne a equipos de distintas cursos en un ambiente competitivo y emocionante.
