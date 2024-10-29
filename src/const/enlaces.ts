@@ -8,7 +8,7 @@ export const ENLACES = [
         nombre: 'Equipos',
     },
     {
-        href: '',
+        href: '/bases-de-competicion',
         nombre: 'Base de Competición',
     },
     {
