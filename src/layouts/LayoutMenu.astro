@@ -17,6 +17,10 @@ const { title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="description" content="Torneo de Voleyball del IES Calvià - Edicion Navidad. Organizado por el TEAM Teto" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="theme-color" content="#1666FF" />
+
+		<meta name="keywords" content="torneo, voley, calvia, IES calvia, voleibol, team teto" />
+
 		<link rel="icon"  href="/img/logo_torneo.png"/>
 		<!-- Favicon para navegadores móviles -->
 		<link rel="apple-touch-icon" sizes="180x180" href="/img/logo_torneo.png">
@@ -50,6 +54,16 @@ const { title } = Astro.props;
   font-optical-sizing: auto;
   font-weight: <weight>;
   font-style: normal;
+}
+
+body::-webkit-scrollbar-track {
+  background: #0E347D;        /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #313131;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  
 }
 </style>
 
