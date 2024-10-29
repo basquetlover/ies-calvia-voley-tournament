@@ -7,11 +7,21 @@ import { ENLACES } from "@const/enlaces"
     <nav class="flex flex-col h-max">
         {
             ENLACES.map(({nombre, href}) => (
-                <a href={href} class="text-blanco text-2xl max-h-13 my-1 h-auto p-1 group hover:text-amarillo duration-300 flex flex-row content-center">
+                <a href={href} class={`text-blanco text-2xl max-h-13 my-1 h-auto p-1 group hover:text-amarillo duration-300 flex flex-row justify-center" ${!href ? ' hover:text-red-700' : ''}`}>
                     {nombre}
                     <span class="w-6 h-6 ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <svg class="w-6 h-6 fill-amarillo" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" ><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>
-                </span>
+                        {href && href.trim() !== "" ?  (
+                            <svg class="w-6 h-6 fill-amarillo" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" >
+                                 <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/>
+                            </svg>
+                    
+                        ) : (
+                            <svg class="w-5 h-5 fill-red-700" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960">
+                                 <path d="M480-80q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q54 0 104-17t92-51L228-676q-33 42-50 92t-18 104q0 134 93 227t227 93Zm252-124q33-42 51-92t17-104q0-134-93-227t-227-93q-54 0-104 18t-92 50l448 448Z"/>
+                            </svg>
+                         )}
+                    
+                    </span>
                 </a>
                 
             ))
