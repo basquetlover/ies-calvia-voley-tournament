@@ -56,14 +56,35 @@ const { title } = Astro.props;
   font-style: normal;
 }
 
-body::-webkit-scrollbar-track {
-  background: #0E347D;        /* color of the tracking area */
+/* body::-webkit-scrollbar-track {
+  background: #0E347D;        
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #313131;    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */
+  background-color: #313131;    
+  border-radius: 20px;       
+} */
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1666FF #313131;
+  border-radius: 20px;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #1666FF;
+  border-radius: 20px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #313131;
   
+  border: 3px solid #313131;
 }
 </style>
 
