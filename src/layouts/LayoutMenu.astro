@@ -8,6 +8,8 @@ interface Props {
 
 const { title } = Astro.props;
 
+
+
 // import { ViewTransitions } from 'astro:transitions';
 ---
 
@@ -28,6 +30,17 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/png" sizes="16x16" href="/img/logo_torneo.png">
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+
+
+		<meta property="og:image" content={`${new URL('/img/portada_web.png', Astro.site)}`} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content="Torneo de Voleyball del IES Calvià - Edicion Navidad. Organizado por el TEAM Teto" />
+		<meta property="og:url" content={`${Astro.site}`} />
+		<meta property="og:site_name" content="IES Calvià Voley Tournament" />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_ES" />
+		<meta name="twitter:card" content="summary_large_image" />
+
 
 		<!-- <ViewTransitions /> -->
 	</head>

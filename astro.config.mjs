@@ -10,7 +10,7 @@ export default defineConfig({
   devToolbar: {
     enabled: false
   },
-
+  site: 'https://ies-calvia-voley-tournament.vercel.app/',
   integrations: [tailwind()],
   output: 'server',
   adapter: vercel()
