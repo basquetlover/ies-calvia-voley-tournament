@@ -1,0 +1,32 @@
+{
+    "name": "IES Calvià Voley Tournament",
+    "short_name": "IES Calvià Voley Tournament",
+    "description": "Torneo de Voleyball del IES Calvià - Edicion Navidad. Organizado por el TEAM Teto",
+    "theme_color": "#1666FF",
+    "background_color": "#1B1D20",
+    "display": "fullscreen",
+    "icons": [
+      {
+        "src": "/img/logo_torneo.png",
+        "sizes": "180x180",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/logo_torneo.png",
+        "sizes": "32x32",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/logo_torneo.png",
+        "sizes": "16x16",
+        "type": "image/png"
+      },
+      {
+        "src": "/favicon.svg",
+        "sizes": "any",
+        "type": "image/svg+xml",
+        "purpose": "any maskable"
+      }
+    ]
+}
+  
