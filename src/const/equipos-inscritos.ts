@@ -1,4 +1,6 @@
 export const EQUIPOS_INSCRITOS = [
+    
+    //Team Teto
     {
         id: 'team-teto',
         nombre: 'Team Teto',
