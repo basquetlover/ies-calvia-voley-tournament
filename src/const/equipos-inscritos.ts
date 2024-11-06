@@ -46,5 +46,17 @@ export const EQUIPOS_INSCRITOS = [
             }
         ]
   
+    },
+    //Equipo 
+    {
+        id: 'equipo-2',
+        nombre: 'Equipo 2',
+        escudo: '',
+        capitan: '',
+        entrenador: '',
+        jugadores:[
+           
+        ]
+  
     }
 ];
