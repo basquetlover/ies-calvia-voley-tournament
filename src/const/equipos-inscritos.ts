@@ -47,7 +47,7 @@ export const EQUIPOS_INSCRITOS = [
         ]
   
     },
-    //Equipo 
+    //Equipo 2
     {
         id: 'equipo-2',
         nombre: 'Equipo 2',
@@ -55,7 +55,10 @@ export const EQUIPOS_INSCRITOS = [
         capitan: '',
         entrenador: '',
         jugadores:[
-           
+           {
+            nombre: '',
+            curso: '',
+           }
         ]
   
     }
