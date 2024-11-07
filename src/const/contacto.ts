@@ -13,16 +13,16 @@ export const CONTACTO = [
         email: 'm_sociasp@a.iescalvia.com',
         descripcion: 'Miguel es otro de los encargados de la planificación general del torneo, asegurando que todo funcione de manera fluida. Es de los principal responsable de la logística y la coordinación con los equipos participantes.',
     },
-    {
-        nombre: 'Lucas Hechavarria Escartin',
-        tooltip: 'Lucas',
-        cargo: 'Responsable de Inscripciones',
-        email: 'l_hechavarriae@a.iescalvia.com',
-        descripcion: 'Lucas gestiona todas las inscripciones de los equipos. Si tienes dudas sobre el registro o el proceso de participación, él es la persona adecuada.',
-    },
-    {
-        nombre: 'Santino Bonavera',
-        tooltip: 'Santino',
+    //{
+      //  nombre: 'Lucas Hechavarria Escartin',
+      //  tooltip: 'Lucas',
+      //  cargo: 'Responsable de Inscripciones',
+      //  email: 'l_hechavarriae@a.iescalvia.com',
+      //  descripcion: 'Lucas gestiona todas las inscripciones de los equipos. Si tienes dudas sobre el registro o el proceso de participación, él es la persona adecuada.',
+    //},
+   // {
+     //   nombre: 'Santino Bonavera',
+     //   tooltip: 'Santino',
         cargo: 'Responsable de Voluntarios',
         email: 's_bonavera@a.iescalvia.com',
         descripcion: 'Santi coordina al equipo de voluntarios que ayuda en el desarrollo del torneo. Si estás interesado en colaborar o tienes preguntas sobre las funciones de los voluntarios, puedes hablar con el.',
