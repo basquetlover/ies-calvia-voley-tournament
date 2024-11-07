@@ -1,6 +1,7 @@
 ---
 import Header from '@sections/Header.astro';
 import Footer from '@sections/Footer.astro';
+import SchemaMarkup from '@components/SchemaMarkup.astro';
 
 interface Props {
 	title: string;
@@ -72,7 +73,8 @@ const randomImage = images[Math.floor(Math.random() * images.length)];
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content="Torneo de Voleibol del IES Calvià - Edición Navidad. Organizado por el TEAM Teto." />
 		<meta name="twitter:image" content={`${new URL(randomImage || '/img/fondo-enlaces.png', Astro.site)}`} />
-	
+		
+		<SchemaMarkup />
 	</head>
 	
 
