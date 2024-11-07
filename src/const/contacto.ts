@@ -26,7 +26,7 @@ export const CONTACTO = [
         cargo: 'Encargado de Material y Equipos',
         email: 'jgonzalez@iescalvia.com',
         descripcion: 'Juanjo es responsable de asegurar que todo el equipo y material necesario esté listo. Desde las redes hasta los balones, el se asegura de que los partidos se jueguen sin problemas.',
-    }
+    },
    
 ]
 
