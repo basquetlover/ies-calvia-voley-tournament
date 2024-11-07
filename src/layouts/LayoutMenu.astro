@@ -4,9 +4,10 @@ import Footer from '@sections/Footer.astro';
 
 interface Props {
 	title: string;
+	descripcion: string;
 }
 
-const { title } = Astro.props;
+const { title, descripcion } = Astro.props;
 
 
 
@@ -28,7 +29,7 @@ const randomImage = images[Math.floor(Math.random() * images.length)];
 		<meta name="theme-color" content="#1666FF" />
 		
 		<!-- SEO Meta Tags -->
-		<meta name="description" content="Únete al Torneo de Voleibol del IES Calvià - Edición Navidad, organizado por el TEAM Teto. Participa y disfruta del mejor voleibol en Calvià." />
+		<meta name="description" content={descripcion} />
 		<meta name="keywords" content="torneo, voleibol, voley, navidad, IES Calvia, TEAM Teto, deportes, Calvià" />
 		<meta name="generator" content={Astro.generator} />
 	

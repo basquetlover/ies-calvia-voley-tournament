@@ -10,7 +10,7 @@ const equipo = EQUIPOS_INSCRITOS.find((team) => team.id === id);
 //export const prerender = true;
 ---
 
-<LayoutMenu title={equipo ? `${equipo.nombre} | IES Calvià Voley Tournament` : 'Equipo no encontrado | IES Calvià Voley Tournament'}>
+<LayoutMenu title={equipo ? `${equipo.nombre} | IES Calvià Voley Tournament` : 'Equipo no encontrado | IES Calvià Voley Tournament'} descripcion={equipo ? `Conoce los participantes del equipo ${equipo.nombre} ` : ``}>
   {equipo ? (
     <>
     <section class="max-w-6xl h-auto p-2 m-auto my-10">
