@@ -23,43 +23,45 @@ const randomImage = images[Math.floor(Math.random() * images.length)];
 <!doctype html>
 <html lang="es">
 	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#1666FF" />
 		
-			<meta charset="UTF-8" />
-			<meta name="description" content="Torneo de Voleyball del IES Calvià - Edicion Navidad. Organizado por el TEAM Teto" />
-			<meta name="viewport" content="width=device-width, initial-scale=1" />
-			<meta name="theme-color" content="#1666FF" />
-			<meta name="keywords" content="torneo, voley, calvia, IES calvia, voleibol, team teto" />
-			<meta name="generator" content={Astro.generator} />
-			
-			<!-- Favicon -->
-			<link rel="icon" type="image/png" href="/img/logo_torneo.png" />
-			<link rel="apple-touch-icon" sizes="180x180" href="/img/logo_torneo.png">
-			<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-			<link rel="icon" type="image/png" sizes="32x32" href="/img/logo_torneo.png">
-			<link rel="icon" type="image/png" sizes="16x16" href="/img/logo_torneo.png">
-			
-			<!-- Manifest -->
-			<link rel="manifest" href="/manifest.webmanifest" />
-		
-			<title>{title}</title>
-			
-			<!-- Open Graph -->
-			<meta property="og:image" content={`${new URL(randomImage, Astro.site)}`} />
-			 <!--
-			<meta property="og:image" content={`${new URL('/img/fondo-enlaces.png', Astro.site)}`} />
-			 -->
-			<meta property="og:title" content={title} />
-			<meta property="og:description" content="Torneo de Voleyball del IES Calvià - Edicion Navidad. Organizado por el TEAM Teto" />
-			<meta property="og:url" content={Astro.site} />
-			<meta property="og:site_name" content="IES Calvià Voley Tournament" />
-			<meta property="og:type" content="website" />
-			<meta property="og:locale" content="es_ES" />
-			
-			<!-- Twitter -->
-			<meta name="twitter:card" content="summary_large_image" />
-
-		<!-- <ViewTransitions /> -->
+		<!-- SEO Meta Tags -->
+		<meta name="description" content="Únete al Torneo de Voleibol del IES Calvià - Edición Navidad, organizado por el TEAM Teto. Participa y disfruta del mejor voleibol en Calvià." />
+		<meta name="keywords" content="torneo, voleibol, voley, navidad, IES Calvia, TEAM Teto, deportes, Calvià" />
+		<meta name="generator" content={Astro.generator} />
+	
+		<!-- Title -->
+		<title>{title}</title>
+	
+		<!-- Favicon -->
+		<link rel="icon" type="image/png" href="/img/logo_torneo.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/img/logo_torneo.png" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/img/logo_torneo.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/img/logo_torneo.png" />
+	
+		<!-- Manifest -->
+		<link rel="manifest" href="/manifest.webmanifest" />
+	
+		<!-- Open Graph Meta Tags -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content="Torneo de Voleibol del IES Calvià - Edición Navidad. Organizado por el TEAM Teto." />
+		<meta property="og:image" content={`${new URL(randomImage || '/img/fondo-enlaces.png', Astro.site)}`} />
+		<meta property="og:url" content={Astro.site} />
+		<meta property="og:site_name" content="IES Calvià Voley Tournament" />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_ES" />
+	
+		<!-- Twitter Meta Tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content="Torneo de Voleibol del IES Calvià - Edición Navidad. Organizado por el TEAM Teto." />
+		<meta name="twitter:image" content={`${new URL(randomImage || '/img/fondo-enlaces.png', Astro.site)}`} />
+	
 	</head>
+	
 
 	<body class="bg-gris ">
 		<div class="grid min-h-dvh grid-rows-[auto_1fr_auto]">

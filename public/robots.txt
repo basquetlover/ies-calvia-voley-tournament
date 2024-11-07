@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Host
+Host: https://iescalvia-voley.com
+
+# Sitemaps
+Sitemap: https://iescalvia-voley.com/sitemap-index.xml
