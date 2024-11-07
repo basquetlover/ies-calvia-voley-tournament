@@ -7,7 +7,7 @@ import { ENLACES } from "@const/enlaces"
     <nav class="flex flex-col h-max">
         {
             ENLACES.map(({nombre, href}) => (
-                <a href={href} class={`text-blanco text-2xl max-h-13 my-1 h-auto p-1 group hover:text-amarillo flex flex-row duration-300 centrar ${!href ? ' hover:text-red-700' : ''}`}>
+                <a href={href} class={`text-blanco text-2xl max-h-13 my-1 h-auto p-1 group hover:text-amarillo flex flex-row content-center items-center duration-300 ${!href ? ' hover:text-red-700' : ''}`}>
                     {nombre}
                     <span class="w-6 h-6 ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         {href && href.trim() !== "" ?  (
