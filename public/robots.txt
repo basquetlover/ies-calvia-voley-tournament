@@ -5,4 +5,4 @@ Allow: /
 Host: https://iescalvia-voley.com
 
 # Sitemaps
-Sitemap: https://iescalvia-voley.com/sitemap-index.xml
+Sitemap: https://iescalvia-voley.com/sitemap.xml
