@@ -1,143 +1,143 @@
 export const BASES_COMPETICION = [
     { 
-        titulo: '1. Sistema de Puntuación',
+        titulo: '1. Sistema de Puntuació',
         articulos:[
             {
-                texto: 'Se juega a dos sets. El equipo que gane dos sets primero, gana el partido.',
+                texto: 'Es juga a dos sets. L’equip que guanyi dos sets primer, guanya el partit.',
             },
             {
-                texto: 'Cada set se juega a 15 puntos, pero se debe ganar con al menos una diferencia de dos puntos.',
+                texto: 'Cada set es juga a 15 punts, però s’ha de guanyar amb almenys una diferència de dos punts.',
             },
             {
-                texto: 'En caso de empate a un set, el set decisivo se juega a 7 puntos (sin diferencia de dos puntos).',
+                texto: 'En cas d’empat a un set, el set decisiu es juga a 7 punts (sense diferència de dos punts).',
             },
             {
-                texto: 'Al llegar a los 20 min de partido y los equipos están empatados a 0 se darán 5 min de deuce, en el caso de no finalizarlo, ganará el equipo con más puntos en el partido.',
+                texto: 'A l’arribar als 20 minuts de partit i si els equips estan empatats a 0, es donaran 5 minuts de desempat; en cas de no finalitzar-lo, guanyarà l’equip amb més punts en el partit.',
             }
         ]
     },
     { 
-        titulo: '2. Servicio',
+        titulo: '2. Servei',
         articulos:[
             {
-                texto: 'El servicio se hace desde detrás de la línea de fondo y puede ser con salto o desde el suelo.',
+                texto: 'El servei es fa des de darrere de la línia de fons i pot ser amb salt o des del terra.',
             },
             {
-                texto: 'El balón debe pasar por encima de la red y caer en el campo del oponente.',
+                texto: 'La pilota ha de passar per damunt de la xarxa i caure al camp de l’oponent.',
             },
             {
-                texto: 'Si el balón toca la red pero pasa al campo contrario, el saque es válido.',
+                texto: 'Si la pilota toca la xarxa però passa al camp contrari, el servei és vàlid.',
             }
         ]
     },
     { 
-        titulo: '3. Rotación',
+        titulo: '3. Rotació',
         articulos:[
             {
-                texto: 'Cada vez que el equipo que recibe gana la jugada, debe rotar sus posiciones en sentido horario antes de realizar el servicio.',
+                texto: 'Cada vegada que l’equip que rep guanya la jugada, ha de rotar les seves posicions en sentit horari abans de realitzar el servei.',
             },
             {
-                texto: 'Esta rotación garantiza que todos los jugadores pasen por todas las posiciones.',
+                texto: 'Aquesta rotació garanteix que tots els jugadors passin per totes les posicions.',
             }
         ]
     },
     { 
-        titulo: '4. Toques Permitidos',
+        titulo: '4. Toques Permesos',
         articulos:[
             {
-                texto: 'Cada equipo tiene un máximo de tres toques para devolver el balón al campo contrario.',
+                texto: 'Cada equip té un màxim de tres tocs per tornar la pilota al camp contrari.',
             },
             {
-                texto: 'Un jugador no puede tocar el balón dos veces consecutivas (excepto en bloqueos o en el primer toque).',
+                texto: 'Un jugador no pot tocar la pilota dues vegades consecutives (excepte en bloquejos o en el primer toc).',
             }
         ]
     },
     { 
-        titulo: '5. Bloqueo',
+        titulo: '5. Bloqueig',
         articulos:[
             {
-                texto: 'Los jugadores de la línea delantera pueden bloquear un ataque del equipo contrario.',
+                texto: 'Els jugadors de la línia davantera poden bloquejar un atac de l’equip contrari.',
             },
             {
-                texto: 'Un bloqueo no cuenta como uno de los tres toques del equipo.',
+                texto: 'Un bloqueig no compta com un dels tres tocs de l’equip.',
             }
         ]
     },
     { 
-        titulo: '6. Faltas',
+        titulo: '6. Faltes',
         articulos:[
             {
-                texto: 'Balón fuera: El balón sale de los límites del campo.',
+                texto: 'Pilota fora: La pilota surt dels límits del camp.',
             },
             {
-                texto: 'Cuatro toques: El equipo realiza más de tres toques antes de devolver el balón.',
+                texto: 'Quatre tocs: L’equip fa més de tres tocs abans de tornar la pilota.',
             },
             {
-                texto: 'Retención o doble golpe: El jugador sostiene o golpea el balón dos veces consecutivas.',
+                texto: 'Retenció o doble toc: El jugador sosté o toca la pilota dues vegades consecutives.',
             },
             {
-                texto: 'Invasión: Un jugador toca la red o cruza la línea central.',
+                texto: 'Invasió: Un jugador toca la xarxa o creua la línia central.',
             },
             {
-                texto: 'Contacto con el entorno: Si el balón toca el techo, las paredes o cualquier elemento de baloncesto (como canastas o aros) dentro del pabellón, será punto para el equipo rival.',
+                texto: 'Contacte amb l’entorn: Si la pilota toca el sostre, les parets o qualsevol element de bàsquet (com cistelles o cèrcols) dins del pavelló, serà punt per a l’equip rival.',
             }
         ]
     },
     { 
-        titulo: '7. Sustituciones',
+        titulo: '7. Substitucions',
         articulos:[
             {
-                texto: 'Cada equipo tiene infinitas sustituciones por set.',
+                texto: 'Cada equip té substitucions il·limitades per set.',
             },
             {
-                texto: 'Las sustituciones deben ser autorizadas por el árbitro y sólo pueden hacerse cuando el balón está fuera de juego.',
+                texto: 'Les substitucions han de ser autoritzades per l’àrbitre i només es poden fer quan la pilota està fora de joc.',
             }
         ]
     },
     { 
-        titulo: '8. Arbitraje',
+        titulo: '8. Arbitratge',
         articulos:[
             {
-                texto: 'Cada partido contará con un árbitro principal y, si es posible, un árbitro asistente o jueces de línea.',
+                texto: 'Cada partit comptarà amb un àrbitre principal i, si és possible, un àrbitre assistent o jutges de línia.',
             },
             {
-                texto: 'El árbitro tiene autoridad para sancionar faltas, validar puntos y aplicar penalizaciones si fuera necesario.',
+                texto: 'L’àrbitre té autoritat per sancionar faltes, validar punts i aplicar penalitzacions si fos necessari.',
             },
             {
-                texto: 'Las decisiones del árbitro son finales y deben respetarse para asegurar el flujo del juego.',
+                texto: 'Les decisions de l’àrbitre són finals i s’han de respectar per garantir el flux del joc.',
             }
         ]
     },
     { 
-        titulo: '9. Protocolo de Inicio de Partido',
+        titulo: '9. Protocol d’Inici de Partit',
         articulos:[
             {
-                texto: 'Antes de cada partido, los capitanes de ambos equipos se reunirán con el árbitro para lanzar una moneda y decidir quién realizará el primer servicio.',
+                texto: 'Abans de cada partit, els capitans de tots dos equips es reuniran amb l’àrbitre per llançar una moneda i decidir qui realitzarà el primer servei.',
             },
             {
-                texto: 'El equipo que gane el sorteo decide si quiere servir o recibir.',
+                texto: 'L’equip que guanyi el sorteig decideix si vol servir o rebre.',
             }
         ]
     },
     { 
-        titulo: '10. Reglas de Conducta',
+        titulo: '10. Regles de Conducta',
         articulos:[
             {
-                texto: 'Los jugadores, entrenadores y acompañantes deberán respetar a los árbitros y oponentes en todo momento.',
+                texto: 'Els jugadors, entrenadors i acompanyants han de respectar els àrbitres i els oponents en tot moment.',
             },
             {
-                texto: 'Cualquier actitud antideportiva, como insultos o provocaciones, será sancionada con advertencia, y en casos graves, con la expulsión del jugador o del equipo del partido o del torneo.',
+                texto: 'Qualsevol actitud antiesportiva, com insults o provocacions, serà sancionada amb advertència, i en casos greus, amb l’expulsió del jugador o de l’equip del partit o del torneig.',
             }
         ]
     },
     { 
-        titulo: '11. Protocolos de Seguridad',
+        titulo: '11. Protocols de Seguretat',
         articulos:[
             {
-                texto: 'Se recomienda que todos los jugadores usen calzado adecuado y mantengan el área de juego libre de objetos que puedan causar tropiezos.',
+                texto: 'Es recomana que tots els jugadors facin servir calçat adequat i mantinguin l’àrea de joc lliure d’objectes que puguin causar ensopegades.',
             },
             {
-                texto: 'En caso de lesión, el juego se detendrá temporalmente hasta que el jugador sea asistido.',
+                texto: 'En cas de lesió, el joc es detindrà temporalment fins que el jugador sigui atès.',
             }
         ]
     }
