@@ -1,19 +1,19 @@
 export const ENLACES = [
     {
         href: '/contacto',
-        nombre: 'Contacto',
+        nombre: 'Contacte',
     },
     {
         href: '/equipos',
-        nombre: 'Equipos',
+        nombre: 'Equips',
     },
     {
         href: '/bases-de-competicion',
-        nombre: 'Base de Competición',
+        nombre: 'Base de Competició',
     },
     {
         href: '',
-        nombre: 'Instalación',
+        nombre: 'Instalació',
     },
     {
         href: '/normativa',
