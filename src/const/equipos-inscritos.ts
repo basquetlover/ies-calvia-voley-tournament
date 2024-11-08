@@ -47,6 +47,52 @@ export const EQUIPOS_INSCRITOS = [
         ]
   
     },
+    {
+        id: 'las-barbies',
+        nombre: 'Las barbies',
+        escudo: '',
+        capitan: 'Ariadna Jaume',
+        entrenador: 'Pau Anguiano',
+        jugadores:[
+            {
+                nombre: 'Leire Ortega',
+                curso: '1º Batch'
+            },
+            {
+                nombre: 'Jana Gunther',
+                curso: '1º Batch'
+            },
+            {
+                nombre: 'Laia Dengra',
+                curso: '1º Batch'
+            },
+            {
+                nombre: 'Ariadna Jaume',
+                curso: '1º Batch'
+            },
+            {
+                nombre: 'Nico Vargas',
+                curso: '1º Batch'
+            },
+            {
+                nombre: 'Ana Luna',
+                curso: '1º Batch'
+            },
+            {
+                nombre: 'Tim Toepfer',
+                curso: '1º Batch'
+            },
+            {
+                nombre: 'Erika Vera',
+                curso: '1º Batch'
+            },
+            {
+                nombre: 'Ainhoa Cumbrerars',
+                curso: 'FP'
+            }
+        ]
+  
+    },
     //Equipo 2
     {
         id: 'equipo-2',
