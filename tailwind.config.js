@@ -13,7 +13,7 @@ export default {
 		},
 		screens: {
 		  xs: '250px',  // Agrega un breakpoint para pantallas más pequeñas
-		  sm: '640px',   // Pantallas pequeñas
+		  sm: '720px',   // Pantallas pequeñas
 		  md: '768px',   // Pantallas medianas
 		  lg: '1024px',  // Pantallas grandes
 		  xl: '1280px',  // Pantallas extra grandes
