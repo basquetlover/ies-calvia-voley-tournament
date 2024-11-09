@@ -93,6 +93,52 @@ export const EQUIPOS_INSCRITOS = [
         ]
   
     },
+    {
+        id: 'harry-guapo',
+        nombre: 'Harry guapo',
+        escudo: 'harry-guapo.png',
+        capitan: 'Harry Hayman',
+        entrenador: '',
+        jugadores:[
+            {
+                nombre: 'Joan Pérez',
+                curso: '1º Bat'
+            },
+            {
+                nombre: 'Nayala Romero',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Joan Pujadas',
+                curso: '1º Bat'
+            },
+            {
+                nombre: 'Emma Castañer',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Sophia Ruiz',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Harry Hayman',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Patri Lahos',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Oliver Williamson',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Melania Romero',
+                curso: '4º ESO'
+            }
+        ]
+  
+    },
     //Equipo 2
     {
         id: 'equipo-2',
