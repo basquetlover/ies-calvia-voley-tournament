@@ -1,0 +1,69 @@
+---
+import SchemaMarkup from '@components/SchemaMarkup.astro';
+
+interface Props {
+	title: string;
+	descripcion: string;
+}
+
+const { title, descripcion } = Astro.props;
+
+
+
+// import { ViewTransitions } from 'astro:transitions';
+
+const images = [
+  '/img/fondo-enlaces.png',
+  '/img/fondo2-enlaces.png',
+];
+
+const randomImage = images[Math.floor(Math.random() * images.length)];
+
+---
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1666FF" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content={descripcion} />
+    <meta name="keywords" content="torneo, tournament, volleyball, galatzo, santa ponsa, santa, ponsa, voleibol, voley, navidad, ies, calvia, TEAM Teto, deportes, Calvià" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Title -->
+    <title>{title}</title>
+
+    <!-- Favicon -->
+    
+    
+    
+    
+
+    <!-- Prueba iconos -->
+
+    <link rel="icon" type="image/png" href="/logo_32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/logo_16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/Group-110.svg" /> 
+     <link rel="shortcut icon" href="/Group-110-_2_.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />  
+    
+
+    <link rel="manifest" href="/site.webmanifest" /> 
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content="Uneix-te al Torneig de Voleibol de l'IES Calvià - Edició Nadal , organitzat pel TEAM Teto. Participa i gaudeix del millor voleibol a Calvià. L'esdeveniment es durà a terme el 20 de desembre en el Poliesportiu Galatzó." />
+    <meta property="og:image" content={`${new URL(randomImage || '/img/fondo-enlaces.png', Astro.site)}`} />
+    <meta property="og:url" content={Astro.site} />
+    <meta property="og:site_name" content="IES Calvià Voley Tournament" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content="Uneix-te al Torneig de Voleibol de l'IES Calvià - Edició Nadal , organitzat pel TEAM Teto. Participa i gaudeix del millor voleibol a Calvià. L'esdeveniment es durà a terme el 20 de desembre en el Poliesportiu Galatzó." />
+    <meta name="twitter:image" content={`${new URL(randomImage || '/img/fondo-enlaces.png', Astro.site)}`} />
+    
+    <SchemaMarkup />
+</head>
