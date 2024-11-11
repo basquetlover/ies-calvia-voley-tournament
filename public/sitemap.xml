@@ -20,7 +20,7 @@
 <url>
   <loc>https://iescalvia-voley.com/inscripcion</loc>
   <lastmod>2024-11-07T17:13:12+00:00</lastmod>
-  <priority>0.80</priority>
+  <priority>0.90</priority>
 </url>
 <url>
   <loc>https://iescalvia-voley.com/equipos</loc>
@@ -43,10 +43,16 @@
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://iescalvia-voley.com/equipos/equipo-2</loc>
-  <lastmod>2024-11-07T17:13:12+00:00</lastmod>
-  <priority>0.64</priority>
+  <loc>https://iescalvia-voley.com/equipos/las-barbies</loc>
+  <lastmod>2024-11-11T17:13:12+00:00</lastmod>
+  <priority>0.60</priority>
 </url>
+<url>
+  <loc>https://iescalvia-voley.com/equipos/harry-guapo</loc>
+  <lastmod>2024-11-11T17:13:12+00:00</lastmod>
+  <priority>0.60</priority>
+</url>
+
 
 
 </urlset>
