@@ -1,4 +1,4 @@
-import { column, defineDb, defineTable } from 'astro:db';
+//import { column, defineDb, defineTable } from 'astro:db';
 
 // https://astro.build/db/config
 // const User = defineTable({
@@ -38,11 +38,11 @@ import { column, defineDb, defineTable } from 'astro:db';
 // })
 
 
-export default defineDb({
-  tables: {
-    // User,
-    // Equipo,
-    // Jugador,
-  }
-});
+// export default defineDb({
+//   tables: {
+//     // User,
+//     // Equipo,
+//     // Jugador,
+//   }
+// });
 
