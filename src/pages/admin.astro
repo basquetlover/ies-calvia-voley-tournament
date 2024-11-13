@@ -1,0 +1,27 @@
+---
+import { db, User, Equipo} from "astro:db";
+
+const users = await db.select().from(User)
+const equipos = await db.select().from(Equipo)
+
+import Layout from "@layouts/Layout.astro";
+---
+
+<Layout title="db">
+    <h1>Usuario</h1>
+    {
+        users.map(user => (
+            <li>{user.username}</li>
+        ))
+    }
+    <h1>Equipos</h1>
+    {
+        equipos.map(equipo => (
+            <ul class=" w-max h-max p-10 bg-amarillo text-accent rounded-md m-4">
+            <li>{equipo.nombre_equipo}</li>
+            <li>{equipo.capitan}</li>
+            <li>{equipo.entrenador}</li>
+        </ul>
+        ))
+    }
+</Layout>
