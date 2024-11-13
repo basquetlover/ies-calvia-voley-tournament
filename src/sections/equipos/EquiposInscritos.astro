@@ -11,7 +11,7 @@ import { EQUIPOS_INSCRITOS } from "@const/equipos-inscritos"
                     <p class="text-azul text-2xl font-semibold">{nombre}</p>
                     <div class="flex place-content-center justify-center w-full h-full ">
                         {escudo && escudo.trim() !== "" ?  (
-                            <img transition:name="equipo-escudo" class="w-40 h-40" src={`/img/escudos/${escudo}`} alt={`escudo equipo ${nombre}`} />
+                            <img transition:name="equipo-escudo" class="w-40 h-40 rounded-lg" src={`/img/escudos/${escudo}`} alt={`escudo equipo ${nombre}`} />
                             ) : (
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-w-40" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>

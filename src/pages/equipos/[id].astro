@@ -27,7 +27,7 @@ const equipo = EQUIPOS_INSCRITOS.find((team) => team.id === id);
         <h1 class="text-accent text-6xl font-bold text-center">{equipo.nombre}</h1>
         
         {equipo.escudo && equipo.escudo.trim() !== "" ?  (
-                <img transition:name="equipo-escudo" src={`/img/escudos/${equipo.escudo}`} alt={`${equipo.nombre} escudo`} class="w-72 h-72 mx-auto my-10" />
+                <img transition:name="equipo-escudo" src={`/img/escudos/${equipo.escudo}`} alt={`${equipo.nombre} escudo`} class="w-72 h-72 mx-auto my-10 rounded-lg" />
               ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-72 h-72 mx-auto my-10" fill="none" viewBox="0 0 650 650">
                     <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>

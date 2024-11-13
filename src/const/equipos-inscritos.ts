@@ -139,6 +139,52 @@ export const EQUIPOS_INSCRITOS = [
         ]
   
     },
+    {
+        id: 'los-pr',
+        nombre: 'LOS PR',
+        escudo: 'los-pr.png',
+        capitan: 'Hector Bustos',
+        entrenador: 'Maria Sampedro',
+        jugadores:[
+            {
+                nombre: 'Hector Bustos',
+                curso: '1º ESO'
+            },
+            {
+                nombre: 'Juan Tous',
+                curso: '1º Bat'
+            },
+            {
+                nombre: 'Dani Medina',
+                curso: '1º Bat'
+            },
+            {
+                nombre: 'Mario Cimpeanu',
+                curso: '1º Bat'
+            },
+            {
+                nombre: 'Samuel Litwin',
+                curso: '1º Bat'
+            },
+            {
+                nombre: 'Alejandro Tomas',
+                curso: '1º Bat'
+            },
+            {
+                nombre: 'Olivia Martinez',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Natividad Grimalt',
+                curso: '1º Bat'
+            },
+            {
+                nombre: 'Yanis Tolba',
+                curso: '1º Bat'
+            }
+        ]
+  
+    },
     
     //Equipo 2
     {
