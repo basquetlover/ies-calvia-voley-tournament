@@ -5,7 +5,7 @@ import tailwind from '@astrojs/tailwind';
 
 import vercel from '@astrojs/vercel/serverless';
 
-import db from '@astrojs/db';
+// import db from '@astrojs/db';
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,7 +13,10 @@ export default defineConfig({
     enabled: false
   },
   site: 'https://ies-calvia-voley-tournament.vercel.app/',
-  integrations: [tailwind(), db()],
+  integrations: [tailwind()],
   output: 'server',
   adapter: vercel()
 });
+
+// "@astrojs/db": "^0.14.3",
+// db()
