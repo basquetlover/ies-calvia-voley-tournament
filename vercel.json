@@ -1,15 +1,15 @@
 {
     "builds": [
-    {
-      "src": "src/**/*.astro",
-      "use": "@astro/build"
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  },
+      {
+        "src": "src/**/*.astro",
+        "use": "@astro/build"
+      }
+    ],
+    "env": {
+      "NODE_ENV": "production"
+    },
     "engines": {
       "node": "18.x"
     }
-  }
+}
   
