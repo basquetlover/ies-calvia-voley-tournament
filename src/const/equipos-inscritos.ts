@@ -148,7 +148,7 @@ export const EQUIPOS_INSCRITOS = [
         jugadores:[
             {
                 nombre: 'Hector Bustos',
-                curso: '1º ESO'
+                curso: '1º Bat'
             },
             {
                 nombre: 'Juan Tous',
