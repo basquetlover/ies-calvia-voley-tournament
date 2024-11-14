@@ -20,6 +20,19 @@ export default {
 		},
 	  },
 	},
-	plugins: [],
+	plugins: [
+		function({ addUtilities }) {
+		  addUtilities({
+			'.no-scrollbar': {
+			  /* Ocultar scrollbar en navegadores modernos */
+			  '-ms-overflow-style': 'none', // Para Internet Explorer y Edge
+			  'scrollbar-width': 'none', // Para Firefox
+			},
+			'.no-scrollbar::-webkit-scrollbar': {
+			  display: 'none', // Para Chrome, Safari y Opera
+			},
+		  });
+		},
+	  ],
   }
   
