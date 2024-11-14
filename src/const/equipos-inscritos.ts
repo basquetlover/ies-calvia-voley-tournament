@@ -5,8 +5,8 @@ export const EQUIPOS_INSCRITOS = [
         id: 'team-teto',
         nombre: 'Team Teto',
         escudo: 'team-teto.png',
-        capitan: 'Miguel Socias',
-        entrenador: 'Lucas Hechavarria',
+        capitan: 'Lucas Hechavarria',
+        entrenador: 'Sergio Ludeña',
         jugadores:[
             {
                 nombre: 'Miguel Socias',
