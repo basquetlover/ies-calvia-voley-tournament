@@ -8,7 +8,7 @@ import { EQUIPOS_INSCRITOS } from "@const/equipos-inscritos"
         {
             EQUIPOS_INSCRITOS.map(({id, nombre, escudo, capitan}) => (
                 <a href={`equipos/${id}`}  class=" w-64 h-w-64 p-4 rounded-lg bg-amarillo grid grid-cols-1 grid-rows-[auto_1fr_auto] hover:scale-105 transition-all duration-300">
-                    <p class="text-azul text-2xl font-semibold">{nombre}</p>
+                    <p class="text-azul text-2xl font-semibold" translate="no">{nombre}</p>
                     <div class="flex place-content-center justify-center w-full h-full ">
                         {escudo && escudo.trim() !== "" ?  (
                             <img transition:name="equipo-escudo" class="w-40 h-40 rounded-lg" src={`/img/escudos/${escudo}`} alt={`escudo equipo ${nombre}`} />
