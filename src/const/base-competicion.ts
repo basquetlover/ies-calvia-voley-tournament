@@ -42,7 +42,7 @@ export const BASES_COMPETICION = [
         ]
     },
     { 
-        titulo: '4. Toques Permesos',
+        titulo: '4. Tocs Permesos',
         articulos:[
             {
                 texto: 'Cada equip té un màxim de tres tocs per tornar la pilota al camp contrari.',
