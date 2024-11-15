@@ -24,4 +24,5 @@ pnpm-debug.log*
 .idea/
 
 # Ignorar página admin
-src/pages/admin.astro
+# /db/
+# /src/pages/admin.astro
