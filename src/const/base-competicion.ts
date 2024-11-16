@@ -49,6 +49,12 @@ export const BASES_COMPETICION = [
             },
             {
                 texto: 'Un jugador no pot tocar la pilota dues vegades consecutives (excepte en bloquejos o en el primer toc).',
+            },
+            {
+                texto: 'Efectuar el toc de "Poqui" està permès',
+            },
+            {
+                texto: 'Executar el moviment de pales està permès',
             }
         ]
     },
