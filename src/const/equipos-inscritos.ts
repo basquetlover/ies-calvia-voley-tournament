@@ -188,7 +188,7 @@ export const EQUIPOS_INSCRITOS = [
     {
         id: 'los-del-espacio',
         nombre: 'Los del espacio',
-        escudo: '',
+        escudo: 'los-del-espacio.png',
         capitan: 'Sofia Schuessler',
         entrenador: 'Toni Buendía',
         jugadores:[
