@@ -185,20 +185,66 @@ export const EQUIPOS_INSCRITOS = [
         ]
   
     },
-    
-    //Equipo 2
     {
-        id: 'equipo-2',
-        nombre: 'Equipo 2',
+        id: 'los-del-espacio',
+        nombre: 'Los del espacio',
         escudo: '',
-        capitan: '',
-        entrenador: '',
+        capitan: 'Sofia Schuessler',
+        entrenador: 'Toni Buendía',
         jugadores:[
-           {
-            nombre: '',
-            curso: '',
-           }
+            {
+                nombre: 'Tomas Durán',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Alejandro Ruiz ',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Sofia Schuessler',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Sofia Cristina Isern',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Joyce Lazzari',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Martina Lodi',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Lucia Martín',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Nerea Flores',
+                curso: '4º ESO'
+            },
+            //{
+            //    nombre: 'Ana Belén Esteve',
+            //    curso: 'Profesor'
+            //}
         ]
   
-    }
+    },
+    
+    //Equipo 2
+    //{
+    //    id: 'equipo-2',
+    //    nombre: 'Equipo 2',
+    //    escudo: '',
+    //    capitan: '',
+    //    entrenador: '',
+    //    jugadores:[
+    //       {
+    //        nombre: '',
+    //        curso: '',
+    //       }
+    //    ]
+  
+    //}
 ];
