@@ -15,15 +15,22 @@ const { title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="description" content="Torneo de Voleyball del IES Calvià - Edicion Navidad. Organizado por el TEAM Teto" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon"  href="img/logo_torneo.png" sizes="16x16"/>
+		
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+
+
+		<link rel="icon" type="image/png" href="/logo_32x32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="/logo_16x16.png" sizes="16x16" />
+		<link rel="icon" type="image/svg+xml" sizes="any" href="/Group-110.svg" /> 
+ 		<link rel="shortcut icon" href="/Group-110-_2_.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />  
 	</head>
 
 	<body class="bg-gris ">
 
 	<div class="grid grid-cols-[max-content_1fr] grid-rows-1 gap-0">
-		
+		<div class="fixed w-full h-full z-50 bg-gris"></div>
 			<AdminHeader />
 		
 
