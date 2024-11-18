@@ -224,10 +224,10 @@ export const EQUIPOS_INSCRITOS = [
                 nombre: 'Nerea Flores',
                 curso: '4º ESO'
             },
-            //{
-            //    nombre: 'Ana Belén Esteve',
-            //    curso: 'Profesor'
-            //}
+            {
+               nombre: 'Ana Belén Esteve',
+               curso: 'Professor'
+            }
         ]
   
     },
@@ -273,6 +273,52 @@ export const EQUIPOS_INSCRITOS = [
             {
                 nombre: 'Noel Hurtado',
                 curso: '3º ESO'
+            }
+        ]
+  
+    },
+    {
+        id: 'maripaz-en-el-top',
+        nombre: 'Maripaz en el Top ',
+        escudo: '',
+        capitan: 'Diego Mulet',
+        entrenador: 'Lucas González',
+        jugadores:[
+            {
+                nombre: 'Sergio Villar',
+                curso: '2º Bat'
+            },
+            {
+                nombre: 'Diego Mulet',
+                curso: '2º Bat'
+            },
+            {
+                nombre: 'Agustín Cañellas',
+                curso: '2º Bat'
+            },
+            {
+                nombre: 'Unai Garcia',
+                curso: '2º Bat'
+            },
+            {
+                nombre: 'Anabel Miranda',
+                curso: '2º Bat'
+            },
+            {
+                nombre: 'Lucia Hernández',
+                curso: '2º Bat'
+            },
+            {
+                nombre: 'Santi Muñoz',
+                curso: '2º Bat'
+            },
+            {
+                nombre: 'Emma Martinova',
+                curso: '2º Bat'
+            },
+            {
+                nombre: 'Valeria Hincapié',
+                curso: '2º Bat'
             }
         ]
   
