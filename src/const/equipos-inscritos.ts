@@ -231,6 +231,52 @@ export const EQUIPOS_INSCRITOS = [
         ]
   
     },
+    {
+        id: 'la-bernaneta',
+        nombre: 'La Bernaneta',
+        escudo: 'la-bernaneta.png',
+        capitan: 'Gonzalo Rodriguez',
+        entrenador: 'Bernat Alomar',
+        jugadores:[
+            {
+                nombre: 'Joan Reixach',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Maia Sofia',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Ariadna Jaume',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Edward Paterson',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Jaume Sanmartín',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Gonzalo Rodríguez',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Leo Mazoyer',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Rubén Ruso',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Noel Hurtado',
+                curso: '3º ESO'
+            }
+        ]
+  
+    },
     
     //Equipo 2
     //{
