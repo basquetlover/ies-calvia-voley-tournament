@@ -280,7 +280,7 @@ export const EQUIPOS_INSCRITOS = [
     {
         id: 'maripaz-en-el-top',
         nombre: 'Maripaz en el Top ',
-        escudo: '',
+        escudo: 'maripaz-en-el-top.png',
         capitan: 'Diego Mulet',
         entrenador: 'Lucas González',
         jugadores:[
