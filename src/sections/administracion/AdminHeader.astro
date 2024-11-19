@@ -45,7 +45,9 @@ const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
 
 ---
 <header class="bg-gris-claro w-80 h-screen flex overflow-x-hidden no-scrollbar flex-col items-center">
-    <img class="w-32 h-32" src="/img/logo_torneo.png" />
+    <a href="/admin" class="w-32 h-32">
+        <img class="w-32 h-32" src="/img/logo_torneo.png" />
+    </a>
     <h1 class="text-center text-accent text-3xl font-semibold uppercase">panel administración</h1>
     <div class="mt-5 flex flex-row items-center">
         <span class="w-5 h-5">
