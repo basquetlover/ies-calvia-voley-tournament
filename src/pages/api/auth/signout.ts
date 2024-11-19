@@ -16,6 +16,6 @@ export const GET: APIRoute = async ({ cookies, redirect }) => {
   }
 
   // Redirige a la página de inicio de sesión
-  return redirect("/");
+  return redirect("/admin");
 };
 
