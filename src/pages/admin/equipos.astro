@@ -1,0 +1,62 @@
+---
+// import { db, User, Equipo, Jugador} from "astro:db";
+// import { eq } from "astro:db";
+
+// const users = await db.select().from(User)
+// const equipos = await db.select().from(Equipo)
+// console.log("Equipos:", equipos);
+
+// const jugadores = await db.select().from(Jugador);
+// // console.log("Jugadores:", jugadores);
+
+// const cursos = await db.select().from(Curso)
+// console.log("Cursos:", cursos)
+// const equipo_selected = await db.select().from(Equipo).innerJoin(Jugador, eq(Equipo.id, Jugador.pertenece_equipo));
+
+// console.log(equipo_selected);
+
+import Layout from "@layouts/Layout.astro";
+// import { Curso } from "astro:db";
+
+
+---
+
+<Layout title="Redirección">
+   
+    <h1>Usuario</h1>
+    <!-- {
+        users.map(user => (
+            <li>{user.username}</li>
+        ))
+    }
+    <h1>Equipos</h1>
+    {
+        equipos.map(equipo => (
+            <ul class=" w-max h-max p-10 bg-amarillo text-accent rounded-md m-4">
+            <li>{equipo.nombre_equipo}</li>
+            <li>{equipo.capitan}</li>
+            <li>{equipo.entrenador}</li>
+        </ul>
+        ))
+    } -->
+    <hr class="w-full bg-amarillo">
+
+    <!-- <section class="max-w-6xl h-auto m-auto my-10">
+        
+        
+        
+        <div class="w-full h-[2px] my-4 rounded-full bg-accent"></div>
+
+        <h2 class=" text-xl text-amarillo font-bold">Jugadors</h2>
+        <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+            <tr><td><h4 class="text-accent font-bold">Nom</h4></td>    <td><h4 class="text-accent font-bold">Curs</h4></td></tr>
+            {
+                equipo_selected.map(equipo_selected => (
+                                <tr><td>{equipo_selected.Jugador.nombre_jugador}</td>   <td>{equipo_selected.Jugador.curso_id}</td></tr>
+                ))
+            }
+        </table>
+        
+        
+      </section> -->
+</Layout>

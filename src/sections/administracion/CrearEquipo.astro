@@ -1,5 +1,251 @@
 ---
-//import { db, Equipo, Jugador} from "astro:db";
+import { db, Curso, Jugador, Equipo} from "astro:db";
+import { eq } from "astro:db";
 
+const cursos = await db.select().from(Curso);
+
+// await db.insert(Curso).values({ label: '3º ESO' });
+// await db.insert(Curso).values({ label: '4º ESO' });
+// await db.insert(Curso).values({ label: '1º Bat' });
+// await db.insert(Curso).values({ label: '2º Bat' });
+// await db.insert(Curso).values({ label: 'FP' });
+// await db.insert(Curso).values({ label: 'Profesores' });
+console.log(cursos);
+
+let jugadores_necesarios = Array(6).fill({ name: "", curso: cursos[0]?.id }); // 6 jugadores por defecto
+let jugadores_extras = Array(3).fill({ name: "", curso: cursos[0]?.id }); // 3 jugadores extras
+
+if (Astro.request.method === "POST") {
+    // Crear equipo
+    const formData = await Astro.request.formData();
+    const nombre_equipo = formData.get("nombre_equipo");
+    const capitan = formData.get("capitan");
+    const imagen = formData.get("imagen") ?? "";  // Asigna una cadena vacía si no se proporciona una imagen
+    const entrenador = formData.get("entrenador");
+    const id_equipo = nombre_equipo.toLowerCase().replace(/\s+/g, '-');
+    
+    // Jugadores
+    const jugadores = [];
+    
+     // Obtener jugadores necesarios
+     jugadores_necesarios.forEach((_, index) => {
+        const playerName = formData.get(`player_${index + 1}_name`);
+        const playerCurso = formData.get(`player_${index + 1}_curso`);
+        
+        // Depuración de los valores recibidos
+        console.log(`Jugador ${index + 1}:`, { playerName, playerCurso });
+        
+        // Verificar que playerName no sea una cadena vacía ni solo espacios y que playerCurso esté presente
+        if (typeof playerName === 'string' && playerName.trim() !== "" && playerCurso) {
+            jugadores.push({
+                nombre: playerName.trim(),
+                curso: playerCurso
+            });
+        }
+    });
+    
+    // Obtener jugadores extras
+    jugadores_extras.forEach((_, index) => {
+        const playerName = formData.get(`player_${index + 1}_name_extra`);
+        const playerCurso = formData.get(`player_${index + 1}_curso_extra`);
+        
+        // Depuración de los valores recibidos
+        console.log(`Jugador extra ${index + 1}:`, { playerName, playerCurso });
+        
+        // Verificar que playerName no sea una cadena vacía ni solo espacios y que playerCurso esté presente
+        if (typeof playerName === 'string' && playerName.trim() !== "" && playerCurso) {
+            jugadores.push({
+                nombre: playerName.trim(),
+                curso: playerCurso
+            });
+        }
+    });
+
+    console.log({ nombre_equipo, capitan, entrenador, imagen, jugadores, id_equipo });
+// Verificar si ya existe un equipo con el mismo nombre
+// const equipoExistente = await db
+//   .select()
+//   .from(Equipo)
+//   .where(eq(Equipo.nombre_equipo, nombre_equipo)) // Utiliza el operador eq para comparar
+//   .limit(1)
+//   .execute();
+
+// console.log(equipoExistente);
+async function verificarNombreEquipo(nombre_equipo: string): Promise<boolean> {
+    try {
+        const equipoExistente = await db.select().from(Equipo).innerJoin(Equipo, eq(Equipo.nombre_equipo, nombre_equipo));
+        if (equipoExistente) {
+            console.log(`✅ El equipo con el nombre "${nombre_equipo}" ya existe en la base de datos.`);
+        } else {
+            console.log(`❌ No existe ningún equipo con el nombre "${nombre_equipo}" en la base de datos.`);
+        }
+        return equipoExistente !== undefined;
+    } catch (error) {
+        console.error("Error verificando el nombre del equipo:", error);
+        return false;
+    }
+}
+
+
+// Ejemplo de uso:
+// const existe = await verificarNombreEquipo('Equipo A');
+// if (existe) {
+//     console.log('El equipo ya existe en la base de datos.');
+// } else {
+//     console.log('El equipo no está registrado.');
+// }
+
+// //const equipo_selected = await db.select().from(Equipo).innerJoin(Jugador, eq(Equipo.id, Jugador.pertenece_equipo));
+// if (equipoExistente.length > 0) {
+//     throw new Error("Ya existe un equipo con ese nombre.");
+// }
+
+// Si no existe, insertar el nuevo equipo
+
+//     if (typeof id_equipo === "string" && typeof nombre_equipo === "string" && typeof capitan === "string" && typeof entrenador === "string") {
+//     const imagen = formData.get("imagen");
+//     const imagenFinal = typeof imagen === "string" ? imagen : ""; // Asegura que imagen sea un string
+
+//     await db.insert(Equipo).values({
+//         id_equipo,          // ID único del equipo
+//         nombre_equipo,      // Nombre del equipo
+//         capitan,            // Nombre del capitán
+//         entrenador,         // Nombre del entrenador
+//         imagen: imagenFinal // Imagen del equipo (si no hay, asigna una cadena vacía)
+//     });
+// };
+
+    
+
+}
 
 ---
+
+<div>
+    <form id="team-form" method="POST" class="space-y-4">
+        <!-- Nombre del Equipo -->
+        <div>
+          <label for="nombre_equipo" class="block font-medium">Nombre del equipo:</label>
+          <input
+            type="text"
+            id="nombre_equipo"
+            name="nombre_equipo"
+            placeholder="Nombre del equipo"
+            required
+            class="border rounded p-2 w-full"
+          />
+        </div>
+      
+        <!-- Imagen del Equipo -->
+        <div>
+            <label for="imagen" class="block font-medium">Sube la imagen del equipo:</label>
+            <input
+              type="file"
+              id="imagen"
+              name="imagen"
+              accept="image/*"
+              
+              class="border rounded p-2 w-full"
+            />
+          </div>
+      
+        <!-- Capitán -->
+        <div>
+          <label for="capitan" class="block font-medium">Nombre del capitán:</label>
+          <input
+            type="text"
+            id="capitan"
+            name="capitan"
+            placeholder="Nombre del capitán"
+            required
+            class="border rounded p-2 w-full"
+          />
+        </div>
+      
+        <!-- Entrenador -->
+        <div>
+          <label for="entrenador" class="block font-medium">Nombre del entrenador:</label>
+          <input
+            type="text"
+            id="entrenador"
+            name="entrenador"
+            placeholder="Nombre del entrenador"
+            required
+            class="border rounded p-2 w-full"
+          />
+        </div>
+
+
+         
+  
+  
+       <!--Jugadores--> 
+       
+  <div  class="space-y-2">
+    <h4>Jugadores</h4>
+    <!--Jugadores necesarios -->
+    {jugadores_necesarios.map((jugador, index) => (
+      <div class="flex items-center space-x-2" >
+        <input
+          type="text"
+          name={`player_${index + 1}_name`}
+          placeholder="Nombre del jugador"
+          class="border rounded p-2 w-1/2"
+          required
+        />
+        <select
+          name={`player_${index + 1}_curso`}
+          class="border rounded p-2 w-1/2"
+          required
+        >
+        <option value=""  selected={!jugador.curso}>Selecciona un curso</option>
+          {cursos.map((curso) => (
+            <option value={curso.id} selected={curso.id === jugador.curso}>
+              {curso.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    ))}
+
+    <!--Jugadores extras -->
+    {jugadores_extras.map((jugador, index) => (
+        <div class="flex items-center space-x-2" >
+          <input
+            type="text"
+            name={`player_${index + 1}_name_extra`}
+            placeholder="Nombre del jugador"
+            class="border rounded p-2 w-1/2"
+            
+          />
+          <select
+            name={`player_${index + 1}_curso_extra`}
+            class="border rounded p-2 w-1/2"
+            
+          >
+            <option value=""  selected={!jugador.curso}>Selecciona un curso</option>
+            {cursos.map((curso) => (
+              <option value={curso.id} selected={curso.id === jugador.curso}>
+                {curso.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      ))}
+    </div>
+      
+        <!-- Botón para enviar -->
+        <div>
+          <button
+            type="submit"
+            class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 w-full"
+          >
+            Guardar Equipo
+          </button>
+        </div>
+      </form>
+      
+</div>
+
+  
+

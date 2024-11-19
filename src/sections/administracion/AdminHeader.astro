@@ -1,11 +1,12 @@
 ---
 import Equipos from "@icons/administracion/Equipos.svg"
-
+// const user = Astro.locals.user
+// console.log(user)
 
 const ACC_GENERAL = [
     {
         nombre: "Equipos",
-        href: "",
+        href: "equipos",
         icon: "M0 30v-4c0-2 1-3 3-5l7-1a36 36 0 0 1 3 0 10 10 0 0 0-2 6v4H0Zm15 0v-4l1-4 3-3 4-2a27 27 0 0 1 12 0l5 2 2 3 2 4v4H15Zm32 0v-7l-1-3h2l7 1c2 2 3 3 3 5v4H47Zm-27-5h18c0-1-1-2-3-2l-6-1-6 1c-2 0-3 1-3 2Zm-10-8-4-1-1-3 1-4 4-1 3 1 2 4-2 3-3 1Zm38 0-3-1-1-3 1-4 3-1 4 1 1 4-1 3-4 1Zm-19-2-5-2c-2-2-2-3-2-5s0-4 2-5c1-2 3-2 5-2s4 0 5 2c2 1 2 3 2 5s0 3-2 5l-5 2Zm0-5 2-1V6l-2-1-2 1v3l2 1Z",
     },
     {
@@ -31,16 +32,26 @@ const ACC_SEMIGENERAL = [
     }
 ]
 
+const user = Astro.locals.user
+
+const nombre_usuario = user.email
 
 ---
 <header class="bg-gris-claro w-80 h-screen flex overflow-x-hidden no-scrollbar flex-col items-center">
     <img class="w-32 h-32" src="/img/logo_torneo.png" />
     <h1 class="text-center text-accent text-3xl font-semibold uppercase">panel administración</h1>
-
-    <nav class="w-full h-auto mt-10 flex flex-col items-center">
+    <div class="mt-5 flex flex-row items-center">
+        <span class="w-5 h-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 40 40">
+                <path fill="#E8EAED" d="M20 20c-3 0-5-1-7-3s-3-4-3-7 1-5 3-7 4-3 7-3 5 1 7 3 3 4 3 7-1 5-3 7-4 3-7 3ZM0 40v-7l1-4 3-3a37 37 0 0 1 16-3 34 34 0 0 1 16 3l3 3 1 4v7H0Zm5-5h30v-3l-1-1a33 33 0 0 0-14-3 29 29 0 0 0-14 3 2 2 0 0 0-1 2v2Zm15-20 4-1 1-4-1-4-4-1-4 1-1 4 1 4 4 1Z"/>
+            </svg>
+        </span>
+        <p class="text-blanco ml-1">{nombre_usuario}</p>
+    </div>
+    <nav class="w-full h-auto mt-5 flex flex-col items-center">
         {
             ACC_GENERAL.map(({nombre, href, icon}) => (
-                <a class="w-[95%] h-14 p-2 my-2 rounded-full bg-azul flex text-2xl text-amarillo items-center">
+                <a href={`/admin/${href}`} class="w-[95%] h-14 p-2 my-2 rounded-full bg-azul flex text-2xl text-amarillo items-center">
                      <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-8 h-8" viewBox="0 0 58 30">
                         <path fill="#FFC700" d={icon}/>
                     </svg>
@@ -50,7 +61,7 @@ const ACC_SEMIGENERAL = [
         }
     </nav>
 
-    <div class="w-[95%] h-[4px] my-10 border-none block rounded-full bg-accent select-none" > </div>
+    <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > </div>
 
     <nav class="w-full h-auto flex flex-col items-center">
         {
@@ -61,6 +72,9 @@ const ACC_SEMIGENERAL = [
             ))
         }
     </nav>
+    <!-- {user && ( -->
+    <form action="/api/auth/signout"><button class="text-center text-lg text-blanco mt-10">Cerrar Sesión</button></form>
+    <!-- )} -->
 
-    <a class="text-center text-lg text-blanco mt-10">Cerrar Sesión</a>
+    
 </header>

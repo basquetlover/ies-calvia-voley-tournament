@@ -15,7 +15,18 @@ export default defineConfig({
   site: 'https://ies-calvia-voley-tournament.vercel.app/',
   integrations: [tailwind()],
   output: 'server',
-  adapter: vercel()
+  adapter: vercel(),
+  vite: {
+    define: {
+      'import.meta.env.PUBLIC_SUPABASE_URL': JSON.stringify(process.env.PUBLIC_SUPABASE_URL),
+      'import.meta.env.PUBLIC_SUPABASE_ANON_KEY': JSON.stringify(process.env.PUBLIC_SUPABASE_ANON_KEY),
+    },
+  },
+  // vite: {
+	// 	optimizeDeps: {
+	// 		exclude: ["astro:db"]
+	// 	}
+	// }
 });
 
 // "@astrojs/db": "^0.14.3",
