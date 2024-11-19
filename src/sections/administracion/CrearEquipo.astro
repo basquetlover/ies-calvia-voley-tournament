@@ -1,90 +1,79 @@
 ---
-import { db, Curso, Jugador, Equipo} from "astro:db";
-import { eq } from "astro:db";
 
-const cursos = await db.select().from(Curso);
 
-// await db.insert(Curso).values({ label: '3º ESO' });
-// await db.insert(Curso).values({ label: '4º ESO' });
-// await db.insert(Curso).values({ label: '1º Bat' });
-// await db.insert(Curso).values({ label: '2º Bat' });
-// await db.insert(Curso).values({ label: 'FP' });
-// await db.insert(Curso).values({ label: 'Profesores' });
-console.log(cursos);
+// let jugadores_necesarios = Array(6).fill({ name: "", curso: cursos[0]?.id }); // 6 jugadores por defecto
+// let jugadores_extras = Array(3).fill({ name: "", curso: cursos[0]?.id }); // 3 jugadores extras
 
-let jugadores_necesarios = Array(6).fill({ name: "", curso: cursos[0]?.id }); // 6 jugadores por defecto
-let jugadores_extras = Array(3).fill({ name: "", curso: cursos[0]?.id }); // 3 jugadores extras
-
-if (Astro.request.method === "POST") {
-    // Crear equipo
-    const formData = await Astro.request.formData();
-    const nombre_equipo = formData.get("nombre_equipo");
-    const capitan = formData.get("capitan");
-    const imagen = formData.get("imagen") ?? "";  // Asigna una cadena vacía si no se proporciona una imagen
-    const entrenador = formData.get("entrenador");
-    const id_equipo = nombre_equipo.toLowerCase().replace(/\s+/g, '-');
+// if (Astro.request.method === "POST") {
+//     // Crear equipo
+//     const formData = await Astro.request.formData();
+//     const nombre_equipo = formData.get("nombre_equipo");
+//     const capitan = formData.get("capitan");
+//     const imagen = formData.get("imagen") ?? "";  // Asigna una cadena vacía si no se proporciona una imagen
+//     const entrenador = formData.get("entrenador");
+//     const id_equipo = nombre_equipo.toLowerCase().replace(/\s+/g, '-');
     
-    // Jugadores
-    const jugadores = [];
+//     // Jugadores
+//     const jugadores = [];
     
-     // Obtener jugadores necesarios
-     jugadores_necesarios.forEach((_, index) => {
-        const playerName = formData.get(`player_${index + 1}_name`);
-        const playerCurso = formData.get(`player_${index + 1}_curso`);
+//      // Obtener jugadores necesarios
+//      jugadores_necesarios.forEach((_, index) => {
+//         const playerName = formData.get(`player_${index + 1}_name`);
+//         const playerCurso = formData.get(`player_${index + 1}_curso`);
         
-        // Depuración de los valores recibidos
-        console.log(`Jugador ${index + 1}:`, { playerName, playerCurso });
+//         // Depuración de los valores recibidos
+//         console.log(`Jugador ${index + 1}:`, { playerName, playerCurso });
         
-        // Verificar que playerName no sea una cadena vacía ni solo espacios y que playerCurso esté presente
-        if (typeof playerName === 'string' && playerName.trim() !== "" && playerCurso) {
-            jugadores.push({
-                nombre: playerName.trim(),
-                curso: playerCurso
-            });
-        }
-    });
+//         // Verificar que playerName no sea una cadena vacía ni solo espacios y que playerCurso esté presente
+//         if (typeof playerName === 'string' && playerName.trim() !== "" && playerCurso) {
+//             jugadores.push({
+//                 nombre: playerName.trim(),
+//                 curso: playerCurso
+//             });
+//         }
+//     });
     
-    // Obtener jugadores extras
-    jugadores_extras.forEach((_, index) => {
-        const playerName = formData.get(`player_${index + 1}_name_extra`);
-        const playerCurso = formData.get(`player_${index + 1}_curso_extra`);
+//     // Obtener jugadores extras
+//     jugadores_extras.forEach((_, index) => {
+//         const playerName = formData.get(`player_${index + 1}_name_extra`);
+//         const playerCurso = formData.get(`player_${index + 1}_curso_extra`);
         
-        // Depuración de los valores recibidos
-        console.log(`Jugador extra ${index + 1}:`, { playerName, playerCurso });
+//         // Depuración de los valores recibidos
+//         console.log(`Jugador extra ${index + 1}:`, { playerName, playerCurso });
         
-        // Verificar que playerName no sea una cadena vacía ni solo espacios y que playerCurso esté presente
-        if (typeof playerName === 'string' && playerName.trim() !== "" && playerCurso) {
-            jugadores.push({
-                nombre: playerName.trim(),
-                curso: playerCurso
-            });
-        }
-    });
+//         // Verificar que playerName no sea una cadena vacía ni solo espacios y que playerCurso esté presente
+//         if (typeof playerName === 'string' && playerName.trim() !== "" && playerCurso) {
+//             jugadores.push({
+//                 nombre: playerName.trim(),
+//                 curso: playerCurso
+//             });
+//         }
+//     });
 
-    console.log({ nombre_equipo, capitan, entrenador, imagen, jugadores, id_equipo });
-// Verificar si ya existe un equipo con el mismo nombre
-// const equipoExistente = await db
-//   .select()
-//   .from(Equipo)
-//   .where(eq(Equipo.nombre_equipo, nombre_equipo)) // Utiliza el operador eq para comparar
-//   .limit(1)
-//   .execute();
+//     console.log({ nombre_equipo, capitan, entrenador, imagen, jugadores, id_equipo });
+// // Verificar si ya existe un equipo con el mismo nombre
+// // const equipoExistente = await db
+// //   .select()
+// //   .from(Equipo)
+// //   .where(eq(Equipo.nombre_equipo, nombre_equipo)) // Utiliza el operador eq para comparar
+// //   .limit(1)
+// //   .execute();
 
-// console.log(equipoExistente);
-async function verificarNombreEquipo(nombre_equipo: string): Promise<boolean> {
-    try {
-        const equipoExistente = await db.select().from(Equipo).innerJoin(Equipo, eq(Equipo.nombre_equipo, nombre_equipo));
-        if (equipoExistente) {
-            console.log(`✅ El equipo con el nombre "${nombre_equipo}" ya existe en la base de datos.`);
-        } else {
-            console.log(`❌ No existe ningún equipo con el nombre "${nombre_equipo}" en la base de datos.`);
-        }
-        return equipoExistente !== undefined;
-    } catch (error) {
-        console.error("Error verificando el nombre del equipo:", error);
-        return false;
-    }
-}
+// // console.log(equipoExistente);
+// async function verificarNombreEquipo(nombre_equipo: string): Promise<boolean> {
+//     try {
+//         const equipoExistente = await db.select().from(Equipo).innerJoin(Equipo, eq(Equipo.nombre_equipo, nombre_equipo));
+//         if (equipoExistente) {
+//             console.log(`✅ El equipo con el nombre "${nombre_equipo}" ya existe en la base de datos.`);
+//         } else {
+//             console.log(`❌ No existe ningún equipo con el nombre "${nombre_equipo}" en la base de datos.`);
+//         }
+//         return equipoExistente !== undefined;
+//     } catch (error) {
+//         console.error("Error verificando el nombre del equipo:", error);
+//         return false;
+//     }
+// }
 
 
 // Ejemplo de uso:
@@ -117,7 +106,7 @@ async function verificarNombreEquipo(nombre_equipo: string): Promise<boolean> {
 
     
 
-}
+// }
 
 ---
 
@@ -184,7 +173,7 @@ async function verificarNombreEquipo(nombre_equipo: string): Promise<boolean> {
   <div  class="space-y-2">
     <h4>Jugadores</h4>
     <!--Jugadores necesarios -->
-    {jugadores_necesarios.map((jugador, index) => (
+    <!-- {jugadores_necesarios.map((jugador, index) => (
       <div class="flex items-center space-x-2" >
         <input
           type="text"
@@ -208,7 +197,7 @@ async function verificarNombreEquipo(nombre_equipo: string): Promise<boolean> {
       </div>
     ))}
 
-    <!--Jugadores extras -->
+    Jugadores extras 
     {jugadores_extras.map((jugador, index) => (
         <div class="flex items-center space-x-2" >
           <input
@@ -232,7 +221,7 @@ async function verificarNombreEquipo(nombre_equipo: string): Promise<boolean> {
           </select>
         </div>
       ))}
-    </div>
+    </div> -->
       
         <!-- Botón para enviar -->
         <div>

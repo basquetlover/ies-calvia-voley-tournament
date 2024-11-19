@@ -32,9 +32,9 @@ const ACC_SEMIGENERAL = [
     }
 ]
 
-const user = Astro.locals.user
+const user = Astro.locals.user;
 
-const nombre_usuario = user.email
+const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
 
 ---
 <header class="bg-gris-claro w-80 h-screen flex overflow-x-hidden no-scrollbar flex-col items-center">
