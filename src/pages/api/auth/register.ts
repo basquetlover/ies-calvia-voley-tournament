@@ -1,7 +1,7 @@
 // Con `output: 'hybrid'` configurado:
 // export const prerender = false;
 import type { APIRoute } from "astro";
-import { supabase } from "../../../lib/supabase";
+import { supabaseAdmin } from "../../../lib/supabase";
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
@@ -12,7 +12,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return new Response("Correo electrónico y contraseña obligatorios", { status: 400 });
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { error } = await supabaseAdmin.auth.signUp({
     email,
     password,
   });

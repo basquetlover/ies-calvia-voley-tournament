@@ -9,3 +9,8 @@ export const supabase = createClient(
     },
   },
 );
+
+export const supabaseAdmin = createClient(
+  import.meta.env.SUPABASE_URL,
+  import.meta.env.SUPABASE_SERVICE_ROLE_KEY // Asegúrate de definir esta variable en tu entorno
+);
