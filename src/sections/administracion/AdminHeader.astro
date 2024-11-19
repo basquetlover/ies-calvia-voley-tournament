@@ -32,6 +32,13 @@ const ACC_SEMIGENERAL = [
     }
 ]
 
+const OWNER = [
+    {
+        nombre: "Usuarios",
+        href: "lista-administradores",
+    },
+]
+
 const user = Astro.locals.user;
 
 const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
@@ -67,6 +74,17 @@ const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
         {
             ACC_SEMIGENERAL.map(({nombre, href}) => (
                 <a class="w-[95%] h-14 p-2 my-2 rounded-full bg-azul flex text-2xl text-amarillo items-center">
+                    {nombre}
+                </a>
+            ))
+        }
+    </nav>
+    <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > </div>
+
+    <nav class="w-full h-auto flex flex-col items-center">
+        {
+            OWNER.map(({nombre, href}) => (
+                <a href={`/admin/${href}`} class="w-[95%] h-14 p-2 my-2 rounded-full bg-azul flex text-2xl text-amarillo items-center">
                     {nombre}
                 </a>
             ))

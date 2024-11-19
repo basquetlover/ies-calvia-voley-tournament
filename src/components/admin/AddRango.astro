@@ -1,0 +1,64 @@
+---
+const RANGOS = [
+    {
+        label: "Owner",
+    },
+    {
+        label: "CoOwner",
+    },
+    {
+        label: "Staff",
+    }
+]
+---
+<h2 class="text-center text-accent font-bold text-5xl">Añadir Rango</h2>
+<form class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10" method="POST" action="/api/addrango">
+    <div class="grid grid-cols-[1fr_1fr_max-content] grid-flow-row-1 place-items-center mx-auto my-auto  w-full h-auto">
+        <div class="flex flex-col relative">
+            <label for="user_email" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">Email</label>
+            <input
+            type="text"
+            id="user_email"
+            name="user_email"
+            placeholder="Email del administrador"
+            required
+            class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            />
+        </div>
+        <select
+                name="rango"
+                class="px-3 py-2 w-60 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            >
+                <option value="" disabled selected >Selecciona un curso</option>
+                {RANGOS.map(({label}) => (
+                <option value={label}>
+                    {label}
+                </option>
+                ))}
+        </select>
+        <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-32 h-12 fill-accent text-accent bg-amarillo rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+            </svg>
+            Añadir
+        </button>
+        
+    </div>
+</form>
+
+<style>
+    .centrar {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .form{
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+  </style>
