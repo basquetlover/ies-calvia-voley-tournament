@@ -1,34 +1,13 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { supabase } from '../../lib/supabase';
 import AddRango from '@components/admin/AddRango.astro';
 import CrearUsuarios from '@sections/administracion/CrearUsuarios.astro';
-
-const { data: admins, error: adminsError } = await supabase
-  .from('Administradores')
-  .select('user_email, rango');
-
-
-  if (adminsError) {
-  console.error('Error fetching administrators:', adminsError.message);
-} else {
-  console.log('Administrators:', admins);
-}
+import UserList from '@sections/administracion/UserList.astro'
 
 ---
-<Layout title="Administradores">
-    <!-- {error ? (
-        <p>Ocurrió un error al obtener los correos.</p>
-      ) : (
-        <ul>
-          {users?.map((user) => (
-            <li>{user.email}</li>
-          ))}
-        </ul>
-      )} -->
-      <AddRango />
-      
-      <CrearUsuarios />
 
-      
+<Layout title="Administradores">
+    <AddRango />
+    <CrearUsuarios />
+    <UserList />
 </Layout>

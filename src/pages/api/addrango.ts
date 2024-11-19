@@ -34,21 +34,21 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
 
   // Aquí insertamos los datos en la tabla 'administradores'
-  // const { error: adminError } = await supabase
-  //   .from('Administradores')
-  //   .insert([
-  //     {
-  //       user_email: user_email, // Correo del usuario
-  //       rango: rango, // Rango asignado al usuario
-  //     },
-  //   ]);
+  const { error: adminError } = await supabase
+    .from('Administradores')
+    .insert([
+      {
+        user_email: user_email, // Correo del usuario
+        rango: rango, // Rango asignado al usuario
+      },
+    ]);
 
-  // if (adminError) {
-  //   console.error('Error insertando en administradores:', adminError.message);
-  //   return new Response("Hubo un error al asignar el rango.", { status: 500 });
-  // } else {
-  //   console.log('Rango asignado correctamente');
-  // }
+  if (adminError) {
+    console.error('Error insertando en administradores:', adminError.message);
+    return new Response("Hubo un error al asignar el rango.", { status: 500 });
+  } else {
+    console.log('Rango asignado correctamente');
+  }
 
   return redirect("/admin/lista-administradores");
 };
