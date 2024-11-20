@@ -36,6 +36,7 @@ const OWNER = [
     {
         nombre: "Usuarios",
         href: "lista-administradores",
+        icon: "m16 16-6-2-2-6 2-6 6-2 6 2 2 6-2 6-6 2ZM0 32v-5l1-4 2-2 6-2 7-1h1a14 14 0 0 0-1 4l-6 1-5 2a2 2 0 0 0-1 2v1h13a13 13 0 0 0 2 4H0Zm28 2v-3a14 14 0 0 1-3-1l-3 1-2-3 3-3a9 9 0 0 1 0-2l-3-2 2-4 3 1a9 9 0 0 1 3-1v-3h4l1 3a10 10 0 0 1 2 1l3-1 2 4-2 2a8 8 0 0 1 0 2l2 3-2 3-3-1a9 9 0 0 1-2 1l-1 3h-4Zm2-6 3-1 1-3-1-3-3-1-3 1-1 3 1 3 3 1ZM16 12l3-1 1-3-1-3-3-1-3 1-1 3 1 3 3 1Z",
     },
 ]
 
@@ -60,7 +61,7 @@ const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
     <nav class="w-full h-auto mt-5 flex flex-col items-center">
         {
             ACC_GENERAL.map(({nombre, href, icon}) => (
-                <a href={`/admin/${href}`} class="w-[95%] h-14 p-2 my-2 rounded-full bg-azul flex text-2xl text-amarillo items-center">
+                <a href={`/admin/${href}`} class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
                      <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-8 h-8" viewBox="0 0 58 30">
                         <path fill="#FFC700" d={icon}/>
                     </svg>
@@ -75,7 +76,7 @@ const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
     <nav class="w-full h-auto flex flex-col items-center">
         {
             ACC_SEMIGENERAL.map(({nombre, href}) => (
-                <a class="w-[95%] h-14 p-2 my-2 rounded-full bg-azul flex text-2xl text-amarillo items-center">
+                <a class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
                     {nombre}
                 </a>
             ))
@@ -85,15 +86,25 @@ const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
 
     <nav class="w-full h-auto flex flex-col items-center">
         {
-            OWNER.map(({nombre, href}) => (
-                <a href={`/admin/${href}`} class="w-[95%] h-14 p-2 my-2 rounded-full bg-azul flex text-2xl text-amarillo items-center">
+            OWNER.map(({nombre, href, icon}) => (
+                <a href={`/admin/${href}`} class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-6 h-6" viewBox="0 0 40 35">
+                        <path fill="#FFC700" d={icon}/>
+                    </svg>
                     {nombre}
                 </a>
             ))
         }
     </nav>
     <!-- {user && ( -->
-    <form action="/api/auth/signout"><button class="text-center text-lg text-blanco my-10">Cerrar Sesión</button></form>
+    <form action="/api/auth/signout">
+        <button class="text-center text-lg text-blanco hover:text-amarillo duration-300 transition-all group my-10 flex flex-row items-center place-content-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 30 31">
+                <path class="fill-blanco group-hover:fill-amarillo duration-300 transition-all"  d="m27 1 2 1 1 2v24l-1 2-2 1H15v-3h12V4H15V1h12ZM8 8l3 2-5 4h14v4H6l5 4-3 2-8-8 8-8Z"/>
+            </svg>
+            Cerrar Sesión
+        </button>
+    </form>
     <!-- )} -->
 
     

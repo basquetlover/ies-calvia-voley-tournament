@@ -10,6 +10,8 @@ export default {
 		  'gris-claro': '#313131',
 		  gris: '#1B1D20',
 		  blanco: '#FFFFFF',
+		  cancelar: '#A83434',
+		  aceptar: '#34A853',
 		},
 		screens: {
 		  xs: '250px',  // Agrega un breakpoint para pantallas más pequeñas

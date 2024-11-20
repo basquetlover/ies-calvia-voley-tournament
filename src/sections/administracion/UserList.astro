@@ -30,7 +30,7 @@ async function listarUsuarios() {
             .filter((user): user is UserEmail => user.email !== undefined); // Filtra los correos no definidos
 
         // Imprime solo los correos electrónicos en la consola
-        console.log("Correos de usuarios:", users.map(user => user.email));
+        // console.log("Correos de usuarios:", users.map(user => user.email));
     } else {
         // Si 'data.users' no es un array, imprime su contenido para depuración
         console.error("La respuesta no es un array:", data);
@@ -46,12 +46,29 @@ await listarUsuarios();
         <p>Ocurrió un error al obtener los correos: {error}</p>
     ) : (
         <h2 class="text-center text-accent font-bold text-5xl">Usuarios Registrados</h2>
-        <ul>
-            <li class="text-amarillo font-bold text-3xl my-2">Email</li>
+            <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+            <tr><td><h4 class="text-amarillo font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-amarillo font-bold text-3xl my-2">Curs</h4></td> <td></td></tr>
             {users.map((user) => (
-                <li class="text-blanco text-lg my-2">{user.email}</li> // Usa 'key' aquí para ayudar a React/Astro a identificar elementos
+                <tr >
+                    <td translate="no">
+                        {user.email}
+                    </td>
+                    
+                    <td>
+
+                    </td>
+
+                    <td>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 60 60">
+                            <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
+                            <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
+                        </svg>
+                    </td>
+                </tr>
+                 
             ))}
-        </ul>
+            </table>
+        
     )}
 </section>
    

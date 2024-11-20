@@ -7,7 +7,24 @@ import UserList from '@sections/administracion/UserList.astro'
 ---
 
 <Layout title="Usuarios">
-    <AddRango />
-    <CrearUsuarios />
-    <UserList />
+    
+        <!-- <AddRango />
+        <CrearUsuarios /> -->
+        <div class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10 grid grid-cols-2 grid-rows-1 place-items-center">
+            <a href="/admin/anadir-usuario" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
+                Añadir Usuario
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 0 58 30">
+                    <path fill="#FFC700" d="M13 17H0v-4h13V0h4v13h13v4H17v13h-4V17Z"/>
+                </svg>
+            </a>
+
+            <a href="/admin/anadir-rango" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
+                Añadir Rango
+                <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 0 58 30">
+                    <path fill="#FFC700" d="M13 17H0v-4h13V0h4v13h13v4H17v13h-4V17Z"/>
+                </svg>
+            </a>
+        </div>
+        <UserList />
+    
 </Layout>
