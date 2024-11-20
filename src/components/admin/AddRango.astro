@@ -10,20 +10,79 @@ const RANGOS = [
         label: "Staff",
     }
 ]
+
+import { supabaseAdmin } from '../../lib/supabase';
+
+
+// Define la interfaz para los correos electrónicos
+interface UserEmail {
+    email: string;
+}
+
+// Inicializa un array para almacenar los correos electrónicos
+let users: UserEmail[] = []; // Especifica que es un array de UserEmail
+let error: string | null = null; // Manejo de errores
+
+async function listarUsuarios() {
+    const { data, error: fetchError } = await supabaseAdmin.auth.admin.listUsers();
+
+    if (fetchError) {
+        console.error("Error fetching usuarios:", fetchError);
+        error = fetchError.message; // Almacena el mensaje del error
+        return;
+    }
+
+    // Verifica si 'data.users' es un array antes de mapear
+    if (Array.isArray(data.users)) {
+        // Extrae solo los correos electrónicos de los usuarios, asegurando que no sean undefined
+        users = data.users
+            .map((user) => {
+                return { email: user.email }; // Crea un objeto UserEmail
+            })
+            .filter((user): user is UserEmail => user.email !== undefined); // Filtra los correos no definidos
+
+        // Imprime solo los correos electrónicos en la consola
+        console.log("Correos de usuarios:", users.map(user => user.email));
+    } else {
+        // Si 'data.users' no es un array, imprime su contenido para depuración
+        console.error("La respuesta no es un array:", data);
+        error = "La respuesta no es un array.";
+    }
+}
+
+// Llama a la función
+await listarUsuarios();
 ---
 <h2 class="text-center text-accent font-bold text-5xl">Añadir Rango</h2>
 <form class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10" method="POST" action="/api/addrango">
     <div class="grid grid-cols-[1fr_1fr_max-content] grid-flow-row-1 place-items-center mx-auto my-auto  w-full h-auto">
         <div class="flex flex-col relative">
-            <label for="user_email" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">Email</label>
-            <input
-            type="text"
-            id="user_email"
-            name="user_email"
-            placeholder="Email del administrador"
-            required
-            class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-            />
+            <!--
+                <label for="user_email" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">Email</label>
+                <input
+                type="text"
+                id="user_email"
+                name="user_email"
+                placeholder="Email del administrador"
+                required
+                class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                />
+            -->
+            {error ? (
+                <p>Ocurrió un error al obtener los correos: {error}</p>
+            ) : (
+            <select
+                name="rango"
+                class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            >
+            <option value="" disabled selected >Selecciona un curso</option>
+                    
+                    {users.map((user) => (
+                        <option class="text-blanco text-lg my-2">{user.email}</option> // Usa 'key' aquí para ayudar a React/Astro a identificar elementos
+                    ))}
+            </select>
+            )}
+            
         </div>
         <select
                 name="rango"
