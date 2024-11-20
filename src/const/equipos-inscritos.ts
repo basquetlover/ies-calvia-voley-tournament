@@ -369,6 +369,52 @@ export const EQUIPOS_INSCRITOS = [
         ]
   
     },
+    {
+        id: 'karamoko-dembele',
+        nombre: 'KARAMOKO DEMBÉLÉ',
+        escudo: 'karamoko-dembele.png',
+        capitan: 'Alberto Moreno',
+        entrenador: 'Carlos Oliver',
+        jugadores:[
+            {
+                nombre: 'Alejandro Rubio',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Joan Marí',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Mireia Rubio',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Alejandra Gómez',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Alberto Moreno',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Mónica Romero',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Alba Milena',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Ismael Cute',
+                curso: '4º ESO'
+            },
+            {
+                nombre: 'Sonia Valtuena',
+                curso: '4º ESO'
+            }
+        ]
+  
+    },
     
     //Equipo 2
     //{
