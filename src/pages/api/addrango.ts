@@ -1,57 +1,51 @@
 import type { APIRoute } from "astro";
-import { supabase } from "../../lib/supabase";
-
-// Función para generar un ID aleatorio de 8 caracteres
-
+import { supabase, supabaseAdmin } from "../../lib/supabase";
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
-  const user_email = formData.get("user_email")?.toString().trim(); // Usamos .trim() para eliminar espacios
-  const rango = formData.get("rango")?.toString().trim(); // Lo mismo para el rango
+  const user_email = formData.get("user_email")?.toString().trim();
+  const rango = formData.get("rango")?.toString().trim();
 
-  // Validación: asegurarse de que ambos campos no estén vacíos
   if (!user_email || !rango) {
     return new Response("Correo electrónico y rango son obligatorios", { status: 400 });
   }
-  console.log(user_email, rango)
+
+  console.log("Datos recibidos:", { user_email, rango });
 
   // Verificar si el correo electrónico ya existe en la tabla 'administradores'
-  // const { data: existingAdmin, error: checkError } = await supabase
-  //   .from('Administradores')
-  //   .select('id')
-  //   .eq('user_email', user_email)
-  //   .single(); // Usamos .single() para obtener un solo resultado
+  const { data: existingAdmins, error: checkError } = await supabaseAdmin
+  .from("Administradores")
+  .select("id") // Seleccionar un campo mínimo
+  .eq("user_email", user_email);
 
-  // if (checkError) {
-  //   console.error('Error al verificar la existencia:', checkError.message);
-  //   return new Response("Hubo un error al verificar el correo electrónico.", { status: 500 });
-  // }
+if (checkError) {
+  console.error("Error al verificar la existencia:", checkError.message);
+  return new Response("Hubo un error al verificar el correo electrónico.", { status: 500 });
+}
 
-  // // Si ya existe un administrador con ese correo electrónico
-  // if (existingAdmin) {
-  //   return new Response("El usuario ya tiene un rango asignado.", { status: 400 });
-  // }
+if (existingAdmins && existingAdmins.length > 0) {
+  return new Response("El usuario ya tiene un rango asignado.", { status: 400 });
+}
 
-
-  // Aquí insertamos los datos en la tabla 'administradores'
-  const { error: adminError } = await supabase
-    .from('Administradores')
+  // Insertar los datos en la tabla 'administradores'
+  const { error: adminError } = await supabaseAdmin
+    .from("Administradores")
     .insert([
       {
-        user_email: user_email, // Correo del usuario
-        rango: rango, // Rango asignado al usuario
+        user_email: user_email,
+        rango: rango,
       },
     ]);
 
   if (adminError) {
-    console.error('Error insertando en administradores:', adminError.message);
+    console.error("Error insertando en administradores:", adminError.message);
     return new Response("Hubo un error al asignar el rango.", { status: 500 });
-  } else {
-    console.log('Rango asignado correctamente');
   }
 
+  console.log("Rango asignado correctamente");
   return redirect("/admin/lista-administradores");
 };
+
 
 
 // import type { APIRoute } from "astro";

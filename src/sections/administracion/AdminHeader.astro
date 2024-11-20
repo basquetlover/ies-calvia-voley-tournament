@@ -40,9 +40,36 @@ const OWNER = [
     },
 ]
 
+//const user = Astro.locals.user;
+
+import { supabaseAdmin } from "../../lib/supabase";
+
+// Verifica si hay un usuario autenticado
 const user = Astro.locals.user;
 
-const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
+let userWithRango = {
+    email: user?.email || "Desconocido",
+    rango: "Sin rango"
+};
+
+try {
+    // Obtén el rango del usuario autenticado
+    if (user?.email) {
+        const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango")
+            .eq("user_email", user.email)
+            .single(); // Obtiene un único registro
+
+        if (error) {
+            console.error("Error al obtener rango:", error.message);
+        } else if (adminData) {
+            userWithRango.rango = adminData.rango || "Sin rango";
+        }
+    }
+} catch (err) {
+    console.error("Error al obtener datos del usuario:", err);
+}
 
 ---
 <header class="bg-gris-claro w-80 h-screen flex overflow-x-hidden no-scrollbar flex-col items-center">
@@ -50,13 +77,24 @@ const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
         <img class="w-32 h-32" src="/img/logo_torneo.png" />
     </a>
     <h1 class="text-center text-accent text-3xl font-semibold uppercase">panel administración</h1>
-    <div class="mt-5 flex flex-row items-center">
-        <span class="w-5 h-5">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 40 40">
-                <path fill="#E8EAED" d="M20 20c-3 0-5-1-7-3s-3-4-3-7 1-5 3-7 4-3 7-3 5 1 7 3 3 4 3 7-1 5-3 7-4 3-7 3ZM0 40v-7l1-4 3-3a37 37 0 0 1 16-3 34 34 0 0 1 16 3l3 3 1 4v7H0Zm5-5h30v-3l-1-1a33 33 0 0 0-14-3 29 29 0 0 0-14 3 2 2 0 0 0-1 2v2Zm15-20 4-1 1-4-1-4-4-1-4 1-1 4 1 4 4 1Z"/>
-            </svg>
-        </span>
-        <p class="text-blanco ml-1">{nombre_usuario}</p>
+    <div>
+        <div class="mt-5 flex flex-row items-center">
+            <span class="w-5 h-5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 40 40">
+                    <path fill="#E8EAED" d="M20 20c-3 0-5-1-7-3s-3-4-3-7 1-5 3-7 4-3 7-3 5 1 7 3 3 4 3 7-1 5-3 7-4 3-7 3ZM0 40v-7l1-4 3-3a37 37 0 0 1 16-3 34 34 0 0 1 16 3l3 3 1 4v7H0Z"/>
+                  </svg>
+            </span>
+            <p class="text-blanco ml-1">{userWithRango.email}</p>
+        </div>
+        <div class="mt-5 flex flex-row items-center">
+            <span class="w-5 h-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-5 h-5" viewBox="0 0 40 44">
+                    <path fill="#F7F7F7" d="M13 0C9 2 6 5 6 9c0 3 1 5 3 7a10 10 0 0 0 6 3h-1C8 20 4 24 1 29l-1 5 1 2h20l1-2 1-4 4-4 1-2-1-1-8-4h-1l4-2 3-3c2-4 1-8-2-11l-5-3h-5ZM30 27c-3 1-5 3-6 6l1 6 4 4a8 8 0 1 0 1-16Zm5 4c1 1 2 3 1 4l-2 1-3 2-1 2h-2v-3h1v-1h1v-1l1-1v-1l1-3 3 1Z"/>
+                    <path fill="#F7F7F7" d="M33 32c0 1 1 2 2 1v-1h-2Z"/>
+                  </svg>
+            </span>
+            <p class="text-blanco ml-1">{userWithRango.rango}</p>
+        </div>
     </div>
     <nav class="w-full h-auto mt-5 flex flex-col items-center">
         {
@@ -82,20 +120,25 @@ const nombre_usuario = user ? (user.email ?? "Sin nombre") : "Sin nombre";
             ))
         }
     </nav>
-    <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp; </div>
+    {userWithRango.rango === "Owner" && (
+         <>
+            <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp; </div>
 
-    <nav class="w-full h-auto flex flex-col items-center">
-        {
-            OWNER.map(({nombre, href, icon}) => (
-                <a href={`/admin/${href}`} class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-6 h-6" viewBox="0 0 40 35">
-                        <path fill="#FFC700" d={icon}/>
-                    </svg>
-                    {nombre}
-                </a>
-            ))
-        }
-    </nav>
+            <nav class="w-full h-auto flex flex-col items-center">
+                {
+                    OWNER.map(({nombre, href, icon}) => (
+                        <a href={`/admin/${href}`} class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-6 h-6" viewBox="0 0 40 35">
+                                <path fill="#FFC700" d={icon}/>
+                            </svg>
+                            {nombre}
+                        </a>
+                    ))
+                }
+            </nav>
+         </>
+    )}
+
     <!-- {user && ( -->
     <form action="/api/auth/signout">
         <button class="text-center text-lg text-blanco hover:text-amarillo duration-300 transition-all group my-10 flex flex-row items-center place-content-center gap-1">

@@ -1,0 +1,156 @@
+---
+import Signin from '@components/admin/signin.astro';
+import AdminHeader from '@sections/administracion/AdminHeader.astro';
+import Footer from '@sections/Footer.astro';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+
+const user = Astro.locals.user
+
+import { supabaseAdmin } from "../lib/supabase";
+
+let userWithRango = {
+    email: user?.email || "Desconocido",
+    rango: "Sin rango"
+};
+
+try {
+    // Obtén el rango del usuario autenticado
+    if (user?.email) {
+        const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango")
+            .eq("user_email", user.email)
+            .single(); // Obtiene un único registro
+
+        if (error) {
+            console.error("Error al obtener rango:", error.message);
+        } else if (adminData) {
+            userWithRango.rango = adminData.rango || "Sin rango";
+        }
+    }
+} catch (err) {
+    console.error("Error al obtener datos del usuario:", err);
+}
+
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Panel de Administración de IES Calvià Voley Tournament." />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="keywords" content="torneo, tournament, volleyball, galatzo, santa ponsa, santa, ponsa, voleibol, voley, navidad, ies, calvia, TEAM Teto, deportes, Calvià" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | IES Calvià Voley Tournament</title>
+
+
+		<link rel="icon" type="image/png" href="/logo_32x32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="/logo_16x16.png" sizes="16x16" />
+		<link rel="icon" type="image/svg+xml" sizes="any" href="/Group-110.svg" /> 
+ 		<link rel="shortcut icon" href="/Group-110-_2_.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" /> 
+	</head>
+
+	<body class="bg-gris ">
+		
+		{user && (
+		<div class="grid grid-cols-[max-content_1fr] grid-rows-1 gap-0">
+		
+		
+			<AdminHeader />
+		
+
+		<main class=" h-screen p-0 overflow-x-hidden">
+            {userWithRango.rango === "Owner" && (
+                <>
+			        <slot />
+                </>
+            )}
+            {userWithRango.rango !== "Owner" && (
+                <>
+                <div class="w-full h-screen flex items-center place-content-center">
+                <section class="max-w-2xl w-full h-max p-10 mx-auto my-auto">
+                    <h2 class=" w-full text-center text-accent font-bold text-5xl">PANEL DE ADMINISTRACIÓN</h2>
+                    <p class="text-amarillo text-xl text-center mt-10">Falta de Permisos</p>
+                    <p class="text-blanco text-xl text-center my-2">
+                    No tienes el rango adecuado para acceder a esta seccion del panel de administracion.
+                    </p>
+                    
+                        <a href="/admin" class="px-3 py-2 w-max mx-auto my-5 text-azul font-semibold bg-amarillo rounded-full text-xl hover:scale-110 duration-300 transition-all transform flex flex-row items-center place-content-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 -960 960 960" class="fill-current">
+                                <path d="M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+                            </svg>
+                            Volver atras
+                        </a>
+            
+                    </section>
+                </div>
+                </>
+                )}
+            
+            
+		</main>
+	</div>
+		
+			//<!-- <Footer /> -->
+		
+		)} 
+
+		<Signin />
+    
+	
+		
+
+	
+		
+	</body>
+
+</html>
+<style>
+*{
+	font-family: "Inter", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: <weight>;
+	font-style: normal;
+  }
+  
+  /* body::-webkit-scrollbar-track {
+	background: #0E347D;        
+  }
+  
+  body::-webkit-scrollbar-thumb {
+	background-color: #313131;    
+	border-radius: 20px;       
+  } */
+  /* Works on Firefox */
+  * {
+	scrollbar-width: thin;
+	scrollbar-color: #1666FF #313131;
+	border-radius: 20px;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+	width: 12px;
+  }
+  
+  *::-webkit-scrollbar-track {
+	background: #1666FF;
+	border-radius: 20px;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+	background-color: #313131;
+	
+	border: 3px solid #313131;
+  }
+  </style>

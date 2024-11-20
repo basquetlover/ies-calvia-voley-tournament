@@ -1,12 +1,12 @@
 ---
-import Layout from '@layouts/Layout.astro';
 import AddRango from '@components/admin/AddRango.astro';
 import CrearUsuarios from '@sections/administracion/CrearUsuarios.astro';
 import UserList from '@sections/administracion/UserList.astro'
+import LayoutOwner from '@layouts/LayoutOwner.astro';
 
 ---
 
-<Layout title="Usuarios">
+<LayoutOwner title="Usuarios">
     
         <!-- <AddRango />
         <CrearUsuarios /> -->
@@ -27,4 +27,4 @@ import UserList from '@sections/administracion/UserList.astro'
         </div>
         <UserList />
     
-</Layout>
+</LayoutOwner>
