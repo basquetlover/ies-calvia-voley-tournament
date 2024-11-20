@@ -370,7 +370,7 @@ export const EQUIPOS_INSCRITOS = [
   
     },
     
-    Equipo 2
+    //Equipo 2
     //{
     //    id: 'equipo-2',
     //    nombre: 'Equipo 2',
