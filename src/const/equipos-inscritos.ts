@@ -279,7 +279,7 @@ export const EQUIPOS_INSCRITOS = [
     },
     {
         id: 'maripaz-en-el-top',
-        nombre: 'Maripaz en el Top ',
+        nombre: 'Maripaz en el Top',
         escudo: 'maripaz-en-el-top.png',
         capitan: 'Diego Mulet',
         entrenador: 'Lucas González',
@@ -319,6 +319,52 @@ export const EQUIPOS_INSCRITOS = [
             {
                 nombre: 'Valeria Hincapié',
                 curso: '2º Bat'
+            }
+        ]
+  
+    },
+    {
+        id: 'los-psicomotronic',
+        nombre: 'Los Psicomotronic',
+        escudo: 'los-psicomotronic.png',
+        capitan: 'Ivan Hernandez',
+        entrenador: 'David Schelske',
+        jugadores:[
+            {
+                nombre: 'Ivan Hernandez',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Ruben Grimaldos',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Hector Casiano',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Dima Bizu',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Daniel Garcia',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Daniel Vasyuta',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Eva Grisi',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Leyre Gari',
+                curso: '3º ESO'
+            },
+            {
+                nombre: 'Alicia Vieiras',
+                curso: '3º ESO'
             }
         ]
   
