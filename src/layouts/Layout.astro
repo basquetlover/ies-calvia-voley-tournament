@@ -21,18 +21,21 @@ const user = Astro.locals.user
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Torneo de Voleyball del IES Calvià - Edicion Navidad. Organizado por el TEAM Teto" />
+		<meta name="description" content="Panel de Administración de IES Calvià Voley Tournament." />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="keywords" content="torneo, tournament, volleyball, galatzo, santa ponsa, santa, ponsa, voleibol, voley, navidad, ies, calvia, TEAM Teto, deportes, Calvià" />
+		<meta name="generator" content={Astro.generator} />
 		
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+		<title>{title} | IES Calvià Voley Tournament</title>
 
 
 		<link rel="icon" type="image/png" href="/logo_32x32.png" sizes="32x32" />
 		<link rel="icon" type="image/png" href="/logo_16x16.png" sizes="16x16" />
 		<link rel="icon" type="image/svg+xml" sizes="any" href="/Group-110.svg" /> 
  		<link rel="shortcut icon" href="/Group-110-_2_.ico" />
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />  
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" /> 
 	</head>
 
 	<body class="bg-gris ">
@@ -64,3 +67,41 @@ const user = Astro.locals.user
 
 </html>
 
+*{
+	font-family: "Inter", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: <weight>;
+	font-style: normal;
+  }
+  
+  /* body::-webkit-scrollbar-track {
+	background: #0E347D;        
+  }
+  
+  body::-webkit-scrollbar-thumb {
+	background-color: #313131;    
+	border-radius: 20px;       
+  } */
+  /* Works on Firefox */
+  * {
+	scrollbar-width: thin;
+	scrollbar-color: #1666FF #313131;
+	border-radius: 20px;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+	width: 12px;
+  }
+  
+  *::-webkit-scrollbar-track {
+	background: #1666FF;
+	border-radius: 20px;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+	background-color: #313131;
+	
+	border: 3px solid #313131;
+  }
+  </style>

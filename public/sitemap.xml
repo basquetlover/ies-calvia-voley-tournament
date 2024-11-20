@@ -9,8 +9,13 @@
 
 <url>
   <loc>https://iescalvia-voley.com/</loc>
-  <lastmod>2024-11-07T17:13:12+00:00</lastmod>
+  <lastmod>2024-11-20T17:13:12+00:00</lastmod>
   <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://iescalvia-voley.com/admin</loc>
+  <lastmod>2024-11-07T17:13:12+00:00</lastmod>
+  <priority>0.90</priority>
 </url>
 <url>
   <loc>https://iescalvia-voley.com/normativa</loc>
