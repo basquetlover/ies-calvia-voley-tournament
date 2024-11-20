@@ -75,10 +75,10 @@ await listarUsuarios();
                 name="rango"
                 class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
             >
-            <option value="" disabled selected >Selecciona un curso</option>
+            <option value="" disabled selected >Selecciona un usuario</option>
                     
                     {users.map((user) => (
-                        <option class="text-blanco text-lg my-2">{user.email}</option> // Usa 'key' aquí para ayudar a React/Astro a identificar elementos
+                        <option value{user.email} class="text-blanco text-lg my-2">{user.email}</option> // Usa 'key' aquí para ayudar a React/Astro a identificar elementos
                     ))}
             </select>
             )}
