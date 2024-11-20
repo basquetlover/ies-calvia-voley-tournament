@@ -59,6 +59,7 @@ await listarUsuarios();
         <div class="flex flex-col relative">
             <!--
                 <label for="user_email" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">Email</label>
+                
                 <input
                 type="text"
                 id="user_email"
@@ -71,8 +72,10 @@ await listarUsuarios();
             {error ? (
                 <p>Ocurrió un error al obtener los correos: {error}</p>
             ) : (
+            <label for="user_email" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">Email</label>
+                
             <select
-                name="rango"
+                name="user_email"
                 class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
             >
             <option value="" disabled selected >Selecciona un usuario</option>
