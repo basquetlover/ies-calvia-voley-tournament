@@ -12,7 +12,6 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return new Response("Correo electrónico y contraseña obligatorios", { status: 400 });
   }
 
- 
     
   const { error } = await supabaseAdmin.auth.signUp({
     email,
