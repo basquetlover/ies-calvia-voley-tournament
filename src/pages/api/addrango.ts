@@ -24,14 +24,8 @@ if (checkError) {
 }
 
 if (existingAdmins && existingAdmins.length > 0) {
- // return new Response("El usuario ya tiene un rango asignado.", { status: 400 });
- return new Response(JSON.stringify({
-  status: 400,
-  message: "El usuario ya tiene un rango asignado."
- }), {
-  headers: {'content-Type' : 'application/json'},
-  status: 400
- });
+  return new Response("El usuario ya tiene un rango asignado.", { status: 400 });
+ 
 }
 
   // Insertar los datos en la tabla 'administradores'
