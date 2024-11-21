@@ -61,6 +61,44 @@ await listarUsuarios();
 }
 
 </script> -->
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('rangoForm') as HTMLFormElement;
+      const warningMessage = document.getElementById('warningMessage') as HTMLDivElement;
+      const warningText = document.getElementById('warningText') as HTMLParagraphElement;
+  
+      if (form && warningMessage && warningText) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault(); // Previene el envío tradicional del formulario
+  
+          const formData = new FormData(form);
+          
+          try {
+            const response = await fetch('/api/addrango', {
+              method: 'POST',
+              body: formData
+            });
+  
+            const data = await response.json(); // Asumimos que la respuesta siempre es JSON
+  
+            if (!response.ok) {
+              warningText.textContent = data.error || 'Ha ocurrido un error';
+              warningMessage.style.display = 'flex';
+            } else {
+              // Manejar respuesta exitosa
+              console.log('Éxito:', data);
+              // Puedes redirigir aquí si es necesario
+              // window.location.href = '/pagina-de-exito';
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            warningText.textContent = 'Ha ocurrido un error al procesar la solicitud';
+            warningMessage.style.display = 'flex';
+          }
+        });
+      }
+    });
+  </script> -->
 <section class="w-full h-screen flex flex-col items-center place-content-center relative">
     <h2 class="z-50  text-center text-amarillo font-bold text-5xl">Añadir Rango</h2>
 
@@ -70,7 +108,8 @@ await listarUsuarios();
         </svg>
     </div>
     <div class="formulario">
-    <form class="w-96 rounded-xl h-96 bg-gris-claro  mx-auto mt-10" method="POST" action="/api/addrango">
+        <!-- action="/api/addrango" -->
+    <form id="rangoForm" class="w-96 rounded-xl h-96 bg-gris-claro  mx-auto mt-10" method="POST" >
         <div class="w-96 h-96 grid grid-cols-1 grid-flow-row-[1fr_1fr_max-content]  place-items-center mx-auto my-auto">
             <div class="flex flex-col relative">
                 <!--
@@ -128,11 +167,18 @@ await listarUsuarios();
                 </button>
             </div>
         </div>
-        <div id="warning-container"></div>
         
         
     </form>
-    </div>
+    <!-- <div id="warningMessage" class="warning div" style="display: none;">
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="fill-warning" viewBox="0 -960 960 960">
+                <path d="m40-120 440-760 440 760H40Zm442.78-118q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216Z"/>
+            </svg>
+        </span>
+        <p id="warningText"></p>
+      </div>
+    </div> -->
 </section>
 
 <style>
@@ -155,7 +201,46 @@ await listarUsuarios();
         top: -20px;
         left: 20px;
     }
- 
+    
+    .div {
+	
+	width: max-content;
+    max-width: 350px;
+	min-height: 80px;
+	height: max-content;
+    margin: 5px auto;
+   
+	border-radius: 10px;
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	grid-template-rows: 1fr;
+	align-items: center;
+	gap: 10px;
+	padding: 5px 10px;
+
+  }
+
+  .error {
+ 	background-color: rgba(168, 52, 52, 0.6);
+ 	border: 3px solid #A83434;
+  }
+
+  .fill-error {
+ 	fill: #BA3A3A;
+  }
+
+  .warning {
+	background-color: rgba(237, 102, 19, 0.5);
+ 	border: 3px solid #ED6613;
+    color: white;
+  }
+
+  .fill-warning {
+    height: 30px;
+    width: 30px;
+ 	fill: #ED6613;
+  }
+
     
 </style>
 <!-- <style>

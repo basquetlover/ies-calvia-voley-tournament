@@ -23,6 +23,12 @@ if (checkError) {
   return new Response("Hubo un error al verificar el correo electrónico.", { status: 500 });
 }
 
+// if (existingAdmins && existingAdmins.length > 0) {
+//   return new Response(JSON.stringify({ error: "El usuario ya tiene un rango asignado." }), {
+//     status: 400,
+//     headers: { 'Content-Type': 'application/json' }
+//   });
+// }
 if (existingAdmins && existingAdmins.length > 0) {
   // return new Response("El usuario ya tiene un rango asignado.", { status: 400 });
   console.log("El usuario ya tiene un rango asignado.")
