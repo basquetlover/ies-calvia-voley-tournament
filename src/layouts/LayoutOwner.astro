@@ -70,12 +70,12 @@ try {
 		
 
 		<main class=" h-screen p-0 overflow-x-hidden">
-            {userWithRango.rango === "Owner" && (
+            {userWithRango.rango === "owner" && (
                 <>
 			        <slot />
                 </>
             )}
-            {userWithRango.rango !== "Owner" && (
+            {userWithRango.rango !== "owner" && (
                 <>
                 <div class="w-full h-screen flex items-center place-content-center">
                 <section class="max-w-2xl w-full h-max p-10 mx-auto my-auto">
