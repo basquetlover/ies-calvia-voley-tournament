@@ -12,16 +12,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return new Response("Correo electrónico y contraseña obligatorios", { status: 400 });
   }
 
-    // Verificar si ya existe un usuario con este email
-    const { data: existingUser, error: fetchError } = await supabaseAdmin.auth.admin.getUserByEmail(email);
-
-    if (fetchError) {
-      return new Response(`Error al comprobar el usuario: ${fetchError.message}`, { status: 500 });
-    }
-  
-    if (existingUser) {
-      return new Response("El usuario ya existe", { status: 409 }); // Código de conflicto
-    }
+ 
     
   const { error } = await supabaseAdmin.auth.signUp({
     email,
