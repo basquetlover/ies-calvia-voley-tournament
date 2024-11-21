@@ -52,8 +52,9 @@ async function listarUsuarios() {
 // Llama a la función
 await listarUsuarios();
 
+//Llamar error
 const form = document.querySelector('form'); // Selecciona el formulario
-const errorBox = document.querySelector('#error-box'); // Selecciona el contenedor de errores
+const errorBox = document.getElementById('error-box'); // Selecciona el contenedor de errores
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault(); // Previene la redirección predeterminada del formulario
