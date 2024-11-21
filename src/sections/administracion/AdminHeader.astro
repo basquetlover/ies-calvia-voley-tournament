@@ -72,83 +72,149 @@ try {
 }
 
 ---
-<header class="bg-gris-claro w-80 h-screen flex overflow-x-hidden no-scrollbar flex-col items-center">
-    <a href="/admin" class="w-32 h-32">
-        <img class="w-32 h-32" src="/img/logo_torneo.png" />
-    </a>
-    <h1 class="text-center text-accent text-3xl font-semibold uppercase">panel administración</h1>
-    <div>
-        <div class="mt-5 flex flex-row items-center">
-            <span class="w-5 h-5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 40 40">
-                    <path fill="#E8EAED" d="M20 20c-3 0-5-1-7-3s-3-4-3-7 1-5 3-7 4-3 7-3 5 1 7 3 3 4 3 7-1 5-3 7-4 3-7 3ZM0 40v-7l1-4 3-3a37 37 0 0 1 16-3 34 34 0 0 1 16 3l3 3 1 4v7H0Z"/>
-                  </svg>
-            </span>
-            <p class="text-blanco ml-1">{userWithRango.email}</p>
+<script>
+    //SubMenu desktop
+    const boton_menu = document.getElementById('boton-menu')!;
+    const boton_menu_icon = document.getElementById('boton-menu-icon')!;
+    const content_menu = document.getElementById('menu-box')!;
+    
+    boton_menu.addEventListener('click', function() {
+        if (content_menu.classList.contains('active-flex')) {
+            content_menu.classList.remove('active-flex');
+            boton_menu.classList.add('plegado');
+            boton_menu.classList.remove('desplegado');
+        } else {
+            content_menu.classList.add('active-flex');
+            boton_menu.classList.add('desplegado');
+            boton_menu.classList.remove('plegado');
+            
+        }
+    });
+    
+    </script>
+<header class=" w-auto h-screen flex flex-row ">
+    <div class="bg-gris-claro w-80 h-screen flex xs:hidden sm:hidden  md:flex   overflow-x-hidden no-scrollbar flex-col items-center" id="menu-box">
+        <a href="/admin" class="w-32 h-32">
+            <img class="w-32 h-32" src="/img/logo_torneo.png" />
+        </a>
+        <h1 class="text-center text-accent text-3xl font-semibold uppercase">panel administración</h1>
+        <div>
+            <div class="mt-5 flex flex-row items-center">
+                <span class="w-5 h-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 40 40">
+                        <path fill="#E8EAED" d="M20 20c-3 0-5-1-7-3s-3-4-3-7 1-5 3-7 4-3 7-3 5 1 7 3 3 4 3 7-1 5-3 7-4 3-7 3ZM0 40v-7l1-4 3-3a37 37 0 0 1 16-3 34 34 0 0 1 16 3l3 3 1 4v7H0Z"/>
+                    </svg>
+                </span>
+                <p class="text-blanco ml-1">{userWithRango.email}</p>
+            </div>
+            <div class="mt-5 flex flex-row items-center">
+                <span class="w-5 h-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-5 h-5" viewBox="0 0 40 44">
+                        <path fill="#F7F7F7" d="M13 0C9 2 6 5 6 9c0 3 1 5 3 7a10 10 0 0 0 6 3h-1C8 20 4 24 1 29l-1 5 1 2h20l1-2 1-4 4-4 1-2-1-1-8-4h-1l4-2 3-3c2-4 1-8-2-11l-5-3h-5ZM30 27c-3 1-5 3-6 6l1 6 4 4a8 8 0 1 0 1-16Zm5 4c1 1 2 3 1 4l-2 1-3 2-1 2h-2v-3h1v-1h1v-1l1-1v-1l1-3 3 1Z"/>
+                        <path fill="#F7F7F7" d="M33 32c0 1 1 2 2 1v-1h-2Z"/>
+                    </svg>
+                </span>
+                <p class="text-blanco ml-1">{userWithRango.rango}</p>
+            </div>
         </div>
-        <div class="mt-5 flex flex-row items-center">
-            <span class="w-5 h-5">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-5 h-5" viewBox="0 0 40 44">
-                    <path fill="#F7F7F7" d="M13 0C9 2 6 5 6 9c0 3 1 5 3 7a10 10 0 0 0 6 3h-1C8 20 4 24 1 29l-1 5 1 2h20l1-2 1-4 4-4 1-2-1-1-8-4h-1l4-2 3-3c2-4 1-8-2-11l-5-3h-5ZM30 27c-3 1-5 3-6 6l1 6 4 4a8 8 0 1 0 1-16Zm5 4c1 1 2 3 1 4l-2 1-3 2-1 2h-2v-3h1v-1h1v-1l1-1v-1l1-3 3 1Z"/>
-                    <path fill="#F7F7F7" d="M33 32c0 1 1 2 2 1v-1h-2Z"/>
-                  </svg>
-            </span>
-            <p class="text-blanco ml-1">{userWithRango.rango}</p>
+        <nav class="w-full h-auto mt-5 flex flex-col items-center">
+            {
+                ACC_GENERAL.map(({nombre, href, icon}) => (
+                    <a href={`/admin/${href}`} class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-8 h-8" viewBox="0 0 58 30">
+                            <path fill="#FFC700" d={icon}/>
+                        </svg>
+                        {nombre}
+                    </a>
+                ))
+            }
+        </nav>
+
+        <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp;</div>
+
+        <nav class="w-full h-auto flex flex-col items-center">
+            {
+                ACC_SEMIGENERAL.map(({nombre, href}) => (
+                    <a class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
+                        {nombre}
+                    </a>
+                ))
+            }
+        </nav>
+        {userWithRango.rango === "Owner" && (
+            <>
+                <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp; </div>
+
+                <nav class="w-full h-auto flex flex-col items-center">
+                    {
+                        OWNER.map(({nombre, href, icon}) => (
+                            <a href={`/admin/${href}`} class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-6 h-6" viewBox="0 0 40 35">
+                                    <path fill="#FFC700" d={icon}/>
+                                </svg>
+                                {nombre}
+                            </a>
+                        ))
+                    }
+                </nav>
+            </>
+        )}
+
+        <!-- {user && ( -->
+        <form action="/api/auth/signout">
+            <button class="text-center text-lg text-blanco hover:text-amarillo duration-300 transition-all group my-10 flex flex-row items-center place-content-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 30 31">
+                    <path class="fill-blanco group-hover:fill-amarillo duration-300 transition-all"  d="m27 1 2 1 1 2v24l-1 2-2 1H15v-3h12V4H15V1h12ZM8 8l3 2-5 4h14v4H6l5 4-3 2-8-8 8-8Z"/>
+                </svg>
+                Cerrar Sesión
+            </button>
+        </form>
+        <!-- )} -->
+
+    </div>
+
+    <div class="bg-gris-claro w-14 h-14  rounded-e-full mt-10 hidden xs:flex sm:flex  md:hidden items-center place-content-center group cursor-pointer plegado" id="boton-menu">
+        <div class="flex items-center place-content-center w-full h-full" id="boton-menu-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="fill-blanco w-10 h-10  group-hover:fill-amarillo duration-300 transition-all" viewBox="0 -960 960 960">
+                <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
+              </svg>
         </div>
     </div>
-    <nav class="w-full h-auto mt-5 flex flex-col items-center">
-        {
-            ACC_GENERAL.map(({nombre, href, icon}) => (
-                <a href={`/admin/${href}`} class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-8 h-8" viewBox="0 0 58 30">
-                        <path fill="#FFC700" d={icon}/>
-                    </svg>
-                    {nombre}
-                </a>
-            ))
-        }
-    </nav>
-
-    <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp;</div>
-
-    <nav class="w-full h-auto flex flex-col items-center">
-        {
-            ACC_SEMIGENERAL.map(({nombre, href}) => (
-                <a class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
-                    {nombre}
-                </a>
-            ))
-        }
-    </nav>
-    {userWithRango.rango === "Owner" && (
-         <>
-            <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp; </div>
-
-            <nav class="w-full h-auto flex flex-col items-center">
-                {
-                    OWNER.map(({nombre, href, icon}) => (
-                        <a href={`/admin/${href}`} class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-6 h-6" viewBox="0 0 40 35">
-                                <path fill="#FFC700" d={icon}/>
-                            </svg>
-                            {nombre}
-                        </a>
-                    ))
-                }
-            </nav>
-         </>
-    )}
-
-    <!-- {user && ( -->
-    <form action="/api/auth/signout">
-        <button class="text-center text-lg text-blanco hover:text-amarillo duration-300 transition-all group my-10 flex flex-row items-center place-content-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 30 31">
-                <path class="fill-blanco group-hover:fill-amarillo duration-300 transition-all"  d="m27 1 2 1 1 2v24l-1 2-2 1H15v-3h12V4H15V1h12ZM8 8l3 2-5 4h14v4H6l5 4-3 2-8-8 8-8Z"/>
-            </svg>
-            Cerrar Sesión
-        </button>
-    </form>
-    <!-- )} -->
-
-    
 </header>
+
+<style>
+    .desplegado{
+        position: relative;
+        z-index: 100;
+        svg{
+            transform: rotate(180deg);
+        }
+    }
+    .plegado{
+        position: absolute;
+        z-index: 100;
+    }
+    .active-flex{
+        display: flex;
+        z-index: 0;
+    }
+    .shadow{
+        box-shadow: 10px 0 0 #1B1D20;
+    }
+    .rotate {
+    transform: rotate(180deg);
+    animation: rotacion 0.3s ease-in-out;
+    }
+    .actual{
+        color: #FFC700;
+        pointer-events: none;
+    }
+    .barra-overflow::-webkit-scrollbar {
+    display: none; 
+}
+@keyframes rotacion {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(180deg); }
+}
+
+</style>

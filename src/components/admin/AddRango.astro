@@ -65,7 +65,7 @@ await listarUsuarios();
     </div>
     <div class="formulario">
     <form class="w-96 rounded-xl h-96 bg-gris-claro  mx-auto mt-10" method="POST" action="/api/addrango">
-        <div class="grid grid-cols-1 grid-flow-row-[1fr_1fr_max-content] place-items-center mx-auto my-auto  w-full h-full">
+        <div class="w-96 h-96 grid grid-cols-1 grid-flow-row-[1fr_1fr_max-content]  place-items-center mx-auto my-auto">
             <div class="flex flex-col relative">
                 <!--
                     <label for="user_email" class="form bg-gris rounded-full px-3 py-1 text-blanco text-xl">Email</label>
@@ -123,6 +123,7 @@ await listarUsuarios();
             </div>
         </div>
         
+        
     </form>
     </div>
 </section>
@@ -148,58 +149,61 @@ await listarUsuarios();
         left: 20px;
     }
  
-  div {
-	margin: 10px 0;
-	width: 400px;
-	min-height: 80px;
-	height: max-content;
-   
-	border-radius: 10px;
-	display: grid;
-	grid-template-columns: max-content 1fr;
-	grid-template-rows: 1fr;
-	align-items: center;
-	gap: 10px;
-	padding: 5px 10px;
-  }
-
-  .error {
- 	background-color: rgba(168, 52, 52, 0.6);
- 	border: 3px solid #A83434;
-  }
-
-  .fill-error {
- 	fill: #BA3A3A;
-  }
-
-  .warning {
- 	fill: #BA3A3A;
-	background-color: rgba(237, 102, 19, 0.5);
- 	border: 3px solid #ED6613;
-  }
-
-  .fill-warning {
- 	fill: #ED6613;
-  }
-
-  .exit {
- 	fill: #BA3A3A;
-	background-color: rgba(52, 168, 83, 0.6);
- 	border: 3px solid #34A853;
-  }
-
-  .fill-exit {
- 	fill: #34A853;
-  }
- 
-  svg  {
-	widht: 30px;
-	height: 30px;
-  }
- 
-
-  p  {
-	font-size: 19px;
-	color: white;
-  }
+    
 </style>
+<!-- <style>
+    .noti {
+        margin: 10px 0;
+        width: 400px;
+        min-height: 80px;
+        height: max-content;
+    
+        border-radius: 10px;
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        grid-template-rows: 1fr;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 10px;
+     }
+
+    .error {
+        background-color: rgba(168, 52, 52, 0.6);
+        border: 3px solid #A83434;
+    }
+
+    .fill-error {
+        fill: #BA3A3A;
+    }
+
+    .warning {
+        fill: #BA3A3A;
+        background-color: rgba(237, 102, 19, 0.5);
+        border: 3px solid #ED6613;
+    }
+
+    .fill-warning {
+        fill: #ED6613;
+    }
+
+    .exit {
+        fill: #BA3A3A;
+        background-color: rgba(52, 168, 83, 0.6);
+        border: 3px solid #34A853;
+    }
+
+    .fill-exit {
+        fill: #34A853;
+    }
+    
+    svg  {
+        widht: 30px;
+        height: 30px;
+    }
+    
+
+    p  {
+        font-size: 19px;
+        color: white;
+    }
+</style> -->
