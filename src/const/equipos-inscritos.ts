@@ -416,51 +416,51 @@ export const EQUIPOS_INSCRITOS = [
   
     },
     {
-        id: 'calvianeras',
-        nombre: 'Calvianeras',
-        escudo: 'calvianeras.png',
-        capitan: 'Paula Sánchez',
-        entrenador: 'Maria Thomas',
-        jugadores:[
-            {
-                nombre: 'Paula Sánchez',
-                curso: '2º Bat'
-            },
-            {
-                nombre: 'Neus Borras',
-                curso: '2º Bat'
-            },
-            {
-                nombre: 'Martina Comas',
-                curso: '2º Bat'
-            },
-            {
-                nombre: 'Georgina Lynda',
-                curso: '2º Bat'
-            },
-            {
-                nombre: 'Magdalena Roig',
-                curso: '2º Bat'
-            },
-            {
-                nombre: 'Javier Martínez',
-                curso: 'FP'
-            },
-            {
-                nombre: 'Antonio Muñoz',
-                curso: '2º Bat'
-            },
-            {
-                nombre: 'Valentino Tamborero',
-                curso: '2º Bat'
-            },
-            {
-                nombre: 'Nikolai Stoyanov',
-                curso: '2º Bat'
-            }
-        ]
-  
-    },
+    	id: 'calvianeras',
+    	nombre: 'Calvianeras',
+    	escudo: 'calvianeras.png',
+    	capitan: 'Paula Sánchez',
+    	entrenador: 'Maria Thomas',
+    	jugadores:[
+        	{
+            	nombre: 'Paula Sánchez',
+            	curso: '2º Bat'
+        	},
+        	{
+            	nombre: 'Neus Borras',
+            	curso: '2º Bat'
+        	},
+        	{
+            	nombre: 'Martina Comas',
+            	curso: '2º Bat',
+        	},
+        	{
+            	nombre: 'Daniel Pérez',
+            	curso: '2º Bat',
+        	},
+        	{
+            	nombre: 'Georgina Lynda',
+            	curso: '2º Bat',
+        	},
+        	{
+            	nombre: 'Javier Martínez',
+            	curso: 'FP'
+        	},
+        	{
+            	nombre: 'Antonio Muñoz',
+            	curso: '2º Bat'
+        	},
+        	{
+            	nombre: 'Valentino Tamborero',
+            	curso: '2º Bat'
+        	},
+        	{
+            	nombre: 'Nikolai Stoyanov',
+            	curso: '2º Bat'
+        	}
+    	]
+ 
+	},
     
     //Equipo 2
     //{
