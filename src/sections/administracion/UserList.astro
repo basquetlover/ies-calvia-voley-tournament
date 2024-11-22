@@ -62,14 +62,14 @@ try {
                 Usuarios Registrados
             </h2>  
             <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
-            <tr><td><h4 class="text-amarillo font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-amarillo font-bold text-3xl my-2">Curs</h4></td> <td></td></tr>
+            <tr><td><h4 class="text-amarillo font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-amarillo font-bold text-3xl my-2">Curs</h4></td> <td></td></tr>
             {usersWithRangos.map((user) => (
                 <tr >
-                    <td class="xs:max-w-[150px] pr-1 sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
+                    <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
                         {user.email}
                     </td>
                     
-                    <td class="pl-1">
+                    <td class="text-center">
                         {user.rango}
                     </td>
 
