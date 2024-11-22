@@ -126,21 +126,24 @@ try {
                 ))
             }
         </nav>
-        {userWithRango.rango === "Owner" || userWithRango.rango === "Co-Owner"  (
+        {(userWithRango.rango === "Owner" || userWithRango.rango === "Co-Owner") && (
             <>
-                <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp;</div>
+                <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none"></div>
 
                 <nav class="w-full h-auto flex flex-col items-center">
-                    {
-                        ACC_SEMIGENERAL.map(({nombre, href}) => (
-                            <a class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
-                                {nombre}
-                            </a>
-                        ))
-                    }
+                    {ACC_SEMIGENERAL.map(({ nombre, href }) => (
+                        <a
+                            key={href} /* Siempre incluye una clave única para elementos en listas */
+                            class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo"
+                            href={href} /* Asegúrate de incluir el atributo href */
+                        >
+                            {nombre}
+                        </a>
+                    ))}
                 </nav>
             </>
         )}
+
         {userWithRango.rango === "Owner" && (
             <>
                 <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp; </div>
