@@ -26,10 +26,7 @@ const ACC_SEMIGENERAL = [
         nombre: "Resultados",
         href: "",
     },
-    {
-        nombre: "Normativa",
-        href: "",
-    }
+    
 ]
 
 const OWNER = [
@@ -129,7 +126,8 @@ try {
                 ))
             }
         </nav>
-
+{userWithRango.rango === "Owner" || userWithRango.rango === "Co-Owner"  && (
+            <>
         <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp;</div>
 
         <nav class="w-full h-auto flex flex-col items-center">
@@ -141,6 +139,8 @@ try {
                 ))
             }
         </nav>
+         </>
+        )}
         {userWithRango.rango === "Owner" && (
             <>
                 <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none" > &nbsp; </div>

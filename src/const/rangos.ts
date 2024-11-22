@@ -9,3 +9,21 @@ export const RANGOS = [
         label: "Staff",
     }
 ]
+
+export const CURSOS = [
+    {
+        label: "3º ESO",
+    },
+    {
+        label: "4º ESO",
+    },
+    {
+        label: "1º Bat",
+    },
+    {
+        label: "2º Bat",
+    },
+    {
+        label: "3º ESO",
+    },
+]
