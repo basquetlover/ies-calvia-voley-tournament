@@ -23,6 +23,11 @@ if (checkError) {
   return new Response("Hubo un error al verificar el correo electrónico.", { status: 500 });
 }
 
+if (user_email === "alemanytomaspere@gmail.com"){
+  return new Response("No puedes modificar el rango a este usurio", {status:400});
+}
+
+
 const existingAdmin = existingAdmins.find(admin => admin.rango === rango);
 
 if (existingAdmin) {
