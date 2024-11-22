@@ -28,23 +28,23 @@ const existingAdmin = existingAdmins.find(admin => admin.rango === rango);
 if (existingAdmin) {
   return new Response("El usuario ya tiene este rango asignado.", { status: 400 });
 }
-// if (existingAdmins && existingAdmins.length > 0) {
+ //if (existingAdmins && existingAdmins.length > 0) {
 //   return new Response("El usuario ya tiene un rango asignado.", { status: 400 });
  
 // }
 
   //Insertar los datos en la tabla 'administradores'
-//   const { error: adminError } = await supabaseAdmin
-//     .from('Administradores')
-//     .update({ rango: rango })
-//     .eq("user_email", user_email)
-//     .select();
+   const { error: adminError } = await supabaseAdmin
+     .from('Administradores')
+     .update({ rango: rango })
+     .eq("user_email", user_email)
+     .select();
     
 
-//   if (adminError) {
-//     console.error("Error insertando en administradores:", adminError.message);
-//     return new Response("Hubo un error al asignar el rango.", { status: 500 });
-//   }
+   if (adminError) {
+     console.error("Error insertando en administradores:", adminError.message);
+     return new Response("Hubo un error al asignar el rango.", { status: 500 });
+   }
 
   console.log("Rango asignado correctamente");
   return redirect("/admin/lista-administradores");
