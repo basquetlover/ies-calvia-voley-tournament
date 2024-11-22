@@ -140,7 +140,7 @@ if (existingEquipo && existingEquipo.length > 0) {
   }
 
   for (const jugador of jugadores_extra) {
-    const { error: jugadorExtraError } = await supabase
+    const { error: jugadorExtraError } = await supabaseAdmin
       .from('Jugadores')
       .insert([
         { nombre: jugador.nombre, 
