@@ -1,62 +1,57 @@
 ---
-// import { db, User, Equipo, Jugador} from "astro:db";
-// import { eq } from "astro:db";
-
-// const users = await db.select().from(User)
-// const equipos = await db.select().from(Equipo)
-// console.log("Equipos:", equipos);
-
-// const jugadores = await db.select().from(Jugador);
-// // console.log("Jugadores:", jugadores);
-
-// const cursos = await db.select().from(Curso)
-// console.log("Cursos:", cursos)
-// const equipo_selected = await db.select().from(Equipo).innerJoin(Jugador, eq(Equipo.id, Jugador.pertenece_equipo));
-
-// console.log(equipo_selected);
 
 import Layout from "@layouts/Layout.astro";
-// import { Curso } from "astro:db";
 
+import { supabaseAdmin } from '../../lib/supabase';
+interface Equipo {
+  id_equipo: string;
+  nombre_equipo: string;
+  capitan: string;
+  entrenador: string;
+  escudo: string | null; // o string dependiendo de si puede ser nulo
+}
+// Obtener los equipos de la base de datos
+const { data: equipos, error } = await supabaseAdmin
+  .from('Equipos') // Usar el tipo definido
+  .select('id_equipo, nombre_equipo, capitan, entrenador, escudo');
+
+
+if (error) {
+  console.error('Error al obtener los equipos:', error);
+} else if (!equipos || equipos.length === 0) {
+  console.log('No se encontraron equipos');
+} else {
+  console.log(`Se encontraron ${equipos.length} equipos`);
+}
 
 ---
 
-<Layout title="Redirección">
+<Layout title="Equipos">
    
-    <h1>Usuario</h1>
-    <!-- {
-        users.map(user => (
-            <li>{user.username}</li>
-        ))
-    }
-    <h1>Equipos</h1>
-    {
-        equipos.map(equipo => (
-            <ul class=" w-max h-max p-10 bg-amarillo text-accent rounded-md m-4">
-            <li>{equipo.nombre_equipo}</li>
-            <li>{equipo.capitan}</li>
-            <li>{equipo.entrenador}</li>
-        </ul>
-        ))
-    } -->
-    <hr class="w-full bg-amarillo">
+   
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {equipos && equipos.map((equipo) => (
+          <a href={`equipos/${equipo.id_equipo}`} class="w-72 h-72 p-4 rounded-lg bg-amarillo grid grid-cols-1 grid-rows-[auto_1fr_auto] hover:scale-105 transition-all duration-300">
+            <p class="text-azul text-2xl font-semibold" translate="no">{equipo.nombre_equipo}</p>
+            <div class="flex items-center justify-center w-full h-full">
+              {equipo.escudo && equipo.escudo.trim() !== "" ? (
+                <img 
+                  transition:name="equipo-escudo" 
+                  class="w-40 h-40 rounded-lg" 
+                  src={equipo.escudo} 
+                  alt={`escudo equipo ${equipo.nombre_equipo}`} 
+                />
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-w-40" fill="none" viewBox="0 0 650 650">
+                  <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                  <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                </svg>
+              )}
+            </div>
+            <p class="text-azul text-xl"><span class="font-semibold">Capitán:</span> {equipo.capitan}</p>
+          </a>
+        ))}
+      </div>
 
-    <!-- <section class="max-w-6xl h-auto m-auto my-10">
-        
-        
-        
-        <div class="w-full h-[2px] my-4 rounded-full bg-accent"></div>
-
-        <h2 class=" text-xl text-amarillo font-bold">Jugadors</h2>
-        <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
-            <tr><td><h4 class="text-accent font-bold">Nom</h4></td>    <td><h4 class="text-accent font-bold">Curs</h4></td></tr>
-            {
-                equipo_selected.map(equipo_selected => (
-                                <tr><td>{equipo_selected.Jugador.nombre_jugador}</td>   <td>{equipo_selected.Jugador.curso_id}</td></tr>
-                ))
-            }
-        </table>
-        
-        
-      </section> -->
+    
 </Layout>

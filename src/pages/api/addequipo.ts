@@ -157,5 +157,5 @@ if (existingEquipo && existingEquipo.length > 0) {
 
 
   console.log("Equipo añadido correctamente");
-  return redirect("/admin");
+  return redirect("/admin/equipos");
 };
