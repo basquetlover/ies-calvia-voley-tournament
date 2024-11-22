@@ -24,6 +24,9 @@ export const CURSOS = [
         label: "2º Bat",
     },
     {
-        label: "3º ESO",
+        label: "FP",
     },
+    {
+        label: "Professor",
+    }
 ]

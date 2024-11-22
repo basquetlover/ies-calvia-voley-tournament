@@ -1,240 +1,179 @@
 ---
+import { CURSOS } from "@const/rangos";
+export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "" }));
+export const jugadores_extra = Array.from({ length: 4 }, () => ({ nombre: "", curso: "" }));
 
-
-// let jugadores_necesarios = Array(6).fill({ name: "", curso: cursos[0]?.id }); // 6 jugadores por defecto
-// let jugadores_extras = Array(3).fill({ name: "", curso: cursos[0]?.id }); // 3 jugadores extras
-
-// if (Astro.request.method === "POST") {
-//     // Crear equipo
-//     const formData = await Astro.request.formData();
-//     const nombre_equipo = formData.get("nombre_equipo");
-//     const capitan = formData.get("capitan");
-//     const imagen = formData.get("imagen") ?? "";  // Asigna una cadena vacía si no se proporciona una imagen
-//     const entrenador = formData.get("entrenador");
-//     const id_equipo = nombre_equipo.toLowerCase().replace(/\s+/g, '-');
-    
-//     // Jugadores
-//     const jugadores = [];
-    
-//      // Obtener jugadores necesarios
-//      jugadores_necesarios.forEach((_, index) => {
-//         const playerName = formData.get(`player_${index + 1}_name`);
-//         const playerCurso = formData.get(`player_${index + 1}_curso`);
-        
-//         // Depuración de los valores recibidos
-//         console.log(`Jugador ${index + 1}:`, { playerName, playerCurso });
-        
-//         // Verificar que playerName no sea una cadena vacía ni solo espacios y que playerCurso esté presente
-//         if (typeof playerName === 'string' && playerName.trim() !== "" && playerCurso) {
-//             jugadores.push({
-//                 nombre: playerName.trim(),
-//                 curso: playerCurso
-//             });
-//         }
-//     });
-    
-//     // Obtener jugadores extras
-//     jugadores_extras.forEach((_, index) => {
-//         const playerName = formData.get(`player_${index + 1}_name_extra`);
-//         const playerCurso = formData.get(`player_${index + 1}_curso_extra`);
-        
-//         // Depuración de los valores recibidos
-//         console.log(`Jugador extra ${index + 1}:`, { playerName, playerCurso });
-        
-//         // Verificar que playerName no sea una cadena vacía ni solo espacios y que playerCurso esté presente
-//         if (typeof playerName === 'string' && playerName.trim() !== "" && playerCurso) {
-//             jugadores.push({
-//                 nombre: playerName.trim(),
-//                 curso: playerCurso
-//             });
-//         }
-//     });
-
-//     console.log({ nombre_equipo, capitan, entrenador, imagen, jugadores, id_equipo });
-// // Verificar si ya existe un equipo con el mismo nombre
-// // const equipoExistente = await db
-// //   .select()
-// //   .from(Equipo)
-// //   .where(eq(Equipo.nombre_equipo, nombre_equipo)) // Utiliza el operador eq para comparar
-// //   .limit(1)
-// //   .execute();
-
-// // console.log(equipoExistente);
-// async function verificarNombreEquipo(nombre_equipo: string): Promise<boolean> {
-//     try {
-//         const equipoExistente = await db.select().from(Equipo).innerJoin(Equipo, eq(Equipo.nombre_equipo, nombre_equipo));
-//         if (equipoExistente) {
-//             console.log(`✅ El equipo con el nombre "${nombre_equipo}" ya existe en la base de datos.`);
-//         } else {
-//             console.log(`❌ No existe ningún equipo con el nombre "${nombre_equipo}" en la base de datos.`);
-//         }
-//         return equipoExistente !== undefined;
-//     } catch (error) {
-//         console.error("Error verificando el nombre del equipo:", error);
-//         return false;
-//     }
-// }
-
-
-// Ejemplo de uso:
-// const existe = await verificarNombreEquipo('Equipo A');
-// if (existe) {
-//     console.log('El equipo ya existe en la base de datos.');
-// } else {
-//     console.log('El equipo no está registrado.');
-// }
-
-// //const equipo_selected = await db.select().from(Equipo).innerJoin(Jugador, eq(Equipo.id, Jugador.pertenece_equipo));
-// if (equipoExistente.length > 0) {
-//     throw new Error("Ya existe un equipo con ese nombre.");
-// }
-
-// Si no existe, insertar el nuevo equipo
-
-//     if (typeof id_equipo === "string" && typeof nombre_equipo === "string" && typeof capitan === "string" && typeof entrenador === "string") {
-//     const imagen = formData.get("imagen");
-//     const imagenFinal = typeof imagen === "string" ? imagen : ""; // Asegura que imagen sea un string
-
-//     await db.insert(Equipo).values({
-//         id_equipo,          // ID único del equipo
-//         nombre_equipo,      // Nombre del equipo
-//         capitan,            // Nombre del capitán
-//         entrenador,         // Nombre del entrenador
-//         imagen: imagenFinal // Imagen del equipo (si no hay, asigna una cadena vacía)
-//     });
-// };
-
-    
-
-// }
+interface Jugador {
+  nombre: string;
+  curso: string;
+}
 
 ---
+<!-- Preview IMG escudo -->
+<script>
+const file = document.getElementById('foto') as HTMLInputElement;
+const img = document.getElementById('img') as HTMLImageElement;
+const defaultFile = 'Vector.png'; // Asegúrate de definir defaultFile
 
-<div>
-    <form id="team-form" method="POST" class="space-y-4">
-        <!-- Nombre del Equipo -->
-        <div>
-          <input
-            type="text"
-            id="nombre_equipo"
-            name="nombre_equipo"
-            placeholder="Nombre del equipo"
-            required
-            
-            class="mx-auto text-4xl text-center border-none bg-transparent rounded text-accent py-2 px-3 w-auto "
-          />
-        </div>
-      
-        <!-- Imagen del Equipo -->
-        <div>
-            <label for="imagen" class="block font-medium">Sube la imagen del equipo:</label>
-            <input
-              type="file"
-              id="imagen"
-              name="imagen"
-              accept="image/*"
-              
-              class="border rounded p-2 w-full"
-            />
-          </div>
-      
-        <!-- Capitán -->
-        <div class="flex flex-row items-center">
-          <label for="capitan" class="block text-amarillo text-2xl font-medium">Capitán</label>
-          <input
-            type="text"
-            id="capitan"
-            name="capitan"
-            placeholder="Nombre del Capitán"
-            required
-            class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
-          />
-        </div>
-      
-        <!-- Entrenador -->
-        <div class="flex flex-row items-center">
-          <label for="entrenador" class="block text-amarillo text-2xl font-medium">Entrenador</label>
-          <input
-            type="text"
-            id="entrenador"
-            name="entrenador"
-            placeholder="Nombre del entrenador"
-            required
-            class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
-          />
-        </div>
-
-
-         
+file.addEventListener('change', (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const files = target.files;
   
-  
-       <!--Jugadores--> 
-       
-  <div  class="space-y-2">
-    <h4>Jugadores</h4>
-    <!--Jugadores necesarios -->
-    <!-- {jugadores_necesarios.map((jugador, index) => (
-      <div class="flex items-center space-x-2" >
+  if (files && files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e: ProgressEvent<FileReader>) {
+      if (e.target && img) {
+        img.src = e.target.result as string;
+      }
+    };
+    reader.readAsDataURL(files[0]);
+  } else {
+    if (img) {
+      img.src = defaultFile;
+    }
+  }
+});
+</script>
+
+
+<div class="max-w-3xl mx-auto my-10">
+  <form id="team-form" method="POST" class="space-y-4" action="/api/addequipo">
+    <div class="mx-auto w-max">
+      <input
+        type="text"
+        id="nombre_equipo"
+        name="nombre_equipo"
+        placeholder="Nombre del equipo"
+        required
+        class="mx-auto text-4xl text-center border-none bg-transparent rounded text-accent py-2 px-3 w-auto"
+      />
+    </div>
+
+    <!--Imagen Escudo -->
+    <div class="w-60 h-60 p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
+      <img src="/img/Vector.png" class="w-full h-full" alt="avatar" id="img" />
+      <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="escudo" id="foto" accept="image/*" />
+      <label class="hidden" for="escudo"></label>
+    </div>
+
+    <div class="flex flex-row items-center">
+      <label for="capitan" class="block text-amarillo text-2xl font-medium">Capitán</label>
+      <input
+        type="text"
+        id="capitan"
+        name="capitan"
+        placeholder="Nombre del Capitán"
+        required
+        class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
+      />
+    </div>
+
+    <div class="flex flex-row items-center">
+      <label for="entrenador" class="block text-amarillo text-2xl font-medium">Entrenador</label>
+      <input
+        type="text"
+        id="entrenador"
+        name="entrenador"
+        placeholder="Nombre del entrenador"
+        
+        class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
+      />
+    </div>
+    <div class="w-max flex flex-row gap-2">
+      <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Jugador</h4></div>
+      <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Curso</h4></div>
+    </div>
+    {jugadores.map((jugador, index) => (
+      <div class="flex items-center space-x-2">
         <input
           type="text"
           name={`player_${index + 1}_name`}
           placeholder="Nombre del jugador"
-          class="border rounded p-2 w-1/2"
+          class="px-3 py-2 w-96 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
           required
+          value={jugador.nombre}
+         
         />
         <select
           name={`player_${index + 1}_curso`}
-          class="border rounded p-2 w-1/2"
+          class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
           required
+          value={jugador.curso}
+          
         >
-        <option value=""  selected={!jugador.curso}>Selecciona un curso</option>
-          {cursos.map((curso) => (
-            <option value={curso.id} selected={curso.id === jugador.curso}>
-              {curso.label}
+          <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
+          {CURSOS.map(({ label }) => (
+            <option value={label}>
+              {label}
             </option>
           ))}
         </select>
       </div>
     ))}
 
-    Jugadores extras 
-    {jugadores_extras.map((jugador, index) => (
-        <div class="flex items-center space-x-2" >
-          <input
-            type="text"
-            name={`player_${index + 1}_name_extra`}
-            placeholder="Nombre del jugador"
-            class="border rounded p-2 w-1/2"
-            
-          />
-          <select
-            name={`player_${index + 1}_curso_extra`}
-            class="border rounded p-2 w-1/2"
-            
-          >
-            <option value=""  selected={!jugador.curso}>Selecciona un curso</option>
-            {cursos.map((curso) => (
-              <option value={curso.id} selected={curso.id === jugador.curso}>
-                {curso.label}
-              </option>
-            ))}
-          </select>
-        </div>
+{jugadores_extra.map((jugador, index) => (
+  <div class="flex items-center space-x-2">
+    <input
+      type="text"
+      name={`extra_player_${index + 1}_name`}
+      placeholder="Nombre del jugador"
+      class="px-3 py-2 w-96 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+      value={jugador.nombre}
+     
+    />
+    <select
+      name={`extra_player_${index + 1}_curso`}
+      class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+      value={jugador.curso}
+      
+    >
+      <option value="" selected={!jugador.curso}>Selecciona un curso</option>
+      {CURSOS.map(({ label }) => (
+        <option value={label}>
+          {label}
+        </option>
       ))}
-    </div> -->
-      
-        <!-- Botón para enviar -->
-        <div>
-          <button
-            type="submit"
-            class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 w-full"
-          >
-            Guardar Equipo
-          </button>
-        </div>
-      </form>
-      
+    </select>
+  </div>
+))}
+
+    
+
+   
+    <div class="w-full h-auto flex flex-row items-center place-content-around">
+      <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+      <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+              <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+          </svg>
+          Guardar Equipo
+      </button>
+  </div>
+  </form>
 </div>
 
-  
 
+<style>
+  input[type="file"]::file-selector-button {
+  display: none;
+}
+   .centrar {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .formulario{
+        z-index: 10000;
+    }
+    .form{
+        
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+</style>
