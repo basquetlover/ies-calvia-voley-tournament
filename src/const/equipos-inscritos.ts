@@ -461,6 +461,49 @@ export const EQUIPOS_INSCRITOS = [
     	]
  
 	},
+    {
+    	id: 'bordelines',
+    	nombre: 'Bordelines',
+    	escudo: 'bordelines.jpeg',
+    	capitan: 'Cayetana Fernández',
+    	entrenador: '',
+    	jugadores:[
+        	{
+            	nombre: 'Cayetana Fernandez',
+            	curso: '3º ESO'
+        	},
+        	{
+            	nombre: 'Eduard López',
+            	curso: '3º ESO'
+        	},
+        	{
+            	nombre: 'Lucas Quetglas',
+            	curso: '3º ESO',
+        	},
+        	{
+            	nombre: 'Camila Morales',
+            	curso: '3º ESO',
+        	},
+        	{
+            	nombre: 'Leylah Navarro',
+            	curso: '3º ESO',
+        	},
+        	{
+            	nombre: 'Nuria Massuti',
+            	curso: '3º ESO'
+        	},
+        	{
+            	nombre: 'Erik Cladera',
+            	curso: '3º ESO'
+        	},
+        	{
+            	nombre: 'Liliana Gil',
+            	curso: '3º ESO'
+        	},
+           	]
+ 
+	},
+
     
     //Equipo 2
     //{
