@@ -27,9 +27,18 @@ if (error) {
 ---
 
 <Layout title="Equipos">
-   
-   
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  <div class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10 flex flex-wrap  gap-10 items-center place-content-center">
+    <a href="/admin/anadir-equipos" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
+        Añadir Equipo
+        <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 0 58 30">
+            <path fill="#FFC700" d="M13 17H0v-4h13V0h4v13h13v4H17v13h-4V17Z"/>
+        </svg>
+    </a>
+</div>
+<h2 class="text-center text-accent font-bold text-5xl">
+  Equipos inscritos
+</h2> 
+    <div class="max-w-7xl my-10 w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 place-items-center">
         {equipos && equipos.map((equipo) => (
           <a href={`equipos/${equipo.id_equipo}`} class="w-72 h-72 p-4 rounded-lg bg-amarillo grid grid-cols-1 grid-rows-[auto_1fr_auto] hover:scale-105 transition-all duration-300">
             <p class="text-azul text-2xl font-semibold" translate="no">{equipo.nombre_equipo}</p>
