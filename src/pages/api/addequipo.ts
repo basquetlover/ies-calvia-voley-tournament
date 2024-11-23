@@ -1,27 +1,9 @@
+
+//Mi codigo
+
 import type { APIRoute } from "astro";
 import { supabase, supabaseAdmin } from "../../lib/supabase";
 
-async function uploadFile(file: File, fileName: string) {
-    const { data, error } = await supabaseAdmin.storage
-      .from('EquiposIMG')
-      .upload(`escudos/${fileName}`, file);
-  
-    if (error) {
-      console.error("Error uploading file:", error);
-      return null;
-    }
-  
-    const { data: urlData } = supabaseAdmin.storage
-      .from('EquiposIMG')
-      .getPublicUrl(`escudos/${fileName}`);
-  
-    if (!urlData || !urlData.publicUrl) {
-      console.error("Error getting public URL");
-      return null;
-    }
-  
-    return urlData.publicUrl;
-}
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
@@ -32,7 +14,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   
   // Recoger la información del escudo (imagen)
   const escudo = formData.get("escudo") as File;
-
+  console.log("Tipo de archivo:", escudo.name);
+  console.log("Tipo de archivo:", escudo.type);
+  console.log("Tamaño de archivo:", escudo.size);
   // Recoger la información de los jugadores
   const jugadores = [];
   let index = 1;
@@ -85,14 +69,51 @@ if (existingEquipo && existingEquipo.length > 0) {
   // return new Response("El usuario ya tiene un capitan asignado.", { status: 400 });
   console.log("El usuario ya tiene un capitan asignado.")
 }
-    let escudoUrl = null;
-    if (escudo && escudo.size > 0) {
-        const fileName = `${id_equipo}_${Date.now()}.${escudo.name.split('.').pop()}`;
-        escudoUrl = await uploadFile(escudo, fileName);
-        if (!escudoUrl) {
-        return new Response("Error al subir el escudo del equipo.", { status: 500 });
-        }
-    }
+   //subir archivo imagen (escudo)
+   // Subir escudo al almacenamiento
+   // Generar un nombre único para el archivo basado en el nombre del equipo
+   
+
+  // Subir archivo imagen (escudo)
+// Función para subir el archivo
+async function uploadFile(file: File, id_equipo: string) {
+  // Extraer la extensión del archivo
+  const extension = file.name.split('.').pop(); // Obtiene la extensión
+  const uniqueFileName = `${id_equipo}.${extension}`; // Combina id_equipo con la extensión
+  const filePath = `escudos/${uniqueFileName}`; // Define la ruta del archivo
+
+  const { data, error } = await supabaseAdmin.storage
+      .from('EquiposIMG')
+      .upload(filePath, file); // Sube el archivo
+
+  if (error) {
+      console.error("Error al subir imagen:", error.message);
+      throw new Error("Error al subir imagen.");
+  }
+
+  console.log("Imagen subida correctamente:", data.path);
+  return filePath; // Devuelve la ruta del archivo
+}
+
+// Llama a la función para subir el escudo
+const escudoPath = await uploadFile(escudo, id_equipo);
+
+// Obtener la URL pública del escudo subido
+const { data: urlData } = supabaseAdmin.storage
+    .from('EquiposIMG')
+    .getPublicUrl(escudoPath); // Usa el escudoPath que se generó al subir el archivo
+
+// Verifica si urlData contiene la propiedad publicUrl
+if (!urlData || !urlData.publicUrl) {
+    console.error("No se pudo obtener la URL pública del escudo.");
+    return new Response("Hubo un error al procesar el escudo.", { status: 500 });
+}
+
+// Ahora puedes usar urlData.publicUrl para insertar en la base de datos
+const publicUrl = urlData.publicUrl;
+console.log("URL pública del escudo:", publicUrl);
+    
+    
   // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
     .from('Equipos')
@@ -101,7 +122,8 @@ if (existingEquipo && existingEquipo.length > 0) {
           id_equipo: id_equipo ,
           capitan: capitan,
           entrenador: acompañante,
-          escudo: escudoUrl},
+          escudo: publicUrl
+        },
     ])
     .select()
 
