@@ -1,0 +1,324 @@
+---
+import { supabaseAdmin } from "../../../lib/supabase";
+import LayoutOwner from '@layouts/LayoutOwner.astro';
+import { CURSOS } from "@const/rangos";
+import Layout from "@layouts/Layout.astro";
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+type AdministradorProps = {
+    id_equipo: string;
+    nombre_equipo: string;
+};
+
+// Genera rutas dinámicas
+export async function getStaticPaths() {
+  // Consulta a la base de datos para obtener user_email y rango
+  const { data, error } = await supabaseAdmin
+    .from('Equipos')
+    .select('id_equipo, nombre_equipo');
+
+  if (error) {
+    console.error('Error fetching administradores:', error.message);
+    return { paths: [] };
+  }
+
+  // Genera las rutas dinámicas con datos adicionales
+  const paths = data.map((equipo) => ({
+    params: { id_equipo: equipo.id_equipo },
+    props: { nombre_equipo: equipo.nombre_equipo }, // Pasamos rango como parte de los props
+  }));
+
+  return { paths };
+}
+const id_equipo = Astro.url.pathname.split('/').pop();
+
+let nombre_equipo = 'Sin Nombre';
+let escudo = "";
+let capitan = "";
+let entrenador = "";
+let id = "";
+interface Jugador {
+  nombre: string;
+  pertenece_equipo: string;
+  curso: string;
+  id:string;
+  checkboxChecked?: boolean;
+}
+
+let jugadores: Jugador[] = [];
+let camposVacios: Jugador[] = [];
+
+try {
+  // Buscar el rango correspondiente al email en la tabla Administradores
+  const { data: equipoData, error } = await supabaseAdmin
+    .from('Equipos')
+    .select('nombre_equipo, id, capitan, entrenador, escudo')
+    .eq('id_equipo', id_equipo)
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar nombre_equipo para ${id_equipo}:`, error.message);
+  } else if (equipoData) {
+    nombre_equipo = equipoData.nombre_equipo;
+    escudo = equipoData.escudo;
+    capitan = equipoData.capitan;
+    entrenador = equipoData.entrenador;
+    id = equipoData.id;
+  }
+
+  const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
+    .from('Jugadores')
+    .select('nombre, pertenece_equipo, curso, id')
+    .eq('pertenece_equipo', id);
+
+  if(jugadorError){
+    console.error(`Error al buscar jugadores`, error?.message);
+  } else if(jugadoresData){
+    jugadores = jugadoresData;
+    const totalJugadores = 10; // Número total de jugadores permitidos
+    const jugadoresFaltantes = totalJugadores - jugadores.length;
+    camposVacios = Array.from({ length: Math.max(0, jugadoresFaltantes) });
+  }
+  
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+//Eliminar jugador
+async function eliminarJugador(id: string) {
+    try {
+        const response = await fetch(`/api/jugadores/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al eliminar el jugador');
+        }
+
+        // Lógica para eliminar el jugador de la interfaz...
+        const li = document.querySelector(`li[data-id="${id}"]`);
+        if (li) {
+            li.remove();
+        }
+        console.log('Jugador eliminado correctamente');
+    } catch (error) {
+        console.error('Error al eliminar el jugador:', error);
+    }
+}
+
+//Checkbox
+const handleCheckboxChange = (index: number) => {
+    jugadores = jugadores.map((jugador, i) => {
+        if (i === index) {
+            return {
+                ...jugador,
+                checkboxChecked: !jugador.checkboxChecked, // Cambia el estado del checkbox
+            };
+        }
+        return jugador;
+    });
+};
+---
+<script>
+    const file = document.getElementById('foto') as HTMLInputElement;
+    const img = document.getElementById('img') as HTMLImageElement;
+    const defaultFile = 'Vector.png'; // Asegúrate de definir defaultFile
+    
+    file.addEventListener('change', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const files = target.files;
+      
+      if (files && files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e: ProgressEvent<FileReader>) {
+          if (e.target && img) {
+            img.src = e.target.result as string;
+          }
+        };
+        reader.readAsDataURL(files[0]);
+      } else {
+        if (img) {
+          img.src = defaultFile;
+        }
+      }
+    });
+    </script>
+
+<Layout title=`Modificar Equipo ${nombre_equipo}`>
+    <div class="max-w-3xl mx-auto my-10">
+        <form id="team-form" method="POST" class="space-y-4" action="/api/modifyequipo"  enctype="multipart/form-data">
+            
+          <div class="mx-auto w-max relative">
+            <div class="absolute text-blanco top-00 ">
+                <label for="id">ID: </label>
+                <input class="bg-transparent" name="id" value={id} disabled/>
+            </div>
+            <input
+              type="text"
+              id="nombre_equipo"
+              name="nombre_equipo"
+              placeholder="Nombre del equipo"
+              value={nombre_equipo}
+              required
+              class="mx-auto text-4xl text-center border-none bg-transparent rounded text-accent py-2 px-3 w-auto"
+            />
+            
+          </div>
+      
+          <!--Imagen Escudo -->
+          <div class="w-60 h-60 p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
+            <img src={escudo} class="w-full h-full" alt="avatar" id="img" />
+            <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="escudo" id="foto" accept="image/*" />
+            <label class="hidden" for="escudo"></label>
+          </div>
+
+          <!--Capitan -->
+          <div class="flex flex-row items-center">
+            <label for="capitan" class="block text-amarillo text-2xl font-medium">Capitán</label>
+            <input
+              type="text"
+              id="capitan"
+              name="capitan"
+              value={capitan}
+              placeholder="Nombre del Capitán"
+              required
+              class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
+            />
+          </div>
+        
+          <!--Entrenador -->
+          <div class="flex flex-row items-center">
+            <label for="entrenador" class="block text-amarillo text-2xl font-medium">Entrenador</label>
+            <input
+              type="text"
+              id="entrenador"
+              name="entrenador"
+              value={entrenador}
+              placeholder="Nombre del entrenador"
+              
+              class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
+            />
+          </div>
+          <div class="w-max flex flex-row gap-2">
+            <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Jugador</h4></div>
+            <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Curso</h4></div>
+          </div>
+          
+          
+          {jugadores.map((jugador, index) => (
+            <div class="flex items-center space-x-2" data-id={jugador.id}>
+                <input type="hidden" value={jugador.id} name={`jugador_id_${index}`} class="hidden" />
+                <input
+                    type="text"
+                    name={`player_${index + 1}_name`}
+                    placeholder="Nombre del jugador"
+                    class="px-3 py-2 w-96 h-12 rounded-full text-base text-blanco border-none bg-gris-claro peer-checked:bg-red-500"
+                    value={jugador.nombre}
+                />
+                <select
+                    name={`player_${index + 1}_curso`}
+                    class="px-3 py-2 w-72 h-12 rounded-full text-base text-blanco border-none bg-gris-claro peer-checked:bg-red-500"
+                    value={jugador.curso}
+                >
+                    <option value="Selecciona un curso">Selecciona un curso</option>
+                    {CURSOS.map(({ label }) => (
+                        <option value={label} selected={jugador.curso === label}>
+                            {label}
+                        </option>
+                    ))}
+                </select>
+                <div class="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        id={`checkbox-${index}`}
+                        class="peer hidden"
+                        name={`player_${index + 1}_opcion`}
+                        value={jugador.checkboxChecked ? 'update' : 'delete'}
+                        checked={jugador.checkboxChecked}
+                    />
+
+                    <label
+                        for={`checkbox-${index}`}
+                        class="w-6 h-6 border-2 border-gray-400 rounded-full cursor-pointer group peer-checked:bg-red-500 peer-checked:border-red-700 flex items-center place-content-center"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-gris-claro  peer-checked:fill-red-700 " viewBox="0 -960 960 960">
+                            <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                        </svg>
+                    </label>
+                    
+                    
+                </div>
+                
+            </div>
+        ))}
+          
+          {camposVacios.map((_, index) => (
+            <div class="flex items-center space-x-2">
+                <input
+                    type="text"
+                    name={`new_player_${index + 1}_name`}
+                    placeholder="Nombre del jugador"
+                    class="px-3 py-2 w-96 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                />
+                <select
+                    name={`new_player_${index + 1}_curso`}
+                    class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                >
+                    <option value="" disabled selected>Selecciona un curso</option>
+                    {CURSOS.map(({ label }) => (
+                        <option value={label}>
+                            {label}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        ))}
+
+      
+          
+      
+         
+          <div class="w-full h-auto flex flex-row items-center place-content-around">
+            <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+            <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                </svg>
+                Guardar Equipo
+            </button>
+        </div>
+        </form>
+      </div>
+      
+      
+      <style>
+        input[type="file"]::file-selector-button {
+        display: none;
+      }
+         .centrar {
+              z-index: 0;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+          }
+          .formulario{
+              z-index: 10000;
+          }
+          .form{
+              
+              position: absolute;
+              top: -20px;
+              left: 20px;
+          }
+      
+            
+      </style>
+</Layout>

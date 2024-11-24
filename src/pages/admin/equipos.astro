@@ -2,28 +2,7 @@
 
 import Layout from "@layouts/Layout.astro";
 
-import { supabaseAdmin } from '../../lib/supabase';
-interface Equipo {
-  id_equipo: string;
-  nombre_equipo: string;
-  capitan: string;
-  entrenador: string;
-  escudo: string | null; // o string dependiendo de si puede ser nulo
-}
-// Obtener los equipos de la base de datos
-const { data: equipos, error } = await supabaseAdmin
-  .from('Equipos') // Usar el tipo definido
-  .select('id_equipo, nombre_equipo, capitan, entrenador, escudo');
-
-
-if (error) {
-  console.error('Error al obtener los equipos:', error);
-} else if (!equipos || equipos.length === 0) {
-  console.log('No se encontraron equipos');
-} else {
-  console.log(`Se encontraron ${equipos.length} equipos`);
-}
-
+import EquiposList from "@sections/administracion/EquiposList.astro";
 ---
 
 <Layout title="Equipos">
@@ -38,29 +17,6 @@ if (error) {
 <h2 class="text-center text-accent font-bold text-5xl">
   Equipos inscritos
 </h2> 
-    <div class="max-w-7xl my-10 w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 place-items-center">
-        {equipos && equipos.map((equipo) => (
-          <a href={`equipos/${equipo.id_equipo}`} class="w-72 h-72 p-4 rounded-lg bg-amarillo grid grid-cols-1 grid-rows-[auto_1fr_auto] hover:scale-105 transition-all duration-300">
-            <p class="text-azul text-2xl font-semibold" translate="no">{equipo.nombre_equipo}</p>
-            <div class="flex items-center justify-center w-full h-full">
-              {equipo.escudo && equipo.escudo.trim() !== "" ? (
-                <img 
-                  transition:name="equipo-escudo" 
-                  class="w-40 h-40 rounded-lg" 
-                  src={equipo.escudo} 
-                  alt={`escudo equipo ${equipo.nombre_equipo}`} 
-                />
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-w-40" fill="none" viewBox="0 0 650 650">
-                  <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
-                  <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
-                </svg>
-              )}
-            </div>
-            <p class="text-azul text-xl"><span class="font-semibold">Capitán:</span> {equipo.capitan}</p>
-          </a>
-        ))}
-      </div>
-
+    <EquiposList />
     
 </Layout>
