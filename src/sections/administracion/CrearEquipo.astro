@@ -45,7 +45,7 @@ file.addEventListener('change', (e: Event) => {
         name="nombre_equipo"
         placeholder="Nombre del equipo"
         required
-        class="mx-auto text-4xl text-center border-none bg-transparent rounded text-accent py-2 px-3 w-auto"
+        class="mx-auto text-4xl xs:text-3xl sm:text-3xl md:text-4xl text-center border-none bg-transparent rounded text-accent py-2 px-3 w-auto"
       />
     </div>
 
@@ -56,7 +56,7 @@ file.addEventListener('change', (e: Event) => {
       <label class="hidden" for="escudo"></label>
     </div>
 
-    <div class="flex flex-row items-center">
+    <div class="flex flex-row items-center ml-2">
       <label for="capitan" class="block text-amarillo text-2xl font-medium">Capitán</label>
       <input
         type="text"
@@ -68,7 +68,7 @@ file.addEventListener('change', (e: Event) => {
       />
     </div>
 
-    <div class="flex flex-row items-center">
+    <div class="flex flex-row items-center ml-2">
       <label for="entrenador" class="block text-amarillo text-2xl font-medium">Entrenador</label>
       <input
         type="text"
@@ -80,11 +80,12 @@ file.addEventListener('change', (e: Event) => {
       />
     </div>
     <div class="w-max flex flex-row gap-2">
-      <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Jugador</h4></div>
+      <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Jugadores</h4></div>
       <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Curso</h4></div>
     </div>
     {jugadores.map((jugador, index) => (
-      <div class="flex items-center space-x-2">
+      <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+      <div class="flex  flex-wrap items-stretch gap-6 space-x-2">
         <input
           type="text"
           name={`player_${index + 1}_name`}
@@ -112,7 +113,8 @@ file.addEventListener('change', (e: Event) => {
     ))}
 
 {jugadores_extra.map((jugador, index) => (
-  <div class="flex items-center space-x-2">
+  <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+  <div class="flex  flex-wrap items-stretch gap-6 space-x-2">
     <input
       type="text"
       name={`extra_player_${index + 1}_name`}
@@ -140,7 +142,7 @@ file.addEventListener('change', (e: Event) => {
     
 
    
-    <div class="w-full h-auto flex flex-row items-center place-content-around">
+    <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
       <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
       <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
