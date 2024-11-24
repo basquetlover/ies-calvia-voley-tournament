@@ -523,7 +523,11 @@ export const EQUIPOS_INSCRITOS = [
             	curso: '2º Bat',
         	},
         	{
-            	nombre: 'Tobias Vich',
+            	nombre: 'Tobias Bjornsen',
+            	curso: '2º Bat',
+        	},
+            {
+            	nombre: 'Tomeu Vich',
             	curso: '2º Bat',
         	},
         	{
