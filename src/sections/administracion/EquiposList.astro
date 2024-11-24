@@ -22,6 +22,22 @@ if (error) {
   console.log(`Se encontraron ${equipos.length} equipos`);
 }
 ---
+{!equipos || equipos.length === 0  && (
+  <>
+  <div class="w-full h-auto mt-10 flex items-center place-content-center">
+  <section class="max-w-2xl w-full h-max p-0 mx-auto my-auto">
+      <h2 class=" w-full text-center text-amarillo uppercase font-bold text-4xl">No se encontraron equipos</h2>
+      
+      <p class="text-blanco text-xl text-center my-2">
+      Aun no hay equipos introducidos en la base de datos.
+      </p>
+      
+          
+  
+      </section>
+  </div>
+  </>
+  )}
 <div class="max-w-7xl my-10 w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 place-items-center">
     {equipos && equipos.map((equipo) => (
       <a href={`/admin/equipos/${equipo.id_equipo}`} class="w-72 h-72 p-4 relative rounded-lg bg-amarillo group transition-all duration-300">
@@ -52,4 +68,7 @@ if (error) {
         </div>
       </a>
     ))}
+
+
+    
   </div>
