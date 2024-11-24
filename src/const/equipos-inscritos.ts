@@ -9,7 +9,7 @@ export const EQUIPOS_INSCRITOS = [
         entrenador: 'Sergio Ludeña',
         jugadores:[
             {
-                nombre: 'Miguel Socias',
+                nombre: 'Miguel Socías',
                 curso: '2º Bat'
             },
             {
@@ -29,16 +29,16 @@ export const EQUIPOS_INSCRITOS = [
                 curso: '2º Bat'
             },
             {
-                nombre: 'Santino Bonavera',
-                curso: '2º Bat'
+                nombre: 'Jesús Sánchez',
+                curso: '4º ESO'
             },
             {
-                nombre: 'Marina Piña',
-                curso: '2º Bat'
+                nombre: 'Alexandra Luna',
+                curso: 'FP'
             },
             {
-                nombre: 'Isa Marin',
-                curso: '1º Bat'
+                nombre: 'Alexander Harding',
+                curso: '4º ESO'
             },
             {
                 nombre: 'Patrick George',
@@ -499,6 +499,52 @@ export const EQUIPOS_INSCRITOS = [
         	{
             	nombre: 'Liliana Gil',
             	curso: '3º ESO'
+        	},
+           	]
+ 
+	},
+    {
+    	id: 'champs',
+    	nombre: 'Champs',
+    	escudo: 'champs.jpeg',
+    	capitan: 'Martin Benitez',
+    	entrenador: '',
+    	jugadores:[
+        	{
+            	nombre: 'Martin Benitez',
+            	curso: '2º Bat'
+        	},
+        	{
+            	nombre: 'Lucio Luffi',
+            	curso: '2º Bat'
+        	},
+        	{
+            	nombre: 'Christian Bjornsen',
+            	curso: '2º Bat',
+        	},
+        	{
+            	nombre: 'Tobias Vich',
+            	curso: '2º Bat',
+        	},
+        	{
+            	nombre: 'Mateusz Nakano',
+            	curso: '2º Bat',
+        	},
+        	{
+            	nombre: 'Alicia Haddrell',
+            	curso: '2º Bat'
+        	},
+        	{
+            	nombre: 'Lucy Seguí',
+            	curso: '1º Bat'
+        	},
+        	{
+            	nombre: 'Stefany Rubiano',
+            	curso: '1º Bat'
+        	},
+            {
+            	nombre: 'Ricardo Figuerola',
+            	curso: 'Profesor'
         	},
            	]
  
