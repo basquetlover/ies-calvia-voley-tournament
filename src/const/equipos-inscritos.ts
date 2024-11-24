@@ -506,7 +506,7 @@ export const EQUIPOS_INSCRITOS = [
     {
     	id: 'champs',
     	nombre: 'Champs',
-    	escudo: 'champs.jpeg',
+    	escudo: 'champs.png',
     	capitan: 'Martin Benitez',
     	entrenador: '',
     	jugadores:[
