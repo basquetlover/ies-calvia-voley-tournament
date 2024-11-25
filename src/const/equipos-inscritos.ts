@@ -553,6 +553,52 @@ export const EQUIPOS_INSCRITOS = [
            	]
  
 	},
+    {
+    	id: 'los-barranca',
+    	nombre: 'Los Barranca',
+    	escudo: 'los-barranca.png',
+    	capitan: 'Sara Dub',
+    	entrenador: 'Leire Camacho',
+    	jugadores:[
+        	{
+            	nombre: 'Sara Dub',
+            	curso: '3º ESO'
+        	},
+        	{
+            	nombre: 'Oleksandr Bihun',
+            	curso: '3º ESO'
+        	},
+        	{
+            	nombre: 'Marcos Perez',
+            	curso: '3º ESO',
+        	},
+        	{
+            	nombre: 'Maria Medina',
+            	curso: '3º ESO',
+        	},
+            {
+            	nombre: 'Iker Alour',
+            	curso: '3º ESO',
+        	},
+        	{
+            	nombre: 'Monica Hernandez',
+            	curso: '3º ESO',
+        	},
+        	{
+            	nombre: 'Hugo Vázquez',
+            	curso: '3º ESO'
+        	},
+        	{
+            	nombre: 'Ellie Norman',
+            	curso: '3º ESO'
+        	},
+        	{
+            	nombre: 'Miguel Chamorro',
+            	curso: '3º ESO'
+        	},
+           	]
+ 
+	},
 
     
     //Equipo 2
