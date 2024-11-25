@@ -29,11 +29,24 @@ const ACC_SEMIGENERAL = [
     },
     
 ]
+const VOLUNTARIOS = [
+    {
+        nombre: "Designaciones",
+        icon: "M7.778 35v-3.889h7.778v-6.028a10.44 10.44 0 0 1-4.254-2.017 8.71 8.71 0 0 1-2.746-3.719c-2.431-.291-4.465-1.353-6.101-3.184C.818 14.333 0 12.185 0 9.723V7.777c0-1.07.38-1.985 1.142-2.747C1.904 4.27 2.82 3.89 3.89 3.89h3.889V0h19.444v3.889h3.89c1.069 0 1.984.38 2.746 1.142C34.619 5.793 35 6.708 35 7.778v1.944c0 2.463-.818 4.61-2.455 6.441-1.636 1.831-3.67 2.893-6.1 3.184a8.71 8.71 0 0 1-2.747 3.719 10.44 10.44 0 0 1-4.254 2.017v6.028h7.778V35H7.778Zm0-19.833v-7.39h-3.89v1.945c0 1.232.357 2.342 1.07 3.33a5.84 5.84 0 0 0 2.82 2.115Zm9.722 6.222c1.62 0 2.998-.567 4.132-1.701 1.134-1.135 1.701-2.512 1.701-4.132V3.889H11.667v11.667c0 1.62.567 2.997 1.701 4.132 1.134 1.134 2.512 1.7 4.132 1.7Zm9.722-6.222a5.84 5.84 0 0 0 2.82-2.115 5.555 5.555 0 0 0 1.07-3.33V7.778h-3.89v7.389Z",
+        href: "",
+    }
+    
+]
 
 const OWNER = [
     {
         nombre: "Usuarios",
         href: "lista-administradores",
+        icon: "m16 16-6-2-2-6 2-6 6-2 6 2 2 6-2 6-6 2ZM0 32v-5l1-4 2-2 6-2 7-1h1a14 14 0 0 0-1 4l-6 1-5 2a2 2 0 0 0-1 2v1h13a13 13 0 0 0 2 4H0Zm28 2v-3a14 14 0 0 1-3-1l-3 1-2-3 3-3a9 9 0 0 1 0-2l-3-2 2-4 3 1a9 9 0 0 1 3-1v-3h4l1 3a10 10 0 0 1 2 1l3-1 2 4-2 2a8 8 0 0 1 0 2l2 3-2 3-3-1a9 9 0 0 1-2 1l-1 3h-4Zm2-6 3-1 1-3-1-3-3-1-3 1-1 3 1 3 3 1ZM16 12l3-1 1-3-1-3-3-1-3 1-1 3 1 3 3 1Z",
+    },
+    {
+        nombre: "Asignar Designaciones",
+        href: "gestion-designaciones",
         icon: "m16 16-6-2-2-6 2-6 6-2 6 2 2 6-2 6-6 2ZM0 32v-5l1-4 2-2 6-2 7-1h1a14 14 0 0 0-1 4l-6 1-5 2a2 2 0 0 0-1 2v1h13a13 13 0 0 0 2 4H0Zm28 2v-3a14 14 0 0 1-3-1l-3 1-2-3 3-3a9 9 0 0 1 0-2l-3-2 2-4 3 1a9 9 0 0 1 3-1v-3h4l1 3a10 10 0 0 1 2 1l3-1 2 4-2 2a8 8 0 0 1 0 2l2 3-2 3-3-1a9 9 0 0 1-2 1l-1 3h-4Zm2-6 3-1 1-3-1-3-3-1-3 1-1 3 1 3 3 1ZM16 12l3-1 1-3-1-3-3-1-3 1-1 3 1 3 3 1Z",
     },
 ]
@@ -95,7 +108,7 @@ try {
         <a href="/admin" class="w-32 h-32">
             <img class="w-32 h-32" src="/img/logo_torneo.png" />
         </a>
-        <h1 class="text-center text-accent text-3xl font-semibold uppercase">panel administración</h1>
+        <h1 class="text-center text-accent text-3xl font-semibold uppercase">zona staff</h1>
         <div>
             <div class="mt-5 flex flex-row items-center">
                 <span class="w-5 h-5">
@@ -129,6 +142,22 @@ try {
             }
         </nav>
         )}
+        {(userWithRango.rango === "Oficial de Mesa" || userWithRango.rango === "Arbitro" || userWithRango.rango === "Owner") && (
+        <>
+            <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none">&nbsp;</div>
+
+            <nav class="w-full h-auto flex flex-col items-center">
+                {VOLUNTARIOS.map(({ nombre, href, icon }) => (
+                    <a class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo">
+                        <svg class="fill-amarillo w-6 h-6" viewBox="0 0 40 35" xmlns="http://www.w3.org/2000/svg">
+                            <path d={icon} fill="#FFC700"/>
+                        </svg>
+                        {nombre}
+                    </a>
+                ))}
+            </nav>
+        </>
+    )}
         {(userWithRango.rango === "Owner" || userWithRango.rango === "Co-Owner") && (
             <>
                 <div class="w-[95%] h-[2px] my-10 border-none block rounded-full bg-accent select-none">&nbsp;</div>
