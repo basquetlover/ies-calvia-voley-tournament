@@ -1,0 +1,119 @@
+---
+import LayoutStaff from "@layouts/LayoutStaff.astro";
+
+---
+<!-- Preview IMG escudo -->
+<script>
+    const file = document.getElementById('foto') as HTMLInputElement;
+    const img = document.getElementById('img') as HTMLImageElement;
+    const defaultFile = 'Vector.png'; // Asegúrate de definir defaultFile
+    
+    file.addEventListener('change', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const files = target.files;
+      
+      if (files && files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e: ProgressEvent<FileReader>) {
+          if (e.target && img) {
+            img.src = e.target.result as string;
+          }
+        };
+        reader.readAsDataURL(files[0]);
+      } else {
+        if (img) {
+          img.src = defaultFile;
+        }
+      }
+    });
+    </script>
+<LayoutStaff title="Crear Noticia">
+    <div class="max-w-3xl mx-auto my-10">
+        <form id="team-form" method="POST" class="space-y-4" action="" enctype="multipart/form-data">
+        <div class="mx-auto w-max">
+            <input
+            type="text"
+            id="nombre_noticia"
+            name="nombre_noticia"
+            placeholder="Titulo del noticia"
+            required
+            class="mx-auto text-4xl xs:text-3xl sm:text-3xl md:text-4xl text-center border-none bg-transparent rounded text-accent py-2 px-3 w-auto"
+            />
+        </div>
+    
+        <!--Imagen Escudo -->
+        <div class="w-60 h-60 p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
+            <img src="/img/Vector.png" class="w-full h-full" alt="avatar" id="img" />
+            <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="imagen_noticia" id="foto" accept="image/*" />
+            <label class="hidden" for="escudo"></label>
+        </div>
+        <div class="flex flex-wrap items-center">
+            <div class="flex flex-row items-center ml-2">
+                <label for="categoria" class="block text-amarillo text-2xl font-medium">Categoria</label>
+                <input
+                type="text"
+                id="categoria"
+                name="categoria"
+                placeholder="Nombre del Categoria"
+                required
+                class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
+                />
+            </div>
+        
+            <div class="flex flex-row items-center ml-2">
+                <label for="fecha" class="block text-amarillo text-2xl font-medium">Fecha</label>
+                <input
+                type="text"
+                id="fecha"
+                name="fecha"
+                placeholder="Introducir fecha"
+                
+                class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
+                />
+            </div>
+        </div>
+        <div class="w-max flex flex-row gap-2">
+            <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Jugadores</h4></div>
+            <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Curso</h4></div>
+        </div>
+
+        
+    
+        
+        <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
+            <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+            <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                </svg>
+                Guardar Equipo
+            </button>
+        </div>
+        </form>
+    </div>
+</LayoutStaff>
+  
+  <style>
+    input[type="file"]::file-selector-button {
+    display: none;
+  }
+     .centrar {
+          z-index: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      .formulario{
+          z-index: 10000;
+      }
+      .form{
+          
+          position: absolute;
+          top: -20px;
+          left: 20px;
+      }
+  </style>

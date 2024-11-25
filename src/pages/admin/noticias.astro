@@ -1,0 +1,17 @@
+---
+import LayoutStaff from "@layouts/LayoutStaff.astro";
+---
+
+<LayoutStaff title="Noticias">
+    <div class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10 flex flex-wrap  gap-10 items-center place-content-center">
+        <a href="/admin/anadir-noticia" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
+            Añadir Noticia
+            <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 0 58 30">
+                <path fill="#FFC700" d="M13 17H0v-4h13V0h4v13h13v4H17v13h-4V17Z"/>
+            </svg>
+        </a>
+    </div>
+    <h2 class="text-center text-accent font-bold text-5xl">
+      Lista Noticias
+    </h2> 
+</LayoutStaff>
