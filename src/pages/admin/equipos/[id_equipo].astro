@@ -2,7 +2,7 @@
 import { supabaseAdmin } from "../../../lib/supabase";
 import LayoutOwner from '@layouts/LayoutOwner.astro';
 import { CURSOS } from "@const/rangos";
-import Layout from "@layouts/Layout.astro";
+import LayoutStaff from "@layouts/LayoutStaff.astro";
 // Tipo explícito para las propiedades esperadas en `Astro.props`
 
 // Tipo explícito para las propiedades esperadas en `Astro.props`
@@ -148,7 +148,7 @@ const handleCheckboxChange = (index: number) => {
     });
     </script>
 
-<Layout title=`Modificar Equipo ${nombre_equipo}`>
+<LayoutStaff title=`Modificar Equipo ${nombre_equipo}`>
     <div class="max-w-4xl mx-auto my-10">
         <form id="team-form" method="POST" class="space-y-4" action="/api/modifyequipo"  enctype="multipart/form-data">
             
@@ -323,4 +323,4 @@ const handleCheckboxChange = (index: number) => {
       
             
       </style>
-</Layout>
+</LayoutStaff>

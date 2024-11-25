@@ -7,6 +7,12 @@ export const RANGOS = [
     },
     {
         label: "Staff",
+    },
+    {
+        label: "Oficial de Mesa",
+    },
+    {
+        label: "Arbitro",
     }
 ]
 

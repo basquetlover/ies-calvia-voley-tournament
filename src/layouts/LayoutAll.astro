@@ -12,8 +12,6 @@ const { title } = Astro.props;
 const user = Astro.locals.user
 // console.log(user)
 
-// const user = (Astro.locals as Locals).user;
-// console.log(user)
 
 ---
 
@@ -48,7 +46,10 @@ const user = Astro.locals.user
 		
 
 		<main class=" h-screen p-0 overflow-x-hidden">
-			<slot />
+			
+			        <slot />
+                
+			
 		</main>
 	</div>
 		

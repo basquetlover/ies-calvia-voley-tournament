@@ -1,11 +1,11 @@
 ---
 
-import Layout from "@layouts/Layout.astro";
+import LayoutStaff from "@layouts/LayoutStaff.astro";
 
 import EquiposList from "@sections/administracion/EquiposList.astro";
 ---
 
-<Layout title="Equipos">
+<LayoutStaff title="Equipos">
   <div class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10 flex flex-wrap  gap-10 items-center place-content-center">
     <a href="/admin/anadir-equipos" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
         Añadir Equipo
@@ -19,4 +19,4 @@ import EquiposList from "@sections/administracion/EquiposList.astro";
 </h2> 
     <EquiposList />
     
-</Layout>
+</LayoutStaff>
