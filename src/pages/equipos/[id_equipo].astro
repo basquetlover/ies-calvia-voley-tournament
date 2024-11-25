@@ -1,0 +1,172 @@
+---
+import { supabaseAdmin } from "../../lib/supabase";
+
+import { CURSOS } from "@const/rangos";
+
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+type AdministradorProps = {
+    id_equipo: string;
+    nombre_equipo: string;
+};
+
+// Genera rutas dinámicas
+export async function getStaticPaths() {
+  // Consulta a la base de datos para obtener user_email y rango
+  const { data, error } = await supabaseAdmin
+    .from('Equipos')
+    .select('id_equipo, nombre_equipo');
+
+  if (error) {
+    console.error('Error fetching administradores:', error.message);
+    return { paths: [] };
+  }
+
+  // Genera las rutas dinámicas con datos adicionales
+  const paths = data.map((equipo) => ({
+    params: { id_equipo: equipo.id_equipo },
+    props: { nombre_equipo: equipo.nombre_equipo }, // Pasamos rango como parte de los props
+  }));
+
+  return { paths };
+}
+const id_equipo = Astro.url.pathname.split('/').pop();
+
+let nombre_equipo = 'Sin Nombre';
+let escudo = "";
+let capitan = "";
+let entrenador = "";
+let id = "";
+interface Jugador {
+  nombre: string;
+  pertenece_equipo: string;
+  curso: string;
+  id:string;
+  checkboxChecked?: boolean;
+}
+
+let jugadores: Jugador[] = [];
+let camposVacios: Jugador[] = [];
+
+try {
+  // Buscar el rango correspondiente al email en la tabla Administradores
+  const { data: equipoData, error } = await supabaseAdmin
+    .from('Equipos')
+    .select('nombre_equipo, id, capitan, entrenador, escudo')
+    .eq('id_equipo', id_equipo)
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar nombre_equipo para ${id_equipo}:`, error.message);
+  } else if (equipoData) {
+    nombre_equipo = equipoData.nombre_equipo;
+    escudo = equipoData.escudo;
+    capitan = equipoData.capitan;
+    entrenador = equipoData.entrenador;
+    id = equipoData.id;
+  }
+
+  const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
+    .from('Jugadores')
+    .select('nombre, pertenece_equipo, curso, id')
+    .eq('pertenece_equipo', id);
+
+  if(jugadorError){
+    console.error(`Error al buscar jugadores`, error?.message);
+  } else if(jugadoresData){
+    jugadores = jugadoresData;
+    const totalJugadores = 10; // Número total de jugadores permitidos
+    const jugadoresFaltantes = totalJugadores - jugadores.length;
+    camposVacios = Array.from({ length: Math.max(0, jugadoresFaltantes) });
+  }
+  
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+//Eliminar jugador
+async function eliminarJugador(id: string) {
+    try {
+        const response = await fetch(`/api/jugadores/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al eliminar el jugador');
+        }
+
+        // Lógica para eliminar el jugador de la interfaz...
+        const li = document.querySelector(`li[data-id="${id}"]`);
+        if (li) {
+            li.remove();
+        }
+        console.log('Jugador eliminado correctamente');
+    } catch (error) {
+        console.error('Error al eliminar el jugador:', error);
+    }
+}
+
+//Checkbox
+const handleCheckboxChange = (index: number) => {
+    jugadores = jugadores.map((jugador, i) => {
+        if (i === index) {
+            return {
+                ...jugador,
+                checkboxChecked: !jugador.checkboxChecked, // Cambia el estado del checkbox
+            };
+        }
+        return jugador;
+    });
+};
+---
+
+<LayoutMenu title={ `${nombre_equipo} | IES Calvià Voley Tournament`} descripcion={`Conoce los participantes del equipo ${nombre_equipo} `}>
+    <section class="max-w-6xl h-auto p-2 m-auto my-10">
+        <a href="/equipos#inscritos" class="inline-flex items-center gap-2 px-4 py-2 bg-amarillo text-gray-800 rounded-full hover:scale-110 transition-all duration-300" aria-label="Volver a la página de equipos">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 -960 960 960" class="fill-current">
+            <path d="M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+          </svg>
+          Tornar a equips
+        </a>
+      </section>
+      
+            {/* <!-- Sección jugadores --> */}
+            <section class="max-w-[1600px] h-auto m-auto my-10">
+              <h1 class="text-accent text-6xl font-bold text-center" translate="no">{nombre_equipo}</h1>
+              
+              {escudo && escudo.trim() !== "" ?  (
+                      <img transition:name="equipo-escudo" src={escudo} alt={`${nombre_equipo} escudo`} class="w-72 h-72 mx-auto my-10 rounded-lg" />
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-72 h-72 mx-auto my-10" fill="none" viewBox="0 0 650 650">
+                          <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                          <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                      </svg>
+              )}
+              
+              
+            </section>
+            
+            <section class="max-w-6xl h-auto m-auto my-10">
+              <p class=" text-xl text-blanco font-medium"><span class="text-amarillo font-bold">Capità</span> {capitan}</p>
+              <p class=" text-xl text-blanco font-medium"><span class="text-amarillo font-bold">Entrenador        </span> {entrenador}</p>
+      
+              <div class="w-full h-[2px] my-4 rounded-full bg-accent"></div>
+      
+              <h2 class=" text-xl text-amarillo font-bold">Jugadors</h2>
+              <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                  <tr><td><h4 class="text-accent font-bold">Nom</h4></td>    <td><h4 class="text-accent font-bold">Curs</h4></td></tr>
+                  {
+                      jugadores.map((jugador) => (
+                          <tr><td translate="no">{jugador.nombre}</td>   <td>{jugador.curso}</td></tr>
+                      ))
+                  }
+              </table>
+              
+            </section>
+          </>
+</LayoutMenu>
