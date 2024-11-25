@@ -1,6 +1,8 @@
 ---
 import LayoutStaff from "@layouts/LayoutStaff.astro";
 
+import { CATEGORY } from "@const/category-noticias";
+
 ---
 <!-- Preview IMG escudo -->
 <script>
@@ -29,7 +31,13 @@ import LayoutStaff from "@layouts/LayoutStaff.astro";
     </script>
 <LayoutStaff title="Crear Noticia">
     <div class="max-w-3xl mx-auto my-10">
-        <form id="team-form" method="POST" class="space-y-4" action="" enctype="multipart/form-data">
+        <form id="team-form" method="POST" class="space-y-4  relative" action="" enctype="multipart/form-data">
+        <div class="absolute right-0">
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+              </label>
+        </div>
         <div class="mx-auto w-max">
             <input
             type="text"
@@ -47,19 +55,23 @@ import LayoutStaff from "@layouts/LayoutStaff.astro";
             <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="imagen_noticia" id="foto" accept="image/*" />
             <label class="hidden" for="escudo"></label>
         </div>
-        <div class="flex flex-wrap items-center">
-            <div class="flex flex-row items-center ml-2">
-                <label for="categoria" class="block text-amarillo text-2xl font-medium">Categoria</label>
-                <input
-                type="text"
-                id="categoria"
-                name="categoria"
-                placeholder="Nombre del Categoria"
-                required
-                class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
-                />
-            </div>
         
+        <div class="flex flex-wrap items-center place-content-between">
+            <div class="flex flex-row items-center ml-2">
+                <!-- <label for="categoria" class="block text-amarillo text-2xl font-medium">Categoria</label>-->
+                <select
+                name="categoria"
+                class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                required
+                >
+                    <option value="" disabled selected>Selecciona una categoria</option>
+                    {CATEGORY.map(({ value }) => (
+                        <option value={value}>
+                        {value}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <div class="flex flex-row items-center ml-2">
                 <label for="fecha" class="block text-amarillo text-2xl font-medium">Fecha</label>
                 <input
@@ -72,9 +84,9 @@ import LayoutStaff from "@layouts/LayoutStaff.astro";
                 />
             </div>
         </div>
-        <div class="w-max flex flex-row gap-2">
-            <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Jugadores</h4></div>
-            <div class="px-3 py-2 w-96 h-12  text-2xl text-amarillo border-none"><h4>Curso</h4></div>
+        <div class="w-full flex flex-row gap-2">
+            <label for="cuerpo"></label>
+            <textarea name="cuerpo" class="w-full min-h-72 h-auto bg-gris-claro border-none rounded-xl p-2 text-blanco">Escribir aquí la noticia</textarea>
         </div>
 
         
@@ -86,7 +98,7 @@ import LayoutStaff from "@layouts/LayoutStaff.astro";
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
                     <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
                 </svg>
-                Guardar Equipo
+                Crear Noticia
             </button>
         </div>
         </form>
@@ -116,4 +128,64 @@ import LayoutStaff from "@layouts/LayoutStaff.astro";
           top: -20px;
           left: 20px;
       }
+
+      /* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #313131;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #34A853;
+}
+
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
   </style>
