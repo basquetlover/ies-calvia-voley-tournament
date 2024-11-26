@@ -30,8 +30,16 @@ import { CATEGORY } from "@const/category-noticias";
     });
     </script>
 <LayoutStaff title="Crear Noticia">
-    <div class="max-w-3xl mx-auto my-10">
-        <form id="team-form" method="POST" class="space-y-4  relative" action="" enctype="multipart/form-data">
+    <div class="max-w-3xl mx-auto my-10 flex flex-col items-center ">
+      <div class="error mx-auto">
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="fill-error"  viewBox="0 -960 960 960" >
+            <path d="m332-285.33 148-148 148 148L674.67-332l-148-148 148-148L628-674.67l-148 148-148-148L285.33-628l148 148-148 148L332-285.33ZM480-80q-82.33 0-155.33-31.5-73-31.5-127.34-85.83Q143-251.67 111.5-324.67T80-480q0-83 31.5-156t85.83-127q54.34-54 127.34-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82.33-31.5 155.33-31.5 73-85.5 127.34Q709-143 636-111.5T480-80Z"/>
+          </svg>
+        </span>
+        <p>La noticia tiene que ser en catalan</p>
+      </div>
+        <form id="team-form" method="POST" class="space-y-4  relative" action="/api/addnoticia" enctype="multipart/form-data">
         <div class="absolute right-0">
             <label class="switch">
                 <input type="checkbox">
@@ -50,10 +58,10 @@ import { CATEGORY } from "@const/category-noticias";
         </div>
     
         <!--Imagen Escudo -->
-        <div class="w-60 h-60 p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
-            <img src="/img/Vector.png" class="w-full h-full" alt="avatar" id="img" />
+        <div class="min-w-60 max-w-full w-auto min-h-60 h-auto p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
+            <img src="/img/Vector.png" class="w-60 h-60 mx-auto" alt="avatar" id="img" />
             <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="imagen_noticia" id="foto" accept="image/*" />
-            <label class="hidden" for="escudo"></label>
+            <label class="hidden" for="imagen_noticia"></label>
         </div>
         
         <div class="flex flex-wrap items-center place-content-between">
@@ -128,6 +136,28 @@ import { CATEGORY } from "@const/category-noticias";
           top: -20px;
           left: 20px;
       }
+
+
+  .error {
+     background-color: rgba(168, 52, 52, 0.6);
+     border: 3px solid #A83434;
+     margin: 10px 0;
+      width: 400px;
+      min-height: 80px;
+      height: max-content;
+    
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      grid-template-rows: 1fr;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 10px;
+  }
+
+  .fill-error {
+     fill: #BA3A3A;
+  }
 
       /* The switch - the box around the slider */
 .switch {
