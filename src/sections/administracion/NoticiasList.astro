@@ -40,7 +40,7 @@ if (error) {
   </div>
   </>
   )}
-<div class="max-w-7xl my-10 w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center">
+<div class="max-w-7xl my-10 w-auto mx-auto flex flex-wrap gap-4 place-items-center">
     {equipos && equipos.map((noticia) => (
       <a href={`/admin/modificar/${noticia.id_noticia}`} class="w-80 h-96 relative rounded-lg bg-gris-claro group transition-all duration-300">
         <div class="w-full h-full flex flex-col">
