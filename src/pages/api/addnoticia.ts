@@ -84,6 +84,7 @@ if (existingAdmins && existingAdmins.length > 0) {
     .insert([
       {
         titulo: nombre_noticia,
+        id_noticia: id_noticia,
         category: categoria,
         fecha: fecha,
         contenido: cuerpo,

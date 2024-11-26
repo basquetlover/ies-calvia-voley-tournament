@@ -1,0 +1,292 @@
+---
+import { supabaseAdmin } from "../../../lib/supabase";
+import LayoutOwner from '@layouts/LayoutOwner.astro';
+
+import { CATEGORY } from "@const/category-noticias";
+import LayoutStaff from "@layouts/LayoutStaff.astro";
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+type AdministradorProps = {
+    id_noticia: string;
+    titulo: string;
+    
+};
+
+
+
+// Genera rutas dinámicas
+export async function getStaticPaths() {
+  // Consulta a la base de datos para obtener user_email y rango
+  const { data, error } = await supabaseAdmin
+    .from('Noticias')
+    .select('id_noticia');
+
+  if (error) {
+    console.error('Error fetching administradores:', error.message);
+    return { paths: [] };
+  }
+
+  // Genera las rutas dinámicas con datos adicionales
+  const paths = data.map((equipo) => ({
+    params: { id_noticia: equipo.id_noticia },
+     // Pasamos rango como parte de los props
+  }));
+
+  return { paths };
+}
+const id_noticia = Astro.url.pathname.split('/').pop();
+
+let titulo = 'Sin Nombre';
+let fecha = "";
+let category = "";
+let cuerpo = "";
+let id = "";
+let imagen_noticia = "";
+
+try {
+  // Buscar el rango correspondiente al email en la tabla Administradores
+  const { data: equipoData, error } = await supabaseAdmin
+    .from('Noticias')
+    .select('titulo, id, category, fecha, imagen_noticia, contenido')
+    .eq('id_noticia', id_noticia)
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar nombre_equipo para ${id_noticia}:`, error.message);
+  } else if (equipoData) {
+    titulo = equipoData.titulo;
+    fecha = equipoData.fecha
+    category = equipoData.category;
+    cuerpo = equipoData.contenido;
+    imagen_noticia = equipoData.imagen_noticia;
+    id = equipoData.id;
+  }
+
+  
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+
+
+---
+<script>
+    const file = document.getElementById('foto') as HTMLInputElement;
+    const img = document.getElementById('img') as HTMLImageElement;
+    const defaultFile = 'Vector.png'; // Asegúrate de definir defaultFile
+    
+    file.addEventListener('change', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const files = target.files;
+      
+      if (files && files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e: ProgressEvent<FileReader>) {
+          if (e.target && img) {
+            img.src = e.target.result as string;
+          }
+        };
+        reader.readAsDataURL(files[0]);
+      } else {
+        if (img) {
+          img.src = defaultFile;
+        }
+      }
+    });
+    </script>
+
+<LayoutStaff title=`Modificar Equipo ${titulo}`>
+  <div class="max-w-3xl mx-auto my-10 flex flex-col items-center ">
+    <div class="error mx-auto">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="fill-error"  viewBox="0 -960 960 960" >
+          <path d="m332-285.33 148-148 148 148L674.67-332l-148-148 148-148L628-674.67l-148 148-148-148L285.33-628l148 148-148 148L332-285.33ZM480-80q-82.33 0-155.33-31.5-73-31.5-127.34-85.83Q143-251.67 111.5-324.67T80-480q0-83 31.5-156t85.83-127q54.34-54 127.34-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82.33-31.5 155.33-31.5 73-85.5 127.34Q709-143 636-111.5T480-80Z"/>
+        </svg>
+      </span>
+      <p>La noticia tiene que ser en catalan</p>
+    </div>
+      <form id="team-form" method="POST" class="space-y-4  relative" action="/api/modifynoticia" enctype="multipart/form-data">
+      <div class="absolute right-0">
+          <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+      </div>
+      <input type="hidden" value={id} name="id">
+      <div class="mx-auto w-max">
+          <input
+          type="text"
+          id="nombre_noticia"
+          name="nombre_noticia"
+          placeholder="Titulo del noticia"
+          value={titulo}
+          required
+          class="mx-auto text-4xl xs:text-3xl sm:text-3xl md:text-4xl text-center border-none bg-transparent rounded text-accent py-2 px-3 w-auto"
+          />
+      </div>
+  
+      <!--Imagen Escudo -->
+      <div class="min-w-60 max-w-full w-auto min-h-60 h-auto p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
+          <img src={imagen_noticia} class="w-60 h-60 mx-auto" alt="avatar" id="img" />
+          <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="imagen_noticia" id="foto" accept="image/*" />
+          <label class="hidden" for="imagen_noticia"></label>
+      </div>
+      
+      <div class="flex flex-wrap items-center place-content-between">
+          <div class="flex flex-row items-center ml-2">
+              <!-- <label for="categoria" class="block text-amarillo text-2xl font-medium">Categoria</label>-->
+              <select
+              name="categoria"
+              class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              required
+              value={category}
+              >
+                  <option value="" disabled selected>Selecciona una categoria</option>
+                  {CATEGORY.map(({ value }) => (
+                      <option value={value} selected={category === value}>
+                      {value}
+                      </option>
+                  ))}
+              </select>
+          </div>
+          <div class="flex flex-row items-center ml-2">
+              <label for="fecha" class="block text-amarillo text-2xl font-medium">Fecha</label>
+              <input
+              type="text"
+              id="fecha"
+              name="fecha"
+              value={fecha}
+              placeholder="Introducir fecha"
+              
+              class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
+              />
+          </div>
+      </div>
+      <div class="w-full flex flex-row gap-2">
+          <label for="cuerpo"></label>
+          <textarea name="cuerpo" class="w-full min-h-72 h-auto bg-gris-claro border-none rounded-xl p-2 text-blanco">{cuerpo}</textarea>
+      </div>
+
+      
+  
+      
+      <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
+          <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+          <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+              <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+          </svg>
+          Guardar Noticia
+          </button>
+      </div>
+      </form>
+  </div>    
+
+</LayoutStaff>
+<style>
+  input[type="file"]::file-selector-button {
+  display: none;
+}
+   .centrar {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .formulario{
+        z-index: 10000;
+    }
+    .form{
+        
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+
+
+.error {
+   background-color: rgba(168, 52, 52, 0.6);
+   border: 3px solid #A83434;
+   margin: 10px 0;
+    width: 400px;
+    min-height: 80px;
+    height: max-content;
+  
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+}
+
+.fill-error {
+   fill: #BA3A3A;
+}
+
+    /* The switch - the box around the slider */
+.switch {
+position: relative;
+display: inline-block;
+width: 60px;
+height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+/* The slider */
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #313131;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+input:checked + .slider {
+background-color: #34A853;
+}
+
+
+input:checked + .slider:before {
+-webkit-transform: translateX(26px);
+-ms-transform: translateX(26px);
+transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+}
+</style>
