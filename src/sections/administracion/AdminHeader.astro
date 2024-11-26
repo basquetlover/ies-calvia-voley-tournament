@@ -81,12 +81,13 @@ try {
                 <p class="text-blanco ml-1">{userWithRango.rango}</p>
             </div>
         </div>
+
         {(userWithRango.rango === "Owner" || userWithRango.rango === "Co-Owner" || userWithRango.rango === "Staff") && (
         <nav class="w-full h-auto mt-5 flex flex-col items-center">
             {
                 ACC_GENERAL.map(({nombre, href, icon}) => (
                     <a href={`/admin${href}`} class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo ">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-8 h-8" viewBox="0 0 58 30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-8 h-8" viewBox="0 0 50 50">
                             <path fill="#FFC700" d={icon}/>
                         </svg>
                         {nombre}

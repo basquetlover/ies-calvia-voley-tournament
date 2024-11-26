@@ -17,10 +17,13 @@ export const ACC_GENERAL = [
     {
         nombre: "Noticias",
         href: "/noticias",
-        icon: "M160-120q-33 0-56-23t-24-57v-640l67 67 66-67 67 67 67-67 66 67 67-67 67 67 66-67 67 67 67-67 66 67 67-67v640q0 33-23 57t-57 23H160Zm0-80h280v-240H160v240Zm360 0h280v-80H520v80Zm0-160h280v-80H520v80ZM160-520h640v-120H160v120Z",
+        icon: "M37 27v-4h9v4h-9Zm3 15-7-5 3-4 6 5-2 4Zm-4-25-3-4 7-5 2 4-6 5ZM10 40v-9H8l-3-1-1-3v-4l1-3 3-1h9l10-7v25l-10-6h-2v9h-5Zm13-10V20l-5 3H8v4h10l5 3Zm6 2V18a10 10 0 0 1 3 7l-1 4-2 3Z",
     }
     
 ];
+// <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 50 50">
+//   <path fill="#FFC700" d="M37 27v-4h9v4h-9Zm3 15-7-5 3-4 6 5-2 4Zm-4-25-3-4 7-5 2 4-6 5ZM10 40v-9H8l-3-1-1-3v-4l1-3 3-1h9l10-7v25l-10-6h-2v9h-5Zm13-10V20l-5 3H8v4h10l5 3Zm6 2V18a10 10 0 0 1 3 7l-1 4-2 3Z"/>
+// </svg>
 
 export const ACC_SEMIGENERAL = [
     {
