@@ -1,0 +1,148 @@
+---
+import { supabaseAdmin } from '../../lib/supabase';
+
+interface Noticia {
+  id: number;
+  id_noticia: string;
+  titulo: string;
+  category: string;
+  fecha: string;
+  imagen_noticia: string | null;
+}
+
+// Obtener las noticias de la base de datos
+const { data: equipos, error } = await supabaseAdmin
+  .from('Noticias')
+  .select('titulo, category, fecha, id_noticia, id, imagen_noticia ')
+  .order('id', { ascending: false }); // Ordenar de mayor a menor
+
+if (error) {
+  console.error('Error al obtener las noticias:', error);
+}
+
+const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
+---
+
+<div class="flex justify-center mt-10">
+  <div class="grid grid-cols-3 gap-4 place-items-center">
+    {topNoticias.length === 0 ? (
+      <div class="text-center col-span-3">
+        <h2 class="text-amarillo uppercase font-bold text-4xl">No se encontraron noticias</h2>
+        <p class="text-blanco text-xl my-2">Aún no hay noticias introducidas en la base de datos.</p>
+      </div>
+    ) : (
+      topNoticias.map((noticia, index) => {
+        const isCenter = index === 0; // El primer elemento es el de mayor ID
+        const sizeClass = isCenter ? 'scale-100 hover:scale-105' : 'scale-90 hover:scale-95';
+        
+        return (
+          <a 
+            href={`/noticias/${noticia.id_noticia}`}
+            class={`w-80 h-96 relative rounded-lg bg-gris-claro pointer group transition-all  duration-300 ${sizeClass}`}
+            style={isCenter ? 'grid-column: 2; grid-row: 1;' : (index === 1 ? 'grid-column: 1; grid-row: 1;' : 'grid-column: 3; grid-row: 1;')}
+          >
+            <div class="flex flex-col h-full">
+              <div class="flex items-center justify-center w-full h-auto max-h-44 overflow-hidden">
+                {noticia.imagen_noticia ? (
+                  <img 
+                    class="w-full h-full rounded-lg" 
+                    src={noticia.imagen_noticia} 
+                    alt={`escudo noticia ${noticia.titulo}`} 
+                  />
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40" fill="none" viewBox="0 0 650 650">
+                    <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                    <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                  </svg>
+                )}
+              </div>
+              <div class="flex flex-row items-center px-3 my-2 justify-between">
+                <p class="text-accent text-2xl underline max-w-[50%] w-full">{noticia.category}</p>
+                <p class="text-amarillo text-xl max-w-[50%] w-full">{noticia.fecha}</p>
+              </div>
+              <p class="text-accent text-4xl font-semibold px-2" translate="no">{noticia.titulo}</p>
+            </div>
+          </a>
+        )
+      })
+    )}
+  </div>
+</div>
+
+<!-- 
+    ---
+
+import { supabaseAdmin } from '../../lib/supabase';
+interface Noticia {
+   id: number;
+  id_noticia: string;
+  titulo: string;
+  category: string;
+  fecha: string;
+  imagen_noticia: string | null; // o string dependiendo de si puede ser nulo
+}
+// Obtener los equipos de la base de datos
+const { data: equipos, error } = await supabaseAdmin
+  .from('Noticias')
+  .select('titulo, category, fecha, id_noticia, id, imagen_noticia ')
+  .order('id', { ascending: true });
+
+
+if (error) {
+  console.error('Error al obtener los equipos:', error);
+} else if (!equipos || equipos.length === 0) {
+  console.log('No se encontraron equipos');
+} else {
+  console.log(`Se encontraron ${equipos.length} equipos`);
+}
+---
+{!equipos || equipos.length === 0  && (
+  <>
+  <div class="w-full h-auto mt-10 flex items-center place-content-center">
+  <section class="max-w-2xl w-full h-max p-0 mx-auto my-auto">
+      <h2 class=" w-full text-center text-amarillo uppercase font-bold text-4xl">No se encontraron equipos</h2>
+      
+      <p class="text-blanco text-xl text-center my-2">
+      Aun no hay equipos introducidos en la base de datos.
+      </p>
+      
+          
+  
+      </section>
+  </div>
+  </>
+  )}
+<div class="max-w-7xl my-10 px-4 w-full mx-auto flex flex-row gap-4 items-center place-content-center">
+    {equipos && equipos.map((noticia) => (
+      <a  class="w-80 h-96 relative rounded-lg bg-gris-claro group transition-all duration-300">
+        <div class="w-full h-full flex flex-col">
+          
+          <div class="flex items-center justify-center w-auto h-auto max-h-44 overflow-hidden">
+            {noticia.imagen_noticia && noticia.imagen_noticia.trim() !== "" ? (
+              <img 
+                transition:name="noticia-escudo" 
+                class="w-full h-full rounded-lg" 
+                src={noticia.imagen_noticia} 
+                alt={`escudo noticia ${noticia.imagen_noticia}`} 
+              />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-w-40" fill="none" viewBox="0 0 650 650">
+                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+              </svg>
+            )}
+          </div>
+          <div class="w-full h-auto flex flex-row items-center px-3 my-2 place-content-between">
+            <p class="text-accent text-2xl underline ">{noticia.category}</p>
+            <p class="text-amarillo text-xl  ">{noticia.fecha}</p>
+            
+          </div>
+          <p class="text-accent text-4xl font-semibold px-2" translate="no">{noticia.titulo}</p>
+          
+        </div>
+
+       
+      </a>
+    ))}
+
+  </div> -->

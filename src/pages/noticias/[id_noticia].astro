@@ -1,0 +1,217 @@
+---
+import { supabaseAdmin } from "../../lib/supabase";
+
+
+import { CATEGORY } from "@const/category-noticias";
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+type AdministradorProps = {
+    id_noticia: string;
+    titulo: string;
+    
+};
+
+
+
+// Genera rutas dinámicas
+export async function getStaticPaths() {
+  // Consulta a la base de datos para obtener user_email y rango
+  const { data, error } = await supabaseAdmin
+    .from('Noticias')
+    .select('id_noticia');
+
+  if (error) {
+    console.error('Error fetching administradores:', error.message);
+    return { paths: [] };
+  }
+
+  // Genera las rutas dinámicas con datos adicionales
+  const paths = data.map((equipo) => ({
+    params: { id_noticia: equipo.id_noticia },
+     // Pasamos rango como parte de los props
+  }));
+
+  return { paths };
+}
+const id_noticia = Astro.url.pathname.split('/').pop();
+
+let titulo = 'Sin Nombre';
+let fecha = "";
+let category = "";
+let cuerpo = "";
+let id = "";
+let imagen_noticia = "";
+
+try {
+  // Buscar el rango correspondiente al email en la tabla Administradores
+  const { data: equipoData, error } = await supabaseAdmin
+    .from('Noticias')
+    .select('titulo, id, category, fecha, imagen_noticia, contenido')
+    .eq('id_noticia', id_noticia)
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar nombre_equipo para ${id_noticia}:`, error.message);
+  } else if (equipoData) {
+    titulo = equipoData.titulo;
+    fecha = equipoData.fecha
+    category = equipoData.category;
+    cuerpo = equipoData.contenido;
+    imagen_noticia = equipoData.imagen_noticia;
+    id = equipoData.id;
+  }
+
+  
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+
+
+---
+
+
+<LayoutMenu title=`Modificar Equipo ${titulo}` descripcion="Noticia">
+  <div class="max-w-3xl relative mx-auto my-10 flex flex-col items-center ">
+
+      
+     
+      <div class="mx-auto w-max">
+          <h1 class="mx-auto text-5xl xs:text-4xl sm:text-4xl md:text-5xl text-center border-none font-bold bg-transparent rounded text-accent py-2 px-3 w-auto">{titulo}</h1>
+
+      </div>
+  
+      <!--Imagen Escudo -->
+      <div class="max-w-full w-auto min-h-60 h-auto  rounded-xl  mx-auto">
+          <img src={imagen_noticia} class="w-full h-auto mx-auto rounded-lg" alt="imagen" />
+          
+      </div>
+      
+      <div class="w-full flex flex-wrap items-center place-content-between">
+          <div class="flex flex-row items-center ml-2">
+              <!-- <label for="categoria" class="block text-amarillo text-2xl font-medium">Categoria</label>-->
+              <p class="border-none ml-2 text-4xl underline text-accent bg-transparent rounded py-2 px-3 w-auto">{category}</p>
+          </div>
+          <div class="flex flex-row items-center ml-2">
+              
+              <p class="border-none ml-2 text-2xl text-amarillo bg-transparent rounded py-2 px-3 w-auto">{fecha}</p>
+          </div>
+      </div>
+      <div class="w-full flex flex-row gap-2">
+          <label for="cuerpo"></label>
+          <textarea name="cuerpo" disabled="true" class="w-full min-h-96 h-auto bg-gris border-none rounded-xl p-2 resize-none text-blanco">{cuerpo}</textarea>
+      </div>
+
+      
+      
+  </div>    
+
+</LayoutMenu>
+<style>
+  input[type="file"]::file-selector-button {
+  display: none;
+}
+   .centrar {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .formulario{
+        z-index: 10000;
+    }
+    .form{
+        
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+
+
+.error {
+   background-color: rgba(168, 52, 52, 0.6);
+   border: 3px solid #A83434;
+   margin: 10px 0;
+    width: 400px;
+    min-height: 80px;
+    height: max-content;
+  
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+}
+
+.fill-error {
+   fill: #BA3A3A;
+}
+
+    /* The switch - the box around the slider */
+.switch {
+position: relative;
+display: inline-block;
+width: 60px;
+height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+/* The slider */
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #313131;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+input:checked + .slider {
+background-color: #34A853;
+}
+
+
+input:checked + .slider:before {
+-webkit-transform: translateX(26px);
+-ms-transform: translateX(26px);
+transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+}
+</style>

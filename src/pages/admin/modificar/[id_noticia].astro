@@ -69,6 +69,32 @@ try {
   console.error('Error al obtener rango:', err);
 }
 
+// Verifica si hay un usuario autenticado
+const user = Astro.locals.user;
+
+let userWithRango = {
+    email: user?.email || "Desconocido",
+    rango: "Sin rango"
+};
+
+try {
+    // Obtén el rango del usuario autenticado
+    if (user?.email) {
+        const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango")
+            .eq("user_email", user.email)
+            .single(); // Obtiene un único registro
+
+        if (error) {
+            console.error("Error al obtener rango:", error.message);
+        } else if (adminData) {
+            userWithRango.rango = adminData.rango || "Sin rango";
+        }
+    }
+} catch (err) {
+    console.error("Error al obtener datos del usuario:", err);
+}
 
 ---
 <script>
@@ -97,15 +123,32 @@ try {
     </script>
 
 <LayoutStaff title=`Modificar Equipo ${titulo}`>
-  <div class="max-w-3xl mx-auto my-10 flex flex-col items-center ">
-    <div class="error mx-auto">
+  <div class="max-w-3xl relative mx-auto my-10 flex flex-col items-center ">
+    {userWithRango.rango === "Owner" && (
+      <>
+        <div class="w-full">
+          
+            <form method="POST" class="space-y-4  relative" action="/api/deletenoticia" enctype="multipart/form-data">
+              <input type="hidden" value={id} name="id" />
+              <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                  <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                </svg>
+              Eliminar Noticia
+              </button>
+            </form>
+        
+        </div>
+      </>
+    )}
+    <!-- <div class="error mx-auto mt-10">
       <span>
         <svg xmlns="http://www.w3.org/2000/svg" class="fill-error"  viewBox="0 -960 960 960" >
           <path d="m332-285.33 148-148 148 148L674.67-332l-148-148 148-148L628-674.67l-148 148-148-148L285.33-628l148 148-148 148L332-285.33ZM480-80q-82.33 0-155.33-31.5-73-31.5-127.34-85.83Q143-251.67 111.5-324.67T80-480q0-83 31.5-156t85.83-127q54.34-54 127.34-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82.33-31.5 155.33-31.5 73-85.5 127.34Q709-143 636-111.5T480-80Z"/>
         </svg>
       </span>
       <p>La noticia tiene que ser en catalan</p>
-    </div>
+    </div> -->
       <form id="team-form" method="POST" class="space-y-4  relative" action="/api/modifynoticia" enctype="multipart/form-data">
       <div class="absolute right-0">
           <label class="switch">
