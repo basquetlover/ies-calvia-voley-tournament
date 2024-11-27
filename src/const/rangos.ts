@@ -15,7 +15,10 @@ export const RANGOS = [
         label: "Arbitro",
     },
     {
-        label: "La Chupa Gratis"
+        label: "La Chupa Gratis",
+    },
+    {
+        label: "Putita de Pep",
     }
 ]
 
