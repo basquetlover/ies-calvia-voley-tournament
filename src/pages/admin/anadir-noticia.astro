@@ -2,7 +2,54 @@
 import LayoutStaff from "@layouts/LayoutStaff.astro";
 
 import { CATEGORY } from "@const/category-noticias";
+import LayoutAll from "@layouts/LayoutAll.astro";
 
+import { supabaseAdmin } from "../../lib/supabase";
+import SinPermisos from "@components/admin/SinPermisos.astro";
+
+// Verifica si hay un usuario autenticado
+const user = Astro.locals.user;
+const pathname = Astro.url.pathname;
+let userWithRango = {
+    email: user?.email || "Desconocido",
+    rango: "Sin rango"
+};
+
+try {
+    // Obtén el rango del usuario autenticado
+    if (user?.email) {
+        const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango")
+            .eq("user_email", user.email)
+            .single(); // Obtiene un único registro
+
+        if (error) {
+            console.error("Error al obtener rango:", error.message);
+        } else if (adminData) {
+            userWithRango.rango = adminData.rango || "Sin rango";
+        }
+    }
+} catch (err) {
+    console.error("Error al obtener datos del usuario:", err);
+}
+
+let accessibleBlocks = [];
+
+try {
+    const { data: pageAccess, error } = await supabaseAdmin
+        .from('Whitlist')
+        .select('*')
+        .or(`nombre.eq.${userWithRango.email},role.eq.${userWithRango.rango}`); // Verifica acceso por email o rol
+
+    if (pageAccess) {
+        accessibleBlocks = pageAccess.map(item => item.pagina); // Extrae las páginas a las que tiene acceso
+    }
+} catch (err) {
+    console.error("Error al obtener acceso:", err);
+}
+
+const userHasAccess = accessibleBlocks.includes(pathname);
 ---
 <!-- Preview IMG escudo -->
 <script>
@@ -29,89 +76,95 @@ import { CATEGORY } from "@const/category-noticias";
       }
     });
     </script>
-<LayoutStaff title="Crear Noticia">
-    <div class="max-w-3xl mx-auto my-10 flex flex-col items-center ">
-      <div class="error mx-auto">
-        <span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="fill-error"  viewBox="0 -960 960 960" >
-            <path d="m332-285.33 148-148 148 148L674.67-332l-148-148 148-148L628-674.67l-148 148-148-148L285.33-628l148 148-148 148L332-285.33ZM480-80q-82.33 0-155.33-31.5-73-31.5-127.34-85.83Q143-251.67 111.5-324.67T80-480q0-83 31.5-156t85.83-127q54.34-54 127.34-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82.33-31.5 155.33-31.5 73-85.5 127.34Q709-143 636-111.5T480-80Z"/>
-          </svg>
-        </span>
-        <p>La noticia tiene que ser en catalan</p>
-      </div>
-        <form id="team-form" method="POST" class="space-y-4  relative" action="/api/addnoticia" enctype="multipart/form-data">
-        <div class="absolute right-0">
-            <label class="switch">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
+<LayoutAll title="Crear Noticia">
+  {userHasAccess ? (
+    <>
+      <div class="max-w-3xl mx-auto my-10 flex flex-col items-center ">
+        <div class="error mx-auto">
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="fill-error"  viewBox="0 -960 960 960" >
+              <path d="m332-285.33 148-148 148 148L674.67-332l-148-148 148-148L628-674.67l-148 148-148-148L285.33-628l148 148-148 148L332-285.33ZM480-80q-82.33 0-155.33-31.5-73-31.5-127.34-85.83Q143-251.67 111.5-324.67T80-480q0-83 31.5-156t85.83-127q54.34-54 127.34-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82.33-31.5 155.33-31.5 73-85.5 127.34Q709-143 636-111.5T480-80Z"/>
+            </svg>
+          </span>
+          <p>La noticia tiene que ser en catalan</p>
         </div>
-        <div class="mx-auto w-max">
-            <input
-            type="text"
-            id="nombre_noticia"
-            name="nombre_noticia"
-            placeholder="Titulo del noticia"
-            required
-            class="mx-auto text-4xl xs:text-3xl sm:text-3xl md:text-4xl text-center border-none bg-transparent rounded text-accent py-2 px-3 w-auto"
-            />
-        </div>
-    
-        <!--Imagen Escudo -->
-        <div class="min-w-60 max-w-full w-auto min-h-60 h-auto p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
-            <img src="/img/Vector.png" class="w-60 h-60 mx-auto" alt="avatar" id="img" />
-            <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="imagen_noticia" id="foto" accept="image/*" />
-            <label class="hidden" for="imagen_noticia"></label>
-        </div>
-        
-        <div class="flex flex-wrap items-center place-content-between">
-            <div class="flex flex-row items-center ml-2">
-                <!-- <label for="categoria" class="block text-amarillo text-2xl font-medium">Categoria</label>-->
-                <select
-                name="categoria"
-                class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-                required
-                >
-                    <option value="" disabled selected>Selecciona una categoria</option>
-                    {CATEGORY.map(({ value }) => (
-                        <option value={value}>
-                        {value}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div class="flex flex-row items-center ml-2">
-                <label for="fecha" class="block text-amarillo text-2xl font-medium">Fecha</label>
-                <input
-                type="text"
-                id="fecha"
-                name="fecha"
-                placeholder="Introducir fecha"
-                
-                class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
-                />
-            </div>
-        </div>
-        <div class="w-full flex flex-row gap-2">
-            <label for="cuerpo"></label>
-            <textarea name="cuerpo" class="w-full min-h-72 h-auto bg-gris-claro border-none rounded-xl p-2 text-blanco">Escribir aquí la noticia</textarea>
-        </div>
+          <form id="team-form" method="POST" class="space-y-4  relative" action="/api/addnoticia" enctype="multipart/form-data">
+          <div class="absolute right-0">
+              <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider round"></span>
+                </label>
+          </div>
+          <div class="mx-auto w-max">
+              <input
+              type="text"
+              id="nombre_noticia"
+              name="nombre_noticia"
+              placeholder="Titulo del noticia"
+              required
+              class="mx-auto text-4xl xs:text-3xl sm:text-3xl md:text-4xl text-center border-none bg-transparent rounded text-accent py-2 px-3 w-auto"
+              />
+          </div>
+      
+          <!--Imagen Escudo -->
+          <div class="min-w-60 max-w-full w-auto min-h-60 h-auto p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
+              <img src="/img/Vector.png" class="w-60 h-60 mx-auto" alt="avatar" id="img" />
+              <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="imagen_noticia" id="foto" accept="image/*" />
+              <label class="hidden" for="imagen_noticia"></label>
+          </div>
+          
+          <div class="flex flex-wrap items-center place-content-between">
+              <div class="flex flex-row items-center ml-2">
+                  <!-- <label for="categoria" class="block text-amarillo text-2xl font-medium">Categoria</label>-->
+                  <select
+                  name="categoria"
+                  class="px-3 py-2 w-72 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                  required
+                  >
+                      <option value="" disabled selected>Selecciona una categoria</option>
+                      {CATEGORY.map(({ value }) => (
+                          <option value={value}>
+                          {value}
+                          </option>
+                      ))}
+                  </select>
+              </div>
+              <div class="flex flex-row items-center ml-2">
+                  <label for="fecha" class="block text-amarillo text-2xl font-medium">Fecha</label>
+                  <input
+                  type="text"
+                  id="fecha"
+                  name="fecha"
+                  placeholder="Introducir fecha"
+                  
+                  class="border-none ml-2 text-lg text-blanco bg-transparent rounded py-2 px-3 w-auto"
+                  />
+              </div>
+          </div>
+          <div class="w-full flex flex-row gap-2">
+              <label for="cuerpo"></label>
+              <textarea name="cuerpo" class="w-full min-h-72 h-auto bg-gris-claro border-none rounded-xl p-2 text-blanco">Escribir aquí la noticia</textarea>
+          </div>
 
-        
-    
-        
-        <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
-            <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
-            <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
-                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
-                </svg>
-                Crear Noticia
-            </button>
-        </div>
-        </form>
-    </div>
-</LayoutStaff>
+          
+      
+          
+          <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
+              <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+              <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                      <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                  </svg>
+                  Crear Noticia
+              </button>
+          </div>
+          </form>
+      </div>
+    </>
+) : (
+    <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
+)}
+</LayoutAll>
   
   <style>
     input[type="file"]::file-selector-button {

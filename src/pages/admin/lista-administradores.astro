@@ -3,31 +3,81 @@ import AddRango from '@components/admin/AddRango.astro';
 import CrearUsuarios from '@sections/administracion/CrearUsuarios.astro';
 import UserList from '@sections/administracion/UserList.astro'
 import LayoutOwner from '@layouts/LayoutOwner.astro';
+import LayoutAll from "@layouts/LayoutAll.astro";
 
+import { supabaseAdmin } from "../../lib/supabase";
+import SinPermisos from '@components/admin/SinPermisos.astro';
+
+// Verifica si hay un usuario autenticado
+const user = Astro.locals.user;
+const pathname = Astro.url.pathname;
+let userWithRango = {
+    email: user?.email || "Desconocido",
+    rango: "Sin rango"
+};
+
+try {
+    // Obtén el rango del usuario autenticado
+    if (user?.email) {
+        const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango")
+            .eq("user_email", user.email)
+            .single(); // Obtiene un único registro
+
+        if (error) {
+            console.error("Error al obtener rango:", error.message);
+        } else if (adminData) {
+            userWithRango.rango = adminData.rango || "Sin rango";
+        }
+    }
+} catch (err) {
+    console.error("Error al obtener datos del usuario:", err);
+}
+
+let accessibleBlocks = [];
+
+try {
+    const { data: pageAccess, error } = await supabaseAdmin
+        .from('Whitlist')
+        .select('*')
+        .or(`nombre.eq.${userWithRango.email},role.eq.${userWithRango.rango}`); // Verifica acceso por email o rol
+
+    if (pageAccess) {
+        accessibleBlocks = pageAccess.map(item => item.pagina); // Extrae las páginas a las que tiene acceso
+    }
+} catch (err) {
+    console.error("Error al obtener acceso:", err);
+}
+const userHasAccess = accessibleBlocks.includes(pathname);
 ---
+<LayoutAll title='Usuarios'>
+{userHasAccess ? (
+    <>
+            {/* <!-- <AddRango />
+            <CrearUsuarios /> -->
+            <!--
+            grid grid-cols-2 grid-rows-1 md:grid-cols-2 md:grid-rows-1 sm:grid-cols-1 md:grid-rows-2 xs:grid-cols-1 xs:grid-rows-2
+            --> */}
+            <div class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10 flex flex-wrap  gap-10 items-center place-content-center">
+                <a href="/admin/anadir-usuario" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
+                    Añadir Usuario
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 0 58 30">
+                        <path fill="#FFC700" d="M13 17H0v-4h13V0h4v13h13v4H17v13h-4V17Z"/>
+                    </svg>
+                </a>
 
-<LayoutOwner title="Usuarios">
+                <a href="/admin/anadir-rango" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
+                    Añadir Rango
+                    <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 0 58 30">
+                        <path fill="#FFC700" d="M13 17H0v-4h13V0h4v13h13v4H17v13h-4V17Z"/>
+                    </svg>
+                </a>
+            </div>
+            <UserList />
+        </>
+) : (
+    <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
+)}
     
-        <!-- <AddRango />
-        <CrearUsuarios /> -->
-        <!--
-        grid grid-cols-2 grid-rows-1 md:grid-cols-2 md:grid-rows-1 sm:grid-cols-1 md:grid-rows-2 xs:grid-cols-1 xs:grid-rows-2
-        -->
-        <div class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10 flex flex-wrap  gap-10 items-center place-content-center">
-            <a href="/admin/anadir-usuario" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
-                Añadir Usuario
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 0 58 30">
-                    <path fill="#FFC700" d="M13 17H0v-4h13V0h4v13h13v4H17v13h-4V17Z"/>
-                </svg>
-            </a>
-
-            <a href="/admin/anadir-rango" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
-                Añadir Rango
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 0 58 30">
-                    <path fill="#FFC700" d="M13 17H0v-4h13V0h4v13h13v4H17v13h-4V17Z"/>
-                </svg>
-            </a>
-        </div>
-        <UserList />
-    
-</LayoutOwner>
+</LayoutAll>
