@@ -16,9 +16,6 @@ export const RANGOS = [
     },
     {
         label: "La Chupa Gratis",
-    },
-    {
-        label: "Putita de Pep",
     }
 ]
 

@@ -1,5 +1,5 @@
 ---
-import { RANGOS } from '@const/rangos'
+import { RANGOS } from '@const/rangos';
 import { PERMISOS_PAG, PERMISOS_NAV } from "@const/permisos";
 
 import { supabaseAdmin } from '../../lib/supabase';
@@ -15,14 +15,14 @@ let userWithRango = {
     rango: "Sin rango"
 };
 
+// Obtén el rango del usuario autenticado
 try {
-    // Obtén el rango del usuario autenticado
     if (user?.email) {
         const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
             .select("rango")
             .eq("user_email", user.email)
-            .single(); // Obtiene un único registro
+            .single();
 
         if (error) {
             console.error("Error al obtener rango:", error.message);
@@ -36,121 +36,75 @@ try {
 
 let accessibleBlocks = [];
 
+// Obtén las páginas a las que el usuario tiene acceso
 try {
     const { data: pageAccess, error } = await supabaseAdmin
         .from('Whitlist')
         .select('*')
-        .or(`nombre.eq.${userWithRango.email},role.eq.${userWithRango.rango}`); // Verifica acceso por email o rol
+        .or(`nombre.eq.${userWithRango.email},role.eq.${userWithRango.rango}`);
 
     if (pageAccess) {
-        accessibleBlocks = pageAccess.map(item => item.pagina); // Extrae las páginas a las que tiene acceso
+        accessibleBlocks = pageAccess.map(item => item.pagina);
     }
 } catch (err) {
     console.error("Error al obtener acceso:", err);
 }
 
-// Define la interfaz para los correos electrónicos
-interface UserEmail {
-    email: string;
-}
-
-// Inicializa un array para almacenar los correos electrónicos
-let users: UserEmail[] = []; // Especifica que es un array de UserEmail
-let error: string | null = null; // Manejo de errores
-
-async function listarUsuarios() {
-    const { data, error: fetchError } = await supabaseAdmin.auth.admin.listUsers();
-
-    if (fetchError) {
-        console.error("Error fetching usuarios:", fetchError);
-        error = fetchError.message; // Almacena el mensaje del error
-        return;
-    }
-
-    // Verifica si 'data.users' es un array antes de mapear
-    if (Array.isArray(data.users)) {
-        // Extrae solo los correos electrónicos de los usuarios, asegurando que no sean undefined
-        users = data.users
-            .map((user) => {
-                return { email: user.email }; // Crea un objeto UserEmail
-            })
-            .filter((user): user is UserEmail => user.email !== undefined); // Filtra los correos no definidos
-
-        // Imprime solo los correos electrónicos en la consola
-        // console.log("Correos de usuarios:", users.map(user => user.email));
-    } else {
-        // Si 'data.users' no es un array, imprime su contenido para depuración
-        console.error("La respuesta no es un array:", data);
-        error = "La respuesta no es un array.";
-    }
-}
-
-// Llama a la función
-await listarUsuarios();
-
-// Suponiendo que 'accessibleBlocks' es un array que contiene las páginas a las que el usuario tiene acceso
 const userHasAccess = accessibleBlocks.includes(pathname);
 ---
 <LayoutAll title='Añadir permisos a usuarios'>
 {userHasAccess ? (
     <>
-        <section class="w-full  h-auto flex flex-col items-center place-content-center relative">
-            <h2 class=" text-center text-amarillo font-bold text-5xl">Añadir Permisos</h2> 
+        <section class="w-full h-auto flex flex-col items-center place-content-center relative">
+            <h2 class="text-center text-amarillo font-bold text-5xl">Añadir Permisos</h2> 
             
-            <form id="rangoForm" class="max-w-4xl w-full rounded-xl h-auto bg-gris-claro  mx-auto mt-10" method="POST"  action="/api/addpermisosrango" >
+            <form id="rangoForm" class="max-w-4xl w-full rounded-xl h-auto bg-gris-claro mx-auto mt-10" method="POST" action="/api/addpermisosrango">
                 <div class="w-full h-auto flex flex-col items-center place-content-center mx-auto my-auto">
 
                     {/* Seleccionar Rango */}
                     <div class="flex flex-col relative mx-auto my-10">
                         <label for="rango" class="form bg-gris rounded-full px-3 py-1 text-blanco text-xl">Rango</label>
-                        <select
-                                name="rango"
-                                class="px-3 py-2 w-72 h-12 bg-gris rounded-full text-base text-blanco border-none"
-                            >
-                                <option value="" disabled selected >Selecciona un rango</option>
-                                {RANGOS.map(({label}) => (
-                                <option value={label}>
-                                    {label}
-                                </option>
-                                ))}
+                        <select name="rango" class="px-3 py-2 w-72 h-12 bg-gris rounded-full text-base text-blanco border-none">
+                            <option value="" disabled selected >Selecciona un rango</option>
+                            {RANGOS.map(({ label }) => (
+                                <option value={label}>{label}</option>
+                            ))}
                         </select>
                     </div>
-                    <div class=" w-full h-auto grid grid-cols-2 grid-rows-1 content-center">
+
+                    <div class="w-full h-auto grid grid-cols-2 grid-rows-1 content-center">
                         <div class="flex flex-col relative w-[80%] mx-auto ">
-                            <h3 class="text-amarillo text-center text-3xl mb-5">Menu</h3>
-                            {
-                                PERMISOS_NAV.map(({nombre}, index) =>(
-                                    <div class="flex flex-row w-full place-content-between my-2">
-                                        <label for={`nav-permiso-${nombre}`} class="text-blanco">{nombre}</label>
-                                        <label class="switch">
-                                        <input type="checkbox" value={nombre} name={`nav-permiso-${index}`} />
+                            <h3 class="text-amarillo text-center text-3xl mb-5">Menú</h3>
+                            {PERMISOS_NAV.map(({ nombre }, index) => (
+                                <div class="flex flex-row w-full place-content-between my-2" >
+                                    <label for={`nav_permiso_${index}`} class="text-blanco">{nombre}</label>
+                                    <label class="switch">
+                                        <input type="checkbox" value={nombre} name={`nav_permiso_${index}`} />
                                         <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                ))
-                            }
+                                    </label>
+                                </div>
+                            ))}
                         </div>
 
                         <div class="flex flex-col relative w-[80%] mx-auto ">
-                            <h3 class="text-amarillo text-center text-3xl mb-5">Paginas</h3>
-                            {
-                                PERMISOS_PAG.map(({nombre}, index) =>(
-                                    <div class="flex flex-row w-full place-content-between my-2">
-                                        <label for={`pag-permiso-${nombre}`} class="text-blanco">{nombre}</label>
-                                        <label class="switch">
-                                        <input type="checkbox" value={nombre} name={`pag-permiso-${index}`} />
+                            <h3 class="text-amarillo text-center text-3xl mb-5">Páginas</h3>
+                            {PERMISOS_PAG.map(({ nombre }, index) => (
+                                <div class="flex flex-row w-full place-content-between my-2" >
+                                    <label for={`pag_permiso_${index}`} class="text-blanco">{nombre}</label>
+                                    <label class="switch">
+                                        <input type="checkbox" value={nombre} name={`pag_permiso_${index}`} />
                                         <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                ))
-                            }
+                                    </label>
+                                </div>
+                            ))}
                         </div>
                     </div>
+
                     {/* Botones Enviar / Cancelar */}
                     <div class="w-full h-auto flex my-10 flex-row items-center place-content-around">
                         <a href="/admin/lista-administradores" rel="noreferrer" class="px-3 py-2 text-blanco font-semibold bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
                         <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-32 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
                                 <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
                             </svg>
                             Añadir
@@ -158,9 +112,7 @@ const userHasAccess = accessibleBlocks.includes(pathname);
                     </div>
                 </div>
             </form>
-            
-
-    </section>
+        </section>
     </>
 ) : (
     <SinPermisos />

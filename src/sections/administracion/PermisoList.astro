@@ -1,41 +1,137 @@
 ---
-// Obtener los permisos de la base de datos
+import { supabaseAdmin } from '../../lib/supabase';
+import { RANGOS } from '@const/rangos';
+
+// Obtener permisos desde la base de datos para todos los roles
+const { data: roles, error } = await supabaseAdmin
+  .from('Whitlist') // Cambia 'Whitlist' por tu tabla de roles
+  .select('id, pagina, role'); // Asegúrate de que 'pagina' y 'role' tienen la estructura correcta
+
+if (error) {
+  console.error("Error al obtener roles:", error);
+  return "<p>Error al cargar los permisos.</p>";
+}
+
+// Procesar los roles
+const processedRoles = roles.map(role => {
+  const navigation_permissions = role.pagina ? role.pagina.split(',').map((permission: any) => ({
+    permission,
+    checked: true // O la lógica que necesites para determinar si está checked
+  })) : [];
+
+  return {
+    ...role,
+    navigation_permissions
+  };
+});
+
+// Agrupar permisos por rango
+const rolesGrouped = RANGOS.map(({ label }) => {
+  const roleData = processedRoles.filter(role => role.role === label);
+  const allPermissions = roleData.flatMap(role => role.navigation_permissions);
+  const midIndex = Math.ceil(allPermissions.length / 2);
+  const firstHalf = allPermissions.slice(0, midIndex);
+  const secondHalf = allPermissions.slice(midIndex);
+
+  return {
+    label,
+    firstHalf,
+    secondHalf,
+  };
+});
+---
+
+<div class="container mx-auto p-6">
+  {rolesGrouped.map(({ label, firstHalf, secondHalf }) => (
+    <div  class="mb-6">
+      <h2 class="text-2xl font-bold text-amarillo">Rango: <span class="font-semibold text-blanco">{label}</span></h2>
+      <h3 class="text-xl font-semibold text-amarillo">Permisos</h3>
+      <div class="flex flex-row gap-2">
+        <div>
+          <ul class="mt-2 space-y-2">
+            {firstHalf.map((permission, index) => (
+              <li class={`p-2 w-72 border rounded border-none text-blanco ${permission.checked ? 'bg-gris-claro' : 'bg-red-100'}`}>
+                {permission.permission}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <ul class="mt-2 space-y-2">
+            {secondHalf.map((permission, index) => (
+              <li class={`p-2 w-72 border rounded border-none text-blanco ${permission.checked ? 'bg-gris-claro' : 'bg-red-100'}`} >
+                {permission.permission}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<!-- ---
 import { supabaseAdmin } from '../../lib/supabase';
 
-const { data: role, error } = await supabaseAdmin
-  .from('Whitlist')
-  .select('pagina')
-  .eq('role', "Owner");
+// Obtener permisos desde la base de datos
+const { data: roles, error } = await supabaseAdmin
+  .from('Whitlist') // Cambia 'Whitlist' por tu tabla de roles
+  .select('id, pagina')
+  .eq("role", "Owner")
+  ; // Asegúrate de que 'pagina' tiene la estructura correcta
 
-    // console.log(role)
 if (error) {
-  console.error('Error al obtener los role:', error);
-} else if (!role || role.length === 0) {
-  console.log('No se encontraron role');
-} else {
-  console.log(`Se encontraron ${role.length} role`);
+  console.error("Error al obtener roles:", error);
+  return "<p>Error al cargar los permisos.</p>";
 }
+
+// Procesar los roles
+const processedRoles = roles.map(role => {
+  // Si 'pagina' es un string con permisos, lo conviertes en un arreglo
+  const navigation_permissions = role.pagina ? role.pagina.split(',').map((permission: any) => ({
+    permission,
+    checked: true // O la lógica que necesites para determinar si está checked
+  })) : [];
+
+  return {
+    ...role,
+    navigation_permissions
+  };
+});
+
+// Dividir los permisos en dos listas
+const allPermissions = processedRoles.flatMap(role => role.navigation_permissions);
+const midIndex = Math.ceil(allPermissions.length / 2);
+const firstHalf = allPermissions.slice(0, midIndex);
+const secondHalf = allPermissions.slice(midIndex);
 ---
-{!role || role.length === 0  && (
-  <>
-  <div class="w-full h-auto mt-10 flex items-center place-content-center">
-  <section class="max-w-2xl w-full h-max p-0 mx-auto my-auto">
-      <h2 class=" w-full text-center text-amarillo uppercase font-bold text-4xl">No se encontraron role</h2>
-      
-      <p class="text-blanco text-xl text-center my-2">
-      Aun no hay role introducidos en la base de datos.
-      </p>
-      
-          
-  
-      </section>
-  </div>
-  </>
-  )}
-<div class="max-w-7xl my-10 w-auto mx-auto flex flex-wrap gap-4 items-center place-items-center">
-       
-    
 
+<div class="container mx-auto p-6">
+  <h2 class="text-2xl font-bold text-amarillo">Rango: <span class="font-semibold text-blanco">Owner</span></h2>
+    <h3 class="text-xl font-semibold text-amarillo">Permisos</h3>
+  <div class=" flex flex-row gap-2">
+    
+    <div class="">
+      
+      <ul class="mt-2 space-y-2">
+        {firstHalf.map((permission, index) => (
+          <li class={`p-2 w-72 border rounded border-none text-blanco ${permission.checked ? 'bg-gris-claro' : 'bg-red-100'}`} >
+            {permission.permission}
+          </li>
+        ))}
+      </ul>
+    </div>
 
+    <div class="">
+      <ul class="mt-2 space-y-2">
+        {secondHalf.map((permission, index) => (
+          <li class={`p-2 w-72 border rounded border-none text-blanco ${permission.checked ? 'bg-gris-claro' : 'bg-red-100'}`} >
+            {permission.permission}
+          </li>
+        ))}
+      </ul>
+    </div>
     
   </div>
+</div> -->
