@@ -1,11 +1,10 @@
 ---
-import LayoutOwner from "@layouts/LayoutOwner.astro";
-
 import LayoutAll from "@layouts/LayoutAll.astro";
 import SinPermisos from "@components/admin/SinPermisos.astro"
 
 import { supabaseAdmin } from "../../lib/supabase";
-import PermisoList from "@sections/administracion/PermisoList.astro";
+import WinBraket from "@sections/administracion/WinBraket.astro";
+
 
 // Verifica si hay un usuario autenticado
 const user = Astro.locals.user;
@@ -54,19 +53,8 @@ const userHasAccess = accessibleBlocks.includes(pathname);
 <LayoutAll title="Gestionar Permisos">
     {userHasAccess ? (
     <>
-        <div class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10 flex flex-wrap  gap-10 items-center place-content-center">
-            <a href="/admin/anadir-permiso-rango" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
-                Añadir Permisos
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 0 58 30">
-                    <path fill="#FFC700" d="M13 17H0v-4h13V0h4v13h13v4H17v13h-4V17Z"/>
-                </svg>
-            </a>
-        </div>
-        <h2 class="text-center text-accent font-bold text-5xl">
-            Usuarios Registrados
-        </h2>
-        <PermisoList />
-{/* <!-- <UserList /> --> */}
+      <WinBraket />
+
 </>
 ) : (
     <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso

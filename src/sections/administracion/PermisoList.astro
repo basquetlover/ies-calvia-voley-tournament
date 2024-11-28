@@ -1,0 +1,41 @@
+---
+// Obtener los permisos de la base de datos
+import { supabaseAdmin } from '../../lib/supabase';
+
+const { data: role, error } = await supabaseAdmin
+  .from('Whitlist')
+  .select('pagina')
+  .eq('role', "Owner");
+
+    // console.log(role)
+if (error) {
+  console.error('Error al obtener los role:', error);
+} else if (!role || role.length === 0) {
+  console.log('No se encontraron role');
+} else {
+  console.log(`Se encontraron ${role.length} role`);
+}
+---
+{!role || role.length === 0  && (
+  <>
+  <div class="w-full h-auto mt-10 flex items-center place-content-center">
+  <section class="max-w-2xl w-full h-max p-0 mx-auto my-auto">
+      <h2 class=" w-full text-center text-amarillo uppercase font-bold text-4xl">No se encontraron role</h2>
+      
+      <p class="text-blanco text-xl text-center my-2">
+      Aun no hay role introducidos en la base de datos.
+      </p>
+      
+          
+  
+      </section>
+  </div>
+  </>
+  )}
+<div class="max-w-7xl my-10 w-auto mx-auto flex flex-wrap gap-4 items-center place-items-center">
+       
+    
+
+
+    
+  </div>
