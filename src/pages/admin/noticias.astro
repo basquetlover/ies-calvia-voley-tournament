@@ -1,11 +1,12 @@
 ---
 import LayoutStaff from "@layouts/LayoutStaff.astro";
-import NoticiasList from "@sections/administracion/NoticiasList.astro";
+
 
 import LayoutAll from "@layouts/LayoutAll.astro";
 
 import { supabaseAdmin } from "../../lib/supabase";
 import SinPermisos from "@components/admin/SinPermisos.astro";
+import NoticiasListAdmin from "@sections/administracion/NoticiasListAdmin.astro";
 
 // Verifica si hay un usuario autenticado
 const user = Astro.locals.user;
@@ -64,7 +65,7 @@ const userHasAccess = accessibleBlocks.includes(pathname);
         <h2 class="text-center text-accent font-bold text-5xl">
         Lista Noticias
         </h2> 
-        <NoticiasList />
+        <NoticiasListAdmin />
     </>
 ) : (
     <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso

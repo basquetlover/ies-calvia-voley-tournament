@@ -1,0 +1,18 @@
+---
+import NoticiasList from "@sections/NoticiasList.astro";
+
+
+import { supabaseAdmin } from "../lib/supabase";
+import SinPermisos from "@components/admin/SinPermisos.astro";
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+
+
+---
+<LayoutMenu title="Notícies" descripcion="Aqui podras ver las ultimas novedades del torneo. Descubre las ultimas noticias.">
+
+        
+        <h2 class="text-center text-accent font-bold text-5xl">
+            Notícies
+        </h2> 
+        <NoticiasList />
+</LayoutMenu>
