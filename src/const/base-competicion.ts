@@ -6,7 +6,7 @@ export const BASES_COMPETICION = [
                 texto: 'Es juga a dos sets. L’equip que guanyi dos sets primer, guanya el partit.',
             },
             {
-                texto: 'Cada set es juga a 15 punts, però s’ha de guanyar amb almenys una diferència de dos punts.',
+                texto: 'Cada set es juga a 10 punts, sense diferència de dos punts.',
             },
             {
                 texto: 'En cas d’empat a un set, el set decisiu es juga a 7 punts (sense diferència de dos punts).',

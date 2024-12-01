@@ -254,9 +254,9 @@ try {
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
-
+//P5
 try {
- //P5
+ 
   const { data: partido5, error } = await supabaseAdmin
     .from('ResultadoNavidad')
     .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
@@ -290,6 +290,9 @@ try {
         if (escud_e2_p5){
             partido5_e2_e = escud_e2_p5.escudo;
         }
+        if(error){
+            partido5_e2_e = "https://aimtsdmsojunxazbxfue.supabase.co/storage/v1/object/public/EquiposIMG/escudos/las-campeonas.png";
+        }
     }
     partido5_ra = partido5.resultado_a;
     partido5_rb = partido5.resultado_b;
@@ -299,9 +302,9 @@ try {
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
-
+ //P6
 try {
- //P5
+
   const { data: partido6, error } = await supabaseAdmin
     .from('ResultadoNavidad')
     .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
@@ -344,9 +347,9 @@ try {
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
-
+//P7
 try {
- //P5
+ 
   const { data: partido7, error } = await supabaseAdmin
     .from('ResultadoNavidad')
     .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
@@ -389,9 +392,9 @@ try {
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
-
+//P8
 try {
- //P5
+ 
   const { data: partido8, error } = await supabaseAdmin
     .from('ResultadoNavidad')
     .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
