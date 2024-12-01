@@ -12,6 +12,7 @@ export default {
 		  blanco: '#FFFFFF',
 		  cancelar: '#A83434',
 		  aceptar: '#34A853',
+		  gold: '#EFBF04',
 		},
 		screens: {
 		  xs: '250px',  // Agrega un breakpoint para pantallas más pequeñas
