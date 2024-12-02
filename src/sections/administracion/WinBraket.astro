@@ -1,5 +1,6 @@
 ---
 import EquipoBox from "@components/admin/EquipoBoxIzq.astro";
+import EquipoBoxDer from "@components/admin/EquipoBoxDer.astro";
 
 import { supabaseAdmin } from "src/lib/supabase";
 
@@ -92,6 +93,24 @@ let partido10_e2_e = "";
 let partido10_ra = "-";
 let partido10_rb = "-";
 let estado_p10 = "Por Jugar";
+
+let pista_p11 = 'Sin Pista';
+let partido11_e1 = "";
+let partido11_e1_e = "";
+let partido11_e2 = "";
+let partido11_e2_e = "";
+let partido11_ra = "-";
+let partido11_rb = "-";
+let estado_p11 = "Por Jugar";
+
+let pista_p12 = 'Sin Pista';
+let partido12_e1 = "";
+let partido12_e1_e = "";
+let partido12_e2 = "";
+let partido12_e2_e = "";
+let partido12_ra = "-";
+let partido12_rb = "-";
+let estado_p12 = "Por Jugar";
 
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
@@ -548,6 +567,98 @@ try {
  console.error('Error al obtener rango:', err);
 }
 
+//P11
+try {
+ 
+ const { data: partido11, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'partido_11')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (partido11) {
+   pista_p11 = partido11.pista;
+   partido11_e1 = partido11.equipo_a;
+   if (partido11_e1){
+       const { data: escudo_e1_p11, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido11_e1)
+       .single();
+
+       if (escudo_e1_p11){
+           partido11_e1_e = escudo_e1_p11.escudo;
+       }
+   }
+   partido11_e2 = partido11.equipo_b;
+   if (partido11_e2){
+       const { data: escud_e2_p11, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido11_e2)
+       .single();
+
+       if (escud_e2_p11){
+           partido11_e2_e = escud_e2_p11.escudo;
+       }
+   }
+   partido11_ra = partido11.resultado_a;
+   partido11_rb = partido11.resultado_b;
+   estado_p11 = partido11.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
+
+//P12
+try {
+ 
+ const { data: partido12, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'partido_12')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (partido12) {
+   pista_p12 = partido12.pista;
+   partido12_e1 = partido12.equipo_a;
+   if (partido12_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido12_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido12_e1_e = escudo_e1_p12.escudo;
+       }
+   }
+   partido12_e2 = partido12.equipo_b;
+   if (partido12_e2){
+       const { data: escud_e2_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido12_e2)
+       .single();
+
+       if (escud_e2_p12){
+           partido12_e2_e = escud_e2_p12.escudo;
+       }
+   }
+   partido12_ra = partido12.resultado_a;
+   partido12_rb = partido12.resultado_b;
+   estado_p12 = partido12.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
+
 ---
 <form class="w-full h-screen  flex flex-row place-content-center items-center rounded-md bg-gris-claro m-0 p-0">
     <section class="w-auto h-auto overflow-x-auto  mx-auto  m-0 flex flex-row gap-1">
@@ -566,7 +677,7 @@ try {
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido1_e1_e} alt={`Escudo ${partido1_e1}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                        <p class="text-blanco text-base">{partido1_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido1_e1}</p>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido1_ra} placeholder="0" />
                         </div>
@@ -577,7 +688,7 @@ try {
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido1_e2_e} alt={`Escudo ${partido1_e2}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                        <p class="text-blanco text-base">{partido1_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido1_e2}</p>
                         <div>
                             <div>
                                 <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido1_rb} placeholder="0" />
@@ -598,7 +709,7 @@ try {
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido2_e1_e} alt={`Escudo ${partido2_e1}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                        <p class="text-blanco text-base">{partido2_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido2_e1}</p>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido2_ra} placeholder="0" />
                         </div>
@@ -609,7 +720,7 @@ try {
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido2_e2_e} alt={`Escudo ${partido2_e2}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                        <p class="text-blanco text-base">{partido2_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido2_e2}</p>
                         <div>
                             <div>
                                 <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido2_rb} placeholder="0" />
@@ -629,7 +740,7 @@ try {
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido3_e1_e} alt={`Escudo ${partido3_e1}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                        <p class="text-blanco text-base">{partido3_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido3_e1}</p>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido3_ra} placeholder="0" />
                         </div>
@@ -640,7 +751,7 @@ try {
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido3_e2_e} alt={`Escudo ${partido3_e2}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                        <p class="text-blanco text-base">{partido3_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido3_e2}</p>
                         <div>
                             <div>
                                 <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido3_rb} placeholder="0" />
@@ -660,7 +771,7 @@ try {
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido4_e1_e} alt={`Escudo ${partido4_e1}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                        <p class="text-blanco text-base">{partido4_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido4_e1}</p>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido4_ra} placeholder="0" />
                         </div>
@@ -671,7 +782,7 @@ try {
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido4_e2_e} alt={`Escudo ${partido4_e2}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                        <p class="text-blanco text-base">{partido4_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido4_e2}</p>
                         <div>
                             <div>
                                 <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido4_rb} placeholder="0" />
@@ -693,7 +804,7 @@ try {
                     <!--Ganador P1 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">{partido9_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido9_e1}</p>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido9_ra} placeholder="0" />
                         </div>
@@ -702,7 +813,7 @@ try {
                     <!--Ganador P2 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">{partido9_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido9_e2}</p>
                         <div>
                             <div>
                                 <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido9_rb} placeholder="0" />
@@ -721,7 +832,7 @@ try {
                     <!--Ganador P3 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">{partido10_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido10_e1}</p>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
                         </div>
@@ -730,7 +841,7 @@ try {
                     <!--Ganador P4 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">{partido10_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido10_e2}</p>
                         <div>
                             <div>
                                 <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
@@ -752,7 +863,7 @@ try {
                     <!--Ganador P1 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">Ganador P9</p>
+                        <p class="text-blanco text-base text-center">Ganador P9</p>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
                         </div>
@@ -761,7 +872,7 @@ try {
                     <!--Ganador P2 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">Ganador P10</p>
+                        <p class="text-blanco text-base text-center">Ganador P10</p>
                         <div>
                             <div>
                                 <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
@@ -783,7 +894,7 @@ try {
                     <!--Ganador P1 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">Ganador S1</p>
+                        <p class="text-blanco text-base text-center">Ganador S1</p>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
                         </div>
@@ -794,7 +905,7 @@ try {
                         <div>
                             
                         </div>
-                        <p class="text-blanco text-base">Ganador S2</p>
+                        <p class="text-blanco text-base text-center">Ganador S2</p>
                         <div>
                             <div>
                                 <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
@@ -814,26 +925,26 @@ try {
                         <h4 class="text-sm">Pista 2</h4>
                     </div>
                     <!--Ganador P1 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">Ganador P11</p>
+                        <p class="text-blanco text-base text-center">Ganador P11</p>
                         <div>
                             
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
 
                     <!--Ganador P2 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">Ganador P12</p>
+                        <p class="text-blanco text-base text-center">Ganador P12</p>
                         <div>
                            
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
                 </div>
             </div>
 
@@ -843,62 +954,60 @@ try {
                 <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
                     <div class="grid grid-cols-3 place-items-center text-blanco">
                         <h4 class="text-sm">Partido 11</h4>
-                        <h5 class="text-gray-500 text-xs">Por Jugar</h5>
-                        <h4 class="text-sm">Pista 1</h4>
+                        <h5 class="text-gray-500 text-xs">{estado_p11}</h5>
+                        <h4 class="text-sm">{pista_p11}</h4>
                     </div>
                     <!--Ganador P5 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
-                            <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
+                            <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido11_ra} placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">Ganador P5</p>
+                        <p class="text-blanco text-base text-center">{partido11_e1}</p>
                         <div>
                         
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
 
                     <!--Ganador P6 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">Ganador P6</p>
+                        <p class="text-blanco text-base text-center">{partido11_e2}</p>
                         <div>
-                            <div>
-                                
-                            </div>
+                            
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
                 </div>
 
                 <!-- Partido 12 -->
                 <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
                     <div class="grid grid-cols-3 place-items-center text-blanco">
                         <h4 class="text-sm">Partido 12</h4>
-                        <h5 class="text-gray-500 text-xs">Por Jugar</h5>
-                        <h4 class="text-sm">Pista 1</h4>
+                        <h5 class="text-gray-500 text-xs">{estado_p12}</h5>
+                        <h4 class="text-sm">{pista_p12}</h4>
                     </div>
                     <!--Ganador P7 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">Ganador P7</p>
+                        <p class="text-blanco text-base text-center">{partido12_e1}</p>
                         <div></div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
 
                     <!--Ganador P8 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <div>
                                 <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
                             </div>
                         </div>
-                        <p class="text-blanco text-base">Ganador P8</p>
+                        <p class="text-blanco text-base text-center">{partido12_e2}</p>
                         <div>
 
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
                 </div>
             </div>
 
@@ -912,24 +1021,24 @@ try {
                         <h4 class="text-sm">{pista_p5}</h4>
                     </div>
                     <!--Equipo 9 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido5_ra} placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">{partido5_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido5_e1}</p>
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido5_e1_e} alt={`Escudo ${partido5_e1}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
 
                     <!--Equipo 10 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div> <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido5_rb} placeholder="0" /></div>
-                        <p class="text-blanco text-base">{partido5_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido5_e2}</p>
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido5_e2_e} alt={`Escudo ${partido5_e2}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
                 </div>
 
                 <!-- Partido 6 -->
@@ -940,26 +1049,26 @@ try {
                         <h4 class="text-sm">{pista_p6}</h4>
                     </div>
                     <!--Equipo 11 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido6_ra} placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">{partido6_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido6_e1}</p>
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido6_e1_e} alt={`Escudo ${partido6_e1}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
 
                     <!--Equipo 12 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido6_rb} placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">{partido6_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido6_e2}</p>
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido6_e2_e} alt={`Escudo ${partido6_e2}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
                 </div>
                 <!-- Partido 7 -->
                 <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
@@ -969,26 +1078,26 @@ try {
                         <h4 class="text-sm">{pista_p7}</h4>
                     </div>
                     <!--Equipo 13 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido7_ra} placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">{partido7_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido7_e1}</p>
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido7_e1_e} alt={`Escudo ${partido7_e1}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
 
                     <!--Equipo 14 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido7_rb} placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">{partido7_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido7_e2}</p>
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido7_e2_e} alt={`Escudo ${partido7_e2}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
                 </div>
                 <!-- Partido 8 -->
                 <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
@@ -998,26 +1107,26 @@ try {
                         <h4 class="text-sm">{pista_p8}</h4>
                     </div>
                     <!--Equipo 15 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido8_ra} placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">{partido8_e1}</p>
+                        <p class="text-blanco text-base text-center">{partido8_e1}</p>
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido8_e1_e} alt={`Escudo ${partido8_e1}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
 
                     <!--Equipo 16 -->
-                    <EquipoBox>
+                    <EquipoBoxDer>
                         <div>
                             <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido8_rb} placeholder="0" />
                         </div>
-                        <p class="text-blanco text-base">{partido8_e2}</p>
+                        <p class="text-blanco text-base text-center">{partido8_e2}</p>
                         <div class="w-full h-full flex items-center place-content-center">
                             <img src={partido8_e2_e} alt={`Escudo ${partido8_e2}`} class="w-10 h-10 rounded-sm" />
                         </div>
-                    </EquipoBox>
+                    </EquipoBoxDer>
                 </div>
             </div>
         

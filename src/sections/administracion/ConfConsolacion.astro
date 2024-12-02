@@ -1,0 +1,985 @@
+---
+import EquipoBox from "@components/admin/EquipoBoxIzq.astro";
+import { supabaseAdmin } from '../../lib/supabase';
+
+
+
+const PISTAS = [
+    {
+        pista: "Pista 1",
+    },
+    {
+        pista: "Pista 2",
+    },
+]
+
+let equipos: {  nombre_equipo: string; escudo: string }[] = []; // Especifica el tipo
+
+// Obtener los equipos de la base de datos
+const { data, error } = await supabaseAdmin
+  .from('Equipos')
+  .select(' nombre_equipo, capitan, entrenador, escudo')
+  .order('id', { ascending: true });
+
+if (error) {
+  console.error('Error al obtener los equipos:', error);
+} else if (!data || data.length === 0) {
+  console.log('No se encontraron equipos');
+} else {
+  equipos = data; // Asignar los datos a la variable global
+  console.log(`Se encontraron ${equipos.length} equipos`);
+}
+
+let pista_p13 = 'Sin Pista';
+let partido13_e1 = "";
+let partido13_e1_e = "";
+let partido13_e2 = "";
+let partido13_e2_e = "";
+let partido13_ra = "-";
+let partido13_rb = "-";
+let estado_p13 = "Por Jugar";
+
+let pista_p14 = 'Sin Pista';
+let partido14_e1 = "";
+let partido14_e1_e = "";
+let partido14_e2 = "";
+let partido14_e2_e = "";
+let partido14_ra = "-";
+let partido14_rb = "-";
+let estado_p14 = "Por Jugar";
+
+let pista_p3 = 'Sin Pista';
+let partido3_e1 = "";
+let partido3_e1_e = "";
+let partido3_e2 = "";
+let partido3_e2_e = "";
+let partido3_ra = "-";
+let partido3_rb = "-";
+let estado_p3 = "Por Jugar";
+
+let pista_p4 = 'Sin Pista';
+let partido4_e1 = "";
+let partido4_e1_e = "";
+let partido4_e2 = "";
+let partido4_e2_e = "";
+let partido4_ra = "-";
+let partido4_rb = "-";
+let estado_p4 = "Por Jugar";
+
+let pista_p5 = 'Sin Pista';
+let partido5_e1 = "";
+let partido5_e1_e = "";
+let partido5_e2 = "";
+let partido5_e2_e = "";
+let partido5_ra = "-";
+let partido5_rb = "-";
+let estado_p5 = "Por Jugar";
+
+let pista_p6 = 'Sin Pista';
+let partido6_e1 = "";
+let partido6_e1_e = "";
+let partido6_e2 = "";
+let partido6_e2_e = "";
+let partido6_ra = "-";
+let partido6_rb = "-";
+let estado_p6 = "Por Jugar";
+
+let pista_p7 = 'Sin Pista';
+let partido7_e1 = "";
+let partido7_e1_e = "";
+let partido7_e2 = "";
+let partido7_e2_e = "";
+let partido7_ra = "-";
+let partido7_rb = "-";
+let estado_p7 = "Por Jugar";
+
+let pista_p8 = 'Sin Pista';
+let partido8_e1 = "";
+let partido8_e1_e = "";
+let partido8_e2 = "";
+let partido8_e2_e = "";
+let partido8_ra = "-";
+let partido8_rb = "-";
+let estado_p8 = "Por Jugar";
+
+let pista_p9 = 'Sin Pista';
+let partido9_e1 = "";
+let partido9_e1_e = "";
+let partido9_e2 = "";
+let partido9_e2_e = "";
+let partido9_ra = "-";
+let partido9_rb = "-";
+let estado_p9 = "Por Jugar";
+
+let pista_p10 = 'Sin Pista';
+let partido10_e1 = "";
+let partido10_e1_e = "";
+let partido10_e2 = "";
+let partido10_e2_e = "";
+let partido10_ra = "-";
+let partido10_rb = "-";
+let estado_p10 = "Por Jugar";
+
+let pista_p11 = 'Sin Pista';
+let partido11_e1 = "";
+let partido11_e1_e = "";
+let partido11_e2 = "";
+let partido11_e2_e = "";
+let partido11_ra = "-";
+let partido11_rb = "-";
+let estado_p11 = "Por Jugar";
+
+let pista_p12 = 'Sin Pista';
+let partido12_e1 = "";
+let partido12_e1_e = "";
+let partido12_e2 = "";
+let partido12_e2_e = "";
+let partido12_ra = "-";
+let partido12_rb = "-";
+let estado_p12 = "Por Jugar";
+
+//P13
+try {
+  // Buscar el rango correspondiente al email en la tabla Administradores
+  const { data: partido13, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_13')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido13) {
+    pista_p13 = partido13.pista;
+    partido13_e1 = partido13.equipo_a;
+    partido13_e2 = partido13.equipo_b;
+    partido13_ra = partido13.resultado_a;
+    partido13_rb = partido13.resultado_b;
+    estado_p13 = partido13.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+ //P14
+try {
+  const { data: partido14, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_14')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido14) {
+    pista_p14 = partido14.pista;
+    partido14_e1 = partido14.equipo_a;
+    partido14_e2 = partido14.equipo_b;
+    partido14_ra = partido14.resultado_a;
+    partido14_rb = partido14.resultado_b;
+    estado_p14 = partido14.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+ //P3
+try {
+  const { data: partido3, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_3')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido3) {
+    pista_p3 = partido3.pista;
+    partido3_e1 = partido3.equipo_a;
+    partido3_e2 = partido3.equipo_b;
+    partido3_ra = partido3.resultado_a;
+    partido3_rb = partido3.resultado_b;
+    estado_p3 = partido3.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+ //P4
+try {
+  const { data: partido4, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_4')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido4) {
+    pista_p4 = partido4.pista;
+    partido4_e1 = partido4.equipo_a;
+    partido4_e2 = partido4.equipo_b;
+    partido4_ra = partido4.resultado_a;
+    partido4_rb = partido4.resultado_b;
+    estado_p4 = partido4.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+//P5
+try {
+ 
+  const { data: partido5, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_5')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido5) {
+    pista_p5 = partido5.pista;
+    partido5_e1 = partido5.equipo_a;
+    partido5_e2 = partido5.equipo_b;
+    partido5_ra = partido5.resultado_a;
+    partido5_rb = partido5.resultado_b;
+    estado_p5 = partido5.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+ //P6
+try {
+
+  const { data: partido6, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_6')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido6) {
+    pista_p6 = partido6.pista;
+    partido6_e1 = partido6.equipo_a;
+    partido6_e2 = partido6.equipo_b;
+    partido6_ra = partido6.resultado_a;
+    partido6_rb = partido6.resultado_b;
+    estado_p6 = partido6.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+//P7
+try {
+ 
+  const { data: partido7, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_7')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido7) {
+    pista_p7 = partido7.pista;
+    partido7_e1 = partido7.equipo_a;
+    partido7_e2 = partido7.equipo_b;
+    partido7_ra = partido7.resultado_a;
+    partido7_rb = partido7.resultado_b;
+    estado_p7 = partido7.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+//P8
+try {
+ 
+  const { data: partido8, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_8')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido8) {
+    pista_p8 = partido8.pista;
+    partido8_e1 = partido8.equipo_a;
+    partido8_e2 = partido8.equipo_b;
+    partido8_ra = partido8.resultado_a;
+    partido8_rb = partido8.resultado_b;
+    estado_p8 = partido8.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+
+//P9
+try {
+ 
+ const { data: partido9, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'partido_9')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (partido9) {
+   pista_p9 = partido9.pista;
+   partido9_e1 = partido9.equipo_a;
+   partido9_e2 = partido9.equipo_b;
+   partido9_ra = partido9.resultado_a;
+   partido9_rb = partido9.resultado_b;
+   estado_p9 = partido9.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
+
+//P10
+try {
+ 
+ const { data: partido10, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'partido_10')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (partido10) {
+   pista_p10 = partido10.pista;
+   partido10_e1 = partido10.equipo_a;
+   partido10_e2 = partido10.equipo_b;
+   partido10_ra = partido10.resultado_a;
+   partido10_rb = partido10.resultado_b;
+   estado_p10 = partido10.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
+
+
+---
+<form method="POST" action="/api/confwinbracket" class="w-full min-h-screen overflow-x-auto h-auto z-0 flex flex-col place-content-center items-center rounded-none  bg-gris-claro m-0 p-0">
+    <section class="min-w-full w-auto  h-auto overflow-x-auto mx-auto m-0 grid grid-cols-2 place-items-center">
+        <div class="w-full  h-auto overflow-x-auto  m-0 flex flex-row  gap-1">
+            <!--Octavos Izq -->
+                <div class="w-max scale-100 h-auto flex place-content gap-2 flex-col place-content-around">
+                    <!-- Partido 13 -->
+                    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                        <!--Equipo 1 -->
+                        <div class="grid grid-cols-2 place-items-center text-blanco">
+                            <h4 class="text-sm">Partido 13</h4>
+                            <select name="partido13_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                                <option  selected value={pista_p13} class="bg-amarillo text-gris"> {pista_p13}</option>
+                                {
+                                    PISTAS.map(({pista}) =>(
+                                        <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                                    ))
+                                }
+                            </select>
+                            
+                        </div>
+                        <EquipoBox>
+                            <div class="w-full h-full overflow-hidden flex items-center place-content-center">
+                                
+                            </div>
+                            <div class="w-full h-full">
+                                <select name="partido13_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                    <option value={partido13_e1} selected class="bg-amarillo text-gris">{partido13_e1}</option>
+                                    <option value="Perdedor P1"  class="bg-accent text-gris">Perdedor P1</option>
+                                    {
+                                        equipos?.map((equipo) => (
+                                            <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                        ))
+                                    }
+                                </select> 
+                            </div>
+                            
+                            <div>
+                                <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none"></p>
+                            </div>
+                        </EquipoBox>
+
+                            <!--Equipo 2 -->
+                            <EquipoBox>
+                                <div></div>
+                                <div class="w-full h-full">
+                                    <select name="partido13_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                                        <option value={partido13_e2}  selected class="bg-amarillo text-gris">{partido13_e2}</option>
+                                        <option value="Perdedor P2"  class="bg-accent text-gris">Perdedor P2</option>
+                                        {
+                                            equipos?.map((equipo) =>(
+                                                <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                            ))
+                                        }
+                                    </select>
+                                    
+                                </div>
+                                <div>
+                                    <div>
+                                        <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                                    </div>
+                                </div>
+                            </EquipoBox>
+                    </div>
+
+                    <!-- Partido 14 -->
+                    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                        <div class="grid grid-cols-2 place-items-center text-blanco">
+                            <h4 class="text-sm">Partido 14</h4>
+                            
+                            <select name="partido14_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                                <option value={pista_p14}  selected class="bg-amarillo text-gris">{pista_p14}</option>
+                            {
+                                PISTAS.map(({pista}) =>(
+                                    <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                                ))
+                            }
+                        </select>
+                        </div>
+                        <!--Equipo 3 -->
+                        <EquipoBox>
+                            <div></div>
+                            <div class="w-full h-full">
+                                <select name="partido14_e1" class="w-full text-blanco h-full break-words bg-transparent">
+                                    <option value={partido14_e1}  selected class="bg-amarillo text-gris">{partido14_e1}</option>
+                                    <option value="Perdedor P3"  class="bg-accent text-gris">Perdedor P3</option>
+                                    {
+                                        equipos?.map((equipo) =>(
+                                            <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                        ))
+                                    }
+                                </select>
+                                
+                            </div>
+                            <div>
+                                <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                            </div>
+                        </EquipoBox>
+
+                        <!--Equipo 4 -->
+                        <EquipoBox>
+                            <div></div>
+                            <div class="w-full h-full">
+                                <select name="partido14_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                                    <option value={partido14_e2}  selected class="bg-amarillo text-gris">{partido14_e2}</option>
+                                    <option value="Perdedor P4"  class="bg-accent text-gris">Perdedor P4</option>
+                                    {
+                                        equipos?.map((equipo) =>(
+                                            <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                        ))
+                                    }
+                                </select>
+                                
+                            </div>
+                            <div>
+                                <div>
+                                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                                </div>
+                            </div>
+                        </EquipoBox>
+                    </div>
+
+                </div>
+
+                <!--Cuartos Izq-->
+                <div class="w-max scale-100 h-screen flex flex-col place-content-around ">        
+                    <!-- Partido 9 -->
+                    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                        <div class="grid grid-cols-2 place-items-center text-blanco">
+                            <h4 class="text-sm">Partido 9</h4>
+                            
+                            <select name="partido9_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                            <option  value="" class="bg-accent text-gris"> Seleccione</option>
+                            <option  value={pista_p9} selected class="bg-amarillo text-gris"> {pista_p9}</option>
+                            {
+                                PISTAS.map(({pista}) =>(
+                                    <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                                ))
+                            }
+                        </select>
+                        </div>
+                        <!--Ganador P1 -->
+                        <EquipoBox>
+                            <div></div>
+                            <div class="w-full h-full">
+                                <select name="partido9_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                    <option value={partido9_e1} selected  class="bg-amarillo text-gris">{partido9_e1}</option>
+                                    <option value="Ganador P1"  class="bg-accent text-gris">Ganador P1</option>
+                                    {
+                                        equipos?.map((equipo) => (
+                                            <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                        ))
+                                    }
+                                </select> 
+                            </div>
+                            <div>
+                                <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                            </div>
+                        </EquipoBox>
+
+                        <!--Ganador P2 -->
+                        <EquipoBox>
+                            <div></div>
+                            <div class="w-full h-full">
+                                <select name="partido9_e2"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                    <option value={partido9_e2} selected class="bg-amarillo text-gris">{partido9_e2}</option>
+                                    <option value="Ganador P2"  class="bg-accent text-gris">Ganador P2</option>
+                                    {
+                                        equipos?.map((equipo) => (
+                                            <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                        ))
+                                    }
+                                </select> 
+                            </div>
+                            <div>
+                                <div>
+                                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                                </div>
+                            </div>
+                        </EquipoBox>
+                    </div>
+
+                </div>
+        </div>
+        <div class="w-full  h-auto overflow-x-auto  m-0 flex flex-row place-content-end gap-1">
+            <!--Cuartos Der-->
+            <div class="w-max h-screen scale-100 flex flex-col place-content-around ">        
+                <!-- Partido 11 -->
+                <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                    <div class="grid grid-cols-2 place-items-center text-blanco">
+                        <h4 class="text-sm">Partido 11</h4>
+                        
+                        <select name="partido11_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                        <option  value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option  value={pista_p11} selected class="bg-amarillo text-gris"> {pista_p11}</option>
+                        {
+                            PISTAS.map(({pista}) =>(
+                                <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                            ))
+                        }
+                    </select>
+                    </div>
+                    <!--Ganador P5 -->
+                    <EquipoBox>
+                        <div>
+                            <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                        </div>
+                        <div class="w-full h-full">
+                            <select name="partido11_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value={partido11_e1} selected  class="bg-amarillo text-gris">{partido11_e1}</option>
+                                <option value="Ganador P5"  class="bg-accent text-gris">Ganador P5</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
+                        <div>
+                        
+                        </div>
+                    </EquipoBox>
+
+                    <!--Ganador P6 -->
+                    <EquipoBox>
+                        <div>
+                            <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                        </div>
+                        <div class="w-full h-full">
+                            <select name="partido11_e2"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value={partido11_e2} selected  class="bg-amarillo text-gris">{partido11_e2}</option>
+                                <option value="Ganador P6"  class="bg-accent text-gris">Ganador P6</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
+                        <div>
+                            <div>
+                                
+                            </div>
+                        </div>
+                    </EquipoBox>
+                </div>
+                
+            </div>
+
+            <!--Octavos Der-->
+            <div class="w-max h-auto scale-100 flex flex-col place-content-around gap-2">
+                <!-- Partido 5 -->
+                <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                    <div class="grid grid-cols-2 place-items-center text-blanco">
+                        <h4 class="text-sm">Partido 5</h4>
+                        
+                        <select name="partido5_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                        <option   value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option value={pista_p5} selected class="bg-amarillo text-gris">{pista_p5}</option>
+                        {
+                            PISTAS.map(({pista}) =>(
+                                <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                            ))
+                        }
+                    </select>
+                    </div>
+                    <!--Equipo 9 -->
+                    <EquipoBox>
+                        <div>
+                            <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                        </div>
+                        <div class="w-full h-full">
+                            <select name="partido5_e1" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido5_e1} selected class="bg-amarillo text-gris">{partido5_e1}</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
+                        <div>
+                            
+                        </div>
+                    </EquipoBox>
+
+                    <!--Equipo 10 -->
+                    <EquipoBox>
+                        <div> <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p></div>
+                        <div class="w-full h-full">
+                            <select name="partido5_e2" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido5_e2} selected class="bg-amarillo text-gris">{partido5_e2}</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
+                        <div>
+                            <div>
+                            
+                            </div>
+                        </div>
+                    </EquipoBox>
+                </div>
+
+                <!-- Partido 6 -->
+                <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                    <div class="grid grid-cols-2 place-items-center text-blanco">
+                        <h4 class="text-sm">Partido 6</h4>
+                        
+                        <select name="partido6_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                        <option   value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option value={pista_p6} selected class="bg-amarillo text-gris">{pista_p6}</option>
+                        {
+                            PISTAS.map(({pista}) =>(
+                                <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                            ))
+                        }
+                    </select>
+                    </div>
+                    <!--Equipo 11 -->
+                    <EquipoBox>
+                        <div>
+                            <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                        </div>
+                        <div class="w-full h-full">
+                            <select name="partido6_e1" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido6_e1} selected class="bg-amarillo text-gris">{partido6_e1}</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
+                        <div>
+                            
+                        </div>
+                    </EquipoBox>
+
+                    <!--Equipo 12 -->
+                    <EquipoBox>
+                        <div>
+                            <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                        </div>
+                        <div class="w-full h-full">
+                            <select name="partido6_e2" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido6_e2} selected class="bg-amarillo text-gris">{partido6_e2}</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
+                        <div>
+                            <div>
+                                
+                            </div>
+                        </div>
+                    </EquipoBox>
+                </div>
+
+            </div>
+        </div>
+        
+        
+    </section>
+    <div class="mt-3 mb-3 w-[95%] h-[2px] bg-amarillo">&nbsp;</div>
+    <section class=" w-full flex h-auto flex-wrap place-content-around">
+        <!-- Partido 1 -->
+        <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+            <!--Equipo 1 -->
+            <div class="grid grid-cols-2 place-items-center text-blanco">
+                <h4 class="text-sm">Partido 1</h4>
+                <select name="partido1_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                    <option  selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
+                    {
+                        PISTAS.map(({pista}) =>(
+                            <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                        ))
+                    }
+                </select>
+                
+            </div>
+            <EquipoBox>
+                <div class="w-full h-full overflow-hidden flex items-center place-content-center">
+                    <!-- <img id="escudo_e1" src="/img/Vector.png" alt="Escudo del equipo 1" class="w-10 h-w-10" /> -->
+                </div>
+                <div class="w-full h-full">
+                    <select name="partido1_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                        <option value={partido1_e1} selected class="bg-amarillo text-gris">{partido1_e1}</option>
+                        {
+                            equipos?.map((equipo) => (
+                                <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                            ))
+                        }
+                    </select> 
+                </div>
+                
+                <div>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none"></p>
+                </div>
+            </EquipoBox>
+
+                <!--Equipo 2 -->
+                <EquipoBox>
+                    <div></div>
+                    <div class="w-full h-full">
+                        <select name="partido1_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                            <option value={partido1_e2}  selected class="bg-amarillo text-gris">{partido1_e2}</option>
+                            {
+                                equipos?.map((equipo) =>(
+                                    <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                ))
+                            }
+                        </select>
+                        
+                    </div>
+                    <div>
+                        <div>
+                            <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                        </div>
+                    </div>
+                </EquipoBox>
+        </div>
+
+        <!-- Partido 1 -->
+        <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+            <!--Equipo 1 -->
+            <div class="grid grid-cols-2 place-items-center text-blanco">
+                <h4 class="text-sm">Partido 1</h4>
+                <select name="partido1_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                    <option  selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
+                    {
+                        PISTAS.map(({pista}) =>(
+                            <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                        ))
+                    }
+                </select>
+                
+            </div>
+            <EquipoBox>
+                <div class="w-full h-full overflow-hidden flex items-center place-content-center">
+                    <!-- <img id="escudo_e1" src="/img/Vector.png" alt="Escudo del equipo 1" class="w-10 h-w-10" /> -->
+                </div>
+                <div class="w-full h-full">
+                    <select name="partido1_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                        <option value={partido1_e1} selected class="bg-amarillo text-gris">{partido1_e1}</option>
+                        {
+                            equipos?.map((equipo) => (
+                                <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                            ))
+                        }
+                    </select> 
+                </div>
+                
+                <div>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none"></p>
+                </div>
+            </EquipoBox>
+
+                <!--Equipo 2 -->
+                <EquipoBox>
+                    <div></div>
+                    <div class="w-full h-full">
+                        <select name="partido1_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                            <option value={partido1_e2}  selected class="bg-amarillo text-gris">{partido1_e2}</option>
+                            {
+                                equipos?.map((equipo) =>(
+                                    <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                ))
+                            }
+                        </select>
+                        
+                    </div>
+                    <div>
+                        <div>
+                            <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                        </div>
+                    </div>
+                </EquipoBox>
+        </div>
+
+        <!-- Partido 1 -->
+        <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+            <!--Equipo 1 -->
+            <div class="grid grid-cols-2 place-items-center text-blanco">
+                <h4 class="text-sm">Partido 1</h4>
+                <select name="partido1_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                    <option  selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
+                    {
+                        PISTAS.map(({pista}) =>(
+                            <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                        ))
+                    }
+                </select>
+                
+            </div>
+            <EquipoBox>
+                <div class="w-full h-full overflow-hidden flex items-center place-content-center">
+                    <!-- <img id="escudo_e1" src="/img/Vector.png" alt="Escudo del equipo 1" class="w-10 h-w-10" /> -->
+                </div>
+                <div class="w-full h-full">
+                    <select name="partido1_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                        <option value={partido1_e1} selected class="bg-amarillo text-gris">{partido1_e1}</option>
+                        {
+                            equipos?.map((equipo) => (
+                                <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                            ))
+                        }
+                    </select> 
+                </div>
+                
+                <div>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none"></p>
+                </div>
+            </EquipoBox>
+
+                <!--Equipo 2 -->
+                <EquipoBox>
+                    <div></div>
+                    <div class="w-full h-full">
+                        <select name="partido1_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                            <option value={partido1_e2}  selected class="bg-amarillo text-gris">{partido1_e2}</option>
+                            {
+                                equipos?.map((equipo) =>(
+                                    <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                ))
+                            }
+                        </select>
+                        
+                    </div>
+                    <div>
+                        <div>
+                            <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                        </div>
+                    </div>
+                </EquipoBox>
+        </div>
+
+        <!-- Partido 1 -->
+        <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+            <!--Equipo 1 -->
+            <div class="grid grid-cols-2 place-items-center text-blanco">
+                <h4 class="text-sm">Partido 1</h4>
+                <select name="partido1_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                    <option  selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
+                    {
+                        PISTAS.map(({pista}) =>(
+                            <option class="bg-accent text-gris" value={pista}>{pista}</option>
+                        ))
+                    }
+                </select>
+                
+            </div>
+            <EquipoBox>
+                <div class="w-full h-full overflow-hidden flex items-center place-content-center">
+                    <!-- <img id="escudo_e1" src="/img/Vector.png" alt="Escudo del equipo 1" class="w-10 h-w-10" /> -->
+                </div>
+                <div class="w-full h-full">
+                    <select name="partido1_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                        <option value={partido1_e1} selected class="bg-amarillo text-gris">{partido1_e1}</option>
+                        {
+                            equipos?.map((equipo) => (
+                                <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                            ))
+                        }
+                    </select> 
+                </div>
+                
+                <div>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none"></p>
+                </div>
+            </EquipoBox>
+
+                <!--Equipo 2 -->
+                <EquipoBox>
+                    <div></div>
+                    <div class="w-full h-full">
+                        <select name="partido1_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                            <option value={partido1_e2}  selected class="bg-amarillo text-gris">{partido1_e2}</option>
+                            {
+                                equipos?.map((equipo) =>(
+                                    <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                ))
+                            }
+                        </select>
+                        
+                    </div>
+                    <div>
+                        <div>
+                            <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
+                        </div>
+                    </div>
+                </EquipoBox>
+        </div>
+    </section>
+    <div class="w-full h-auto flex flex-wrap items-stretch my-10 gap-6 place-content-around">
+        <!-- <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a> -->
+        <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+            </svg>
+            Guardar
+        </button>
+    </div>
+</form>
