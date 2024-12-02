@@ -20,6 +20,11 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const partido4_pista = formData.get("partido4_pista")?.toString().trim() || "";
   const partido4_e1 = formData.get("partido4_e1")?.toString().trim() || "";
   const partido4_e2 = formData.get("partido4_e2")?.toString().trim() || "";
+  //Cuartos Der
+  //Partido 9
+  const partido9_pista = formData.get("partido9_pista")?.toString().trim() || "";
+  const partido9_e1 = formData.get("partido9_e1")?.toString().trim() || "";
+  const partido9_e2 = formData.get("partido9_e2")?.toString().trim() || "";
 
   //Octavos Izq
   //Partido 5
@@ -38,7 +43,8 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const partido8_pista = formData.get("partido8_pista")?.toString().trim() || "";
   const partido8_e1 = formData.get("partido8_e1")?.toString().trim() || "";
   const partido8_e2 = formData.get("partido8_e2")?.toString().trim() || "";
-  console.log(partido1_e1, partido1_e2, partido1_pista, partido2_e1, partido2_e1, partido2_e2, partido2_pista)
+  console.log("Datos recibidos",partido1_e1, partido1_e2, partido1_pista, partido2_e1, partido2_e1, partido2_e2, partido2_pista);
+  
   //P1
   const { data: rp1, error: ep1 } = await supabaseAdmin
   .from('ResultadoNavidad')
@@ -133,6 +139,18 @@ export const POST: APIRoute = async ({ request, redirect }) => {
    }
    )
    .eq('numero_partido', 'partido_8')
+   .select()
+
+   //P9
+   const { data: rp9, error: ep9 } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+      pista: partido9_pista,
+      equipo_a: partido9_e1,
+      equipo_b: partido9_e2,
+   }
+   )
+   .eq('numero_partido', 'partido_9')
    .select()
   
 

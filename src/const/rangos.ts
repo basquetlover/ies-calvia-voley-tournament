@@ -15,6 +15,9 @@ export const RANGOS = [
         label: "Arbitro",
     },
     {
+        label: "Voluntario",
+    },
+    {
         label: "La Chupa Gratis",
     }
 ]

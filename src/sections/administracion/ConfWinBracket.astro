@@ -102,6 +102,15 @@ let partido8_ra = "-";
 let partido8_rb = "-";
 let estado_p8 = "Por Jugar";
 
+let pista_p9 = 'Sin Pista';
+let partido9_e1 = "";
+let partido9_e1_e = "";
+let partido9_e2 = "";
+let partido9_e2_e = "";
+let partido9_ra = "-";
+let partido9_rb = "-";
+let estado_p9 = "Por Jugar";
+
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: partido1, error } = await supabaseAdmin
@@ -465,27 +474,53 @@ try {
   console.error('Error al obtener rango:', err);
 }
 
+//P9
+try {
+ 
+ const { data: partido9, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'partido_9')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (partido9) {
+   pista_p9 = partido9.pista;
+   partido9_e1 = partido9.equipo_a;
+   if (partido9_e1){
+       const { data: escudo_e1_p9, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido9_e1)
+       .single();
+
+       if (escudo_e1_p9){
+           partido9_e1_e = escudo_e1_p9.escudo;
+       }
+   }
+   partido9_e2 = partido9.equipo_b;
+   if (partido9_e2){
+       const { data: escud_e2_p9, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido9_e2)
+       .single();
+
+       if (escud_e2_p9){
+           partido9_e2_e = escud_e2_p9.escudo;
+       }
+   }
+   partido9_ra = partido9.resultado_a;
+   partido9_rb = partido9.resultado_b;
+   estado_p9 = partido9.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
+
 ---
-
-<!-- Preview IMG escudo E1 -->
-<!-- <script lang="ts">
-    function updateEscudo(event: Event) {
-        const selectedValue = (event.target as HTMLSelectElement).value; // Asegúrate de que el tipo sea HTMLSelectElement
-        const img = document.getElementById('escudo_e1') as HTMLImageElement; // Asegúrate de que el tipo sea HTMLImageElement
-
-        if (selectedValue) {
-            const equipoSeleccionado = equipos.find((equipo) => equipo.nombre_equipo === selectedValue);
-            if (equipoSeleccionado && img) {
-                img.src = equipoSeleccionado.escudo || '/img/Vector.png'; // Cambia la imagen del escudo
-            }
-        } else {
-            if (img) {
-                img.src = '/img/Vector.png'; // Imagen por defecto
-            }
-        }
-    }
-</script> -->
-
 <form method="POST" action="/api/confwinbracket" class="w-full min-h-screen overflow-x-auto h-auto z-0 flex flex-col place-content-center items-center rounded-none  bg-gris-claro m-0 p-0">
     <section class="w-auto h-auto overflow-x-auto mx-auto m-0 flex flex-row gap-1">
         
@@ -497,7 +532,7 @@ try {
                 <div class="grid grid-cols-2 place-items-center text-blanco">
                     <h4 class="text-sm">Partido 1</h4>
                     <select name="partido1_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
+                        <option  selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -512,7 +547,7 @@ try {
                     </div>
                     <div class="w-full h-full">
                         <select name="partido1_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                            <option value={partido1_e1} disabled selected class="bg-amarillo text-gris">{partido1_e1}</option>
+                            <option value={partido1_e1} selected class="bg-amarillo text-gris">{partido1_e1}</option>
                             {
                                 equipos?.map((equipo) => (
                                     <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -531,7 +566,7 @@ try {
                         <div></div>
                         <div class="w-full h-full">
                             <select name="partido1_e2" class="w-full text-blanco h-full break-words bg-transparent">
-                                <option value={partido1_e2} disabled selected class="bg-amarillo text-gris">{partido1_e2}</option>
+                                <option value={partido1_e2}  selected class="bg-amarillo text-gris">{partido1_e2}</option>
                                 {
                                     equipos?.map((equipo) =>(
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -554,7 +589,7 @@ try {
                         <h4 class="text-sm">Partido 2</h4>
                         
                         <select name="partido2_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                            <option value={pista_p2} disabled selected class="bg-amarillo text-gris">{pista_p2}</option>
+                            <option value={pista_p2}  selected class="bg-amarillo text-gris">{pista_p2}</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -567,7 +602,7 @@ try {
                         <div></div>
                         <div class="w-full h-full">
                             <select name="partido2_e1" class="w-full text-blanco h-full break-words bg-transparent">
-                                <option value={partido2_e1} disabled selected class="bg-amarillo text-gris">{partido2_e1}</option>
+                                <option value={partido2_e1}  selected class="bg-amarillo text-gris">{partido2_e1}</option>
                                 {
                                     equipos?.map((equipo) =>(
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -586,7 +621,7 @@ try {
                         <div></div>
                         <div class="w-full h-full">
                             <select name="partido2_e2" class="w-full text-blanco h-full break-words bg-transparent">
-                                <option value={partido2_e2} disabled selected class="bg-amarillo text-gris">{partido2_e2}</option>
+                                <option value={partido2_e2}  selected class="bg-amarillo text-gris">{partido2_e2}</option>
                                 {
                                     equipos?.map((equipo) =>(
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -608,7 +643,7 @@ try {
                         <h4 class="text-sm">Partido 3</h4>
                         
                         <select name="partido3_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                            <option value={pista_p3} disabled selected class="bg-amarillo text-gris">{pista_p3}</option>
+                            <option value={pista_p3}  selected class="bg-amarillo text-gris">{pista_p3}</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -621,7 +656,7 @@ try {
                         <div></div>
                         <div class="w-full h-full">
                             <select name="partido3_e1" class="w-full text-blanco h-full break-words bg-transparent">
-                                <option value={partido3_e1} disabled selected class="bg-amarillo text-gris">{partido3_e1}</option>
+                                <option value={partido3_e1}  selected class="bg-amarillo text-gris">{partido3_e1}</option>
                                 {
                                     equipos?.map((equipo) =>(
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -640,7 +675,7 @@ try {
                         <div></div>
                         <div class="w-full h-full">
                             <select name="partido3_e2" class="w-full text-blanco h-full break-words bg-transparent">
-                                <option value={partido3_e2} disabled selected class="bg-amarillo text-gris">{partido3_e2}</option>
+                                <option value={partido3_e2}  selected class="bg-amarillo text-gris">{partido3_e2}</option>
                                 {
                                     equipos?.map((equipo) =>(
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -661,7 +696,7 @@ try {
                     <div class="grid grid-cols-2 place-items-center text-blanco">
                         <h4 class="text-sm">Partido 4</h4>
                         <select name="partido4_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option value={pista_p4} disabled selected class="bg-amarillo text-gris">{pista_p4}</option>
+                        <option value={pista_p4}  selected class="bg-amarillo text-gris">{pista_p4}</option>
                         
                         {
                             PISTAS.map(({pista}) =>(
@@ -675,7 +710,7 @@ try {
                         <div></div>
                         <div class="w-full h-full">
                             <select name="partido4_e1" class="w-full text-blanco h-full break-words bg-transparent">
-                                <option value={partido4_e1} disabled selected class="bg-amarillo text-gris">{partido4_e1}</option>
+                                <option value={partido4_e1}  selected class="bg-amarillo text-gris">{partido4_e1}</option>
                                 {
                                     equipos?.map((equipo) =>(
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -694,7 +729,7 @@ try {
                         <div></div>
                         <div class="w-full h-full">
                             <select name="partido4_e2" class="w-full text-blanco h-full break-words bg-transparent">
-                                <option value={partido4_e2} disabled selected class="bg-amarillo text-gris">{partido4_e2}</option>
+                                <option value={partido4_e2}  selected class="bg-amarillo text-gris">{partido4_e2}</option>
                                 {
                                     equipos?.map((equipo) =>(
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -719,8 +754,9 @@ try {
                     <div class="grid grid-cols-2 place-items-center text-blanco">
                         <h4 class="text-sm">Partido 9</h4>
                         
-                        <select class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <select name="partido9_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                        <option  value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option  value={pista_p9} selected class="bg-amarillo text-gris"> {pista_p9}</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -731,7 +767,17 @@ try {
                     <!--Ganador P1 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">Ganador P1</p>
+                        <div class="w-full h-full">
+                            <select name="partido9_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value={partido9_e1} selected  class="bg-amarillo text-gris">{partido9_e1}</option>
+                                <option value="Ganador P1"  class="bg-accent text-gris">Ganador P1</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
                         <div>
                             <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
                         </div>
@@ -740,7 +786,17 @@ try {
                     <!--Ganador P2 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">Ganador P2</p>
+                        <div class="w-full h-full">
+                            <select name="partido9_e2"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value={partido9_e2} selected class="bg-amarillo text-gris">{partido9_e2}</option>
+                                <option value="Ganador P2"  class="bg-accent text-gris">Ganador P2</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
                         <div>
                             <div>
                                 <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
@@ -755,7 +811,7 @@ try {
                         <h4 class="text-sm">Partido 10</h4>
                         
                         <select class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option  selected value="" class="bg-accent text-gris"> Seleccione</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -793,7 +849,7 @@ try {
                         <h4 class="text-sm">Semi 1</h4>
                         
                         <select class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option  selected value="" class="bg-accent text-gris"> Seleccione</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -826,12 +882,12 @@ try {
             <!--Final-->
             <div class="w-max h-screen scale-100 flex flex-col place-content-around ">        
                 <!-- Semi 1 -->
-                <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-                    <div class="grid grid-cols-2 place-items-center text-blanco">
+                <div class="w-max flex flex-col gap-2 bg-gold rounded-lg p-2">
+                    <div class="grid grid-cols-2 place-items-center text-gris">
                         <h4 class="text-sm">Final</h4>
                         
-                        <select class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <select class="text-sm w-full text-gris h-full break-words bg-transparent">
+                        <option  selected value="" class="bg-accent text-gris"> Seleccione</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -871,7 +927,7 @@ try {
                         <h4 class="text-sm">Semi 2</h4>
                         
                         <select class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option  selected value="" class="bg-accent text-gris"> Seleccione</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -909,7 +965,7 @@ try {
                         <h4 class="text-sm">Partido 11</h4>
                         
                         <select class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option  selected value="" class="bg-accent text-gris"> Seleccione</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -948,7 +1004,7 @@ try {
                         <h4 class="text-sm">Partido 12</h4>
                         
                         <select class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option  selected value="" class="bg-accent text-gris"> Seleccione</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -986,7 +1042,8 @@ try {
                         <h4 class="text-sm">Partido 5</h4>
                         
                         <select name="partido5_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option   value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option value={pista_p5} selected class="bg-amarillo text-gris">{pista_p5}</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -1001,7 +1058,8 @@ try {
                         </div>
                         <div class="w-full h-full">
                             <select name="partido5_e1" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                                <option value="" disabled selected class="bg-accent text-gris">Seleccione</option>
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido5_e1} selected class="bg-amarillo text-gris">{partido5_e1}</option>
                                 {
                                     equipos?.map((equipo) => (
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -1019,7 +1077,8 @@ try {
                         <div> <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p></div>
                         <div class="w-full h-full">
                             <select name="partido5_e2" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                                <option value="" disabled selected class="bg-accent text-gris">Seleccione</option>
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido5_e2} selected class="bg-amarillo text-gris">{partido5_e2}</option>
                                 {
                                     equipos?.map((equipo) => (
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -1041,7 +1100,8 @@ try {
                         <h4 class="text-sm">Partido 6</h4>
                         
                         <select name="partido6_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option   value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option value={pista_p6} selected class="bg-amarillo text-gris">{pista_p6}</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -1056,7 +1116,8 @@ try {
                         </div>
                         <div class="w-full h-full">
                             <select name="partido6_e1" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                                <option value="" disabled selected class="bg-accent text-gris">Seleccione</option>
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido6_e1} selected class="bg-amarillo text-gris">{partido6_e1}</option>
                                 {
                                     equipos?.map((equipo) => (
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -1076,7 +1137,8 @@ try {
                         </div>
                         <div class="w-full h-full">
                             <select name="partido6_e2" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                                <option value="" disabled selected class="bg-accent text-gris">Seleccione</option>
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido6_e2} selected class="bg-amarillo text-gris">{partido6_e2}</option>
                                 {
                                     equipos?.map((equipo) => (
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -1097,7 +1159,8 @@ try {
                         <h4 class="text-sm">Partido 7</h4>
                         
                         <select name="partido7_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option   value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option value={pista_p7} selected class="bg-amarillo text-gris">{pista_p7}</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -1112,7 +1175,8 @@ try {
                         </div>
                         <div class="w-full h-full">
                             <select name="partido7_e1" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                                <option value="" disabled selected class="bg-accent text-gris">Seleccione</option>
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido7_e1} selected class="bg-amarillo text-gris">{partido7_e1}</option>
                                 {
                                     equipos?.map((equipo) => (
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -1132,7 +1196,8 @@ try {
                         </div>
                         <div class="w-full h-full">
                             <select name="partido7_e2" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                                <option value="" disabled selected class="bg-accent text-gris">Seleccione</option>
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido7_e2} selected class="bg-amarillo text-gris">{partido7_e2}</option>
                                 {
                                     equipos?.map((equipo) => (
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -1153,7 +1218,8 @@ try {
                         <h4 class="text-sm">Partido 8</h4>
                         
                         <select name="partido8_pista" class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                        <option disabled selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option   value="" class="bg-accent text-gris"> Seleccione</option>
+                        <option value={pista_p8} selected  class="bg-amarillo text-gris">{pista_p8}</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -1168,7 +1234,8 @@ try {
                         </div>
                         <div class="w-full h-full">
                             <select name="partido8_e1" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                                <option value="" disabled selected class="bg-accent text-gris">Seleccione</option>
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido8_e1} selected  class="bg-amarillo text-gris">{partido8_e1}</option>
                                 {
                                     equipos?.map((equipo) => (
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -1188,7 +1255,8 @@ try {
                         </div>
                         <div class="w-full h-full">
                             <select name="partido8_e2" class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                                <option value="" disabled selected class="bg-accent text-gris">Seleccione</option>
+                                <option value=""   class="bg-accent text-gris">Seleccione</option>
+                                <option value={partido8_e2} selected class="bg-amarillo text-gris">{partido8_e2}</option>
                                 {
                                     equipos?.map((equipo) => (
                                         <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>

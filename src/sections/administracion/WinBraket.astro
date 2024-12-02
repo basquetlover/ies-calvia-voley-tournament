@@ -75,6 +75,15 @@ let partido8_ra = "-";
 let partido8_rb = "-";
 let estado_p8 = "Por Jugar";
 
+let pista_p9 = 'Sin Pista';
+let partido9_e1 = "";
+let partido9_e1_e = "";
+let partido9_e2 = "";
+let partido9_e2_e = "";
+let partido9_ra = "-";
+let partido9_rb = "-";
+let estado_p9 = "Por Jugar";
+
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: partido1, error } = await supabaseAdmin
@@ -437,6 +446,53 @@ try {
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
+
+//P9
+try {
+ 
+ const { data: partido9, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'partido_9')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (partido9) {
+   pista_p9 = partido9.pista;
+   partido9_e1 = partido9.equipo_a;
+   if (partido9_e1){
+       const { data: escudo_e1_p9, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido9_e1)
+       .single();
+
+       if (escudo_e1_p9){
+           partido9_e1_e = escudo_e1_p9.escudo;
+       }
+   }
+   partido9_e2 = partido9.equipo_b;
+   if (partido9_e2){
+       const { data: escud_e2_p9, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido9_e2)
+       .single();
+
+       if (escud_e2_p9){
+           partido9_e2_e = escud_e2_p9.escudo;
+       }
+   }
+   partido9_ra = partido9.resultado_a;
+   partido9_rb = partido9.resultado_b;
+   estado_p9 = partido9.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
+
 ---
 <form class="w-full h-screen  flex flex-row place-content-center items-center rounded-md bg-gris-claro m-0 p-0">
     <section class="w-auto h-auto overflow-x-auto  mx-auto  m-0 flex flex-row gap-1">
@@ -576,25 +632,25 @@ try {
                 <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
                     <div class="grid grid-cols-3 place-items-center text-blanco">
                         <h4 class="text-sm">Partido 9</h4>
-                        <h5 class="text-gray-500 text-xs">Por Jugar</h5>
-                        <h4 class="text-sm">Pista 1</h4>
+                        <h5 class="text-gray-500 text-xs">{estado_p9}</h5>
+                        <h4 class="text-sm">{pista_p9}</h4>
                     </div>
                     <!--Ganador P1 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">Ganador P1</p>
+                        <p class="text-blanco text-base">{partido9_e1}</p>
                         <div>
-                            <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
+                            <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido9_ra} placeholder="0" />
                         </div>
                     </EquipoBox>
 
                     <!--Ganador P2 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">Ganador P2</p>
+                        <p class="text-blanco text-base">{partido9_e2}</p>
                         <div>
                             <div>
-                                <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
+                                <input class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido9_rb} placeholder="0" />
                             </div>
                         </div>
                     </EquipoBox>
