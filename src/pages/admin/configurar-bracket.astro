@@ -4,6 +4,7 @@ import SinPermisos from "@components/admin/SinPermisos.astro"
 
 import { supabaseAdmin } from "../../lib/supabase";
 import ConfWinBracket from "@sections/administracion/ConfWinBracket.astro";
+import Loading from "@components/Loading.astro";
 
 
 
@@ -50,12 +51,14 @@ try {
 }
 
 const userHasAccess = accessibleBlocks.includes(pathname);
+
 ---
-<LayoutAll title="Insertar Resultados">
+<LayoutAll title="Insertar Resultados">  
+        <Loading />
     {userHasAccess ? (
+        
     <>
       <ConfWinBracket />
-
 </>
 ) : (
     <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
