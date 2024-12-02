@@ -25,6 +25,10 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const partido9_pista = formData.get("partido9_pista")?.toString().trim() || "";
   const partido9_e1 = formData.get("partido9_e1")?.toString().trim() || "";
   const partido9_e2 = formData.get("partido9_e2")?.toString().trim() || "";
+  //Partido 10
+  const partido10_pista = formData.get("partido10_pista")?.toString().trim() || "";
+  const partido10_e1 = formData.get("partido10_e1")?.toString().trim() || "";
+  const partido10_e2 = formData.get("partido10_e2")?.toString().trim() || "";
 
   //Octavos Izq
   //Partido 5
@@ -43,6 +47,15 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const partido8_pista = formData.get("partido8_pista")?.toString().trim() || "";
   const partido8_e1 = formData.get("partido8_e1")?.toString().trim() || "";
   const partido8_e2 = formData.get("partido8_e2")?.toString().trim() || "";
+   //Cuartos Izq
+  //Partido 11
+  const partido11_pista = formData.get("partido11_pista")?.toString().trim() || "";
+  const partido11_e1 = formData.get("partido11_e1")?.toString().trim() || "";
+  const partido11_e2 = formData.get("partido11_e2")?.toString().trim() || "";
+  //Partido 12
+  const partido12_pista = formData.get("partido12_pista")?.toString().trim() || "";
+  const partido12_e1 = formData.get("partido12_e1")?.toString().trim() || "";
+  const partido12_e2 = formData.get("partido12_e2")?.toString().trim() || "";
   console.log("Datos recibidos",partido1_e1, partido1_e2, partido1_pista, partido2_e1, partido2_e1, partido2_e2, partido2_pista);
   
   //P1
@@ -151,6 +164,42 @@ export const POST: APIRoute = async ({ request, redirect }) => {
    }
    )
    .eq('numero_partido', 'partido_9')
+   .select()
+
+   //P10
+   const { data: rp10, error: ep10 } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+      pista: partido10_pista,
+      equipo_a: partido10_e1,
+      equipo_b: partido10_e2,
+   }
+   )
+   .eq('numero_partido', 'partido_10')
+   .select()
+
+   //P11
+   const { data: rp11, error: ep11 } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+      pista: partido11_pista,
+      equipo_a: partido11_e1,
+      equipo_b: partido11_e2,
+   }
+   )
+   .eq('numero_partido', 'partido_11')
+   .select()
+
+   //P12
+   const { data: rp12, error: ep12 } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+      pista: partido12_pista,
+      equipo_a: partido12_e1,
+      equipo_b: partido12_e2,
+   }
+   )
+   .eq('numero_partido', 'partido_12')
    .select()
   
 
