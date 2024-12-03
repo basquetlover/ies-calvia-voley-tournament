@@ -1,0 +1,61 @@
+---
+import { supabaseAdmin } from "src/lib/supabase";
+
+
+try {
+  // Buscar el rango correspondiente al email en la tabla Administradores
+  const { data: pista1, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('equipo_a, equipo_b')
+    .eq('pista', 'Pista 1')
+    .order('id', { ascending: true });
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } if(pista1){
+    console.log(pista1)
+
+    // Extraer todos los IDs de los equipos
+    const equiposIds = [...new Set(pista1.flatMap(partido => [partido.equipo_a, partido.equipo_b]))];
+
+    // Hacer una consulta para obtener los escudos de todos los equipos
+    const { data: equipos, error: errorEquipos } = await supabaseAdmin
+      .from('Equipos')
+      .select('id, escudo')
+      .in('nombre_equipo', equiposIds);
+
+    if (errorEquipos) {
+      console.error(`Error al buscar escudos de equipos`, errorEquipos.message);
+    } else {
+      console.log('Escudos de los equipos:', equipos);
+      
+      // Crear un mapa de escudos para facilitar la búsqueda
+      const escudosMap = equipos.reduce((acc, equipo) => {
+        acc[equipo.id] = equipo.escudo;
+        return acc;
+      }, {});
+
+      // Asignar los escudos a cada partido
+      const partidosConEscudos = pista1.map(partido => ({
+        equipo_a: {
+          id: partido.equipo_a,
+          escudo: escudosMap[partido.equipo_a],
+        },
+        equipo_b: {
+          id: partido.equipo_b,
+          escudo: escudosMap[partido.equipo_b],
+        },
+      }));
+
+      console.log('Partidos con escudos:', partidosConEscudos);
+    }
+  }
+
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+
+
+
+---
