@@ -50,7 +50,7 @@ try {
 }
 const userHasAccess = accessibleBlocks.includes(pathname);
 ---
-
+<LayoutAll title="Aádir Rango">
 {userHasAccess ? (
     <>
 
@@ -59,4 +59,4 @@ const userHasAccess = accessibleBlocks.includes(pathname);
 ) : (
     <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
 )}
-</LayoutOwner>
+</LayoutAll>
