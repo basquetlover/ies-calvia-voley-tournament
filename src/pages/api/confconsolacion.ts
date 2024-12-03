@@ -35,6 +35,24 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const partido18_pista = formData.get("partido18_pista")?.toString().trim() || "";
   const partido18_e1 = formData.get("partido18_e1")?.toString().trim() || "";
   const partido18_e2 = formData.get("partido18_e2")?.toString().trim() || "";
+
+  //Extra consolacion
+//Partido 19
+  const partido19_pista = formData.get("partido19_pista")?.toString().trim() || "";
+  const partido19_e1 = formData.get("partido19_e1")?.toString().trim() || "";
+  const partido19_e2 = formData.get("partido19_e2")?.toString().trim() || "";
+//Partido 20
+    const partido20_pista = formData.get("partido20_pista")?.toString().trim() || "";
+    const partido20_e1 = formData.get("partido20_e1")?.toString().trim() || "";
+    const partido20_e2 = formData.get("partido20_e2")?.toString().trim() || "";
+//Partido 21
+  const partido21_pista = formData.get("partido21_pista")?.toString().trim() || "";
+  const partido21_e1 = formData.get("partido21_e1")?.toString().trim() || "";
+  const partido21_e2 = formData.get("partido21_e2")?.toString().trim() || "";
+//Partido 22
+    const partido22_pista = formData.get("partido22_pista")?.toString().trim() || "";
+    const partido22_e1 = formData.get("partido22_e1")?.toString().trim() || "";
+    const partido22_e2 = formData.get("partido22_e2")?.toString().trim() || "";
   
   
   
@@ -108,6 +126,54 @@ export const POST: APIRoute = async ({ request, redirect }) => {
    }
    )
    .eq('numero_partido', 'partido_18')
+   .select()
+
+   //P19
+   const { data: rp19, error: ep19 } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+      pista: partido19_pista,
+      equipo_a: partido19_e1,
+      equipo_b: partido19_e2,
+   }
+   )
+   .eq('numero_partido', 'partido_19')
+   .select()
+
+   //P20
+   const { data: rp20, error: ep20 } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+      pista: partido20_pista,
+      equipo_a: partido20_e1,
+      equipo_b: partido20_e2,
+   }
+   )
+   .eq('numero_partido', 'partido_20')
+   .select()
+
+   //P21
+   const { data: rp21, error: ep21 } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+      pista: partido21_pista,
+      equipo_a: partido21_e1,
+      equipo_b: partido21_e2,
+   }
+   )
+   .eq('numero_partido', 'partido_21')
+   .select()
+
+   //P22
+   const { data: rp22, error: ep22 } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+      pista: partido22_pista,
+      equipo_a: partido22_e1,
+      equipo_b: partido22_e2,
+   }
+   )
+   .eq('numero_partido', 'partido_22')
    .select()
 
   

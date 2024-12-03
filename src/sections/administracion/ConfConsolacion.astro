@@ -84,59 +84,42 @@ let partido18_ra = "-";
 let partido18_rb = "-";
 let estado_p18 = "Por Jugar";
 
-let pista_p7 = 'Sin Pista';
-let partido7_e1 = "";
-let partido7_e1_e = "";
-let partido7_e2 = "";
-let partido7_e2_e = "";
-let partido7_ra = "-";
-let partido7_rb = "-";
-let estado_p7 = "Por Jugar";
+let pista_p19 = 'Sin Pista';
+let partido19_e1 = "";
+let partido19_e1_e = "";
+let partido19_e2 = "";
+let partido19_e2_e = "";
+let partido19_ra = "-";
+let partido19_rb = "-";
+let estado_p19 = "Por Jugar";
 
-let pista_p8 = 'Sin Pista';
-let partido8_e1 = "";
-let partido8_e1_e = "";
-let partido8_e2 = "";
-let partido8_e2_e = "";
-let partido8_ra = "-";
-let partido8_rb = "-";
-let estado_p8 = "Por Jugar";
+let pista_p20 = 'Sin Pista';
+let partido20_e1 = "";
+let partido20_e1_e = "";
+let partido20_e2 = "";
+let partido20_e2_e = "";
+let partido20_ra = "-";
+let partido20_rb = "-";
+let estado_p20 = "Por Jugar";
 
-let pista_p9 = 'Sin Pista';
-let partido9_e1 = "";
-let partido9_e1_e = "";
-let partido9_e2 = "";
-let partido9_e2_e = "";
-let partido9_ra = "-";
-let partido9_rb = "-";
-let estado_p9 = "Por Jugar";
+let pista_p21 = 'Sin Pista';
+let partido21_e1 = "";
+let partido21_e1_e = "";
+let partido21_e2 = "";
+let partido21_e2_e = "";
+let partido21_ra = "-";
+let partido21_rb = "-";
+let estado_p21 = "Por Jugar";
 
-let pista_p10 = 'Sin Pista';
-let partido10_e1 = "";
-let partido10_e1_e = "";
-let partido10_e2 = "";
-let partido10_e2_e = "";
-let partido10_ra = "-";
-let partido10_rb = "-";
-let estado_p10 = "Por Jugar";
+let pista_p22 = 'Sin Pista';
+let partido22_e1 = "";
+let partido22_e1_e = "";
+let partido22_e2 = "";
+let partido22_e2_e = "";
+let partido22_ra = "-";
+let partido22_rb = "-";
+let estado_p22 = "Por Jugar";
 
-let pista_p11 = 'Sin Pista';
-let partido11_e1 = "";
-let partido11_e1_e = "";
-let partido11_e2 = "";
-let partido11_e2_e = "";
-let partido11_ra = "-";
-let partido11_rb = "-";
-let estado_p11 = "Por Jugar";
-
-let pista_p12 = 'Sin Pista';
-let partido12_e1 = "";
-let partido12_e1_e = "";
-let partido12_e2 = "";
-let partido12_e2_e = "";
-let partido12_ra = "-";
-let partido12_rb = "-";
-let estado_p12 = "Por Jugar";
 
 //P13
 try {
@@ -273,95 +256,95 @@ try {
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
-//P7
+//P19
 try {
  
-  const { data: partido7, error } = await supabaseAdmin
+  const { data: partido19, error } = await supabaseAdmin
     .from('ResultadoNavidad')
     .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
-    .eq('numero_partido', 'partido_7')
+    .eq('numero_partido', 'partido_19')
     .single();
 
   if (error) {
     console.error(`Error al buscar partido 1`, error.message);
-  } else if (partido7) {
-    pista_p7 = partido7.pista;
-    partido7_e1 = partido7.equipo_a;
-    partido7_e2 = partido7.equipo_b;
-    partido7_ra = partido7.resultado_a;
-    partido7_rb = partido7.resultado_b;
-    estado_p7 = partido7.estado;
+  } else if (partido19) {
+    pista_p19 = partido19.pista;
+    partido19_e1 = partido19.equipo_a;
+    partido19_e2 = partido19.equipo_b;
+    partido19_ra = partido19.resultado_a;
+    partido19_rb = partido19.resultado_b;
+    estado_p19 = partido19.estado;
   }
 
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
-//P8
+//P20
 try {
  
-  const { data: partido8, error } = await supabaseAdmin
+  const { data: partido20, error } = await supabaseAdmin
     .from('ResultadoNavidad')
     .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
-    .eq('numero_partido', 'partido_8')
+    .eq('numero_partido', 'partido_20')
     .single();
 
   if (error) {
     console.error(`Error al buscar partido 1`, error.message);
-  } else if (partido8) {
-    pista_p8 = partido8.pista;
-    partido8_e1 = partido8.equipo_a;
-    partido8_e2 = partido8.equipo_b;
-    partido8_ra = partido8.resultado_a;
-    partido8_rb = partido8.resultado_b;
-    estado_p8 = partido8.estado;
+  } else if (partido20) {
+    pista_p20 = partido20.pista;
+    partido20_e1 = partido20.equipo_a;
+    partido20_e2 = partido20.equipo_b;
+    partido20_ra = partido20.resultado_a;
+    partido20_rb = partido20.resultado_b;
+    estado_p20 = partido20.estado;
   }
 
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
 
-//P9
+//P21
 try {
  
- const { data: partido9, error } = await supabaseAdmin
+ const { data: partido21, error } = await supabaseAdmin
    .from('ResultadoNavidad')
    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
-   .eq('numero_partido', 'partido_9')
+   .eq('numero_partido', 'partido_21')
    .single();
 
  if (error) {
    console.error(`Error al buscar partido 1`, error.message);
- } else if (partido9) {
-   pista_p9 = partido9.pista;
-   partido9_e1 = partido9.equipo_a;
-   partido9_e2 = partido9.equipo_b;
-   partido9_ra = partido9.resultado_a;
-   partido9_rb = partido9.resultado_b;
-   estado_p9 = partido9.estado;
+ } else if (partido21) {
+   pista_p21 = partido21.pista;
+   partido21_e1 = partido21.equipo_a;
+   partido21_e2 = partido21.equipo_b;
+   partido21_ra = partido21.resultado_a;
+   partido21_rb = partido21.resultado_b;
+   estado_p21 = partido21.estado;
  }
 
 } catch (err) {
  console.error('Error al obtener rango:', err);
 }
 
-//P10
+//P22
 try {
  
- const { data: partido10, error } = await supabaseAdmin
+ const { data: partido22, error } = await supabaseAdmin
    .from('ResultadoNavidad')
    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
-   .eq('numero_partido', 'partido_10')
+   .eq('numero_partido', 'partido_22')
    .single();
 
  if (error) {
    console.error(`Error al buscar partido 1`, error.message);
- } else if (partido10) {
-   pista_p10 = partido10.pista;
-   partido10_e1 = partido10.equipo_a;
-   partido10_e2 = partido10.equipo_b;
-   partido10_ra = partido10.resultado_a;
-   partido10_rb = partido10.resultado_b;
-   estado_p10 = partido10.estado;
+ } else if (partido22) {
+   pista_p22 = partido22.pista;
+   partido22_e1 = partido22.equipo_a;
+   partido22_e2 = partido22.equipo_b;
+   partido22_ra = partido22.resultado_a;
+   partido22_rb = partido22.resultado_b;
+   estado_p22 = partido22.estado;
  }
 
 } catch (err) {
@@ -747,13 +730,13 @@ try {
     <div class="mt-3 mb-3 w-[95%] h-[2px] bg-amarillo">&nbsp;</div>
     
     <section class=" w-full flex h-auto flex-wrap place-content-around">
-        <!-- Partido 1 -->
+        <!-- Partido 19 -->
         <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
             <!--Equipo 1 -->
             <div class="grid grid-cols-2 place-items-center text-blanco">
-                <h4 class="text-sm">Partido 1</h4>
-                <select name="partido1_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                    <option  selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
+                <h4 class="text-sm">Partido 19</h4>
+                <select name="partido19_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                    <option  selected value={pista_p19} class="bg-amarillo text-gris"> {pista_p19}</option>
                     {
                         PISTAS.map(({pista}) =>(
                             <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -767,8 +750,9 @@ try {
                     <!-- <img id="escudo_e1" src="/img/Vector.png" alt="Escudo del equipo 1" class="w-10 h-w-10" /> -->
                 </div>
                 <div class="w-full h-full">
-                    <select name="partido1_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                        <option value={partido1_e1} selected class="bg-amarillo text-gris">{partido1_e1}</option>
+                    <select name="partido19_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                        <option value={partido19_e1} selected class="bg-amarillo text-gris">{partido19_e1}</option>
+                        <option value="Perdedor P13"   class="bg-accent text-gris">Perdedor P13</option>
                         {
                             equipos?.map((equipo) => (
                                 <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -786,8 +770,9 @@ try {
                 <EquipoBox>
                     <div></div>
                     <div class="w-full h-full">
-                        <select name="partido1_e2" class="w-full text-blanco h-full break-words bg-transparent">
-                            <option value={partido1_e2}  selected class="bg-amarillo text-gris">{partido1_e2}</option>
+                        <select name="partido19_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                            <option value={partido19_e2}  selected class="bg-amarillo text-gris">{partido19_e2}</option>
+                            <option value="Perdedor P14"   class="bg-accent text-gris">Perdedor P14</option>
                             {
                                 equipos?.map((equipo) =>(
                                     <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -804,13 +789,13 @@ try {
                 </EquipoBox>
         </div>
 
-        <!-- Partido 1 -->
+        <!-- Partido 20 -->
         <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
             <!--Equipo 1 -->
             <div class="grid grid-cols-2 place-items-center text-blanco">
-                <h4 class="text-sm">Partido 1</h4>
-                <select name="partido1_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                    <option  selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
+                <h4 class="text-sm">Partido 20</h4>
+                <select name="partido20_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                    <option  selected value={pista_p20} class="bg-amarillo text-gris"> {pista_p20}</option>
                     {
                         PISTAS.map(({pista}) =>(
                             <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -824,8 +809,9 @@ try {
                     <!-- <img id="escudo_e1" src="/img/Vector.png" alt="Escudo del equipo 1" class="w-10 h-w-10" /> -->
                 </div>
                 <div class="w-full h-full">
-                    <select name="partido1_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                        <option value={partido1_e1} selected class="bg-amarillo text-gris">{partido1_e1}</option>
+                    <select name="partido20_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                        <option value={partido20_e1} selected class="bg-amarillo text-gris">{partido20_e1}</option>
+                        <option value="Perdedor P15"   class="bg-accent text-gris">Perdedor P15</option>
                         {
                             equipos?.map((equipo) => (
                                 <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -843,8 +829,9 @@ try {
                 <EquipoBox>
                     <div></div>
                     <div class="w-full h-full">
-                        <select name="partido1_e2" class="w-full text-blanco h-full break-words bg-transparent">
-                            <option value={partido1_e2}  selected class="bg-amarillo text-gris">{partido1_e2}</option>
+                        <select name="partido20_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                            <option value={partido20_e2}  selected class="bg-amarillo text-gris">{partido20_e2}</option>
+                            <option value="Perdedor P16"   class="bg-accent text-gris">Perdedor P16</option>
                             {
                                 equipos?.map((equipo) =>(
                                     <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -861,13 +848,13 @@ try {
                 </EquipoBox>
         </div>
 
-        <!-- Partido 1 -->
+        <!-- Partido 21 -->
         <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
             <!--Equipo 1 -->
             <div class="grid grid-cols-2 place-items-center text-blanco">
-                <h4 class="text-sm">Partido 1</h4>
-                <select name="partido1_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                    <option  selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
+                <h4 class="text-sm">Partido 21</h4>
+                <select name="partido21_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                    <option  selected value={pista_p21} class="bg-amarillo text-gris"> {pista_p21}</option>
                     {
                         PISTAS.map(({pista}) =>(
                             <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -881,8 +868,9 @@ try {
                     <!-- <img id="escudo_e1" src="/img/Vector.png" alt="Escudo del equipo 1" class="w-10 h-w-10" /> -->
                 </div>
                 <div class="w-full h-full">
-                    <select name="partido1_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                        <option value={partido1_e1} selected class="bg-amarillo text-gris">{partido1_e1}</option>
+                    <select name="partido21_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                        <option value={partido21_e1} selected class="bg-amarillo text-gris">{partido21_e1}</option>
+                        <option value="Perdedor P9"   class="bg-accent text-gris">Perdedor P9</option>
                         {
                             equipos?.map((equipo) => (
                                 <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -900,8 +888,9 @@ try {
                 <EquipoBox>
                     <div></div>
                     <div class="w-full h-full">
-                        <select name="partido1_e2" class="w-full text-blanco h-full break-words bg-transparent">
-                            <option value={partido1_e2}  selected class="bg-amarillo text-gris">{partido1_e2}</option>
+                        <select name="partido21_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                            <option value={partido21_e2}  selected class="bg-amarillo text-gris">{partido21_e2}</option>
+                            <option value="Perdedor P10"   class="bg-accent text-gris">Perdedor P10</option>
                             {
                                 equipos?.map((equipo) =>(
                                     <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -918,13 +907,13 @@ try {
                 </EquipoBox>
         </div>
 
-        <!-- Partido 1 -->
+        <!-- Partido 22 -->
         <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
             <!--Equipo 1 -->
             <div class="grid grid-cols-2 place-items-center text-blanco">
-                <h4 class="text-sm">Partido 1</h4>
-                <select name="partido1_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
-                    <option  selected value={pista_p1} class="bg-amarillo text-gris"> {pista_p1}</option>
+                <h4 class="text-sm">Partido 22</h4>
+                <select name="partido22_pista"  class="text-sm w-full text-blanco h-full break-words bg-transparent">
+                    <option  selected value={pista_p22} class="bg-amarillo text-gris"> {pista_p22}</option>
                     {
                         PISTAS.map(({pista}) =>(
                             <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -938,8 +927,9 @@ try {
                     <!-- <img id="escudo_e1" src="/img/Vector.png" alt="Escudo del equipo 1" class="w-10 h-w-10" /> -->
                 </div>
                 <div class="w-full h-full">
-                    <select name="partido1_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
-                        <option value={partido1_e1} selected class="bg-amarillo text-gris">{partido1_e1}</option>
+                    <select name="partido22_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                        <option value={partido22_e1} selected class="bg-amarillo text-gris">{partido22_e1}</option>
+                        <option value="Perdedor P11"   class="bg-accent text-gris">Perdedor P11</option>
                         {
                             equipos?.map((equipo) => (
                                 <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
@@ -957,8 +947,9 @@ try {
                 <EquipoBox>
                     <div></div>
                     <div class="w-full h-full">
-                        <select name="partido1_e2" class="w-full text-blanco h-full break-words bg-transparent">
-                            <option value={partido1_e2}  selected class="bg-amarillo text-gris">{partido1_e2}</option>
+                        <select name="partido22_e2" class="w-full text-blanco h-full break-words bg-transparent">
+                            <option value={partido22_e2}  selected class="bg-amarillo text-gris">{partido22_e2}</option>
+                            <option value="Perdedor P12"   class="bg-accent text-gris">Perdedor P12</option>
                             {
                                 equipos?.map((equipo) =>(
                                     <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
