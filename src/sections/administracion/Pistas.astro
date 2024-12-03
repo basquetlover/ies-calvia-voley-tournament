@@ -31,7 +31,7 @@ try {
       
       // Crear un mapa de escudos para facilitar la búsqueda
       const escudosMap = equipos.reduce((acc, equipo) => {
-        acc[equipo.id] = equipo.escudo;
+       // acc[equipo.id] = equipo.escudo;
         return acc;
       }, {});
 
@@ -39,11 +39,11 @@ try {
       const partidosConEscudos = pista1.map(partido => ({
         equipo_a: {
           id: partido.equipo_a,
-          escudo: escudosMap[partido.equipo_a],
+         // escudo: escudosMap[partido.equipo_a],
         },
         equipo_b: {
           id: partido.equipo_b,
-          escudo: escudosMap[partido.equipo_b],
+          //escudo: escudosMap[partido.equipo_b],
         },
       }));
 
