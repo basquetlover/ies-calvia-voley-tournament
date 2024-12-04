@@ -48,7 +48,7 @@ export const BASES_COMPETICION = [
                 texto: 'Cada equip té un màxim de tres tocs per tornar la pilota al camp contrari.',
             },
             {
-                texto: 'Un jugador no pot tocar la pilota dues vegades consecutives (excepte en bloquejos o en el primer toc).',
+                texto: 'Un jugador no pot tocar la pilota dues vegades consecutives (excepte en bloquejos).',
             },
             {
                 texto: 'Efectuar el toc de "Poqui" està permès',
