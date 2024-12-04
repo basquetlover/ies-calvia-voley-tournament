@@ -1,0 +1,292 @@
+---
+import { supabaseAdmin } from "src/lib/supabase";
+
+interface Equipo {
+  nombre_equipo: string;
+  escudo: string;
+}
+
+interface Partido {
+  equipo_a: string;
+  equipo_b: string;
+  id: string;
+  arbitro: string;
+  oficial_mesa_1: string;
+  oficial_mesa_2: string;
+
+}
+
+let pista1: Partido[] = [];
+let escudosMapPista1: Record<string, string> = {}; // Mapa para guardar escudos por nombre de equipo
+
+let pista2: Partido[] = [];
+let escudosMapPista2: Record<string, string> = {}; // Mapa para guardar escudos por nombre de equipo
+
+
+try {
+  // Obtener partidos de la pista 1
+  const { data, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('equipo_a, equipo_b, id, oficial_mesa_1, arbitro, oficial_mesa_2')
+    .eq('pista', 'Pista 1')
+    .order('id', { ascending: true });
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else {
+    pista1 = data || []; // Asignar data a pista1
+  }
+
+  // Obtener todos los nombres de los equipos
+  const equiposNombres = [...new Set(pista1.flatMap(partido => [partido.equipo_a, partido.equipo_b]))];
+
+  // Obtener escudos de los equipos
+  const { data: equipos, error: errorEquipos } = await supabaseAdmin
+    .from('Equipos')
+    .select('nombre_equipo, escudo')
+    .in('nombre_equipo', equiposNombres);
+
+  if (errorEquipos) {
+    console.error(`Error al buscar escudos de equipos`, errorEquipos.message);
+  } else {
+    // Crear un mapa de escudos
+    escudosMapPista1 = equipos.reduce((acc: Record<string, string>, equipo: Equipo) => {
+      acc[equipo.nombre_equipo] = equipo.escudo;
+      return acc;
+    }, {});
+  }
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+
+try {
+  // Obtener partidos de la pista 1
+  const { data, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('equipo_a, equipo_b, id, oficial_mesa_1, arbitro, oficial_mesa_2')
+    .eq('pista', 'Pista 2')
+    .order('id', { ascending: true });
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else {
+    pista2 = data || []; // Asignar data a pista2
+  }
+
+  // Obtener todos los nombres de los equipos
+  const equiposNombres = [...new Set(pista2.flatMap(partido => [partido.equipo_a, partido.equipo_b]))];
+
+  // Obtener escudos de los equipos
+  const { data: equipos, error: errorEquipos } = await supabaseAdmin
+    .from('Equipos')
+    .select('nombre_equipo, escudo')
+    .in('nombre_equipo', equiposNombres);
+
+  if (errorEquipos) {
+    console.error(`Error al buscar escudos de equipos`, errorEquipos.message);
+  } else {
+    // Crear un mapa de escudos
+    escudosMapPista2 = equipos.reduce((acc: Record<string, string>, equipo: Equipo) => {
+      acc[equipo.nombre_equipo] = equipo.escudo;
+      return acc;
+    }, {});
+  }
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+
+interface UserEmail {
+    email: string;
+}
+
+let users: UserEmail[] = []; // Especifica que es un array de UserEmail
+let error: string | null = null; // Manejo de errores
+
+async function listarUsuarios() {
+    const { data, error: fetchError } = await supabaseAdmin.auth.admin.listUsers();
+
+    if (fetchError) {
+        console.error("Error fetching usuarios:", fetchError);
+        error = fetchError.message; // Almacena el mensaje del error
+        return;
+    }
+
+    // Verifica si 'data.users' es un array antes de mapear
+    if (Array.isArray(data.users)) {
+        // Extrae solo los correos electrónicos de los usuarios, asegurando que no sean undefined
+        users = data.users
+            .map((user) => {
+                return { email: user.email }; // Crea un objeto UserEmail
+            })
+            .filter((user): user is UserEmail => user.email !== undefined); // Filtra los correos no definidos
+
+        // Imprime solo los correos electrónicos en la consola
+        // console.log("Correos de usuarios:", users.map(user => user.email));
+    } else {
+        // Si 'data.users' no es un array, imprime su contenido para depuración
+        console.error("La respuesta no es un array:", data);
+        error = "La respuesta no es un array.";
+    }
+}
+
+// Llama a la función
+await listarUsuarios();
+---
+<form class="max-w-full w-full flex flex-wrap gap-10  items-center place-content-center" method="POST" action="/api/designaciones">
+    <div class="w-max h-auto">
+        <h2 class="text-2xl text-accent font-semibold text-center">Pista 1</h2>
+        <div class="flex flex-col gap-2">
+          {pista1.map((partido, index) => ( // Añadido el índice aquí
+            <div class="bg-amarillo w-[400px] h-auto rounded-lg"> {/* Usar el índice como clave */}
+              <div class="text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2 ">
+                <div>
+                  {escudosMapPista1[partido.equipo_a] && escudosMapPista1[partido.equipo_a].trim() !== "" ? (
+                    <img src={escudosMapPista1[partido.equipo_a]} class="w-14 h-14" alt={partido.equipo_a} />
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" fill="none" viewBox="0 0 650 650">
+                      <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20" />
+                      <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10" />
+                    </svg>
+                  )}
+                </div>
+                <p>{partido.equipo_a}</p>
+                <p>VS</p>
+                <p>{partido.equipo_b}</p>
+                <div>
+                  {escudosMapPista1[partido.equipo_b] && escudosMapPista1[partido.equipo_b].trim() !== "" ? (
+                    <img src={escudosMapPista1[partido.equipo_b]} class="w-14 h-14" alt={partido.equipo_b} />
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" fill="none" viewBox="0 0 650 650">
+                      <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20" />
+                      <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10" />
+                    </svg>
+                  )}
+                </div>
+              </div>
+        
+              <div class="w-full p-1 text-blanco h-auto flex flex-wrap gap-1 items-center place-content-around">
+                  <input type="hidden" name={`p1_id_${index}`} value={partido.id} />
+                <div class="flex flex-col">
+                  <label class="rounded-full px-2 py-1 text-azul font-semibold text-sm">Arbitro</label>
+                  <select class="max-w-32 w-auto h-max px-2 py-1 bg-gris-claro rounded-full" name={`p1_arbitro_${index}`}>
+                    <option selected class="bg-accent text-gris" value={partido.arbitro}>{partido.arbitro}</option>
+                    
+                    {users.map((user) => (
+                      <option value={user.email} >
+                        {user.email}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div class="flex flex-col relative">
+                  <label class="rounded-full px-2 py-1 text-azul font-semibold text-sm">Oficial de Mesa</label>
+                  <select class="max-w-32 w-auto h-max px-2 py-1 bg-gris-claro rounded-full" name={`p1_oficial_mesa_${index}`}>
+                    <option selected class="bg-accent text-gris" value={partido.oficial_mesa_1}>{partido.oficial_mesa_1}</option>
+                    {users.map((user) => (
+                      <option value={user.email} >
+                        {user.email}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                 <div class="flex flex-col">
+                  <label class="rounded-full px-2 py-1 text-azul font-semibold text-sm">Oficial de Mesa</label>
+                  <select class="max-w-32 w-auto h-max px-2 py-1 bg-gris-claro rounded-full" name={`p1_oficial_mesa_2_${index}`}>
+                    <option selected class="bg-accent text-gris" value={partido.oficial_mesa_2}>{partido.oficial_mesa_2}</option>
+                    {users.map((user) => (
+                      <option value={user.email} >
+                        {user.email}
+                      </option>
+                    ))}
+                  </select>
+                  </div>
+              </div>
+              </div>
+              ))}
+          </div>
+          </div>
+
+<div class="w-max h-auto">
+  <h2 class="text-2xl text-accent font-semibold text-center">Pista 2</h2>
+  <div class="flex flex-col gap-2">
+    {pista2.map((partido, index) => ( // Añadido el índice aquí
+      <div class="bg-amarillo w-[400px] h-auto rounded-lg"> {/* Usar el índice como clave */}
+        <div class="text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2 ">
+          <div>
+            {escudosMapPista2[partido.equipo_a] && escudosMapPista2[partido.equipo_a].trim() !== "" ? (
+              <img src={escudosMapPista2[partido.equipo_a]} class="w-14 h-14" alt={partido.equipo_a} />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" fill="none" viewBox="0 0 650 650">
+                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20" />
+                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10" />
+              </svg>
+            )}
+          </div>
+          <p>{partido.equipo_a}</p>
+          <p>VS</p>
+          <p>{partido.equipo_b}</p>
+          <div>
+            {escudosMapPista2[partido.equipo_b] && escudosMapPista2[partido.equipo_b].trim() !== "" ? (
+              <img src={escudosMapPista2[partido.equipo_b]} class="w-14 h-14" alt={partido.equipo_b} />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" fill="none" viewBox="0 0 650 650">
+                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20" />
+                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10" />
+              </svg>
+            )}
+          </div>
+        </div>
+  
+        <div class="w-full p-1 text-blanco h-auto flex flex-wrap gap-1 items-center place-content-around">
+            <input type="hidden" name={`p2_id_${index}`} value={partido.id} />
+          <div class="flex flex-col">
+            <label class="rounded-full px-2 py-1 text-azul font-semibold text-sm">Arbitro</label>
+            <select class="max-w-32 w-auto h-max px-2 py-1 bg-gris-claro rounded-full" name={`p2_arbitro_${index}`}>
+              <option selected class="bg-accent text-gris" value={partido.arbitro}>{partido.arbitro}</option>
+              
+              {users.map((user) => (
+                <option value={user.email} >
+                  {user.email}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div class="flex flex-col relative">
+            <label class="rounded-full px-2 py-1 text-azul font-semibold text-sm">Oficial de Mesa</label>
+            <select class="max-w-32 w-auto h-max px-2 py-1 bg-gris-claro rounded-full" name={`p2_oficial_mesa_${index}`}>
+              <option selected class="bg-accent text-gris" value={partido.oficial_mesa_1}>{partido.oficial_mesa_1}</option>
+              {users.map((user) => (
+                <option value={user.email} >
+                  {user.email}
+                </option>
+              ))}
+            </select>
+          </div>
+           <div class="flex flex-col">
+            <label class="rounded-full px-2 py-1 text-azul font-semibold text-sm">Oficial de Mesa</label>
+            <select class="max-w-32 w-auto h-max px-2 py-1 bg-gris-claro rounded-full" name={`p2_oficial_mesa_2_${index}`}>
+              <option selected class="bg-accent text-gris" value={partido.oficial_mesa_2}>{partido.oficial_mesa_2}</option>
+              {users.map((user) => (
+                <option value={user.email} >
+                  {user.email}
+                </option>
+              ))}
+            </select>
+            </div>
+        </div>
+        </div>
+        ))}
+    </div>
+    </div>
+        
+        <div class="w-full h-auto flex flex-row items-center mb-10 place-content-around">
+            
+            <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-32 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                </svg>
+                Guardar
+            </button>
+        </div>
+</form>
+

@@ -1,0 +1,135 @@
+---
+import LayoutAll from "@layouts/LayoutAll.astro";
+import { supabaseAdmin } from "src/lib/supabase";
+const user = Astro.locals.user;
+
+let userWithRango = {
+    email: user?.email || "Desconocido",
+    rango: "Sin rango"
+};
+
+interface Equipo {
+  nombre_equipo: string;
+  escudo: string;
+}
+
+interface Partido {
+  equipo_a: string;
+  equipo_b: string;
+  arbitro: string;
+  oficial_mesa_1: string;
+  oficial_mesa_2: string;
+  pista: string;
+  numero_partido: string;
+}
+
+let partidos_designados: Partido[] = [];
+let escudosMappartidos_designados: Record<string, string> = {}; // Mapa para guardar escudos por nombre de equipo
+
+
+
+try {
+  // Obtener partidos de la pista 1
+  const { data, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('equipo_a, equipo_b, pista, numero_partido, arbitro, oficial_mesa_1, oficial_mesa_2')
+    .or(`arbitro.eq.${userWithRango.email},oficial_mesa_1.eq.${userWithRango.email},oficial_mesa_2.eq.${userWithRango.email}`)
+    .order('id', { ascending: true });
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else {
+    partidos_designados = data || []; // Asignar data a partidos_designados
+  }
+
+  // Obtener todos los nombres de los equipos
+  const equiposNombres = [...new Set(partidos_designados.flatMap(partido => [partido.equipo_a, partido.equipo_b]))];
+
+  // Obtener escudos de los equipos
+  const { data: equipos, error: errorEquipos } = await supabaseAdmin
+    .from('Equipos')
+    .select('nombre_equipo, escudo')
+    .in('nombre_equipo', equiposNombres);
+
+  if (errorEquipos) {
+    console.error(`Error al buscar escudos de equipos`, errorEquipos.message);
+  } else {
+    // Crear un mapa de escudos
+    escudosMappartidos_designados = equipos.reduce((acc: Record<string, string>, equipo: Equipo) => {
+      acc[equipo.nombre_equipo] = equipo.escudo;
+      return acc;
+    }, {});
+  }
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+
+
+---
+<LayoutAll title="Designaciones">
+<section class="max-w-full w-full flex flex-wrap gap-10  items-center place-content-center">
+<div class="w-max h-auto">
+  <h2 class="text-3xl text-accent font-semibold text-center">Designaciones</h2>
+  <h3 class="text-xl text-blanco font-semibold text-center">{userWithRango.email}</h3>
+<div class="flex flex-col gap-2">
+  {partidos_designados.map(partido => (
+    <div class="bg-amarillo h-auto w-[400px] rounded-lg">
+        <div class="text-gris w-full  flex flex-row items-center place-content-around">
+            <p>{partido.pista}</p>
+            <p>{partido.numero_partido}</p>
+        </div>
+        <div class="w-[95%] h-[2px] mx-auto my-1 border-none block rounded-full bg-accent select-none">&nbsp;</div>
+        <div class=" text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2"> 
+        <div>
+        {escudosMappartidos_designados[partido.equipo_a] && escudosMappartidos_designados[partido.equipo_a].trim() !== "" ?  (
+            <img src={escudosMappartidos_designados[partido.equipo_a]} class="w-14 h-14" alt={partido.equipo_a} />
+                ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-w-14" fill="none" viewBox="0 0 650 650">
+                        <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                        <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                    </svg>
+            )}
+        </div>
+        <p>{partido.equipo_a}</p>
+        <p>VS</p>
+        <p>{partido.equipo_b}</p>
+        <div>
+        {escudosMappartidos_designados[partido.equipo_b] && escudosMappartidos_designados[partido.equipo_b].trim() !== "" ?  (
+            <img src={escudosMappartidos_designados[partido.equipo_b]} class="w-14 h-14" alt={partido.equipo_b} />
+                ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-w-14" fill="none" viewBox="0 0 650 650">
+                        <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                        <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                    </svg>
+            )}
+        </div>
+        
+        </div>
+    </div>
+  ))}
+</div>
+</div>
+</section>
+<section>
+    {partidos_designados.length === 0 ? (
+        <div class="w-full h-auto my-10 flex items-center place-content-center">
+    <section class="max-w-2xl w-full h-max p-10 mx-auto my-auto">
+        <h2 class=" w-full text-center text-accent font-bold text-5xl">Sin Designaciones</h2>
+        
+        <p class="text-blanco text-xl text-center my-2">
+        No tienes partidos asignados.
+        </p>
+        
+            <a href="/admin" class="px-3 py-2 w-max mx-auto my-5 text-azul font-semibold bg-amarillo rounded-full text-xl hover:scale-110 duration-300 transition-all transform flex flex-row items-center place-content-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 -960 960 960" class="fill-current">
+                    <path d="M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+                </svg>
+                Volver atras
+            </a>
+
+        </section>
+</div>
+       
+      ) : null}
+</section>
+</LayoutAll>
