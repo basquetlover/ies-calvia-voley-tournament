@@ -11,9 +11,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
         const oficial_mesa_2 = formData.get(`p1_oficial_mesa_2_${index}`)?.toString().trim();
         const id_partido = formData.get(`p1_id_${index}`); // Asegúrate de que el arbitro coincida
 
-        if (arbitro && oficial_mesa) {
+        
             designaciones1.push({ arbitro, oficial_mesa_2, id_partido, oficial_mesa });
-        }
+        
         index++;
     }
 
@@ -25,9 +25,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
         const oficial_mesa_2 = formData.get(`p2_oficial_mesa_2_${index}`)?.toString().trim();
         const id_partido = formData.get(`p2_id_${index}`); // Asegúrate de que el arbitro coincida
 
-        if (arbitro && oficial_mesa) {
+        
             designaciones2.push({ arbitro, oficial_mesa_2, id_partido, oficial_mesa });
-        }
+        
         index++;
     }
 
