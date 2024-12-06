@@ -46,11 +46,9 @@ const user = Astro.locals.user
 			<AdminHeader />
 		
 
-		<main class=" h-screen p-0 overflow-x-hidden">
-			
+		<main class=" h-screen p-0  rounded-none  overflow-x-hidden">
 			        <slot />
-                
-			
+
 		</main>
 	</div>
 		
@@ -88,7 +86,7 @@ const user = Astro.locals.user
   * {
 	scrollbar-width: thin;
 	scrollbar-color: #1666FF #313131;
-	border-radius: 20px;
+	
   }
   
   /* Works on Chrome, Edge, and Safari */
