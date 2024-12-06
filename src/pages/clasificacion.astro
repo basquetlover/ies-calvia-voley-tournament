@@ -1,8 +1,66 @@
 ---
-import LayoutMenu from "@layouts/LayoutMenu.astro";
-import WinBraket from "@sections/administracion/WinBraket.astro";
----
+import Loading from "@components/Loading.astro";
+import LayoutMenuSinLoader from "@layouts/LayoutMenuSinLoader.astro";
+import Consolacion from "@sections/clasificacion/Consolacion.astro";
 
-<LayoutMenu title="Clasificacion" descripcion="Clasificacion del torneo de navidad">
-     <!-- <WinBraket /> -->
+import Eliminatoria from "@sections/clasificacion/Eliminatoria.astro";
+---
+<script>
+     //SubMenu desktop
+     const btn_eliminatoria = document.getElementById('btn-eliminatoria')!;
+     const eliminatoria = document.getElementById('eliminatoria')!;
+     const btn_consolacion = document.getElementById('btn-consolacion')!;
+     const consolacion = document.getElementById('consolacion')!;
+     
+     btn_eliminatoria.addEventListener('click', function() {
+         if (consolacion.classList.contains('activado')) {
+             consolacion.classList.add('desactivado');
+             consolacion.classList.remove('activado');
+             eliminatoria.classList.remove('desactivado');
+             eliminatoria.classList.add('activado');
+             btn_consolacion.classList.remove('seleccionado');
+             btn_eliminatoria.classList.add('seleccionado');
+         } 
+     });
+ 
+     btn_consolacion.addEventListener('click', function() {
+         if (eliminatoria.classList.contains('activado')) {
+             consolacion.classList.add('activado');
+             consolacion.classList.remove('desactivado');
+             eliminatoria.classList.add('desactivado');
+             eliminatoria.classList.remove('activado');
+             btn_consolacion.classList.add('seleccionado');
+             btn_eliminatoria.classList.remove('seleccionado');
+         } 
+     });
+     
+ </script>
+
+<LayoutMenuSinLoader title="Clasificacion" descripcion="Clasificacion del torneo de navidad">
+     <Loading />
+     
+     <div class="w-max ml-5 h-auto flex flex-row gap-x-2 px-4 pt-2 mt-5 rounded-tr-md rounded-tl-md bg-azul">
+          <div id="btn-eliminatoria" class="text-center py-2 px-3 rounded-tr-md rounded-tl-md text-amarillo text-2xl cursor-pointer seleccionado">Eliminatoria</div>
+          <div id="btn-consolacion" class="text-center py-2 px-3 rounded-tr-md rounded-tl-md text-amarillo text-2xl cursor-pointer">Consolación</div>
+      </div>
+      <div id="component-container">
+      <div id="eliminatoria" class="activado">
+        <Eliminatoria />
+      </div>
+      <div id="consolacion" class="desactivado">
+        <Consolacion />
+      </div>
+      </div>
 </LayoutMenu>
+
+<style>
+     .seleccionado{
+         background-color: #313131;
+     }
+     .activado{
+         display: block;
+     }
+     .desactivado{
+         display: none;
+     }
+ </style>

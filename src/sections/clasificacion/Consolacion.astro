@@ -1,0 +1,1062 @@
+---
+import EquipoBox from "@components/admin/EquipoBoxIzq.astro";
+import { supabaseAdmin } from '../../lib/supabase';
+import EquipoBoxDer from "@components/admin/EquipoBoxDer.astro";
+
+
+
+const PISTAS = [
+    {
+        pista: "Pista 1",
+    },
+    {
+        pista: "Pista 2",
+    },
+]
+
+let equipos: {  nombre_equipo: string; escudo: string }[] = []; // Especifica el tipo
+
+// Obtener los equipos de la base de datos
+const { data, error } = await supabaseAdmin
+  .from('Equipos')
+  .select(' nombre_equipo, capitan, entrenador, escudo')
+  .order('id', { ascending: true });
+
+if (error) {
+  console.error('Error al obtener los equipos:', error);
+} else if (!data || data.length === 0) {
+  console.log('No se encontraron equipos');
+} else {
+  equipos = data; // Asignar los datos a la variable global
+  console.log(`Se encontraron ${equipos.length} equipos`);
+}
+
+let pista_p13 = 'Sin Pista';
+let partido13_e1 = "";
+let partido13_e1_e = "";
+let partido13_e2 = "";
+let partido13_e2_e = "";
+let partido13_ra = "-";
+let partido13_rb = "-";
+let estado_p13 = "Por Jugar";
+
+let pista_p14 = 'Sin Pista';
+let partido14_e1 = "";
+let partido14_e1_e = "";
+let partido14_e2 = "";
+let partido14_e2_e = "";
+let partido14_ra = "-";
+let partido14_rb = "-";
+let estado_p14 = "Por Jugar";
+
+let pista_p15 = 'Sin Pista';
+let partido15_e1 = "";
+let partido15_e1_e = "";
+let partido15_e2 = "";
+let partido15_e2_e = "";
+let partido15_ra = "-";
+let partido15_rb = "-";
+let estado_p15 = "Por Jugar";
+
+let pista_p16 = 'Sin Pista';
+let partido16_e1 = "";
+let partido16_e1_e = "";
+let partido16_e2 = "";
+let partido16_e2_e = "";
+let partido16_ra = "-";
+let partido16_rb = "-";
+let estado_p16 = "Por Jugar";
+
+let pista_p17 = 'Sin Pista';
+let partido17_e1 = "";
+let partido17_e1_e = "";
+let partido17_e2 = "";
+let partido17_e2_e = "";
+let partido17_ra = "-";
+let partido17_rb = "-";
+let estado_p17 = "Por Jugar";
+
+let pista_p18 = 'Sin Pista';
+let partido18_e1 = "";
+let partido18_e1_e = "";
+let partido18_e2 = "";
+let partido18_e2_e = "";
+let partido18_ra = "-";
+let partido18_rb = "-";
+let estado_p18 = "Por Jugar";
+
+let pista_p19 = 'Sin Pista';
+let partido19_e1 = "";
+let partido19_e1_e = "";
+let partido19_e2 = "";
+let partido19_e2_e = "";
+let partido19_ra = "-";
+let partido19_rb = "-";
+let estado_p19 = "Por Jugar";
+
+let pista_p20 = 'Sin Pista';
+let partido20_e1 = "";
+let partido20_e1_e = "";
+let partido20_e2 = "";
+let partido20_e2_e = "";
+let partido20_ra = "-";
+let partido20_rb = "-";
+let estado_p20 = "Por Jugar";
+
+let pista_p21 = 'Sin Pista';
+let partido21_e1 = "";
+let partido21_e1_e = "";
+let partido21_e2 = "";
+let partido21_e2_e = "";
+let partido21_ra = "-";
+let partido21_rb = "-";
+let estado_p21 = "Por Jugar";
+
+let pista_p22 = 'Sin Pista';
+let partido22_e1 = "";
+let partido22_e1_e = "";
+let partido22_e2 = "";
+let partido22_e2_e = "";
+let partido22_ra = "-";
+let partido22_rb = "-";
+let estado_p22 = "Por Jugar";
+
+
+//P13
+try {
+  // Buscar el rango correspondiente al email en la tabla Administradores
+  const { data: partido13, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_13')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido13) {
+    pista_p13 = partido13.pista;
+    partido13_e1 = partido13.equipo_a;
+    if (partido13_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido13_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido13_e1_e = escudo_e1_p12.escudo;
+       } 
+   }
+    partido13_e2 = partido13.equipo_b;
+    if (partido13_e2){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido13_e2)
+       .single();
+
+       if (escudo_e1_p12){
+           partido13_e2_e = escudo_e1_p12.escudo;
+       } 
+   }
+    partido13_ra = partido13.resultado_a;
+    partido13_rb = partido13.resultado_b;
+    estado_p13 = partido13.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+ //P14
+try {
+  const { data: partido14, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_14')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido14) {
+    pista_p14 = partido14.pista;
+    partido14_e1 = partido14.equipo_a;
+    if (partido14_e1){
+       const { data: escudo_e1_p14, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido14_e1)
+       .single();
+
+       if (escudo_e1_p14){
+           partido14_e1_e = escudo_e1_p14.escudo;
+       } 
+   }
+    partido14_e2 = partido14.equipo_b;
+    if (partido14_e2){
+       const { data: escudo_e2_p14, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido14_e2)
+       .single();
+
+       if (escudo_e2_p14){
+           partido14_e2_e = escudo_e2_p14.escudo;
+       } 
+   }
+    partido14_ra = partido14.resultado_a;
+    partido14_rb = partido14.resultado_b;
+    estado_p14 = partido14.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+ //P15
+try {
+  const { data: partido15, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_15')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido15) {
+    pista_p15 = partido15.pista;
+    partido15_e1 = partido15.equipo_a;
+    if (partido15_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido15_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido15_e1_e = escudo_e1_p12.escudo;
+       } 
+   }
+    partido15_e2 = partido15.equipo_b;
+    if (partido15_e2){
+       const { data: escudo_e2_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido15_e2)
+       .single();
+
+       if (escudo_e2_p12){
+           partido15_e2_e = escudo_e2_p12.escudo;
+       } 
+   }
+    partido15_ra = partido15.resultado_a;
+    partido15_rb = partido15.resultado_b;
+    estado_p15 = partido15.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+ //P16
+try {
+  const { data: partido16, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_16')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido16) {
+    pista_p16 = partido16.pista;
+    partido16_e1 = partido16.equipo_a;
+    if (partido16_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido16_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido16_e1_e = escudo_e1_p12.escudo;
+       } 
+   }
+    partido16_e2 = partido16.equipo_b;
+    if (partido16_e2){
+       const { data: escudo_e2_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido16_e2)
+       .single();
+
+       if (escudo_e2_p12){
+           partido16_e2_e = escudo_e2_p12.escudo;
+       } 
+   }
+    partido16_ra = partido16.resultado_a;
+    partido16_rb = partido16.resultado_b;
+    estado_p16 = partido16.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+//P17
+try {
+ 
+  const { data: partido17, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_17')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido17) {
+    pista_p17 = partido17.pista;
+    partido17_e1 = partido17.equipo_a;
+    if (partido17_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido17_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido17_e1_e = escudo_e1_p12.escudo;
+       } 
+   }
+    partido17_e2 = partido17.equipo_b;
+    if (partido17_e2){
+       const { data: escudo_e2_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido17_e2)
+       .single();
+
+       if (escudo_e2_p12){
+           partido17_e2_e = escudo_e2_p12.escudo;
+       } 
+   }
+    partido17_ra = partido17.resultado_a;
+    partido17_rb = partido17.resultado_b;
+    estado_p17 = partido17.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+ //P18
+try {
+
+  const { data: partido18, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_18')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido18) {
+    pista_p18 = partido18.pista;
+    partido18_e1 = partido18.equipo_a;
+    if (partido18_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido18_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido18_e1_e = escudo_e1_p12.escudo;
+       } 
+   }
+    partido18_e2 = partido18.equipo_b;
+    if (partido18_e2){
+       const { data: escudo_e2_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido18_e2)
+       .single();
+
+       if (escudo_e2_p12){
+           partido18_e2_e = escudo_e2_p12.escudo;
+       } 
+   }
+    partido18_ra = partido18.resultado_a;
+    partido18_rb = partido18.resultado_b;
+    estado_p18 = partido18.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+//P19
+try {
+ 
+  const { data: partido19, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_19')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido19) {
+    pista_p19 = partido19.pista;
+    partido19_e1 = partido19.equipo_a;
+    if (partido19_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido19_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido19_e1_e = escudo_e1_p12.escudo;
+       } 
+   }
+    partido19_e2 = partido19.equipo_b;
+    if (partido19_e2){
+       const { data: escudo_e2_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido19_e2)
+       .single();
+
+       if (escudo_e2_p12){
+           partido19_e2_e = escudo_e2_p12.escudo;
+       } 
+   }
+    partido19_ra = partido19.resultado_a;
+    partido19_rb = partido19.resultado_b;
+    estado_p19 = partido19.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+//P20
+try {
+ 
+  const { data: partido20, error } = await supabaseAdmin
+    .from('ResultadoNavidad')
+    .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+    .eq('numero_partido', 'partido_20')
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if (partido20) {
+    pista_p20 = partido20.pista;
+    partido20_e1 = partido20.equipo_a;
+    if (partido20_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido20_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido20_e1_e = escudo_e1_p12.escudo;
+       } 
+   }
+    partido20_e2 = partido20.equipo_b;
+    if (partido20_e2){
+       const { data: escudo_e2_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido20_e2)
+       .single();
+
+       if (escudo_e2_p12){
+           partido20_e2_e = escudo_e2_p12.escudo;
+       } 
+   }
+    partido20_ra = partido20.resultado_a;
+    partido20_rb = partido20.resultado_b;
+    estado_p20 = partido20.estado;
+  }
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+
+//P21
+try {
+ 
+ const { data: partido21, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'partido_21')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (partido21) {
+   pista_p21 = partido21.pista;
+   partido21_e1 = partido21.equipo_a;
+   if (partido21_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido21_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido21_e1_e = escudo_e1_p12.escudo;
+       } 
+   }
+   partido21_e2 = partido21.equipo_b;
+   if (partido21_e2){
+       const { data: escudo_e2_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido21_e2)
+       .single();
+
+       if (escudo_e2_p12){
+           partido21_e2_e = escudo_e2_p12.escudo;
+       } 
+   }
+   partido21_ra = partido21.resultado_a;
+   partido21_rb = partido21.resultado_b;
+   estado_p21 = partido21.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
+
+//P22
+try {
+ 
+ const { data: partido22, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'partido_22')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (partido22) {
+   pista_p22 = partido22.pista;
+   partido22_e1 = partido22.equipo_a;
+   if (partido22_e1){
+       const { data: escudo_e1_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido22_e1)
+       .single();
+
+       if (escudo_e1_p12){
+           partido22_e1_e = escudo_e1_p12.escudo;
+       } 
+   }
+   partido22_e2 = partido22.equipo_b;
+   if (partido22_e2){
+       const { data: escudo_e2_p12, error } = await supabaseAdmin
+       .from('Equipos')
+       .select('escudo')
+       .eq('nombre_equipo', partido22_e2)
+       .single();
+
+       if (escudo_e2_p12){
+           partido22_e2_e = escudo_e2_p12.escudo;
+       } 
+   }
+   partido22_ra = partido22.resultado_a;
+   partido22_rb = partido22.resultado_b;
+   estado_p22 = partido22.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
+
+
+---
+<section class="w-full min-h-screen overflow-x-auto h-auto z-0 flex flex-col place-content-center items-center rounded-none  bg-gris-claro m-0 p-1">
+    <section class="min-w-full w-auto  h-auto overflow-x-auto mx-auto m-0 grid grid-cols-2 place-items-center">
+        <div class="w-full  h-auto overflow-x-auto  m-0 flex flex-row  gap-1">
+            <!--Octavos Izq -->
+                <div class="w-max scale-100 h-auto flex place-content gap-2 flex-col place-content-around">
+                    <!-- Partido 13 -->
+                    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                        <!--Equipo 1 -->
+                        <div class="grid grid-cols-3 place-items-center text-blanco">
+                            <h4 class="text-sm">Partido 13</h4>
+                            <h5 class="text-gray-500 text-xs">{estado_p13}</h5>
+                            <h4 class="text-sm">{pista_p13}</h4>
+                        </div>
+                        
+                        <EquipoBox>
+                            <div>
+                                {partido13_e1_e && partido13_e1_e.trim() !== "" ?  (
+                                    <img src={partido13_e1_e} class="w-10 h-10 rounded-sm" alt={partido13_e1} />
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                            </svg>
+                                    )}
+                            </div>
+                            <p class="text-blanco text-base text-center">{partido13_e1}</p>
+                                
+                            <div>
+                                <input name="partido13_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido13_ra} placeholder="0" />
+                            </div>
+                        </EquipoBox>
+
+                            <!--Equipo 2 -->
+                            <EquipoBox>
+                                <div>
+                                    {partido13_e2_e && partido13_e2_e.trim() !== "" ?  (
+                                        <img src={partido13_e2_e} class="w-10 h-10 rounded-sm" alt={partido13_e2} />
+                                            ) : (
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                                    <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                                    <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                                </svg>
+                                        )}
+                                </div>
+                                <p class="text-blanco text-base text-center">{partido13_e2}</p>
+                                <div>
+                                    <div>
+                                        <input name="partido13_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido13_rb} placeholder="0" />
+                                    </div>
+                                </div>
+                            </EquipoBox>
+                    </div>
+
+                    <!-- Partido 14 -->
+                    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                        <div class="grid grid-cols-3 place-items-center text-blanco">
+                            <h4 class="text-sm">Partido 14</h4>
+                            <h5 class="text-gray-500 text-xs">{estado_p14}</h5>
+                            <h4 class="text-sm">{pista_p14}</h4>
+                        </div>
+                        <!--Equipo 3 -->
+                        <EquipoBox>
+                            <div>
+                                {partido14_e1_e && partido14_e1_e.trim() !== "" ?  (
+                                    <img src={partido14_e1_e} class="w-10 h-10 rounded-sm" alt={partido14_e1} />
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                            </svg>
+                                    )}
+                            </div>
+                            <p class="text-blanco text-base text-center">{partido14_e1}</p>
+                            <div>
+                                <input name="partido14_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido14_ra} placeholder="0" />
+                            </div>
+                        </EquipoBox>
+
+                        <!--Equipo 4 -->
+                        <EquipoBox>
+                            <div>
+                                {partido14_e2_e && partido14_e2_e.trim() !== "" ?  (
+                                    <img src={partido14_e2_e} class="w-10 h-10 rounded-sm" alt={partido14_e2} />
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                            </svg>
+                                    )}
+                            </div>
+                            <p class="text-blanco text-base text-center">{partido14_e2}</p>
+                            <div>
+                                <div>
+                                    <input name="partido14_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido14_rb} placeholder="0" />
+                                </div>
+                            </div>
+                        </EquipoBox>
+                    </div>
+
+                </div>
+
+                <!--Cuartos Izq-->
+                <div class="w-max scale-100 h-screen flex flex-col place-content-around ">        
+                    <!-- Partido 17 -->
+                    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                        <div class="grid grid-cols-3 place-items-center text-blanco">
+                            <h4 class="text-sm">Partido 17</h4>
+                            <h5 class="text-gray-500 text-xs">{estado_p17}</h5>
+                            <h4 class="text-sm">{pista_p17}</h4>
+                        </div>
+                        <!--Ganador P1 -->
+                        <EquipoBox>
+                            <div>
+                                {partido17_e1_e && partido17_e1_e.trim() !== "" ?  (
+                                    <img src={partido17_e1_e} class="w-10 h-10 rounded-sm" alt={partido17_e1} />
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                            </svg>
+                                    )}
+                            </div>
+                                <p class="text-blanco text-base text-center">{partido17_e1}</p>
+                            <div>
+                                <input name="partido17_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido17_ra} placeholder="0" />
+                            </div>
+                        </EquipoBox>
+
+                        <!--Ganador P2 -->
+                        <EquipoBox>
+                            <div>
+                                {partido17_e2_e && partido17_e2_e.trim() !== "" ?  (
+                                    <img src={partido17_e2_e} class="w-10 h-10 rounded-sm" alt={partido17_e2} />
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                            </svg>
+                                    )}
+                            </div>
+                            <p class="text-blanco text-base text-center">{partido17_e2}</p>
+                            <div>
+                                <div>
+                                    <input name="partido17_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido17_rb} placeholder="0" />
+                                </div>
+                            </div>
+                        </EquipoBox>
+                    </div>
+
+                </div>
+        </div>
+        <div class="w-full  h-auto overflow-x-auto  m-0 flex flex-row place-content-end gap-1">
+            <!--Cuartos Izq-->
+            <div class="w-max h-screen scale-100 flex flex-col place-content-around "> 
+                <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">       
+                <!-- Partido 18 -->
+                <div class="grid grid-cols-3 place-items-center text-blanco">
+                    <h4 class="text-sm">Partido 18</h4>
+                    <h5 class="text-gray-500 text-xs">{estado_p18}</h5>
+                    <h4 class="text-sm">{pista_p18}</h4>
+                </div>
+                    <!--Ganador P5 -->
+                    <EquipoBoxDer>
+                        <div>
+                            <input name="partido18_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido18_ra} placeholder="0" />
+                        </div>
+                        <p class="text-blanco text-base text-center">{partido18_e1}</p>
+                        <div>
+                            {partido18_e1_e && partido18_e1_e.trim() !== "" ?  (
+                                <img src={partido18_e1_e} class="w-10 h-10 rounded-sm" alt={partido18_e1} />
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                            <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                            <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                        </svg>
+                                )}
+                        </div>
+                    </EquipoBoxDer>
+
+                    <!--Ganador P6 -->
+                    <EquipoBoxDer>
+                        <div>
+                            <input name="partido18_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido18_rb} placeholder="0" />
+                        </div>
+                        <p class="text-blanco text-base text-center">{partido18_e2}</p>
+                        <div>
+                            {partido18_e2_e && partido18_e2_e.trim() !== "" ?  (
+                                <img src={partido18_e2_e} class="w-10 h-10 rounded-sm" alt={partido18_e2} />
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                            <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                            <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                        </svg>
+                                )}
+                        </div>
+                    </EquipoBox>
+                </div>
+                
+            </div>
+
+            <!--Octavos Der-->
+            <div class="w-max h-auto scale-100 flex flex-col place-content-around gap-2">
+                <!-- Partido 15 -->
+                <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                    <div class="grid grid-cols-3 place-items-center text-blanco">
+                        <h4 class="text-sm">Partido 15</h4>
+                        <h5 class="text-gray-500 text-xs">{estado_p15}</h5>
+                        <h4 class="text-sm">{pista_p15}</h4>
+                    </div>
+                    <!--Equipo 9 -->
+                    <EquipoBoxDer>
+                        <div>
+                            <input name="partido15_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido15_ra} placeholder="0" />
+                        </div>
+                        <p class="text-blanco text-base text-center">{partido15_e1}</p>
+                        <div>
+                            {partido15_e1_e && partido15_e1_e.trim() !== "" ?  (
+                                <img src={partido15_e1_e} class="w-10 h-10 rounded-sm" alt={partido15_e1} />
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                            <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                            <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                        </svg>
+                                )}
+                        </div>
+                    </EquipoBoxDer>
+
+                    <!--Equipo 10 -->
+                    <EquipoBoxDer>
+                        <div> <input name="partido15_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido15_rb} placeholder="0" /></div>
+                        <p class="text-blanco text-base text-center">{partido15_e2}</p>
+                        <div>
+                            {partido15_e2_e && partido15_e2_e.trim() !== "" ?  (
+                                <img src={partido15_e2_e} class="w-10 h-10 rounded-sm" alt={partido15_e2} />
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                            <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                            <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                        </svg>
+                                )}
+                        </div>
+                    </EquipoBoxDer>
+                </div>
+
+                <!-- Partido 16 -->
+                <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+                    <div class="grid grid-cols-3 place-items-center text-blanco">
+                        <h4 class="text-sm">Partido 16</h4>
+                        <h5 class="text-gray-500 text-xs">{estado_p16}</h5>
+                        <h4 class="text-sm">{pista_p16}</h4>
+                    </div>
+                    <!--Equipo 11 -->
+                    <EquipoBoxDer>
+                        <div>
+                            <input name="partido16_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido16_ra} placeholder="0" />
+                        </div>
+                        <p class="text-blanco text-base text-center">{partido16_e1}</p>
+                        <div>
+                            {partido16_e1_e && partido16_e1_e.trim() !== "" ?  (
+                                <img src={partido16_e1_e} class="w-10 h-10 rounded-sm" alt={partido16_e1} />
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                            <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                            <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                        </svg>
+                                )}
+                        </div>
+                    </EquipoBoxDer>
+
+                    <!--Equipo 12 -->
+                    <EquipoBoxDer>
+                        <div>
+                            <input name="partido16_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido16_rb} placeholder="0" />
+                        </div>
+                        <p class="text-blanco text-base text-center">{partido16_e2}</p>
+                        <div>
+                            {partido16_e2_e && partido16_e2_e.trim() !== "" ?  (
+                                <img src={partido16_e2_e} class="w-10 h-10 rounded-sm" alt={partido16_e2} />
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                            <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                            <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                        </svg>
+                                )}
+                        </div>
+                    </EquipoBoxDer>
+                </div>
+
+            </div>
+        </div>
+        
+        
+    </section>
+    <div class="mt-3 mb-3 w-[95%] h-[2px] bg-amarillo">&nbsp;</div>
+    
+    <section class=" w-full flex h-auto flex-wrap place-content-around">
+        <!-- Partido 19 -->
+        <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+            <!--Equipo 1 -->
+            <div class="grid grid-cols-3 place-items-center text-blanco">
+                <h4 class="text-sm">Partido 19</h4>
+                <h5 class="text-gray-500 text-xs">{estado_p19}</h5>
+                <h4 class="text-sm">{pista_p19}</h4>
+            </div>
+            <EquipoBox>
+                <div>
+                    {partido19_e1_e && partido19_e1_e.trim() !== "" ?  (
+                        <img src={partido19_e1_e} class="w-10 h-10 rounded-sm" alt={partido19_e1} />
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                    <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                    <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                </svg>
+                        )}
+                </div>
+                <p class="text-blanco text-base text-center">{partido19_e1}</p>
+                
+                <div>
+                    <input name="partido19_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido19_ra} placeholder="0" />
+                </div>
+            </EquipoBox>
+
+                <!--Equipo 2 -->
+                <EquipoBox>
+                    <div>
+                        {partido19_e2_e && partido19_e2_e.trim() !== "" ?  (
+                            <img src={partido19_e2_e} class="w-10 h-10 rounded-sm" alt={partido19_e2} />
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                        <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                        <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                    </svg>
+                            )}
+                    </div>
+                    <p class="text-blanco text-base text-center">{partido19_e2}</p>
+                    <div>
+                        <div>
+                            <input name="partido19_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido19_rb} placeholder="0" />
+                        </div>
+                    </div>
+                </EquipoBox>
+        </div>
+
+        <!-- Partido 20 -->
+        <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+            <!--Equipo 1 -->
+            <div class="grid grid-cols-3 place-items-center text-blanco">
+                <h4 class="text-sm">Partido 20</h4>
+                <h5 class="text-gray-500 text-xs">{estado_p20}</h5>
+                <h4 class="text-sm">{pista_p20}</h4>
+            </div>
+            <EquipoBox>
+                <div>
+                    {partido20_e1_e && partido20_e1_e.trim() !== "" ?  (
+                        <img src={partido20_e1_e} class="w-10 h-10 rounded-sm" alt={partido20_e1} />
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                    <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                    <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                </svg>
+                        )}
+                </div>
+                <p class="text-blanco text-base text-center">{partido20_e1}</p>
+                
+                <div>
+                    <input name="partido20_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido20_ra} placeholder="0" />
+                </div>
+            </EquipoBox>
+
+                <!--Equipo 2 -->
+                <EquipoBox>
+                    <div>
+                        {partido20_e2_e && partido20_e2_e.trim() !== "" ?  (
+                            <img src={partido20_e2_e} class="w-10 h-10 rounded-sm" alt={partido20_e2} />
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                        <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                        <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                    </svg>
+                            )}
+                    </div>
+                    <p class="text-blanco text-base text-center">{partido20_e2}</p>
+                    <div>
+                        <div>
+                            <input name="partido20_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido20_rb} placeholder="0" />
+                        </div>
+                    </div>
+                </EquipoBox>
+        </div>
+
+        <!-- Partido 21 -->
+        <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+            <!--Equipo 1 -->
+            <div class="grid grid-cols-3 place-items-center text-blanco">
+                <h4 class="text-sm">Partido 21</h4>
+                <h5 class="text-gray-500 text-xs">{estado_p21}</h5>
+                <h4 class="text-sm">{pista_p21}</h4>
+            </div>
+            <EquipoBox>
+                <div>
+                    {partido21_e1_e && partido21_e1_e.trim() !== "" ?  (
+                        <img src={partido21_e1_e} class="w-10 h-10 rounded-sm" alt={partido21_e1} />
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                    <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                    <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                </svg>
+                        )}
+                </div>
+                <p class="text-blanco text-base text-center">{partido21_e1}</p>
+                
+                <div>
+                    <input name="partido21_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido21_ra} placeholder="0" />
+                </div>
+            </EquipoBox>
+
+                <!--Equipo 2 -->
+                <EquipoBox>
+                    <div>
+                        {partido21_e2_e && partido21_e2_e.trim() !== "" ?  (
+                            <img src={partido21_e2_e} class="w-10 h-10 rounded-sm" alt={partido21_e2} />
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                        <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                        <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                    </svg>
+                            )}
+                    </div>
+                    <p class="text-blanco text-base text-center">{partido21_e2}</p>
+                    <div>
+                        <div>
+                            <input name="partido21_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido21_rb} placeholder="0" />
+                        </div>
+                    </div>
+                </EquipoBox>
+        </div>
+
+        <!-- Partido 22 -->
+        <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+            <!--Equipo 1 -->
+            <div class="grid grid-cols-3 place-items-center text-blanco">
+                <h4 class="text-sm">Partido 22</h4>
+                <h5 class="text-gray-500 text-xs">{estado_p22}</h5>
+                <h4 class="text-sm">{pista_p22}</h4>
+            </div>
+            <EquipoBox>
+                <div>
+                    {partido22_e1_e && partido22_e1_e.trim() !== "" ?  (
+                        <img src={partido22_e1_e} class="w-10 h-10 rounded-sm" alt={partido22_e1} />
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                    <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                    <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                </svg>
+                        )}
+                </div>
+                <p class="text-blanco text-base text-center">{partido22_e1}</p>
+                
+                <div>
+                    <input name="partido22_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido22_ra} placeholder="0" />
+                </div>
+            </EquipoBox>
+
+                <!--Equipo 2 -->
+                <EquipoBox>
+                    <div>
+                        {partido22_e2_e && partido22_e2_e.trim() !== "" ?  (
+                            <img src={partido22_e2_e} class="w-10 h-10 rounded-sm" alt={partido22_e2} />
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                        <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                        <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                    </svg>
+                            )}
+                    </div>
+                    <p class="text-blanco text-base text-center">{partido22_e2}</p>
+                    <div>
+                        <div>
+                            <input name="partido22_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido22_rb} placeholder="0" />
+                        </div>
+                    </div>
+                </EquipoBox>
+        </div>
+    </section>
+
+</section>
