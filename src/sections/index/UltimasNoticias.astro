@@ -24,7 +24,7 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
 ---
 
 <div class="flex justify-center mt-10">
-  <div class="grid grid-cols-3 gap-4 place-items-center">
+  <div class="grid grid-cols-3 gap-4 place-items-center xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-3">
     {topNoticias.length === 0 ? (
       <div class="text-center col-span-3">
         <h2 class="text-amarillo uppercase font-bold text-4xl">No se encontraron noticias</h2>
@@ -33,13 +33,13 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
     ) : (
       topNoticias.map((noticia, index) => {
         const isCenter = index === 0; // El primer elemento es el de mayor ID
-        const sizeClass = isCenter ? 'scale-100 hover:scale-105' : 'scale-90 hover:scale-95';
+        const sizeClass = isCenter ? 'scale-100 z-10 hover:scale-105' : 'scale-90 xs:scale-75 sm:scale-75 md:scale-90 hover:scale-95';
         
         return (
           <a 
             href={`/noticias/${noticia.id_noticia}`}
-            class={`w-80 h-96 relative rounded-lg bg-gris-claro pointer group transition-all  duration-300 ${sizeClass}`}
-            style={isCenter ? 'grid-column: 2; grid-row: 1;' : (index === 1 ? 'grid-column: 1; grid-row: 1;' : 'grid-column: 3; grid-row: 1;')}
+            class={`w-80 h-96 relative rounded-lg bg-gris-claro pointer group  transition-all  duration-300 ${sizeClass}`}
+            style={isCenter ? 'grid-column: 2; grid-row: 1;' : (index === 1 ? 'grid-column: 1; grid-row: 1; -z-10' : 'grid-column: 3; grid-row: 1; -z-10')}
           >
             <div class="flex flex-col h-full">
               <div class="flex items-center justify-center w-full h-auto max-h-44 overflow-hidden">
