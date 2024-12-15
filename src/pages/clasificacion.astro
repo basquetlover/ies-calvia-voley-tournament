@@ -1,6 +1,7 @@
 ---
 import Loading from "@components/Loading.astro";
 import LayoutMenuSinLoader from "@layouts/LayoutMenuSinLoader.astro";
+import Pistas from "@sections/administracion/Pistas.astro";
 import Consolacion from "@sections/clasificacion/Consolacion.astro";
 
 import Eliminatoria from "@sections/clasificacion/Eliminatoria.astro";
@@ -11,26 +12,48 @@ import Eliminatoria from "@sections/clasificacion/Eliminatoria.astro";
      const eliminatoria = document.getElementById('eliminatoria')!;
      const btn_consolacion = document.getElementById('btn-consolacion')!;
      const consolacion = document.getElementById('consolacion')!;
+     const btn_pistas = document.getElementById('btn-pistas')!;
+     const pistas = document.getElementById('pistas')!;
      
      btn_eliminatoria.addEventListener('click', function() {
-         if (consolacion.classList.contains('activado')) {
+         if (eliminatoria.classList.contains('desactivado')) {
              consolacion.classList.add('desactivado');
              consolacion.classList.remove('activado');
+             pistas.classList.remove('activado');
+             pistas.classList.add('desactivado');
              eliminatoria.classList.remove('desactivado');
              eliminatoria.classList.add('activado');
              btn_consolacion.classList.remove('seleccionado');
+             btn_pistas.classList.remove('seleccionado');
              btn_eliminatoria.classList.add('seleccionado');
          } 
      });
  
      btn_consolacion.addEventListener('click', function() {
-         if (eliminatoria.classList.contains('activado')) {
+         if (consolacion.classList.contains('desactivado')) {
              consolacion.classList.add('activado');
              consolacion.classList.remove('desactivado');
+             pistas.classList.remove('activado');
+             pistas.classList.add('desactivado');
              eliminatoria.classList.add('desactivado');
              eliminatoria.classList.remove('activado');
              btn_consolacion.classList.add('seleccionado');
+             btn_pistas.classList.remove('seleccionado');
              btn_eliminatoria.classList.remove('seleccionado');
+         } 
+     });
+
+     btn_pistas.addEventListener('click', function() {
+         if (pistas.classList.contains('desactivado')) {
+             consolacion.classList.add('desactivado');
+             consolacion.classList.remove('activado');
+             pistas.classList.remove('desactivado');
+             pistas.classList.add('activado');
+             eliminatoria.classList.add('desactivado');
+             eliminatoria.classList.remove('activado');
+             btn_consolacion.classList.remove('seleccionado');
+             btn_eliminatoria.classList.remove('seleccionado');
+             btn_pistas.classList.add('seleccionado');
          } 
      });
      
@@ -42,6 +65,7 @@ import Eliminatoria from "@sections/clasificacion/Eliminatoria.astro";
      <div class="w-max ml-5 h-auto flex flex-row gap-x-2 px-4 pt-2 mt-5 rounded-tr-md rounded-tl-md bg-azul">
           <div id="btn-eliminatoria" class="text-center py-2 px-3 rounded-tr-md rounded-tl-md text-amarillo text-2xl cursor-pointer seleccionado">Eliminatoria</div>
           <div id="btn-consolacion" class="text-center py-2 px-3 rounded-tr-md rounded-tl-md text-amarillo text-2xl cursor-pointer">Consolación</div>
+          <div id="btn-pistas" class="text-center py-2 px-3 rounded-tr-md rounded-tl-md text-amarillo text-2xl cursor-pointer">Pistes</div>
       </div>
       <div id="component-container">
       <div id="eliminatoria" class="activado">
@@ -49,8 +73,12 @@ import Eliminatoria from "@sections/clasificacion/Eliminatoria.astro";
       </div>
       <div id="consolacion" class="desactivado">
         <Consolacion />
+    </div>
+        <div id="pistas" class="desactivado">
+            <Pistas />
+          </div>
       </div>
-      </div>
+      
 </LayoutMenu>
 
 <style>
