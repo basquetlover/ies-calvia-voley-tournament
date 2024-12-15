@@ -37,8 +37,26 @@ if (checkError) {
 
 async function uploadFile(file: File, id_noticia: string) {
     // Extraer la extensión del archivo
-    const extension = file.name.split('.').pop(); // Obtiene la extensión
-    const uniqueFileName = `${id_noticia}.${extension}`; // Combina id_equipo con la extensión
+    function removeAccents(str: string): string  {
+      const accents = [
+          { base: 'a', letters: /[áàäâ]/g },
+          { base: 'e', letters: /[éèëê]/g },
+          { base: 'i', letters: /[íìïî]/g },
+          { base: 'o', letters: /[óòöô]/g },
+          { base: 'u', letters: /[úùüû]/g },
+          { base: 'n', letters: /[ñ]/g },
+      ];
+  
+      accents.forEach(accent => {
+          str = str.replace(accent.letters, accent.base);
+      });
+  
+      return str;
+  }
+  
+  const extension = file.name.split('.').pop(); // Obtiene la extensión
+  const sanitizedId = removeAccents(id_noticia); // Elimina acentos del id_noticia
+  const uniqueFileName = `${sanitizedId}.${extension}`;
     const filePath = `${uniqueFileName}`; // Define la ruta del archivo
   
     const { data, error } = await supabaseAdmin.storage
