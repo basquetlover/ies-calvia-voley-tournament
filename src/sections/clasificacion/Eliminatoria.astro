@@ -4,6 +4,7 @@ import EquipoBoxDer from "@components/admin/EquipoBoxDer.astro";
 
 import { supabaseAdmin } from "src/lib/supabase";
 
+
 let recargar = "off";
 
 let pista_p1 = 'Sin Pista';
@@ -865,7 +866,7 @@ try {
   
 </>
 <section class="w-full min-h-screen overflow-x-auto h-auto z-0 flex flex-col place-content-center items-center rounded-none  bg-gris-claro m-0 p-1">
-    <section class="w-auto h-auto overflow-x-auto  mx-auto  m-0 flex flex-row gap-1">
+    <section class="w-auto relative h-auto overflow-x-auto  mx-auto  m-0 flex flex-row gap-1">
         
             <!--Octavos Izq -->
             <div class="w-max scale-100 h-auto flex place-content gap-2 flex-col place-content-around">
@@ -1141,9 +1142,59 @@ try {
             </div>
 
             <!--Final-->
-            <div class="w-max h-screen scale-100 flex flex-col place-content-around ">        
+            <div class="w-max h-screen custom scale-100 flex flex-col place-content-around ">        
                 <!-- Semi 1 -->
                 <div class="w-max flex flex-col gap-2 bg-gold rounded-lg p-2">
+                    <div class="grid grid-cols-3 place-items-center text-gris">
+                        <h4 class="text-sm">Final</h4>
+                        <h5 class="text-gray-600 text-xs">{estado_final}</h5>
+                        <h4 class="text-sm">{pista_final}</h4>
+                    </div>
+                    <!--Ganador P1 -->
+                    <div class="flex flex-row gap-2">
+                        <EquipoBox>
+                            <div>
+                                {final_e1_e && final_e1_e.trim() !== "" ?  (
+                                    <img src={final_e1_e} class="w-10 h-10 rounded-sm" alt={final_e1} />
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                            </svg>
+                                    )}
+                            </div>
+                            <p class="text-blanco text-base text-center">{final_e1}</p>
+                            <div>
+                                <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{final_ra}</p>
+                            </div>
+                        </EquipoBox>
+
+                        <!--Ganador P2 -->
+                        <EquipoBoxDer>
+                            <div>
+                                <div>
+                                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{final_rb}</p>
+                                </div>
+                            </div>
+                            <p class="text-blanco text-base text-center">{final_e2}</p>
+                            <div>
+                                {final_e2_e && final_e2_e.trim() !== "" ?  (
+                                    <img src={final_e2_e} class="w-10 h-10 rounded-sm" alt={final_e2} />
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                                <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                                <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                            </svg>
+                                    )}
+                            </div> 
+                        </EquipoBoxDer>
+                    </div>
+                </div>
+            </div>
+            <!--No se ve -->
+            <div class="w-max h-screen opacity-0 select-none scale-100 flex flex-col place-content-around ">        
+                <!-- Final sin ver -->
+                <div class="w-max flex flex-col gap-2 bg-aceptar rounded-lg p-2">
                     <div class="grid grid-cols-3 place-items-center text-gris">
                         <h4 class="text-sm">Final</h4>
                         <h5 class="text-gray-600 text-xs">{estado_final}</h5>
@@ -1451,3 +1502,12 @@ try {
     </section>
     
 </section>
+
+<style>
+    .custom{
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -180px;
+    }
+</style>
