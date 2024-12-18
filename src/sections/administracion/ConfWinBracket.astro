@@ -156,6 +156,15 @@ let semi2_ra = "-";
 let semi2_rb = "-";
 let estado_s2 = "Por Jugar";
 
+let pista_final = 'Sin Pista';
+let final_e1 = "";
+let final_e1_e = "";
+let final_e2 = "";
+let final_e2_e = "";
+let final_ra = "-";
+let final_rb = "-";
+let estado_final = "Por Jugar";
+
 //P1
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
@@ -481,6 +490,29 @@ try {
  console.error('Error al obtener rango:', err);
 }
 
+//final
+try {
+ 
+ const { data: final, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'final')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (final) {
+   pista_final = final.pista;
+   final_e1 = final.equipo_a;
+   final_e2 = final.equipo_b;
+   final_ra = final.resultado_a;
+   final_rb = final.resultado_b;
+   estado_final = final.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
 
 ---
 <form method="POST" action="/api/confwinbracket" class="w-full min-h-screen overflow-x-auto h-auto z-0 flex flex-col place-content-center items-center rounded-none  bg-gris-claro m-0 p-0">
@@ -891,8 +923,10 @@ try {
                     <div class="grid grid-cols-2 place-items-center text-gris">
                         <h4 class="text-sm">Final</h4>
                         
-                        <select class="text-sm w-full text-gris h-full break-words bg-transparent">
-                        <option  selected value="" class="bg-accent text-gris"> Seleccione</option>
+                        <select name="final_pista" class="text-sm w-full text-gris h-full break-words bg-transparent">
+                            <option  value="" class="bg-accent text-gris"> Seleccione</option>
+                            <option value="Pista" class="bg-accent text-gris">Pistas</option>
+                            <option  value={pista_final} selected class="bg-amarillo text-gris"> {pista_final}</option>
                         {
                             PISTAS.map(({pista}) =>(
                                 <option class="bg-accent text-gris" value={pista}>{pista}</option>
@@ -903,7 +937,17 @@ try {
                     <!--Ganador P1 -->
                     <EquipoBox>
                         <div></div>
-                        <p class="text-blanco text-base">Ganador S1</p>
+                        <div class="w-full h-full">
+                            <select name="final_e1"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value={final_e1} selected class="bg-amarillo text-gris">{final_e1}</option>
+                                <option value="Ganador P10"  class="bg-accent text-gris">Ganador S1</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
                         <div>
                             <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
                         </div>
@@ -914,7 +958,17 @@ try {
                         <div>
                             <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" ></p>
                         </div>
-                        <p class="text-blanco text-base">Ganador S2</p>
+                        <div class="w-full h-full">
+                            <select name="final_e2"  class="w-full text-blanco h-full break-words bg-transparent" onchange="updateEscudo(event)">
+                                <option value={final_e2} selected class="bg-amarillo text-gris">{final_e2}</option>
+                                <option value="Ganador P10"  class="bg-accent text-gris">Ganador S2</option>
+                                {
+                                    equipos?.map((equipo) => (
+                                        <option value={equipo.nombre_equipo} class="bg-accent text-gris">{equipo.nombre_equipo}</option>
+                                    ))
+                                }
+                            </select> 
+                        </div>
                         <div>
                             <div>
                                 

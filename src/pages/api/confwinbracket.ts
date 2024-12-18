@@ -66,7 +66,12 @@ export const POST: APIRoute = async ({ request, redirect }) => {
    const semi2_e1 = formData.get("semi2_e1")?.toString().trim() || "";
    const semi2_e2 = formData.get("semi2_e2")?.toString().trim() || "";
 
-  console.log("Datos recibidos",partido1_e1, partido1_e2, partido1_pista, partido2_e1, partido2_e1, partido2_e2, partido2_pista);
+   //Final
+   const final_pista = formData.get("final_pista")?.toString().trim() || "";
+   const final_e1 = formData.get("final_e1")?.toString().trim() || "";
+   const final_e2 = formData.get("final_e2")?.toString().trim() || "";
+
+  //console.log("Datos recibidos",partido1_e1, partido1_e2, partido1_pista, partido2_e1, partido2_e1, partido2_e2, partido2_pista);
   
   //P1
   const { data: rp1, error: ep1 } = await supabaseAdmin
@@ -234,6 +239,18 @@ export const POST: APIRoute = async ({ request, redirect }) => {
    }
    )
    .eq('numero_partido', 'semi_2')
+   .select()
+
+   //Final
+   const { data: rfi, error: efi } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+      pista: final_pista,
+      equipo_a: final_e1,
+      equipo_b: final_e2,
+   }
+   )
+   .eq('numero_partido', 'final')
    .select()
   
 
