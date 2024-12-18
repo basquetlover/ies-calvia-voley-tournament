@@ -34,7 +34,7 @@ try {
     .from('ResultadoNavidad')
     .select('equipo_a, equipo_b, pista, numero_partido, arbitro, oficial_mesa_1, oficial_mesa_2')
     .or(`arbitro.eq.${userWithRango.email},oficial_mesa_1.eq.${userWithRango.email},oficial_mesa_2.eq.${userWithRango.email}`)
-    .order('id', { ascending: true });
+    .order('orden', { ascending: true });
 
   if (error) {
     console.error(`Error al buscar partido 1`, error.message);
