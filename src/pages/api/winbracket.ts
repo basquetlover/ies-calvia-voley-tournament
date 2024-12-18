@@ -217,7 +217,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
    .select()
 
    //final
-   const { data: rfinal, error: es2 } = await supabaseAdmin
+   const { data: rfinal, error: efinal } = await supabaseAdmin
    .from('ResultadoNavidad')
    .update({
 
