@@ -130,6 +130,15 @@ let semi2_ra = "-";
 let semi2_rb = "-";
 let estado_s2 = "Por Jugar";
 
+let pista_final = 'Sin Pista';
+let final_e1 = "";
+let final_e1_e = "";
+let final_e2 = "";
+let final_e2_e = "";
+let final_ra = "-";
+let final_rb = "-";
+let estado_final = "Por Jugar";
+
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: partido1, error } = await supabaseAdmin
@@ -797,6 +806,30 @@ try {
  console.error('Error al obtener rango:', err);
 }
 
+//final
+try {
+ 
+ const { data: final, error } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .select('pista, equipo_a, equipo_b, resultado_a, resultado_b, estado')
+   .eq('numero_partido', 'final')
+   .single();
+
+ if (error) {
+   console.error(`Error al buscar partido 1`, error.message);
+ } else if (final) {
+   pista_final = final.pista;
+   final_e1 = final.equipo_a;
+   final_e2 = final.equipo_b;
+   final_ra = final.resultado_a;
+   final_rb = final.resultado_b;
+   estado_final = final.estado;
+ }
+
+} catch (err) {
+ console.error('Error al obtener rango:', err);
+}
+
 ---
 <form method="POST" action="/api/winbracket" class="w-full min-h-screen overflow-x-auto h-auto z-0 flex flex-col place-content-center items-center rounded-none  bg-gris-claro m-0 p-0">
     <section class="w-auto h-auto overflow-x-auto  mx-auto  m-0 flex flex-row gap-1">
@@ -1080,27 +1113,43 @@ try {
                 <div class="w-max flex flex-col gap-2 bg-gold rounded-lg p-2">
                     <div class="grid grid-cols-3 place-items-center text-gris">
                         <h4 class="text-sm">Final</h4>
-                        <h5 class="text-gray-600 text-xs">Por Jugar</h5>
-                        <h4 class="text-sm">Pista 1</h4>
+                        <h5 class="text-gray-600 text-xs">{estado_final}</h5>
+                        <h4 class="text-sm">{pista_final}</h4>
                     </div>
                     <!--Ganador P1 -->
                     <EquipoBox>
-                        <div></div>
-                        <p class="text-blanco text-base text-center">Ganador S1</p>
                         <div>
-                            <input name="final" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
+                            {final_e1_e && final_e1_e.trim() !== "" ?  (
+                                <img src={final_e1_e} class="w-10 h-10 rounded-sm" alt={final_e1} />
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                            <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                            <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                        </svg>
+                                )}
+                        </div>
+                        <p class="text-blanco text-base text-center">{final_e1}</p>
+                        <div>
+                            <input name="final_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={final_ra} placeholder="0" />
                         </div>
                     </EquipoBox>
 
                     <!--Ganador P2 -->
                     <EquipoBox>
                         <div>
-                            
+                            {final_e2_e && final_e2_e.trim() !== "" ?  (
+                                <img src={final_e2_e} class="w-10 h-10 rounded-sm" alt={final_e2} />
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                            <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
+                                            <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
+                                        </svg>
+                                )}
                         </div>
-                        <p class="text-blanco text-base text-center">Ganador S2</p>
+                        <p class="text-blanco text-base text-center">{final_e2}</p>
                         <div>
                             <div>
-                                <input name="final" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" placeholder="0" />
+                                <input name="final_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={final_rb} placeholder="0" />
                             </div>
                         </div>
                     </EquipoBox>

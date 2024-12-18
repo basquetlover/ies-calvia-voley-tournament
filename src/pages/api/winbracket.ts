@@ -52,6 +52,10 @@ export const POST: APIRoute = async ({ request, redirect }) => {
    const semi2_ra = formData.get("semi2_ra")?.toString().trim() || "";
    const semi2_rb = formData.get("semi2_rb")?.toString().trim() || "";
 
+   //Final
+   const final_ra = formData.get("final_ra")?.toString().trim() || "";
+   const final_rb = formData.get("final_rb")?.toString().trim() || "";
+
   
   //P1
   const { data: rp1, error: ep1 } = await supabaseAdmin
@@ -210,6 +214,18 @@ export const POST: APIRoute = async ({ request, redirect }) => {
    }
    )
    .eq('numero_partido', 'semi_2')
+   .select()
+
+   //final
+   const { data: rfinal, error: es2 } = await supabaseAdmin
+   .from('ResultadoNavidad')
+   .update({
+
+      resultado_a: final_ra,
+      resultado_b: final_rb,
+   }
+   )
+   .eq('numero_partido', 'final')
    .select()
   
 
