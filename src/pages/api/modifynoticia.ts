@@ -9,7 +9,24 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const fecha = formData.get("fecha")?.toString().trim();
   const cuerpo = formData.get("cuerpo")?.toString().trim();
 
-  const id_noticia = nombre_noticia.toLowerCase().replace(/\s+/g, '-');
+  function removeAccents(str: string): string  {
+    const accents = [
+        { base: 'a', letters: /[áàäâ]/g },
+        { base: 'e', letters: /[éèëê]/g },
+        { base: 'i', letters: /[íìïî]/g },
+        { base: 'o', letters: /[óòöô]/g },
+        { base: 'u', letters: /[úùüû]/g },
+        { base: 'n', letters: /[ñ]/g },
+    ];
+
+    accents.forEach(accent => {
+        str = str.replace(accent.letters, accent.base);
+    });
+
+    return str;
+}
+  let id_noticia = nombre_noticia.toLowerCase().replace(/\s+/g, '-');
+  id_noticia = removeAccents(id_noticia)
 
   const { data: equipoData, error } = await supabaseAdmin
   .from('Noticias')

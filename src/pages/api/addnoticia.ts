@@ -7,8 +7,24 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const categoria = formData.get("categoria")?.toString().trim();
   const fecha = formData.get("fecha")?.toString().trim();
   const cuerpo = formData.get("cuerpo")?.toString().trim();
+  function removeAccents(str: string): string  {
+    const accents = [
+        { base: 'a', letters: /[áàäâ]/g },
+        { base: 'e', letters: /[éèëê]/g },
+        { base: 'i', letters: /[íìïî]/g },
+        { base: 'o', letters: /[óòöô]/g },
+        { base: 'u', letters: /[úùüû]/g },
+        { base: 'n', letters: /[ñ]/g },
+    ];
 
-  const id_noticia = nombre_noticia.toLowerCase().replace(/\s+/g, '-');
+    accents.forEach(accent => {
+        str = str.replace(accent.letters, accent.base);
+    });
+
+    return str;
+}
+  let id_noticia = nombre_noticia.toLowerCase().replace(/\s+/g, '-');
+  id_noticia = removeAccents(id_noticia)
   
   // Recoger la información del escudo (imagen)
   const imagen_noticia = formData.get("imagen_noticia") as File;
@@ -36,23 +52,7 @@ if (checkError) {
 
 
 async function uploadFile(file: File, id_noticia: string) {
-    // Extraer la extensión del archivo
-    function removeAccents(str: string): string  {
-      const accents = [
-          { base: 'a', letters: /[áàäâ]/g },
-          { base: 'e', letters: /[éèëê]/g },
-          { base: 'i', letters: /[íìïî]/g },
-          { base: 'o', letters: /[óòöô]/g },
-          { base: 'u', letters: /[úùüû]/g },
-          { base: 'n', letters: /[ñ]/g },
-      ];
-  
-      accents.forEach(accent => {
-          str = str.replace(accent.letters, accent.base);
-      });
-  
-      return str;
-  }
+    
   
   const extension = file.name.split('.').pop(); // Obtiene la extensión
   const sanitizedId = removeAccents(id_noticia); // Elimina acentos del id_noticia
