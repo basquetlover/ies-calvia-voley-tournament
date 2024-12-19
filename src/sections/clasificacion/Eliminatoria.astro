@@ -834,7 +834,29 @@ try {
  } else if (final) {
    pista_final = final.pista;
    final_e1 = final.equipo_a;
+   if (final_e1){
+        const { data: escud_e1_final, error } = await supabaseAdmin
+        .from('Equipos')
+        .select('escudo')
+        .eq('nombre_equipo', final_e1)
+        .single();
+
+        if (escud_e1_final){
+            final_e1_e = escud_e1_final.escudo;
+        }
+    }
    final_e2 = final.equipo_b;
+   if (final_e2){
+        const { data: escud_e2_final, error } = await supabaseAdmin
+        .from('Equipos')
+        .select('escudo')
+        .eq('nombre_equipo', final_e2)
+        .single();
+
+        if (escud_e2_final){
+            final_e2_e = escud_e2_final.escudo;
+        }
+    }
    final_ra = final.resultado_a;
    final_rb = final.resultado_b;
    estado_final = final.estado;
