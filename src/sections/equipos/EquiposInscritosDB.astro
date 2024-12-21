@@ -23,6 +23,9 @@ if (error) {
 } else {
   console.log(`Se encontraron ${equipos.length} equipos`);
 }
+const equipo = {
+  ganador: "Ejemplo" // Cambia esto según tu lógica
+};
 ---
 {!equipos || equipos.length === 0  && (
   <>
@@ -44,7 +47,7 @@ if (error) {
     <h3 class="text-accent text-4xl font-bold ">Equips Inscrits</h3>
     <div class="max-w-[1600px] h-auto grid grid-cols-4 grid-rows-1 gap-20 mt-6 place-items-center xs:grid-cols-1 xs:grid-rows-1 sm:grid-cols-2 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-1 ">
         {equipos && equipos.map((equipo) => (
-        <a href={`/equipos/${equipo.id_equipo}`} class="w-72 h-72 p-4 relative rounded-lg bg-amarillo hover:scale-105 transition-all duration-300">
+        <a href={`/equipos/${equipo.id_equipo}`} class={`w-72 h-72 p-4 relative rounded-lg  hover:scale-105 transition-all duration-300 ${equipo.ganador && equipo.ganador.trim() !== "" ? 'bg-azul text-amarillo' : 'bg-amarillo text-azul'}`}>
           {equipo.ganador && equipo.ganador.trim() !== "" ? (
             <div class="corona w-[190px] h-[60px] flex items-center place-content-center mx-auto">
               <svg xmlns="http://www.w3.org/2000/svg" class="scale-y-50 scale-x-75" fill="none" viewBox="0 0 250 120">
@@ -56,7 +59,7 @@ if (error) {
             )}
           
             <div class="w-full h-full  grid grid-cols-1 grid-rows-[auto_1fr_auto]">
-            <p class="text-azul text-2xl font-semibold" translate="no">{equipo.nombre_equipo}</p>
+            <p class=" text-2xl font-semibold" translate="no">{equipo.nombre_equipo}</p>
             <div class="flex items-center justify-center w-full h-full">
                 {equipo.escudo && equipo.escudo.trim() !== "" ? (
                 <img 
@@ -72,7 +75,7 @@ if (error) {
                 </svg>
                 )}
             </div>
-            <p class="text-azul text-xl"><span class="font-semibold">Capità:</span> {equipo.capitan}</p>
+            <p class=" text-xl"><span class="font-semibold">Capità:</span> {equipo.capitan}</p>
             </div>
             
         </a>
