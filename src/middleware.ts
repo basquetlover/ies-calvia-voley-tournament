@@ -41,7 +41,7 @@ export const onRequest: MiddlewareHandler = async ({ locals, cookies }, next) =>
     const refreshToken = cookies.get('sb-refresh-token')?.value ?? null;
 
     if (!accessToken || !refreshToken) {
-      locals.user = null;
+      locals.StaffUser = null;
       locals.session = null;
       return next();
     }
@@ -53,12 +53,12 @@ export const onRequest: MiddlewareHandler = async ({ locals, cookies }, next) =>
 
     if (error) {
       console.error('Error setting Supabase session:', error);
-      locals.user = null;
+      locals.StaffUser = null;
       locals.session = null;
       cookies.delete('sb-access-token', { path: '/' });
       cookies.delete('sb-refresh-token', { path: '/' });
     } else if (data.session) {
-      locals.user = {
+      locals.StaffUser = {
         id: data.user?.id ?? '',
         email: data.user?.email ?? ''
       };
@@ -87,14 +87,14 @@ export const onRequest: MiddlewareHandler = async ({ locals, cookies }, next) =>
         });
       }
     } else {
-      locals.user = null;
+      locals.StaffUser = null;
       locals.session = null;
       cookies.delete('sb-access-token', { path: '/' });
       cookies.delete('sb-refresh-token', { path: '/' });
     }
   } catch (error) {
     console.error('Middleware - Error:', error);
-    locals.user = null;
+    locals.StaffUser = null;
     locals.session = null;
     cookies.delete('sb-access-token', { path: '/' });
     cookies.delete('sb-refresh-token', { path: '/' });

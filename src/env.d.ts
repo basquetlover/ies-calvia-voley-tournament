@@ -24,6 +24,11 @@ declare namespace App {
       id: string;
       email: string;
     } | null;
+    User: {
+      id: string;
+      nombre: string;
+      email: string;
+    } | null;
     session: {
       access_token: string;
       refresh_token: string;
