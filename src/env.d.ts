@@ -20,7 +20,7 @@
 
 declare namespace App {
   interface Locals {
-    user: {
+    StaffUser: {
       id: string;
       email: string;
     } | null;

@@ -8,7 +8,7 @@ import { supabaseAdmin } from "../../lib/supabase";
 import SinPermisos from "@components/admin/SinPermisos.astro";
 
 // Verifica si hay un usuario autenticado
-const user = Astro.locals.user;
+const user = Astro.locals.StaffUser;
 const pathname = Astro.url.pathname;
 let userWithRango = {
     email: user?.email || "Desconocido",

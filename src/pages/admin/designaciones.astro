@@ -1,7 +1,7 @@
 ---
 import LayoutAll from "@layouts/LayoutAll.astro";
 import { supabaseAdmin } from "src/lib/supabase";
-const user = Astro.locals.user;
+const user = Astro.locals.StaffUser;
 
 let userWithRango = {
     email: user?.email || "Desconocido",

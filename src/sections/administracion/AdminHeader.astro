@@ -78,7 +78,7 @@ export const OWNER = [
 import { supabaseAdmin } from "../../lib/supabase";
 
 // Verifica si hay un usuario autenticado
-const user = Astro.locals.user;
+const user = Astro.locals.StaffUser;
 
 let userWithRango = {
     email: user?.email || "Desconocido",

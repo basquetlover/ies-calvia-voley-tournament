@@ -10,7 +10,7 @@ import ConfConsolacion from "@sections/administracion/ConfConsolacion.astro";
 
 
 // Verifica si hay un usuario autenticado
-const user = Astro.locals.user;
+const user = Astro.locals.StaffUser;
 const pathname = Astro.url.pathname;
 let userWithRango = {
     email: user?.email || "Desconocido",
