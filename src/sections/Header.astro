@@ -133,8 +133,8 @@ boton_subemnu_movil.addEventListener('click', function() {
 const usuario = document.getElementById('usuario')!;
 const user_menu = document.getElementById('user-menu')!;
 const cerrar_user_menu = document.getElementById('cerrar-user-menu')!;
-
-usuario.addEventListener('click', function() {
+if(usuario){
+    usuario.addEventListener('click', function() {
     if (user_menu.classList.contains('desactivado')) {
         user_menu.classList.remove('desactivado');
         user_menu.classList.add('active-flex');
@@ -151,6 +151,10 @@ cerrar_user_menu.addEventListener('click', function() {
         console.log("Error")
     }
 });
+}else{
+    console.log("No hay sesion iniciada")
+}
+
 </script>
 
 <header class=" w-full flex flex-row content-center justify-center  ">
