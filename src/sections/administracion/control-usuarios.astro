@@ -1,0 +1,124 @@
+---
+import { supabaseAdmin } from "src/lib/supabase";
+
+let { data: AccesoUsuarios, error } = await supabaseAdmin
+  .from('AccesoUsuarios')
+  .select('pagina, acceso, id');
+
+console.log(AccesoUsuarios);
+---
+<div class="max-w-2xl w-auto mx-auto h-auto content-center">
+    <div class="flex flex-col relative w-[80%] mx-auto ">
+        <h3 class="text-amarillo text-center text-3xl my-5">Acceso Usuarios</h3>
+        <form class="w-full rounded-lg p-4 text-blanco text-lg bg-gris-claro" method="POST" action="/api/acceso-usuarios">
+            {
+                AccesoUsuarios?.map((acceso, index) => (
+                    <div class="flex flex-row w-full place-content-between my-2">
+                        <p>{acceso.pagina}</p>
+                        <input type="hidden" name={`id_${index}`} value={acceso.id}/>                         
+                        
+                        <label class="switch">
+                            <input 
+                                type="checkbox" 
+                                checked={acceso.acceso}
+                                name={`acceso_${index}`} 
+                                value="true" 
+                            />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <hr class="border-accent"/>
+                ))
+            }
+            <div class="w-full h-auto flex my-5 flex-row items-center place-content-around">
+                <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-32 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                    </svg>
+                    Guardar
+                </button>
+            </div>
+       </form>
+    </div>
+</div>
+
+
+
+<style>
+    .centrar {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .formulario {
+        z-index: 10000;
+    }
+    .form {
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+    
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 25px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #0E347D;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked + .slider {
+        background-color: #34A853;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(22px);
+        -ms-transform: translateX(22px);
+        transform: translateX(22px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>

@@ -21,3 +21,20 @@ export async function getUser(cookies: any) {
 
   return user;
 }
+
+// export async function getUser(cookies: any) {
+//   const accessToken = cookies.get("sb-access-token");
+
+//   if (!accessToken) {
+//     return null;
+//   }
+
+//   const { data: { user }, error } = await supabase.auth.getUser(accessToken);
+
+//   if (error) {
+//     console.error("Error al obtener usuario:", error.message);
+//     return null;
+//   }
+
+//   return user;
+// }

@@ -16,6 +16,8 @@
     "@lucia-auth/adapter-drizzle": "^1.1.0",
     "@supabase/supabase-js": "^2.46.1",
     "astro": "^4.16.14",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "firebase": "^11.0.2",
     "lucia": "^3.2.2",
     "lucia-adapter-astrodb": "^0.2.0",
@@ -24,5 +26,9 @@
   },
   "engines": {
     "node": "18.x"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6"
   }
 }

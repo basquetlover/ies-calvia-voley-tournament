@@ -1,0 +1,36 @@
+---
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+import SinAcceso from "@sections/errores/SinAcceso.astro";
+import { supabaseAdmin } from "src/lib/supabase";
+const pathname = Astro.url.pathname;
+let accessibleBlocks = [];
+
+// Obtén las páginas a las que el usuario tiene acceso
+try {
+    const { data: pageAccess, error } = await supabaseAdmin
+        .from('AccesoUsuarios')
+        .select('pagina, acceso');
+
+    if (error) {
+        console.error("Error al obtener acceso:", error);
+    } else if (pageAccess) {
+        // Filtra las páginas a las que el usuario tiene acceso
+        accessibleBlocks = pageAccess
+            .filter(page => page.acceso === true) // Solo páginas con acceso true
+            .map(page => page.pagina); // Obtiene solo las páginas
+        // console.log(accessibleBlocks);
+    }
+} catch (err) {
+    console.error("Error al obtener acceso:", err);
+}
+
+// Verifica si el usuario tiene acceso a la página actual
+const userHasAccess = accessibleBlocks.includes(pathname);
+---
+{userHasAccess ? (
+    <slot />
+    ) : (
+        <LayoutMenu title="Registrar-se" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
+            <SinAcceso />
+        </LayoutMenu>
+)}

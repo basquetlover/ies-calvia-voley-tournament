@@ -103,50 +103,5 @@ export const onRequest: MiddlewareHandler = async ({ locals, cookies }, next) =>
   return next();
 };
 
-// import type { MiddlewareHandler } from 'astro';
-// import { createClient } from '@supabase/supabase-js';
 
-// // Inicializa el cliente de Supabase
-// const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-// const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-
-// if (!supabaseUrl || !supabaseAnonKey) {
-//   throw new Error('Missing Supabase environment variables');
-// }
-
-// const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// export const onRequest: MiddlewareHandler = async ({ locals, cookies }, next) => {
-//   try {
-//     const accessToken = cookies.get('sb-access-token');
-//     const refreshToken = cookies.get('sb-refresh-token');
-
-//     if (accessToken && refreshToken) {
-//       const { data, error } = await supabase.auth.setSession({
-//         refresh_token: refreshToken.value,
-//         access_token: accessToken.value,
-//       });
-
-//       if (error) {
-//         console.error('Error setting session:', error);
-//         cookies.delete('sb-access-token', { path: '/' });
-//         cookies.delete('sb-refresh-token', { path: '/' });
-//       } else if (data.user) {
-//         locals.user = {
-//           id: data.user.id,
-//           email: data.user.email,
-//         };
-//       } else {
-//         locals.user = null;
-//       }
-//     } else {
-//       locals.user = null;
-//     }
-
-//     return next();
-//   } catch (e) {
-//     console.error('Middleware error:', e);
-//     throw e;
-//   }
-// };
 
