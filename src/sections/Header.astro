@@ -134,6 +134,7 @@ const usuario = document.getElementById('usuario')!;
 const user_menu = document.getElementById('user-menu')!;
 const cerrar_user_menu = document.getElementById('cerrar-user-menu')!;
 
+if(usuario){
     usuario.addEventListener('click', function() {
     if (user_menu.classList.contains('desactivado')) {
         user_menu.classList.remove('desactivado');
@@ -151,6 +152,9 @@ cerrar_user_menu.addEventListener('click', function() {
         console.log("Error")
     }
 });
+}else{
+    console.log("Sesion no iniciada")
+}
 
 
 </script>
@@ -159,7 +163,7 @@ cerrar_user_menu.addEventListener('click', function() {
 const usuario = document.getElementById('usuario-m')!;
 const user_menu = document.getElementById('user-menu-m')!;
 const cerrar_user_menu = document.getElementById('cerrar-user-menu-m')!;
-
+if(usuario){
     usuario.addEventListener('click', function() {
     if (user_menu.classList.contains('desactivado')) {
         user_menu.classList.remove('desactivado');
@@ -177,7 +181,7 @@ cerrar_user_menu.addEventListener('click', function() {
         console.log("Error")
     }
 });
-
+}
 
 </script>
 
