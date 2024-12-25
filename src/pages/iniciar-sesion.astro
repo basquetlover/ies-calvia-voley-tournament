@@ -10,24 +10,24 @@ const { data: Usuarios, error } = await supabaseAdmin
         console.error('Error al obtener usuarios:', error);
         }
 
-import { writeFile } from 'fs/promises';
+// import { writeFile } from 'fs/promises';
 
-async function generateUsers() {
-  const { data: usuarios, error } = await supabaseAdmin
-    .from('Usuarios')
-    .select('nombre, contraseña');
+// async function generateUsers() {
+//   const { data: usuarios, error } = await supabaseAdmin
+//     .from('Usuarios')
+//     .select('nombre, contraseña');
 
-  if (error) {
-    console.error('Error al obtener usuarios:', error);
-    process.exit(1);
-  }
+//   if (error) {
+//     console.error('Error al obtener usuarios:', error);
+//     process.exit(1);
+//   }
 
-  // Guardar la lista como un archivo JSON estático
-  await writeFile('./public/usuarios.json', JSON.stringify(usuarios, null, 2));
+//   // Guardar la lista como un archivo JSON estático
+//   await writeFile('./public/usuarios.json', JSON.stringify(usuarios, null, 2));
   
-}
+// }
 
-generateUsers();    
+// generateUsers();    
 
 ---
 
@@ -35,7 +35,7 @@ generateUsers();
 <ControlAcces>
     <LayoutVacio title="Inicia Sessió" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
         
-        <script>
+        <!-- <script>
             import bcrypt from 'bcryptjs';
             window.addEventListener('load', function(){
             
@@ -111,7 +111,7 @@ generateUsers();
                 form.submit();
             });
         });
-        </script>
+        </script> -->
         
         <section class="w-full h-screen flex flex-col items-center place-content-center relative xs:scale-90 sm:scale-90 md:scale-100 scale-100">
             <h2 class="z-50 text-center text-amarillo font-bold text-5xl">Inicia Sessió</h2>
