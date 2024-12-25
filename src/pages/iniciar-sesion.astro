@@ -30,12 +30,26 @@ if (error) {
                     <div class="grid grid-cols-1 grid-flow-row-[1fr_1fr_max-content] place-items-center mx-auto my-auto w-full h-full">
                         <div class="flex flex-col relative">
                             <label for="nombre" class="form bg-gris rounded-full px-3 py-1 text-blanco text-xl">Usuari</label>
-                            <input type="text" id="nombre" name="nombre" placeholder="Nom d'usuari" class="px-3 py-2 w-60 h-12 bg-gris rounded-full text-base text-blanco border-none" />
+                            <input type="text" id="nombre" name="nombre" placeholder="Nom d'usuari" class="px-3 py-2 w-64 h-12 bg-gris rounded-full text-base text-blanco border-none" />
                         </div>
                         <div class="flex flex-col relative">
                             <div class="w-max mx-auto relative">
-                                <label for="password" class="form bg-gris rounded-full px-3 py-1 text-blanco text-xl">Contrasenya</label>
-                                <input type="password" id="password" name="password" placeholder="Introdueix una contrasenya" class="px-3 py-2 w-60 h-12 bg-gris rounded-full text-base text-blanco border-none" />
+                                <label for="password" class="form bg-gris z-10 rounded-full px-3 py-1 text-blanco text-xl">Contrasenya</label>
+                                <div class="w-64 h-12 relative">
+                                    <input type="password" id="password" name="password" placeholder="Introdueix una contrasenya" class="px-3 py-2 w-64 h-12 bg-gris rounded-full text-base text-blanco border-none" />
+                                    <div class="absolute w-6 h-6 right-2 top-3 cursor-pointer select-none" id="estado">
+                                        <span class="block" id="oculto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                                <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 35-12t37-4q75 0 128 53t52 127q0 20-4 38t-12 34Zm128 126-58-56q38-29 68-63t50-79q-50-101-143-160t-209-60q-29 0-57 4t-55 12l-62-62q41-17 84-25t90-9q151 0 269 84t171 216q-23 59-60 110t-88 88Zm20 246L624-222q-35 11-70 17t-74 5q-151 0-269-83T40-500q21-53 53-98t73-82L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 144 161t208 59q20 0 39-2t39-6l-36-38-21 5q-10 2-21 1-75 0-127-52t-53-128q0-11 2-21t4-21l-84-82Zm319 93Zm-151 75Z"/>
+                                              </svg>
+                                        </span>
+                                        <span class="hidden" id="visible">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                                <path d="M480-320q75 0 128-52t52-128q0-75-52-127t-128-53q-75 0-127 53t-53 127q0 75 53 128t127 52Zm0-72q-45 0-76-31t-32-77q0-45 32-76t76-32q45 0 77 32t31 76q0 45-31 77t-77 31Zm0 192q-146 0-266-81T40-500q54-137 174-218t266-82q146 0 266 82t174 218q-54 137-174 219t-266 81Zm0-300Zm0 220q113 0 208-59t144-161q-50-101-144-160t-208-60q-113 0-207 60T128-500q50 101 145 161t207 59Z"/>
+                                              </svg>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <p class="my-2 w-60 mx-auto text-center text-blanco">Has oblidat la contrasenya? <a href="/contacto" class="text-accent hover:underline duration-300 transition-all">Posa't en contacte amb el Staff</a></p>
                         </div>
@@ -62,6 +76,10 @@ if (error) {
                 align-items: center;
                 justify-content: center;
             }
+            .ojo{
+                position: absolute;
+                right: 4px;
+            }
             .formulario {
                 z-index: 10000;
             }
@@ -71,6 +89,30 @@ if (error) {
                 left: 20px;
             }
         </style>
+<script>
+    let ojo = true
+    const estado = document.getElementById("estado")!;
+    const oculto = document.getElementById("oculto")!;
+    const visible = document.getElementById("visible")!;
+    const password = document.getElementById("password")! as HTMLInputElement;
+    estado.addEventListener('click',  function(){
+        if(ojo){
+            password.type = "text";
+            oculto.classList.remove("block");
+            oculto.classList.add("hidden");
+            visible.classList.add("block");
+            visible.classList.remove("hidden");  
+            ojo = false
+        } else{
+            password.type = "password";
+            oculto.classList.add("block");
+            oculto.classList.remove("hidden");
+            visible.classList.remove("block");
+            visible.classList.add("hidden");
+            ojo = true  
+        }
+    });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
