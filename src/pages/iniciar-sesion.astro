@@ -10,24 +10,24 @@ const { data: Usuarios, error } = await supabaseAdmin
         console.error('Error al obtener usuarios:', error);
         }
 
-import { writeFile } from 'fs/promises';
+// import { writeFile } from 'fs/promises';
 
-async function generateUsers() {
-  const { data: usuarios, error } = await supabaseAdmin
-    .from('Usuarios')
-    .select('nombre, contraseña');
+// async function generateUsers() {
+//   const { data: usuarios, error } = await supabaseAdmin
+//     .from('Usuarios')
+//     .select('nombre, contraseña');
 
-  if (error) {
-    console.error('Error al obtener usuarios:', error);
-    process.exit(1);
-  }
+//   if (error) {
+//     console.error('Error al obtener usuarios:', error);
+//     process.exit(1);
+//   }
 
-  // Guardar la lista como un archivo JSON estático
-  await writeFile('./public/usuarios.json', JSON.stringify(usuarios, null, 2));
+//   // Guardar la lista como un archivo JSON estático
+//   await writeFile('./public/usuarios.json', JSON.stringify(usuarios, null, 2));
   
-}
+// }
 
-generateUsers();    
+// generateUsers();    
 
 ---
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.0/bcrypt.min.js"></script> -->
@@ -41,16 +41,16 @@ generateUsers();
                 contraseña: string;
             }
         
-            async function fetchUsuarios() {
-                try {
-                    const response = await fetch('/usuarios.json');
-                    if (!response.ok) throw new Error('Error al obtener usuarios');
-                    return await response.json();
-                } catch (err) {
-                    console.error('Error al obtener usuarios:', err);
-                    return [];
-                }
-            }
+            // async function fetchUsuarios() {
+            //     try {
+            //         const response = await fetch('/usuarios.json');
+            //         if (!response.ok) throw new Error('Error al obtener usuarios');
+            //         return await response.json();
+            //     } catch (err) {
+            //         console.error('Error al obtener usuarios:', err);
+            //         return [];
+            //     }
+            // }
         
             const form = document.getElementById('registro-form') as HTMLFormElement;
             const boton = document.getElementById('comprobacion')!;
