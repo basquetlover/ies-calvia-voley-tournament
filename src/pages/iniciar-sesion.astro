@@ -1,5 +1,6 @@
 ---
 import ControlAcces from "@components/ControlAcces.astro";
+import LayoutMenu from "@layouts/LayoutMenu.astro";
 import LayoutVacio from "@layouts/LayoutVacio.astro";
 import { supabaseAdmin } from "src/lib/supabase";
 
@@ -13,7 +14,7 @@ if (error) {
 ---
 
 <ControlAcces>
-    <LayoutVacio title="Inicia Sessió" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
+    <LayoutMenu title="Inicia Sessió" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
 
         <section class="w-full h-screen flex flex-col items-center place-content-center relative xs:scale-90 sm:scale-90 md:scale-100 scale-100">
             <h2 class="z-50 text-center text-amarillo font-bold text-5xl">Inicia Sessió</h2>
@@ -102,7 +103,7 @@ if (error) {
     });
 });
 </script>
-    </LayoutVacio>
+    </LayoutMenu>
 </ControlAcces>
 
 <!-- ---
