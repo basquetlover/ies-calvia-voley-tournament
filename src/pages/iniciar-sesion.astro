@@ -33,15 +33,9 @@ generateUsers();
 
 <ControlAcces>
     <LayoutVacio title="Inicia Sessió" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.0/bcrypt.min.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.0/bcrypt.min.js"></script> -->
         <script>
-            
-            const maxIntentos = 3; // Máximo de intentos permitidos
-            let intentosFallidos = 0; // Contador de intentos fallidos
-            const tiempoDesactivacion = 5 * 60 * 1000; // 5 minutos en milisegundos
-            let desactivado = false; // Estado del botón
-            
-            import bcrypt from 'bcryptjs';
+            // import bcrypt from 'bcryptjs';
             interface Usuario {
                 nombre: string;
                 contraseña: string;
@@ -103,17 +97,17 @@ generateUsers();
                     return;
                 }
                 // Verificar la contraseña
-                const isPasswordValid = await bcrypt.compare(password, usuarioEncontrado.contraseña);
+                // const isPasswordValid = await bcrypt.compare(password, usuarioEncontrado.contraseña);
         
-                if (!isPasswordValid) {
-                    mostrarError(passwordInput, "Usuari o contrasenya incorrecta");
-                    return;
-                }
+                // if (!isPasswordValid) {
+                //     mostrarError(passwordInput, "Usuari o contrasenya incorrecta");
+                //     return;
+                // }
                 
                 // Si la contraseña es válida, puedes proceder con el envío del formulario
                 form.submit();
             });
-        </script> -->
+        </script>
         <section class="w-full h-screen flex flex-col items-center place-content-center relative">
             <h2 class="z-50 text-center text-amarillo font-bold text-5xl">Inicia Sessió</h2>
             
