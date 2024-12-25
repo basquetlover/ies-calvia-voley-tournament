@@ -31,82 +31,83 @@ generateUsers();
 
 ---
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.0/bcrypt.min.js"></script> -->
-<script>
-    // import bcrypt from 'bcryptjs';
-    interface Usuario {
-        nombre: string;
-        contraseña: string;
-    }
 
-    async function fetchUsuarios() {
-        try {
-            const response = await fetch('/usuarios.json');
-            if (!response.ok) throw new Error('Error al obtener usuarios');
-            return await response.json();
-        } catch (err) {
-            console.error('Error al obtener usuarios:', err);
-            return [];
-        }
-    }
-
-    const form = document.getElementById('registro-form') as HTMLFormElement;
-    const boton = document.getElementById('comprobacion')!;
-
-    boton.addEventListener('click', async function(event) {
-        event.preventDefault();
-
-        const nombreInput = document.getElementById('nombre') as HTMLInputElement;
-        const passwordInput = document.getElementById('password') as HTMLInputElement;
-        const nombre = nombreInput.value;
-        const password = passwordInput.value;
-        const errorbox = document.getElementById('errorbox') as HTMLDivElement;
-
-        const mostrarError = (inputElement: HTMLInputElement, mensaje: string) => {
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center';
-            errorDiv.innerHTML = `<p>${mensaje}</p>`;
-            errorbox.appendChild(errorDiv);
-        };
-
-        const limpiarErrores = () => {
-            errorbox.innerHTML = '';
-        };
-
-        limpiarErrores();
-
-        if (!nombre) {
-            mostrarError(nombreInput, "És necessari un nom d'usuari");
-            return;
-        }
-
-        // const usuarios = await fetchUsuarios();
-        // const usuarioEncontrado = usuarios.find((usuario: Usuario) => usuario.nombre === nombre);
-
-        
-
-        if (!password) {
-            mostrarError(passwordInput, "És necessari una contrasenya d'usuari");
-            return;
-        }
-
-        // if (!usuarioEncontrado) {
-        //     mostrarError(nombreInput, "Usuari o contrasenya incorrecta");
-        //     return;
-        // }
-        // Verificar la contraseña
-        // const isPasswordValid = await bcrypt.compare(password, usuarioEncontrado.contraseña);
-
-        // if (!isPasswordValid) {
-        //     mostrarError(passwordInput, "Usuari o contrasenya incorrecta");
-        //     return;
-        // }
-        
-        // Si la contraseña es válida, puedes proceder con el envío del formulario
-        form.submit();
-    });
-</script>
 <ControlAcces>
     <LayoutVacio title="Inicia Sessió" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
+        <script>
+            // import bcrypt from 'bcryptjs';
+            interface Usuario {
+                nombre: string;
+                contraseña: string;
+            }
+        
+            async function fetchUsuarios() {
+                try {
+                    const response = await fetch('/usuarios.json');
+                    if (!response.ok) throw new Error('Error al obtener usuarios');
+                    return await response.json();
+                } catch (err) {
+                    console.error('Error al obtener usuarios:', err);
+                    return [];
+                }
+            }
+        
+            const form = document.getElementById('registro-form') as HTMLFormElement;
+            const boton = document.getElementById('comprobacion')!;
+        
+            boton.addEventListener('click', async function(event) {
+                event.preventDefault();
+        
+                const nombreInput = document.getElementById('nombre') as HTMLInputElement;
+                const passwordInput = document.getElementById('password') as HTMLInputElement;
+                const nombre = nombreInput.value;
+                const password = passwordInput.value;
+                const errorbox = document.getElementById('errorbox') as HTMLDivElement;
+        
+                const mostrarError = (inputElement: HTMLInputElement, mensaje: string) => {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center';
+                    errorDiv.innerHTML = `<p>${mensaje}</p>`;
+                    errorbox.appendChild(errorDiv);
+                };
+        
+                const limpiarErrores = () => {
+                    errorbox.innerHTML = '';
+                };
+        
+                limpiarErrores();
+        
+                if (!nombre) {
+                    mostrarError(nombreInput, "És necessari un nom d'usuari");
+                    return;
+                }
+        
+                // const usuarios = await fetchUsuarios();
+                // const usuarioEncontrado = usuarios.find((usuario: Usuario) => usuario.nombre === nombre);
+        
+                
+        
+                if (!password) {
+                    mostrarError(passwordInput, "És necessari una contrasenya d'usuari");
+                    return;
+                }
+        
+                // if (!usuarioEncontrado) {
+                //     mostrarError(nombreInput, "Usuari o contrasenya incorrecta");
+                //     return;
+                // }
+                // Verificar la contraseña
+                // const isPasswordValid = await bcrypt.compare(password, usuarioEncontrado.contraseña);
+        
+                // if (!isPasswordValid) {
+                //     mostrarError(passwordInput, "Usuari o contrasenya incorrecta");
+                //     return;
+                // }
+                
+                // Si la contraseña es válida, puedes proceder con el envío del formulario
+                form.submit();
+            });
+        </script>
         
         <section class="w-full h-screen flex flex-col items-center place-content-center relative xs:scale-90 sm:scale-90 md:scale-100 scale-100">
             <h2 class="z-50 text-center text-amarillo font-bold text-5xl">Inicia Sessió</h2>
