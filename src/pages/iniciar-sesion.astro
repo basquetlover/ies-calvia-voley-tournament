@@ -73,6 +73,7 @@ if (error) {
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        console.log('Script cargado');
     document.getElementById('registro-form')?.addEventListener('submit', async (event) => {
         event.preventDefault(); // Evita el envío del formulario por defecto
 
@@ -103,3 +104,192 @@ if (error) {
 </script>
     </LayoutVacio>
 </ControlAcces>
+
+<!-- ---
+import ControlAcces from "@components/ControlAcces.astro";
+import LayoutVacio from "@layouts/LayoutVacio.astro";
+import {  supabaseAdmin } from "src/lib/supabase";
+const { data: Usuarios, error } = await supabaseAdmin
+        .from('Usuarios') // Especifica el tipo aquí
+        .select('nombre')
+        
+        if (error) {
+        console.error('Error al obtener usuarios:', error);
+        }  
+
+---
+
+
+<ControlAcces>
+    <LayoutVacio title="Inicia Sessió" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
+
+        <section class="w-full h-screen flex flex-col items-center place-content-center relative xs:scale-90 sm:scale-90 md:scale-100 scale-100">
+            <h2 class="z-50 text-center text-amarillo font-bold text-5xl">Inicia Sessió</h2>
+            
+            <div class="centrar w-full h-full rounded-xl mt-10">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-[550px] h-w-[550px]" viewBox="0 0 581 573">
+                    <path fill="#1666FF" d="M211 3c-39 11-76 33-105 61-44 43-71 103-81 176l-1 13-4-8c-4-9-9-26-11-37-1-6-1-5-1 7 2 34 11 59 30 78 10 9 14 12 25 18 19 9 36 14 64 16a411 411 0 0 0 155-24c2-1 5 1 12 6a584 584 0 0 1 78 78l-39 21c-86 40-163 52-223 35-15-4-40-17-53-26-20-15-38-37-52-63-7-12-7-10 0 6 10 24 28 50 46 66 69 60 176 58 311-6l23-11c2 0 4 2 8 11 12 23 16 39 15 60 0 23 1 21-20 32a363 363 0 0 1-187 40c-39-5-73-18-101-39l-7-5 7 6c15 15 45 32 70 40 27 8 48 11 82 10 27-1 42-3 68-9a476 476 0 0 0 75-26 145 145 0 0 1-31 36c-11 8-12 9-5 5 32-18 53-42 61-69 4-13 5-35 1-51-8-39-32-81-76-129a436 436 0 0 0-32-32l-8-8 2-15c5-32 13-68 22-91l3-9 7 5a616 616 0 0 1 119 104c26 34 43 67 51 101 3 16 3 51 0 66a204 204 0 0 1-23 61c1 0 13-20 18-31 31-64 23-134-21-201a583 583 0 0 0-137-131l6-11c8-12 26-30 36-37 8-5 25-13 29-13a396 396 0 0 1 108 92 235 235 0 0 1 50 176l5-25a241 241 0 0 0-23-125c-22-44-54-80-107-119-2-2-2-2 4-2 9 1 24 5 34 9 12 4 9 2-6-5-74-33-134 0-175 97-10 24-25 72-27 92l-1 6-10 3c-39 14-91 27-108 27h-5v-10c0-28 6-72 14-106 15-58 38-102 71-133 29-28 62-43 105-46l15-2h-26c-27 3-49 9-72 21-65 33-106 103-123 206-3 18-7 50-7 64l-1 7h-12c-27-1-53-10-73-26-7-5-7-6-7-12 0-17 7-57 14-82C80 96 136 33 215 4c14-5 12-5-4-1Z"/>
+                </svg>
+            </div>
+            
+            <div class="formulario">
+                <form id="registro-form" class="w-[400px] rounded-xl h-[550px]  bg-gris-claro   mx-auto mt-10 py-4 px-2" method="POST"  action="/api/sesiones/iniciar">
+                    
+                    <div id="errorbox"></div>
+                    <div class="grid grid-cols-1 grid-flow-row-[1fr_1fr_max-content] place-items-center mx-auto my-auto  w-full h-full">
+                        <div class="flex  flex-col relative  ">
+                            <label for="nombre" class="form bg-gris rounded-full px-3 py-1 text-blanco text-xl">Usuari</label>
+                            <input type="text"
+                            id="nombre"
+                            name="nombre"
+                            placeholder="Nom d'usuari"
+                            class="px-3 py-2 w-60 h-12 bg-gris rounded-full text-base text-blanco border-none"
+                            />
+                        </div>
+                        
+                        <div class="flex flex-col relative  ">
+                            <div class="w-max mx-auto relative">
+                                <label for="password" class="form bg-gris rounded-full px-3 py-1 text-blanco text-xl">Contrasenya</label>
+                                <input type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Introdueix una contrasenya"
+                                class="px-3 py-2 w-60 h-12 bg-gris rounded-full text-base text-blanco border-none"
+                                />
+                            </div>
+                            <p class="my-2 w-60 mx-auto text-center text-blanco">Has oblidat la contrasenya? <a href="/contacto" class="text-accent hover:underline duration-300 transition-all">Posa't en contacte amb el Staff</a></p>
+                        </div>
+                        <div class="w-full h-auto">
+                            <p class="my-2 mx-auto text-center text-blanco">No tens compte? <a href="/registrarse" class="text-accent hover:underline duration-300 transition-all">Registra't</a></p>
+                            <div class="w-full h-auto flex flex-row items-center place-content-around">
+                                <a href="/" rel="noreferrer" class="px-3 py-2 text-blanco font-semibold bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancela </a>
+                                <button id="comprobacion" class="px-3 py-2 cursor-pointer text-blanco font-semibold bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">Inicia Sessió</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        
+        <style>
+            .centrar {
+                z-index: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .formulario{
+                z-index: 10000;
+            }
+            .form{
+                
+                position: absolute;
+                top: -20px;
+                left: 20px;
+            }
+          </style>
+    </LayoutVacio>
+</ControlAcces> -->
+
+
+
+<!-- //import { writeFile } from 'fs/promises';
+
+// async function generateUsers() {
+//   const { data: usuarios, error } = await supabaseAdmin
+//     .from('Usuarios')
+//     .select('nombre, contraseña');
+
+//   if (error) {
+//     console.error('Error al obtener usuarios:', error);
+//     process.exit(1);
+//   }
+
+//   // Guardar la lista como un archivo JSON estático
+//   await writeFile('./public/usuarios.json', JSON.stringify(usuarios, null, 2));
+  
+// }
+
+// generateUsers();   -->
+
+<!-- <script>
+            import bcrypt from 'bcryptjs';
+            window.addEventListener('load', function(){
+            
+            interface Usuario {
+                nombre: string;
+                contraseña: string;
+            }
+        
+            async function fetchUsuarios() {
+                try {
+                    const response = await fetch('/usuarios.json');
+                    if (!response.ok) throw new Error('Error al obtener usuarios');
+                    return await response.json();
+                } catch (err) {
+                    console.error('Error al obtener usuarios:', err);
+                    return [];
+                }
+            }
+        
+            const form = document.getElementById('registro-form') as HTMLFormElement;
+            const boton = document.getElementById('comprobacion')!;
+        
+            boton.addEventListener('click', async function(event) {
+                event.preventDefault();
+        
+                const nombreInput = document.getElementById('nombre') as HTMLInputElement;
+                const passwordInput = document.getElementById('password') as HTMLInputElement;
+                const nombre = nombreInput.value;
+                const password = passwordInput.value;
+                const errorbox = document.getElementById('errorbox') as HTMLDivElement;
+        
+                const mostrarError = (inputElement: HTMLInputElement, mensaje: string) => {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center';
+                    errorDiv.innerHTML = `<p>${mensaje}</p>`;
+                    errorbox.appendChild(errorDiv);
+                };
+        
+                const limpiarErrores = () => {
+                    errorbox.innerHTML = '';
+                };
+        
+                limpiarErrores();
+        
+                if (!nombre) {
+                    mostrarError(nombreInput, "És necessari un nom d'usuari");
+                    return;
+                }
+        
+                const usuarios = await fetchUsuarios();
+                const usuarioEncontrado = usuarios.find((usuario: Usuario) => usuario.nombre === nombre);
+        
+                
+        
+                if (!password) {
+                    mostrarError(passwordInput, "És necessari una contrasenya d'usuari");
+                    return;
+                }
+        
+                if (!usuarioEncontrado) {
+                    mostrarError(nombreInput, "Usuari o contrasenya incorrecta");
+                    return;
+                }
+                // Verificar la contraseña
+                const isPasswordValid = await bcrypt.compare(password, usuarioEncontrado.contraseña);
+        
+                if (!isPasswordValid) {
+                    mostrarError(passwordInput, "Usuari o contrasenya incorrecta");
+                    return;
+                }
+                
+                //Si la contraseña es válida, puedes proceder con el envío del formulario
+                form.submit();
+            });
+        });
+        </script> -->
