@@ -10,47 +10,48 @@ const { data: Usuarios, error } = await supabaseAdmin
         console.error('Error al obtener usuarios:', error);
         }
 
-// import { writeFile } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 
-// async function generateUsers() {
-//   const { data: usuarios, error } = await supabaseAdmin
-//     .from('Usuarios')
-//     .select('nombre, contraseña');
+async function generateUsers() {
+  const { data: usuarios, error } = await supabaseAdmin
+    .from('Usuarios')
+    .select('nombre, contraseña');
 
-//   if (error) {
-//     console.error('Error al obtener usuarios:', error);
-//     process.exit(1);
-//   }
+  if (error) {
+    console.error('Error al obtener usuarios:', error);
+    process.exit(1);
+  }
 
-//   // Guardar la lista como un archivo JSON estático
-//   await writeFile('./public/usuarios.json', JSON.stringify(usuarios, null, 2));
+  // Guardar la lista como un archivo JSON estático
+  await writeFile('./public/usuarios.json', JSON.stringify(usuarios, null, 2));
   
-// }
+}
 
-// generateUsers();    
+generateUsers();    
 
 ---
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.0/bcrypt.min.js"></script> -->
+
 
 <ControlAcces>
     <LayoutVacio title="Inicia Sessió" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.0/bcrypt.min.js"></script>
         <script>
-            // import bcrypt from 'bcryptjs';
+            import bcrypt from 'bcryptjs';
             interface Usuario {
                 nombre: string;
                 contraseña: string;
             }
         
-            // async function fetchUsuarios() {
-            //     try {
-            //         const response = await fetch('/usuarios.json');
-            //         if (!response.ok) throw new Error('Error al obtener usuarios');
-            //         return await response.json();
-            //     } catch (err) {
-            //         console.error('Error al obtener usuarios:', err);
-            //         return [];
-            //     }
-            // }
+            async function fetchUsuarios() {
+                try {
+                    const response = await fetch('/usuarios.json');
+                    if (!response.ok) throw new Error('Error al obtener usuarios');
+                    return await response.json();
+                } catch (err) {
+                    console.error('Error al obtener usuarios:', err);
+                    return [];
+                }
+            }
         
             const form = document.getElementById('registro-form') as HTMLFormElement;
             const boton = document.getElementById('comprobacion')!;
@@ -82,8 +83,8 @@ const { data: Usuarios, error } = await supabaseAdmin
                     return;
                 }
         
-                // const usuarios = await fetchUsuarios();
-                // const usuarioEncontrado = usuarios.find((usuario: Usuario) => usuario.nombre === nombre);
+                const usuarios = await fetchUsuarios();
+                const usuarioEncontrado = usuarios.find((usuario: Usuario) => usuario.nombre === nombre);
         
                 
         
@@ -92,19 +93,19 @@ const { data: Usuarios, error } = await supabaseAdmin
                     return;
                 }
         
-                // if (!usuarioEncontrado) {
-                //     mostrarError(nombreInput, "Usuari o contrasenya incorrecta");
-                //     return;
-                // }
+                if (!usuarioEncontrado) {
+                    mostrarError(nombreInput, "Usuari o contrasenya incorrecta");
+                    return;
+                }
                 // Verificar la contraseña
-                // const isPasswordValid = await bcrypt.compare(password, usuarioEncontrado.contraseña);
+                const isPasswordValid = await bcrypt.compare(password, usuarioEncontrado.contraseña);
         
-                // if (!isPasswordValid) {
-                //     mostrarError(passwordInput, "Usuari o contrasenya incorrecta");
-                //     return;
-                // }
+                if (!isPasswordValid) {
+                    mostrarError(passwordInput, "Usuari o contrasenya incorrecta");
+                    return;
+                }
                 
-                // Si la contraseña es válida, puedes proceder con el envío del formulario
+                //Si la contraseña es válida, puedes proceder con el envío del formulario
                 form.submit();
             });
         </script>
