@@ -25,6 +25,10 @@ export const CURSO = [
     },
 
     {
+        label: "",
+    },
+
+    {
         label: "4t ESO A",
     },
     {
@@ -49,6 +53,9 @@ export const CURSO = [
         label: "4t ESO H",
     },
 
+    {
+        label: "",
+    },
     // BACHILLER
     {
         label: "1r BAT A",
@@ -67,6 +74,10 @@ export const CURSO = [
     },
 
     {
+        label: "",
+    },
+
+    {
         label: "2n BAT A",
     },
     {
@@ -82,6 +93,10 @@ export const CURSO = [
         label: "2n BAT E",
     },
 
+    {
+        label: "",
+    },
+    
     {
         label: "FP",
     },
