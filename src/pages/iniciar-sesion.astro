@@ -37,6 +37,8 @@ generateUsers();
         
         <script>
             import bcrypt from 'bcryptjs';
+            window.addEventListener('load', function(){
+            
             interface Usuario {
                 nombre: string;
                 contraseña: string;
@@ -108,6 +110,7 @@ generateUsers();
                 //Si la contraseña es válida, puedes proceder con el envío del formulario
                 form.submit();
             });
+        });
         </script>
         
         <section class="w-full h-screen flex flex-col items-center place-content-center relative xs:scale-90 sm:scale-90 md:scale-100 scale-100">
