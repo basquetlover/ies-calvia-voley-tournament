@@ -35,9 +35,6 @@ let escudo = "/img/escudos/sin-escudo-blanco.png"
 
 if(usuario){
     const usuario_nombre = usuario.nombre;
-
-    
-
     let { data: Jugador, error: errorJ } = await supabaseAdmin
     .from('Jugadores')
     .select('pertenece_equipo')

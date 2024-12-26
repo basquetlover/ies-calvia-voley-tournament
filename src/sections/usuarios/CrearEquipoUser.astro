@@ -356,6 +356,7 @@ file.addEventListener('change', (e: Event) => {
 
 <!-- Seleccionar Capitan -->
 <script>
+    console.log("Script cargado")
     const input_capitan = document.getElementById(`input_capitan`) as HTMLInputElement;
     let currentCapitanIndex: number | null = null; // Declarar el tipo explícitamente
 
@@ -408,57 +409,12 @@ file.addEventListener('change', (e: Event) => {
         index++;
     }
 </script>
-<!-- <script>
-    const input_capitan = document.getElementById(`input_capitan`) as HTMLInputElement;
-    let currentCapitanIndex: number | null = null; // Declarar el tipo explícitamente
-
-    let index = 0;
-    while (document.getElementById(`capitan_${index}`)) {
-        const capitan = document.getElementById(`capitan_${index}`)!;
-        const nombre = document.getElementById(`player_${index + 1}_name`) as HTMLInputElement;
-        const _1r_apellido = document.getElementById(`player_${index + 1}_1r_apellido`) as HTMLInputElement;
-
-        if (nombre || _1r_apellido) {
-            // Usar una función de cierre para capturar el valor de index
-            (function(index) {
-                capitan.addEventListener('click', function() {
-                    // Si ya hay un capitán seleccionado, desactivar su botón
-                    if (currentCapitanIndex !== null) {
-                        const previousCapitan = document.getElementById(`capitan_${currentCapitanIndex}`);
-                        if (previousCapitan) {
-                            console.log("Desactivando capitán anterior:", currentCapitanIndex);
-                            previousCapitan.classList.remove('active-c'); // Cambia esto según tu lógica de estilos
-                        }
-                    }
-
-                    // Actualizar el índice del capitán actual
-                    currentCapitanIndex = index;
-
-                    // Cambiar el valor del input del capitán
-                    const valor_apellido = _1r_apellido.value;
-                    input_capitan.value = nombre.value + " " + valor_apellido; // Obtiene el valor del input del nuevo capitán
-                    
-                    console.log("Capitán seleccionado:", nombre.value, valor_apellido, currentCapitanIndex);
-
-                    // Activar el botón del nuevo capitán (opcional, si necesitas algún estilo)
-                    capitan.classList.add('active-c'); // Cambia esto según tu lógica de estilos
-                });
-            })(index); // Llamar a la función con el valor actual de index
-        }
-
-        index++;
-    }
-
-    
-</script> -->
-   
-
-
 
 
 
 <!-- Seleccionar genero -->
 <script>
+    console.log("Script cargado")
  let index = 0;
   while (document.getElementById(`genero_${index}`)) {
     const hombre = document.getElementById(`hombre_${index}`)!;
