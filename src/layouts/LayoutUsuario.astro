@@ -29,44 +29,7 @@ import { redirectToDefaultLocale } from 'astro:i18n';
 import ControlAcces from '@components/ControlAcces.astro';
 
 // Verifica la sesión y obtiene el usuario
-const usuario = await verificarSesion(Astro.request);
-let equipo = "Sense Equip"
-let escudo = "/img/escudos/sin-escudo-blanco.png"
 
-if(usuario){
-    const usuario_nombre = usuario.nombre;
-    let { data: Jugador, error: errorJ } = await supabaseAdmin
-    .from('Jugadores')
-    .select('pertenece_equipo')
-    .eq('nombre', usuario_nombre)
-    .single(); // Use .single() to get a single record
-
-    if (errorJ) {
-    console.error('Error fetching Jugador:', errorJ);
-    // Handle the error appropriately
-    }
-
-    if (!Jugador) {
-    console.error('No Jugador found for the given nombre');
-    // Handle the case where no Jugador is found
-    } else {
-    let { data: Equipos, error: errorE } = await supabaseAdmin
-        .from('Equipos')
-        .select('nombre_equipo, escudo')
-        .eq('id', Jugador.pertenece_equipo)
-        .single(); // Use .single() to get a single record
-
-    if (errorE) {
-        console.error('Error fetching Equipos:', errorE);
-        // Handle the error appropriately
-    }
-    if(Equipos){
-        equipo = Equipos.nombre_equipo
-        escudo = Equipos.escudo
-    }
-    }
-}
-// import { redirect } from 'astro';
 
 
 ---
@@ -129,13 +92,9 @@ if(usuario){
 		<div class="grid min-h-dvh grid-rows-[auto_1fr_auto]">
 			
 			<main class="flex-col items-center justify-center ">
-                {usuario ? (
-                  
+          
 				            <slot />
-                  
-            ) : (
-                   <SinSession />
-                )}
+
 			</main>
 
 			<Footer />

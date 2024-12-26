@@ -1,6 +1,9 @@
 ---
+import { verificarSesion } from '../lib/session';
+
 import LayoutMenu from "@layouts/LayoutMenu.astro";
 import SinAcceso from "@sections/errores/SinAcceso.astro";
+import SinSession from '@sections/errores/SinSession.astro';
 import { supabaseAdmin } from "src/lib/supabase";
 const pathname = Astro.url.pathname;
 let accessibleBlocks = [];
@@ -23,14 +26,20 @@ try {
 } catch (err) {
     console.error("Error al obtener acceso:", err);
 }
-
+const usuario = await verificarSesion(Astro.request);
 // Verifica si el usuario tiene acceso a la página actual
 const userHasAccess = accessibleBlocks.includes(pathname);
 ---
-{userHasAccess ? (
-    <slot />
-    ) : (
-        <LayoutMenu title="Registrar-se" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
-            <SinAcceso />
-        </LayoutMenu>
+{usuario ? (
+    <>
+    {userHasAccess ? (
+        <slot />
+        ) : (
+            <LayoutMenu title="Registrar-se" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
+                <SinAcceso />
+            </LayoutMenu>
+    )}
+    </>
+) : (
+    <SinSession />
 )}
