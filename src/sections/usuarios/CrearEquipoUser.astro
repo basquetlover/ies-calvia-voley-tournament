@@ -1,0 +1,566 @@
+---
+import { CURSO } from "@const/registrarse";
+export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "" }));
+export const jugadores_extra = Array.from({ length: 3 }, () => ({ nombre: "", curso: "" }));
+
+interface Jugador {
+  nombre: string;
+  curso: string;
+}
+
+---
+<!-- Preview IMG escudo -->
+<script>
+const file = document.getElementById('foto') as HTMLInputElement;
+const img = document.getElementById('img') as HTMLImageElement;
+const defaultFile = 'Vector.png'; // Asegúrate de definir defaultFile
+
+file.addEventListener('change', (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const files = target.files;
+  
+  if (files && files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e: ProgressEvent<FileReader>) {
+      if (e.target && img) {
+        img.src = e.target.result as string;
+      }
+    };
+    reader.readAsDataURL(files[0]);
+  } else {
+    if (img) {
+      img.src = defaultFile;
+    }
+  }
+});
+</script>
+
+<!-- action="/api/usuario/anadir-equipo" -->
+<div class="max-w-5xl w-full h-auto py-2 overflow-x-hidden mx-auto my-10">
+  <form id="team-form" method="POST" class="space-y-4"  enctype="multipart/form-data">
+    <div class="mx-auto w-max">
+      <input
+        type="text"
+        id="nombre_equipo"
+        name="nombre_equipo"
+        placeholder="Nom de l'equipo"
+        required
+        class="mx-auto text-4xl xs:text-3xl sm:text-3xl md:text-4xl text-center border-none bg-transparent rounded text-accent py-1 px-2 w-auto"
+      />
+    </div>
+
+    <!--Imagen Escudo -->
+    <div class="w-60  h-60 p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
+      <img src="/img/Vector.png" class="w-full h-full" alt="avatar" id="img" />
+      <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="escudo" id="foto" accept="image/*" />
+      <label class="hidden" for="escudo"></label>
+    </div>
+
+    <!-- Capitan -->
+    <div class="flex flex-row items-center ml-2">
+      <label for="capitan" class="block text-amarillo text-2xl font-medium">Capità</label>
+      <input
+        type="text"
+        id="input_capitan"
+        name="capitan"
+        placeholder="Seleccioni un capita amb ©"
+        disabled
+        class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
+      />
+    </div>
+
+    <!-- Entrenador -->
+    <div class="flex flex-row items-center ml-2">
+      <label for="entrenador" class="block text-amarillo text-2xl font-medium">Entrenador</label>
+      <input
+        type="text"
+        id="entrenador"
+        name="entrenador"
+        placeholder="Nom de l'entrenador"
+        
+        class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
+      />
+    </div>
+    <div class="w-max flex flex-row gap-2">
+      <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Alumnes Jugadors</h4></div>
+    </div>
+
+    <!--Jugadores -->
+{jugadores.map((jugador, index) => (
+      <div class="w-[100%] h-[2px] my-0 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+      <div class="flex flex-row gap-2 items-end">
+        <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1}. Jugador</p>
+        <p class="text-blanco  bg-cancelar bg-opacity-55 w-max h-max p-2 rounded-md text-base ">Obligatori</p>
+        <span id={`capitan_${index}`} class="p-2 bg-gris-claro bg-opacity-55 flex items-center place-content-center rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="#e8eaed" viewBox="0 -960 960 960">
+                <path d="M400-320h160q17 0 29-11t11-29v-80h-80v40h-80v-160h80v40h80v-80q0-17-11-28t-29-12H400q-17 0-28 12t-12 28v240q0 17 12 29t28 11Zm80 240q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+            </svg>
+        </span>
+      </div>
+      <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap  items-center gap-x-2 gap-y-8 space-x-2">
+        
+        {/* Nombre */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Nom
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="text"
+            id={`player_${index + 1}_name`}
+            name={`player_${index + 1}_name`}
+            placeholder="Nom del jugador"
+            class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            required
+            value={jugador.nombre}
+            
+            />
+        </div>
+        {/* 1r Apellido */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                1r Cognom
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            
+            <input
+            type="text"
+            name={`player_${index + 1}_1r_apellido`}
+            id={`player_${index + 1}_1r_apellido`}
+            placeholder="Cognom del jugador"
+            class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            required
+            value={jugador.nombre}
+            />
+        </div>
+
+        {/* 2n Apellido */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+            <input
+            type="text"
+            name={`player_${index + 1}_2n_apellido`}
+            placeholder="Segon Cognom del jugador"
+            class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            required
+            value={jugador.nombre}
+            />
+        </div>
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Curs
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            
+        <select
+          name={`player_${index + 1}_curso`}
+          class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+          required
+          value={jugador.curso}
+          
+        >
+          <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
+          {CURSO.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+        </select>
+        </div>
+        {/* Genero */}
+        <div class="flex flex-col relative">
+            <label class="genero relative">
+                <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+                <input 
+                    id={`genero_${index}`}
+                    type="hidden"
+                    name={`genero_${index}`} 
+                    value="" 
+                    class="w-10" 
+                />
+                <span id={`hombre_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                    </svg>
+                </span>
+                <span id={`mujer_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                    </svg>
+                </span>
+            </label>
+        </div>
+      </div>
+    ))} 
+
+ {jugadores_extra.map((jugador, index) => (
+  <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+  <div class="flex flex-row gap-2 items-end">
+        <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 7}. Jugador</p>
+        <span id={`extra_capitan_${index}`} class="p-2 bg-gris-claro bg-opacity-55 flex items-center place-content-center rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="#e8eaed" viewBox="0 -960 960 960">
+                <path d="M400-320h160q17 0 29-11t11-29v-80h-80v40h-80v-160h80v40h80v-80q0-17-11-28t-29-12H400q-17 0-28 12t-12 28v240q0 17 12 29t28 11Zm80 240q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+            </svg>
+        </span>
+      </div>
+  <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap  items-center gap-x-2 gap-y-8 space-x-2">
+            {/* Nombre */}
+            <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Nom
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="text"
+            name={`extra_player_${index + 1}_name`}
+            id={`extra_player_${index + 1}_name`}
+            placeholder="Nom del jugador"
+            class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            required
+            value={jugador.nombre}
+            
+            />
+        </div>
+        {/* 1r Apellido */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                1r Cognom
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            
+            <input
+            type="text"
+            name={`extra_player_${index + 1}_1r_apellido`}
+            id={`extra_player_${index + 1}_1r_apellido`}
+            placeholder="Cognom del jugador"
+            class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            required
+            value={jugador.nombre}
+            />
+        </div>
+
+        {/* 2n Apellido */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+            <input
+            type="text"
+            name={`extra_player_${index + 1}_2n_apellido`}
+            placeholder="Segon Cognom del jugador"
+            class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            required
+            value={jugador.nombre}
+            />
+        </div>
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Curs
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            
+        <select
+          name={`extra_player_${index + 1}_curso`}
+          class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+          required
+          value={jugador.curso}
+          
+        >
+          <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
+          {CURSO.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+        </select>
+        </div>
+        {/* Genero */}
+        <div class="flex flex-col relative">
+            <label class="genero relative">
+                <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+                <input 
+                    id={`extra_genero_${index}`}
+                    type="hidden"
+                    name={`extra_genero_${index}`} 
+                    value="" 
+                    class="w-10" 
+                />
+                <span id={`extra_hombre_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                    </svg>
+                </span>
+                <span id={`extra_mujer_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                    </svg>
+                </span>
+            </label>
+        </div>
+  </div>
+))} 
+
+    
+
+   
+    <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
+      <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center select-none place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+      <p class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-gris-claro cursor-not-allowed rounded-full text-xl  duration-300 transition-all transform">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+              <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+          </svg>
+          Crear Equip
+      </p>
+  </div>
+  </form>
+</div>
+
+<!-- Seleccionar Capitan -->
+<script>
+    const input_capitan = document.getElementById(`input_capitan`) as HTMLInputElement;
+    let currentCapitanIndex: number | null = null; // Declarar el tipo explícitamente
+
+    // Función para agregar el evento de clic a los capitanes
+    function agregarEventoCapitan(index: number, capitanId: string, nombreId: string, apellidoId: string) {
+        const capitan = document.getElementById(capitanId)!;
+        const nombre = document.getElementById(nombreId) as HTMLInputElement;
+        const _1r_apellido = document.getElementById(apellidoId) as HTMLInputElement;
+
+        if (nombre || _1r_apellido) {
+            // Usar una función de cierre para capturar el valor de index
+            (function(index) {
+                capitan.addEventListener('click', function() {
+                    // Si ya hay un capitán seleccionado, desactivar su botón
+                    if (currentCapitanIndex !== null) {
+                        const previousCapitan = document.getElementById(`capitan_${currentCapitanIndex}`) || document.getElementById(`extra_capitan_${currentCapitanIndex}`);
+                        if (previousCapitan) {
+                            console.log("Desactivando capitán anterior:", currentCapitanIndex);
+                            previousCapitan.classList.remove('active-c'); // Cambia esto según tu lógica de estilos
+                        }
+                    }
+
+                    // Actualizar el índice del capitán actual
+                    currentCapitanIndex = index;
+
+                    // Cambiar el valor del input del capitán
+                    const valor_apellido = _1r_apellido.value;
+                    input_capitan.value = nombre.value + " " + valor_apellido; // Obtiene el valor del input del nuevo capitán
+                    
+                    console.log("Capitán seleccionado:", nombre.value, valor_apellido, currentCapitanIndex);
+
+                    // Activar el botón del nuevo capitán (opcional, si necesitas algún estilo)
+                    capitan.classList.add('active-c'); // Cambia esto según tu lógica de estilos
+                });
+            })(index); // Llamar a la función con el valor actual de index
+        }
+    }
+
+    // Manejar jugadores normales
+    let index = 0;
+    while (document.getElementById(`capitan_${index}`)) {
+        agregarEventoCapitan(index, `capitan_${index}`, `player_${index + 1}_name`, `player_${index + 1}_1r_apellido`);
+        index++;
+    }
+
+    // Manejar jugadores extra
+    index = 0;
+    while (document.getElementById(`extra_capitan_${index}`)) {
+        agregarEventoCapitan(index, `extra_capitan_${index}`, `extra_player_${index + 1}_name`, `extra_player_${index + 1}_1r_apellido`);
+        index++;
+    }
+</script>
+<!-- <script>
+    const input_capitan = document.getElementById(`input_capitan`) as HTMLInputElement;
+    let currentCapitanIndex: number | null = null; // Declarar el tipo explícitamente
+
+    let index = 0;
+    while (document.getElementById(`capitan_${index}`)) {
+        const capitan = document.getElementById(`capitan_${index}`)!;
+        const nombre = document.getElementById(`player_${index + 1}_name`) as HTMLInputElement;
+        const _1r_apellido = document.getElementById(`player_${index + 1}_1r_apellido`) as HTMLInputElement;
+
+        if (nombre || _1r_apellido) {
+            // Usar una función de cierre para capturar el valor de index
+            (function(index) {
+                capitan.addEventListener('click', function() {
+                    // Si ya hay un capitán seleccionado, desactivar su botón
+                    if (currentCapitanIndex !== null) {
+                        const previousCapitan = document.getElementById(`capitan_${currentCapitanIndex}`);
+                        if (previousCapitan) {
+                            console.log("Desactivando capitán anterior:", currentCapitanIndex);
+                            previousCapitan.classList.remove('active-c'); // Cambia esto según tu lógica de estilos
+                        }
+                    }
+
+                    // Actualizar el índice del capitán actual
+                    currentCapitanIndex = index;
+
+                    // Cambiar el valor del input del capitán
+                    const valor_apellido = _1r_apellido.value;
+                    input_capitan.value = nombre.value + " " + valor_apellido; // Obtiene el valor del input del nuevo capitán
+                    
+                    console.log("Capitán seleccionado:", nombre.value, valor_apellido, currentCapitanIndex);
+
+                    // Activar el botón del nuevo capitán (opcional, si necesitas algún estilo)
+                    capitan.classList.add('active-c'); // Cambia esto según tu lógica de estilos
+                });
+            })(index); // Llamar a la función con el valor actual de index
+        }
+
+        index++;
+    }
+
+    
+</script> -->
+   
+
+
+
+
+
+<!-- Seleccionar genero -->
+<script>
+ let index = 0;
+  while (document.getElementById(`genero_${index}`)) {
+    const hombre = document.getElementById(`hombre_${index}`)!;
+    const mujer = document.getElementById(`mujer_${index}`)!;
+    
+    const genero = document.getElementById(`genero_${index}`)! as HTMLInputElement;
+    hombre.addEventListener('click',  function(){
+        
+            genero.value = "hombre";
+            hombre.classList.add("hombre");
+            hombre.classList.remove("desactivado");
+            mujer.classList.remove("mujer");
+            mujer.classList.add("desactivado");
+    });
+    mujer.addEventListener('click',  function(){
+        
+        genero.value = "mujer";
+        mujer.classList.add("mujer");
+        mujer.classList.remove("desactivado");
+        hombre.classList.remove("hombre");
+        hombre.classList.add("desactivado");
+});
+    index++;
+}
+index = 0;
+while (document.getElementById(`extra_genero_${index}`)) {
+    const hombre = document.getElementById(`extra_hombre_${index}`)!;
+    const mujer = document.getElementById(`extra_mujer_${index}`)!;
+    
+    const genero = document.getElementById(`genero_${index}`)! as HTMLInputElement;
+    hombre.addEventListener('click',  function(){
+        
+            genero.value = "hombre";
+            hombre.classList.add("hombre");
+            hombre.classList.remove("desactivado");
+            mujer.classList.remove("mujer");
+            mujer.classList.add("desactivado");
+    });
+    mujer.addEventListener('click',  function(){
+        
+        genero.value = "mujer";
+        mujer.classList.add("mujer");
+        mujer.classList.remove("desactivado");
+        hombre.classList.remove("hombre");
+        hombre.classList.add("desactivado");
+});
+    index++;
+}
+</script>
+
+<style>
+  input[type="file"]::file-selector-button {
+  display: none;
+}
+   .centrar {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .formulario{
+        z-index: 10000;
+    }
+    .form{
+        
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+
+    .active-c{
+        background-color: rgb(239, 191, 4, 0.5);
+    }
+    .genero {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 90px;
+    height: 25px;
+}
+
+.genero span {
+    border-radius: 10px;
+    fill: white;
+    transition: background-color 0.3s;
+}
+.desactivado{
+    background-color: rgba(39, 39, 39, 0.75);
+}
+.hombre {
+    background: rgba(0, 89, 255, 0.75); /* Color para hombre */
+}
+
+.mujer {
+    background-color: rgba(255, 0, 200, 0.75);
+    
+}
+
+
+
+</style>
