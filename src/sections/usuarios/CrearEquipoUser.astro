@@ -96,8 +96,38 @@ file.addEventListener('change', (e: Event) => {
                 <path d="M400-320h160q17 0 29-11t11-29v-80h-80v40h-80v-160h80v40h80v-80q0-17-11-28t-29-12H400q-17 0-28 12t-12 28v240q0 17 12 29t28 11Zm80 240q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
             </svg>
         </span>
+        {/* Genero */}
+        <div class="flex flex-col relative">
+            <label class="genero relative">
+                <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+                <input 
+                    id={`genero_${index}`}
+                    type="hidden"
+                    name={`genero_${index}`} 
+                    value="" 
+                    class="w-10" 
+                />
+                <span id={`hombre_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                    </svg>
+                </span>
+                <span id={`mujer_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                    </svg>
+                </span>
+            </label>
+        </div>
       </div>
-      <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap  items-center gap-x-2 gap-y-8 space-x-2">
+      <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place  items-center gap-x-2 gap-y-8 space-x-2">
         
         {/* Nombre */}
         <div class="flex flex-col relative">
@@ -179,36 +209,7 @@ file.addEventListener('change', (e: Event) => {
           ))}
         </select>
         </div>
-        {/* Genero */}
-        <div class="flex flex-col relative">
-            <label class="genero relative">
-                <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
-                
-                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
-                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
-                    </svg> 
-                </span>
-            </label>
-                <input 
-                    id={`genero_${index}`}
-                    type="hidden"
-                    name={`genero_${index}`} 
-                    value="" 
-                    class="w-10" 
-                />
-                <span id={`hombre_${index}`} class="desactivado">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
-                        <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
-                    </svg>
-                </span>
-                <span id={`mujer_${index}`} class="desactivado">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
-                        <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
-                    </svg>
-                </span>
-            </label>
-        </div>
+        
       </div>
     ))} 
 
@@ -221,6 +222,37 @@ file.addEventListener('change', (e: Event) => {
                 <path d="M400-320h160q17 0 29-11t11-29v-80h-80v40h-80v-160h80v40h80v-80q0-17-11-28t-29-12H400q-17 0-28 12t-12 28v240q0 17 12 29t28 11Zm80 240q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
             </svg>
         </span>
+
+        {/* Genero */}
+        <div class="flex flex-col relative">
+            <label class="genero relative">
+                <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+                <input 
+                    id={`extra_genero_${index}`}
+                    type="hidden"
+                    name={`extra_genero_${index}`} 
+                    value="" 
+                    class="w-10" 
+                />
+                <span id={`extra_hombre_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                    </svg>
+                </span>
+                <span id={`extra_mujer_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                    </svg>
+                </span>
+            </label>
+        </div>
       </div>
   <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap  items-center gap-x-2 gap-y-8 space-x-2">
             {/* Nombre */}
@@ -303,36 +335,7 @@ file.addEventListener('change', (e: Event) => {
           ))}
         </select>
         </div>
-        {/* Genero */}
-        <div class="flex flex-col relative">
-            <label class="genero relative">
-                <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
-                
-                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
-                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
-                    </svg> 
-                </span>
-            </label>
-                <input 
-                    id={`extra_genero_${index}`}
-                    type="hidden"
-                    name={`extra_genero_${index}`} 
-                    value="" 
-                    class="w-10" 
-                />
-                <span id={`extra_hombre_${index}`} class="desactivado">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
-                        <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
-                    </svg>
-                </span>
-                <span id={`extra_mujer_${index}`} class="desactivado">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
-                        <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
-                    </svg>
-                </span>
-            </label>
-        </div>
+        
   </div>
 ))} 
 
