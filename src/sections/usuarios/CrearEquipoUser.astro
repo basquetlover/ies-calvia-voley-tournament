@@ -356,6 +356,7 @@ file.addEventListener('change', (e: Event) => {
 
 <!-- Seleccionar Capitan -->
 <script>
+window.addEventListener('load', function(){
     console.log("Script cargado")
     const input_capitan = document.getElementById(`input_capitan`) as HTMLInputElement;
     let currentCapitanIndex: number | null = null; // Declarar el tipo explícitamente
@@ -408,14 +409,16 @@ file.addEventListener('change', (e: Event) => {
         agregarEventoCapitan(index, `extra_capitan_${index}`, `extra_player_${index + 1}_name`, `extra_player_${index + 1}_1r_apellido`);
         index++;
     }
+})
 </script>
 
 
 
 <!-- Seleccionar genero -->
 <script>
+window.addEventListener('load', function(){
     console.log("Script cargado")
- let index = 0;
+    let index = 0;
   while (document.getElementById(`genero_${index}`)) {
     const hombre = document.getElementById(`hombre_${index}`)!;
     const mujer = document.getElementById(`mujer_${index}`)!;
@@ -463,6 +466,7 @@ while (document.getElementById(`extra_genero_${index}`)) {
 });
     index++;
 }
+})
 </script>
 
 <style>
