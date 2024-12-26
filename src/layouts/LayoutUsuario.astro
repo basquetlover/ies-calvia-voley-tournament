@@ -1,7 +1,7 @@
 ---
 import Header from '@sections/Header.astro';
 import Footer from '@sections/Footer.astro';
-import SinSession from '@sections/errores/SinSession.astro';
+
 import SchemaMarkup from '@components/SchemaMarkup.astro';
 import Loading from '@components/Loading.astro';
 
@@ -22,13 +22,6 @@ const images = [
 ];
 
 const randomImage = images[Math.floor(Math.random() * images.length)];
-
-import { supabaseAdmin } from 'src/lib/supabase';
-import { verificarSesion } from '../lib/session'; // Asegúrate de que la ruta sea correcta
-import { redirectToDefaultLocale } from 'astro:i18n';
-import ControlAcces from '@components/ControlAcces.astro';
-
-// Verifica la sesión y obtiene el usuario
 
 
 
@@ -87,14 +80,11 @@ import ControlAcces from '@components/ControlAcces.astro';
 	
 
 	<body class="bg-gris ">
-    
 		<Loading />
 		<div class="grid min-h-dvh grid-rows-[auto_1fr_auto]">
 			
-			<main class="flex-col items-center justify-center ">
-          
-				            <slot />
-
+			<main class="flex-col items-center justify-center p-3">
+				<slot />
 			</main>
 
 			<Footer />
