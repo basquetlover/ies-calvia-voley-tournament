@@ -4,6 +4,8 @@ import Footer from '@sections/Footer.astro';
 
 import SchemaMarkup from '@components/SchemaMarkup.astro';
 import Loading from '@components/Loading.astro';
+import SinSession from '@sections/errores/SinSession.astro';
+import { verificarSesion } from 'src/lib/session';
 
 interface Props {
 	title: string;
@@ -23,7 +25,7 @@ const images = [
 
 const randomImage = images[Math.floor(Math.random() * images.length)];
 
-
+const usuario = await verificarSesion(Astro.request);
 
 ---
 
@@ -86,7 +88,11 @@ const randomImage = images[Math.floor(Math.random() * images.length)];
 			<Header />
     </div>
 			<main class="flex-col items-center justify-center p-3">
-				<slot />
+				{usuario ? (
+					<slot />
+				) : (
+					<SinSession />
+				)}
 			</main>
 
 			<Footer />

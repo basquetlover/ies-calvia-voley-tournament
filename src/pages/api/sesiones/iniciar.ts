@@ -48,6 +48,30 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
 
     // Si la contraseña es válida, establecer la cookie de sesión
     cookies.set('session', Usuarios.id, { httpOnly: true, path: '/' });
+    function obtenerColor() {
+        const opciones = [
+            'bg-red-500',
+            'bg-cyan-500',
+            'bg-orange-600',
+            'bg-yellow-400',
+            'bg-fuchsia-500',
+            'bg-lime-600'
+        ];
+    
+        // Selecciona un índice aleatorio de las opciones
+        const indiceAleatorio = Math.floor(Math.random() * opciones.length);
+        
+        // Devuelve el párrafo correspondiente
+        return opciones[indiceAleatorio];
+    }
+    
+    // Ejemplo de uso
+    const color = obtenerColor();
+    const { data } = await supabaseAdmin
+    .from('Usuarios')
+    .update({ logo: color })
+    .eq('id', Usuarios.id)
+    .select()
 
     // Redirigir a la página principal
     return new Response(

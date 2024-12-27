@@ -1,0 +1,17 @@
+---
+import { verificarSesion } from 'src/lib/session';
+
+const usuario = await verificarSesion(Astro.request);
+const nombre = usuario.nombre;
+const color =  usuario.logo;
+let primeraLetra = ""
+if (nombre) {
+     primeraLetra = nombre.charAt(0); // O también puedes usar nombre[0]
+    
+} else {
+    console.log("El nombre está vacío");
+}
+---
+<div class={`w-full h-full flex items-center place-content-center uppercase p-2 text-xl text-blanco rounded-full  ${color}`}>
+    <p>{primeraLetra}</p>
+</div>

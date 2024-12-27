@@ -26,11 +26,11 @@ try {
 } catch (err) {
     console.error("Error al obtener acceso:", err);
 }
-const usuario = await verificarSesion(Astro.request);
+
 // Verifica si el usuario tiene acceso a la página actual
 const userHasAccess = accessibleBlocks.includes(pathname);
 ---
-{usuario ? (
+
     <>
     {userHasAccess ? (
         <slot />
@@ -40,6 +40,3 @@ const userHasAccess = accessibleBlocks.includes(pathname);
             </LayoutMenu>
     )}
     </>
-) : (
-    <SinSession />
-)}
