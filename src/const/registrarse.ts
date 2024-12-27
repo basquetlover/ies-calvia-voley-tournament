@@ -1,62 +1,60 @@
-export const CURSO = [
-    {
-        label: "3r ESO A",
-    },
-    {
-        label: "3r ESO B",
-    },
-    {
-        label: "3r ESO C",
-    },
-    {
-        label: "3r ESO D",
-    },
-    {
-        label: "3r ESO E",
-    },
-    {
-        label: "3r ESO F",
-    },
-    {
-        label: "3r ESO G",
-    },
-    {
-        label: "3r ESO H",
-    },
+export const CURSO_3E = [
+            {
+                label: "3r ESO A",
+            },
+            {
+                label: "3r ESO B",
+            },
+            {
+                label: "3r ESO C",
+            },
+            {
+                label: "3r ESO D",
+            },
+            {
+                label: "3r ESO E",
+            },
+            {
+                label: "3r ESO F",
+            },
+            {
+                label: "3r ESO G",
+            },
+            {
+                label: "3r ESO H",
+            },
+        ]
+    
 
-    {
-        label: "",
-    },
 
-    {
-        label: "4t ESO A",
-    },
-    {
-        label: "4t ESO B",
-    },
-    {
-        label: "4t ESO C",
-    },
-    {
-        label: "4t ESO D",
-    },
-    {
-        label: "4t ESO E",
-    },
-    {
-        label: "4t ESO F",
-    },
-    {
-        label: "4t ESO G",
-    },
-    {
-        label: "4t ESO H",
-    },
+export const CURSO_4E = [
+            {
+                label: "4t ESO A",
+            },
+            {
+                label: "4t ESO B",
+            },
+            {
+                label: "4t ESO C",
+            },
+            {
+                label: "4t ESO D",
+            },
+            {
+                label: "4t ESO E",
+            },
+            {
+                label: "4t ESO F",
+            },
+            {
+                label: "4t ESO G",
+            },
+            {
+                label: "4t ESO H",
+            },
+    ]
 
-    {
-        label: "",
-    },
-    // BACHILLER
+export const CURSO_1B = [
     {
         label: "1r BAT A",
     },
@@ -72,11 +70,9 @@ export const CURSO = [
     {
         label: "1r BAT E",
     },
+]
 
-    {
-        label: "",
-    },
-
+export const CURSO_2B = [    
     {
         label: "2n BAT A",
     },
@@ -92,14 +88,14 @@ export const CURSO = [
     {
         label: "2n BAT E",
     },
+]
 
-    {
-        label: "",
-    },
-    
+export const CURSO_FP = [
     {
         label: "FP",
-    },
+    }
+]
+export const CURSO_P = [
 
     {
         label: "Professor",
