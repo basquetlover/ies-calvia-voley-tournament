@@ -1,0 +1,213 @@
+<section class="w-full h-screen flex flex-col items-center place-content-center relative xs:scale-90 sm:scale-90 md:scale-100 scale-100">
+    <h2 class="z-50 text-center text-amarillo font-bold text-5xl">Cambiar Contrasenya</h2>
+    
+    <div class="centrar w-full h-full rounded-xl mt-10">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-[550px] h-w-[550px]" viewBox="0 0 581 573">
+            <path fill="#1666FF" d="M211 3c-39 11-76 33-105 61-44 43-71 103-81 176l-1 13-4-8c-4-9-9-26-11-37-1-6-1-5-1 7 2 34 11 59 30 78 10 9 14 12 25 18 19 9 36 14 64 16a411 411 0 0 0 155-24c2-1 5 1 12 6a584 584 0 0 1 78 78l-39 21c-86 40-163 52-223 35-15-4-40-17-53-26-20-15-38-37-52-63-7-12-7-10 0 6 10 24 28 50 46 66 69 60 176 58 311-6l23-11c2 0 4 2 8 11 12 23 16 39 15 60 0 23 1 21-20 32a363 363 0 0 1-187 40c-39-5-73-18-101-39l-7-5 7 6c15 15 45 32 70 40 27 8 48 11 82 10 27-1 42-3 68-9a476 476 0 0 0 75-26 145 145 0 0 1-31 36c-11 8-12 9-5 5 32-18 53-42 61-69 4-13 5-35 1-51-8-39-32-81-76-129a436 436 0 0 0-32-32l-8-8 2-15c5-32 13-68 22-91l3-9 7 5a616 616 0 0 1 119 104c26 34 43 67 51 101 3 16 3 51 0 66a204 204 0 0 1-23 61c1 0 13-20 18-31 31-64 23-134-21-201a583 583 0 0 0-137-131l6-11c8-12 26-30 36-37 8-5 25-13 29-13a396 396 0 0 1 108 92 235 235 0 0 1 50 176l5-25a241 241 0 0 0-23-125c-22-44-54-80-107-119-2-2-2-2 4-2 9 1 24 5 34 9 12 4 9 2-6-5-74-33-134 0-175 97-10 24-25 72-27 92l-1 6-10 3c-39 14-91 27-108 27h-5v-10c0-28 6-72 14-106 15-58 38-102 71-133 29-28 62-43 105-46l15-2h-26c-27 3-49 9-72 21-65 33-106 103-123 206-3 18-7 50-7 64l-1 7h-12c-27-1-53-10-73-26-7-5-7-6-7-12 0-17 7-57 14-82C80 96 136 33 215 4c14-5 12-5-4-1Z"/>
+        </svg>
+    </div>
+    <div class="formulario">
+        <form id="registro-form" class="w-[400px] rounded-xl h-[550px] bg-gris-claro mx-auto mt-10 py-4 px-2" method="POST" action="/api/sesiones/modificar-contrasena">
+            <div id="errorbox" class="text-red-500"></div>
+            <div class="grid grid-cols-1 grid-flow-row-[1fr_1fr_max-content] place-items-center mx-auto my-auto w-full h-full">
+            
+                <div class="flex flex-col gap-y-10 relative">
+                    <div class="w-max mx-auto relative">
+                        <label for="password" class="form bg-gris z-10 rounded-full px-3 py-1 text-blanco text-xl">Contrasenya</label>
+                        <div class="w-72 h-12 relative">
+                            <input type="password" id="password" name="password" placeholder="Introdueix una contrasenya" class="px-3 py-2 w-72 h-12 bg-gris rounded-full text-base text-blanco border-none" />
+                            <div class="absolute w-6 h-6 right-2 top-3 cursor-pointer select-none" id="estado">
+                                <span class="block" id="oculto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                        <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 35-12t37-4q75 0 128 53t52 127q0 20-4 38t-12 34Zm128 126-58-56q38-29 68-63t50-79q-50-101-143-160t-209-60q-29 0-57 4t-55 12l-62-62q41-17 84-25t90-9q151 0 269 84t171 216q-23 59-60 110t-88 88Zm20 246L624-222q-35 11-70 17t-74 5q-151 0-269-83T40-500q21-53 53-98t73-82L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 144 161t208 59q20 0 39-2t39-6l-36-38-21 5q-10 2-21 1-75 0-127-52t-53-128q0-11 2-21t4-21l-84-82Zm319 93Zm-151 75Z"/>
+                                      </svg>
+                                </span>
+                                <span class="hidden" id="visible">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                        <path d="M480-320q75 0 128-52t52-128q0-75-52-127t-128-53q-75 0-127 53t-53 127q0 75 53 128t127 52Zm0-72q-45 0-76-31t-32-77q0-45 32-76t76-32q45 0 77 32t31 76q0 45-31 77t-77 31Zm0 192q-146 0-266-81T40-500q54-137 174-218t266-82q146 0 266 82t174 218q-54 137-174 219t-266 81Zm0-300Zm0 220q113 0 208-59t144-161q-50-101-144-160t-208-60q-113 0-207 60T128-500q50 101 145 161t207 59Z"/>
+                                      </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col relative">
+                        <div class="w-max mx-auto relative">
+                            <label for="nueva_password" class="form bg-gris z-10 rounded-full px-3 py-1 text-blanco text-xl">Nova Contrasenya</label>
+                            <div class="w-72 h-12 relative">
+                                <input type="password" id="nueva_password" name="nueva_password" placeholder="Introdueix una contrasenya" class="px-3 py-2 w-72 h-12 bg-gris rounded-full text-base text-blanco border-none" />
+                                <div class="absolute w-6 h-6 right-2 top-3 cursor-pointer select-none" id="nuevo_estado">
+                                    <span class="block" id="nuevo_oculto">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                            <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 35-12t37-4q75 0 128 53t52 127q0 20-4 38t-12 34Zm128 126-58-56q38-29 68-63t50-79q-50-101-143-160t-209-60q-29 0-57 4t-55 12l-62-62q41-17 84-25t90-9q151 0 269 84t171 216q-23 59-60 110t-88 88Zm20 246L624-222q-35 11-70 17t-74 5q-151 0-269-83T40-500q21-53 53-98t73-82L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 144 161t208 59q20 0 39-2t39-6l-36-38-21 5q-10 2-21 1-75 0-127-52t-53-128q0-11 2-21t4-21l-84-82Zm319 93Zm-151 75Z"/>
+                                          </svg>
+                                    </span>
+                                    <span class="hidden" id="nuevo_visible">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                            <path d="M480-320q75 0 128-52t52-128q0-75-52-127t-128-53q-75 0-127 53t-53 127q0 75 53 128t127 52Zm0-72q-45 0-76-31t-32-77q0-45 32-76t76-32q45 0 77 32t31 76q0 45-31 77t-77 31Zm0 192q-146 0-266-81T40-500q54-137 174-218t266-82q146 0 266 82t174 218q-54 137-174 219t-266 81Zm0-300Zm0 220q113 0 208-59t144-161q-50-101-144-160t-208-60q-113 0-207 60T128-500q50 101 145 161t207 59Z"/>
+                                          </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col relative">
+                        <div class="w-max mx-auto relative">
+                            <label for="confirmar_password" class="form bg-gris z-10 rounded-full px-2 py-1 text-blanco text-xl">Confirmar Contrasenya</label>
+                            <div class="w-72 h-12 relative">
+                                <input type="password" id="confirmar_password" name="confirmar_password" placeholder="Introdueix una contrasenya" class="px-3 py-2 w-72 h-12 bg-gris rounded-full text-base text-blanco border-none" />
+                                <div class="absolute w-6 h-6 right-2 top-3 cursor-pointer select-none" id="confirmar_estado">
+                                    <span class="block" id="confirmar_oculto">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                            <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 35-12t37-4q75 0 128 53t52 127q0 20-4 38t-12 34Zm128 126-58-56q38-29 68-63t50-79q-50-101-143-160t-209-60q-29 0-57 4t-55 12l-62-62q41-17 84-25t90-9q151 0 269 84t171 216q-23 59-60 110t-88 88Zm20 246L624-222q-35 11-70 17t-74 5q-151 0-269-83T40-500q21-53 53-98t73-82L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 144 161t208 59q20 0 39-2t39-6l-36-38-21 5q-10 2-21 1-75 0-127-52t-53-128q0-11 2-21t4-21l-84-82Zm319 93Zm-151 75Z"/>
+                                          </svg>
+                                    </span>
+                                    <span class="hidden" id="confirmar_visible">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                            <path d="M480-320q75 0 128-52t52-128q0-75-52-127t-128-53q-75 0-127 53t-53 127q0 75 53 128t127 52Zm0-72q-45 0-76-31t-32-77q0-45 32-76t76-32q45 0 77 32t31 76q0 45-31 77t-77 31Zm0 192q-146 0-266-81T40-500q54-137 174-218t266-82q146 0 266 82t174 218q-54 137-174 219t-266 81Zm0-300Zm0 220q113 0 208-59t144-161q-50-101-144-160t-208-60q-113 0-207 60T128-500q50 101 145 161t207 59Z"/>
+                                          </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full h-auto">
+                    
+                    <div class="w-full h-auto flex flex-row items-center place-content-around">
+                        <a href="/" rel="noreferrer" class="px-3 py-2 text-blanco font-semibold bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancela </a>
+                        <button id="comprobacion" type="submit" class="px-3 py-2 cursor-pointer text-blanco font-semibold bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">Cambiar Contrasenya</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<style>
+    .centrar {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .ojo{
+        position: absolute;
+        right: 4px;
+    }
+    .formulario {
+        z-index: 10000;
+    }
+    .form {
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+</style>
+<script>
+let ojo = true
+const estado = document.getElementById("estado")!;
+const oculto = document.getElementById("oculto")!;
+const visible = document.getElementById("visible")!;
+const password = document.getElementById("password")! as HTMLInputElement;
+estado.addEventListener('click',  function(){
+if(ojo){
+    password.type = "text";
+    oculto.classList.remove("block");
+    oculto.classList.add("hidden");
+    visible.classList.add("block");
+    visible.classList.remove("hidden");  
+    ojo = false
+} else{
+    password.type = "password";
+    oculto.classList.add("block");
+    oculto.classList.remove("hidden");
+    visible.classList.remove("block");
+    visible.classList.add("hidden");
+    ojo = true  
+}
+});
+
+let nuevo_ojo = true
+const nuevo_estado = document.getElementById("nuevo_estado")!;
+const nuevo_oculto = document.getElementById("nuevo_oculto")!;
+const nuevo_visible = document.getElementById("nuevo_visible")!;
+const nueva_password = document.getElementById("nueva_password")! as HTMLInputElement;
+nuevo_estado.addEventListener('click',  function(){
+if(nuevo_ojo){
+    nueva_password.type = "text";
+    nuevo_oculto.classList.remove("block");
+    nuevo_oculto.classList.add("hidden");
+    nuevo_visible.classList.add("block");
+    nuevo_visible.classList.remove("hidden");  
+    nuevo_ojo = false
+} else{
+    nueva_password.type = "password";
+    nuevo_oculto.classList.add("block");
+    nuevo_oculto.classList.remove("hidden");
+    nuevo_visible.classList.remove("block");
+    nuevo_visible.classList.add("hidden");
+    nuevo_ojo = true  
+}
+});
+
+let confirmar_ojo = true
+const confirmar_estado = document.getElementById("confirmar_estado")!;
+const confirmar_oculto = document.getElementById("confirmar_oculto")!;
+const confirmar_visible = document.getElementById("confirmar_visible")!;
+const confirmar_password = document.getElementById("confirmar_password")! as HTMLInputElement;
+confirmar_estado.addEventListener('click',  function(){
+if(confirmar_ojo){
+    confirmar_password.type = "text";
+    confirmar_oculto.classList.remove("block");
+    confirmar_oculto.classList.add("hidden");
+    confirmar_visible.classList.add("block");
+    confirmar_visible.classList.remove("hidden");  
+    confirmar_ojo = false
+} else{
+    confirmar_password.type = "password";
+    confirmar_oculto.classList.add("block");
+    confirmar_oculto.classList.remove("hidden");
+    confirmar_visible.classList.remove("block");
+    confirmar_visible.classList.add("hidden");
+    confirmar_ojo = true  
+}
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+console.log('Script cargado');
+document.getElementById('registro-form')?.addEventListener('submit', async (event) => {
+event.preventDefault(); // Evita el envío del formulario por defecto
+
+const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+
+const response = await fetch(form.action, {
+    method: 'POST',
+    body: formData,
+});
+
+const contentType = response.headers.get("Content-Type");
+if (contentType && contentType.includes("text/html")) {
+    const html = await response.text();
+    document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+} else if (contentType && contentType.includes("application/json")) {
+    const jsonResponse = await response.json();
+    if (jsonResponse.success) {
+        // Redirigir a la página principal
+        window.location.href = '/'; // Redirige al usuario
+    } else {
+        // Manejo de errores si es necesario
+        document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
+    }
+}
+});
+});
+</script>
