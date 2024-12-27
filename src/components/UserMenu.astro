@@ -12,7 +12,7 @@ if(usuario){
     
 
     let { data: Jugador, error: errorJ } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from('Jugadores')
     .select('pertenece_equipo')
     .eq('nombre', usuario_nombre)
     .single(); // Use .single() to get a single record
@@ -27,7 +27,7 @@ if(usuario){
     // Handle the case where no Jugador is found
     } else {
     let { data: Equipos, error: errorE } = await supabaseAdmin
-        .from('EquiposSS')
+        .from('Equipos')
         .select('nombre_equipo, escudo')
         .eq('id', Jugador.pertenece_equipo)
         .single(); // Use .single() to get a single record
