@@ -1,3 +1,8 @@
+---
+import { verificarSesion } from "src/lib/session";
+
+const usuario = await verificarSesion(Astro.request);
+---
 <section class="w-full h-screen flex flex-col items-center place-content-center relative xs:scale-90 sm:scale-90 md:scale-100 scale-100">
     <h2 class="z-50 text-center text-amarillo font-bold text-5xl">Cambiar Contrasenya</h2>
     
@@ -7,11 +12,12 @@
         </svg>
     </div>
     <div class="formulario">
-        <form id="registro-form" class="w-[400px] rounded-xl h-[550px] bg-gris-claro mx-auto mt-10 py-4 px-2" method="POST" action="/api/sesiones/modificar-contrasena">
+        <form id="registro-form" class="w-[400px] rounded-xl h-[600px]  bg-gris-claro mx-auto mt-10 py-4 px-2" method="POST" action="/api/sesiones/modificar-contrasena">
             <div id="errorbox" class="text-red-500"></div>
             <div class="grid grid-cols-1 grid-flow-row-[1fr_1fr_max-content] place-items-center mx-auto my-auto w-full h-full">
-            
+                
                 <div class="flex flex-col gap-y-10 relative">
+                    <input type="hidden" name="nombre" value={usuario.nombre} />
                     <div class="w-max mx-auto relative">
                         <label for="password" class="form bg-gris z-10 rounded-full px-3 py-1 text-blanco text-xl">Contrasenya</label>
                         <div class="w-72 h-12 relative">
