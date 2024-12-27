@@ -37,7 +37,7 @@ file.addEventListener('change', (e: Event) => {
 
 <!-- action="/api/usuario/anadir-equipo" -->
 <div class="max-w-5xl w-full h-auto py-2 overflow-x-hidden mx-auto my-10 ">
-  <form id="team-form" method="POST" class="space-y-4"  enctype="multipart/form-data">
+  <form id="equipo-form" method="POST" class="space-y-4" action="/api/usuario/anadir-equipo"  enctype="multipart/form-data">
     <div class="mx-auto w-max">
       <input
         type="text"
@@ -110,7 +110,8 @@ file.addEventListener('change', (e: Event) => {
                 <input 
                     id={`genero_${index}`}
                     type="hidden"
-                    name={`genero_${index}`} 
+                    name={`genero_${index}`}
+                    required 
                     value="" 
                     class="w-10" 
                 />
@@ -323,7 +324,7 @@ file.addEventListener('change', (e: Event) => {
             id={`extra_player_${index + 1}_name`}
             placeholder="Nom del jugador"
             class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-            required
+            
             value={jugador.nombre}
             
             />
@@ -345,7 +346,7 @@ file.addEventListener('change', (e: Event) => {
             id={`extra_player_${index + 1}_1r_apellido`}
             placeholder="Cognom del jugador"
             class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-            required
+            
             value={jugador.nombre}
             />
         </div>
@@ -358,7 +359,7 @@ file.addEventListener('change', (e: Event) => {
             name={`extra_player_${index + 1}_2n_apellido`}
             placeholder="Segon Cognom del jugador"
             class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-            required
+            
             value={jugador.nombre}
             />
         </div>
@@ -375,7 +376,7 @@ file.addEventListener('change', (e: Event) => {
         <select
           name={`extra_player_${index + 1}_curso`}
           class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-          required
+          
           value={jugador.curso}
           
         >
@@ -433,7 +434,7 @@ file.addEventListener('change', (e: Event) => {
             name={`extra_player_${index + 1}_email`}
             placeholder="Email del jugador"
             class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-            required
+            
             value={jugador.nombre}
             />
         
@@ -447,12 +448,12 @@ file.addEventListener('change', (e: Event) => {
    
     <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
       <a href="/" rel="noreferrer" class="px-3 py-2 flex flex-row items-center select-none place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
-      <p class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-gris-claro cursor-not-allowed rounded-full text-xl  duration-300 transition-all transform">
+      <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-xl hover:scale-110  duration-300 transition-all transform">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
               <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
           </svg>
           Crear Equip
-      </p>
+        </button>
   </div>
   </form>
 </div>
@@ -570,6 +571,38 @@ while (document.getElementById(`extra_genero_${index}`)) {
     index++;
 }
 })
+</script>
+<!-- Errores -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Script cargado');
+    document.getElementById('equipo-form')?.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita el envío del formulario por defecto
+
+        const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+        const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        });
+
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("text/html")) {
+            const html = await response.text();
+            document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+        } else if (contentType && contentType.includes("application/json")) {
+            const jsonResponse = await response.json();
+            if (jsonResponse.success) {
+                // Redirigir a la página principal
+                window.location.href = '/usuario/inscripcion'; // Redirige al usuario
+            } else {
+                // Manejo de errores si es necesario
+                document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
+            }
+        }
+    });
+});
 </script>
 
 <style>

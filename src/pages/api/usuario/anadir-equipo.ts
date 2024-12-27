@@ -8,16 +8,36 @@ import { supabase, supabaseAdmin } from "../../../lib/supabase";
 export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
   const nombre_equipo = formData.get("nombre_equipo")?.toString().trim() || "";
-  const id_equipo = nombre_equipo.toLowerCase().replace(/\s+/g, '-');
   const capitan = formData.get("capitan")?.toString().trim();
   const acompañante = formData.get("entrenador")?.toString().trim() || "";
   
+  function removeAccents(str: string): string  {
+    const accents = [
+        { base: 'a', letters: /[áàäâ]/g },
+        { base: 'e', letters: /[éèëê]/g },
+        { base: 'i', letters: /[íìïî]/g },
+        { base: 'o', letters: /[óòöô]/g },
+        { base: 'u', letters: /[úùüû]/g },
+        { base: 'n', letters: /[ñ]/g },
+    ];
+
+    accents.forEach(accent => {
+        str = str.replace(accent.letters, accent.base);
+    });
+
+    return str;
+}
+  let id_equipo = nombre_equipo.toLowerCase().replace(/\s+/g, '-');
+  id_equipo = removeAccents(id_equipo)
+
   // Recoger la información del escudo (imagen)
   const escudo = formData.get("escudo") as File;
   console.log("Tipo de archivo:", escudo.name);
   console.log("Tipo de archivo:", escudo.type);
   console.log("Tamaño de archivo:", escudo.size);
   // Recoger la información de los jugadores
+  let hombres = 0;
+  let mujeres = 0;
   const jugadores = [];
   let index = 1;
   while (formData.has(`player_${index}_name`)) {
@@ -26,9 +46,20 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const _1r_apellido = formData.get(`player_${index}_1r_apellido`)?.toString().trim();
     const _2n_apellido = formData.get(`player_${index}_2n_apellido`)?.toString().trim();
     const genero = formData.get(`genero_${index}`)?.toString().trim();
-    if (nombre && curso) {
-      jugadores.push({ nombre, curso });
+    const email = formData.get(`player_${index + 1}_email`)?.toString().trim();
+    if (!genero) {
+      return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Seleccioni el gènere del ${index}. Jugador</div>`, 
+        { status: 401, headers: { "Content-Type": "text/html" } }
+    );
     }
+    if(genero === "hombre"){
+      hombres++;
+    }
+    if(genero === "mujer"){
+      hombres++;
+    }
+    jugadores.push({ nombre, curso, _1r_apellido, _2n_apellido, genero, email });
     index++;
   }
 
@@ -40,10 +71,21 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const _1r_apellido = formData.get(`extra_player_${index}_1r_apellido`)?.toString().trim();
     const _2n_apellido = formData.get(`extra_player_${index}_2n_apellido`)?.toString().trim();
     const genero = formData.get(`extra_genero_${index}`)?.toString().trim();
-    if (nombre) {
-      const curso = formData.get(`extra_player_${index}_curso`)?.toString().trim() || '';
-      jugadores_extra.push({ nombre, curso });
+    const curso = formData.get(`extra_player_${index}_curso`)?.toString().trim();
+    const email = formData.get(`extra_player_${index + 1}_email`)?.toString().trim();
+    if (!genero) {
+      return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Seleccioni el gènere del ${index}. Jugador</div>`, 
+        { status: 401, headers: { "Content-Type": "text/html" } }
+    );
     }
+    if(genero === "hombre"){
+      hombres++;
+    }
+    if(genero === "mujer"){
+      mujeres++;
+    }
+    jugadores_extra.push({ nombre, curso, _1r_apellido, _2n_apellido, genero, email });
     index++;
   }
 
@@ -51,25 +93,32 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   if (!nombre_equipo || !capitan) {
     return new Response("nombre y capitan son obligatorios", { status: 400 });
   }
+  
+  if(hombres <2 || mujeres <2){
+    return new Response(
+      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Ha de haber un minim de 2 nins i 2 nines</div>`, 
+      { status: 401, headers: { "Content-Type": "text/html" } }
+  );
+  }
 
   console.log("Datos recibidos:", {id_equipo, nombre_equipo, capitan, acompañante, escudo, jugadores, jugadores_extra });
 
   // Verificar si el correo electrónico ya existe en la tabla 'administradores'
-  const { data: existingEquipo, error: checkError } = await supabaseAdmin
-  .from("Equipos")
-  .select("id") // Seleccionar un campo mínimo
-  .eq("nombre_equipo", nombre_equipo);
+//   const { data: existingEquipo, error: checkError } = await supabaseAdmin
+//   .from("Equipos")
+//   .select("id") // Seleccionar un campo mínimo
+//   .eq("nombre_equipo", nombre_equipo);
 
-if (checkError) {
-  console.error("Error al verificar la existencia:", checkError.message);
-  return new Response("Hubo un error al verificar el correo electrónico.", { status: 500 });
-}
+// if (checkError) {
+//   console.error("Error al verificar la existencia:", checkError.message);
+//   return new Response("Hubo un error al verificar el correo electrónico.", { status: 500 });
+// }
 
 
-if (existingEquipo && existingEquipo.length > 0) {
+// if (existingEquipo && existingEquipo.length > 0) {
   
-  console.log("El equipo ya tiene un capitan asignado.")
-}
+//   console.log("El equipo ya tiene un capitan asignado.")
+// }
    
 // async function uploadFile(file: File, id_equipo: string) {
 //   // Extraer la extensión del archivo
@@ -174,5 +223,8 @@ if (existingEquipo && existingEquipo.length > 0) {
 
 
   console.log("Equipo añadido correctamente");
-  return redirect("/usuario/inscripcion");
+  return new Response(
+    JSON.stringify({ success: true }), 
+    { status: 200, headers: { "Content-Type": "application/json" } }
+);
 };
