@@ -292,6 +292,7 @@ console.log("URL pública del escudo:", publicUrl);
             curso: jugador.curso,
             genero: jugador.genero,
             pertenece_equipo: equipoId,
+            email: jugador.email,
             ficha: 'jugador',
           },
       ]).select()
@@ -312,6 +313,7 @@ console.log("URL pública del escudo:", publicUrl);
           curso: jugador.curso,
           genero: jugador.genero_extra,
           pertenece_equipo: equipoId,
+          email: jugador.email,
           ficha: 'jugador',
         },
     ]).select()
@@ -330,6 +332,7 @@ console.log("URL pública del escudo:", publicUrl);
           _2n_apellido: acompañante_2n_apellido,
           curso: acompañante_curso,
           genero: acompañante_genero,
+          email: acompañante_email,
           pertenece_equipo: equipoId,
           ficha: 'entrenador',
         },
