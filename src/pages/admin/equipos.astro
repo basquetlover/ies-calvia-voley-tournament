@@ -2,6 +2,7 @@
 import LayoutStaff from "@layouts/LayoutStaff.astro";
 
 import EquiposList from "@sections/administracion/EquiposList.astro";
+import EquiposListSS from "@sections/administracion/EquipoListSS.astro";
 import LayoutAll from "@layouts/LayoutAll.astro";
 
 import { supabaseAdmin } from "../../lib/supabase";
@@ -65,6 +66,13 @@ const userHasAccess = accessibleBlocks.includes(pathname);
         <h2 class="text-center text-accent font-bold text-5xl">
           Equipos inscritos
         </h2> 
+        <h2 class="ml-10 text-accent font-bold text-5xl">
+          Equipos Semana Santa
+        </h2>
+        <EquiposListSS />
+        <h2 class="ml-10 text-accent font-bold text-5xl">
+          Equipos Navidad
+        </h2>
         <EquiposList />
       </>
 ) : (
