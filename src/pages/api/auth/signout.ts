@@ -4,6 +4,11 @@ import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async ({ cookies, redirect }) => {
   // Elimina cookies si existen
+  const user_session = cookies.get("session");
+  if(user_session){
+    cookies.delete('session', { path: '/' });
+  }
+  
   const accessToken = cookies.get("sb-access-token");
   const refreshToken = cookies.get("sb-refresh-token");
 
@@ -16,6 +21,6 @@ export const GET: APIRoute = async ({ cookies, redirect }) => {
   }
 
   // Redirige a la página de inicio de sesión
-  return redirect("/admin");
+  return redirect("/");
 };
 

@@ -38,6 +38,7 @@ file.addEventListener('change', (e: Event) => {
 <!-- action="/api/usuario/anadir-equipo" -->
 <div class="max-w-5xl w-full h-auto py-2 overflow-x-hidden mx-auto my-10 ">
   <form id="equipo-form" method="POST" class="space-y-4" action="/api/usuario/anadir-equipo"  enctype="multipart/form-data">
+    <div id="errorbox" class="text-red-500"></div>
     <div class="mx-auto w-max">
       <input
         type="text"
@@ -58,11 +59,11 @@ file.addEventListener('change', (e: Event) => {
 
     <!-- Capitan -->
     <div class="flex flex-row items-center ml-2">
-      <label for="capitan" class="block text-amarillo text-2xl font-medium">Capità</label>
+      <label for="input_capitan" class="block text-amarillo text-2xl font-medium">Capità</label>
       <input
         type="text"
         id="input_capitan"
-        name="capitan"
+        name="input_capitan"
         placeholder="Seleccioni un capita amb ©"
         disabled
         class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
@@ -142,8 +143,8 @@ file.addEventListener('change', (e: Event) => {
             </label>
             <input
             type="text"
-            id={`player_${index + 1}_name`}
-            name={`player_${index + 1}_name`}
+            id={`player_${index}_name`}
+            name={`player_${index}_name`}
             placeholder="Nom del jugador"
             class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
             required
@@ -164,8 +165,8 @@ file.addEventListener('change', (e: Event) => {
             
             <input
             type="text"
-            name={`player_${index + 1}_1r_apellido`}
-            id={`player_${index + 1}_1r_apellido`}
+            name={`player_${index}_1r_apellido`}
+            id={`player_${index}_1r_apellido`}
             placeholder="Cognom del jugador"
             class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
             required
@@ -178,10 +179,10 @@ file.addEventListener('change', (e: Event) => {
             <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
             <input
             type="text"
-            name={`player_${index + 1}_2n_apellido`}
+            name={`player_${index}_2n_apellido`}
             placeholder="Segon Cognom del jugador"
             class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-            required
+            
             value={jugador.nombre}
             />
         </div>
@@ -198,7 +199,7 @@ file.addEventListener('change', (e: Event) => {
             </label>
             
         <select
-          name={`player_${index + 1}_curso`}
+          name={`player_${index}_curso`}
           class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
           required
           value={jugador.curso}
@@ -255,7 +256,7 @@ file.addEventListener('change', (e: Event) => {
             </label>
             <input
             type="email"
-            name={`player_${index + 1}_email`}
+            name={`player_${index}_email`}
             placeholder="Email del jugador"
             class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
             required
@@ -503,7 +504,7 @@ window.addEventListener('load', function(){
     // Manejar jugadores normales
     let index = 0;
     while (document.getElementById(`capitan_${index}`)) {
-        agregarEventoCapitan(index, `capitan_${index}`, `player_${index + 1}_name`, `player_${index + 1}_1r_apellido`);
+        agregarEventoCapitan(index, `capitan_${index}`, `player_${index}_name`, `player_${index}_1r_apellido`);
         index++;
     }
 
@@ -551,7 +552,7 @@ while (document.getElementById(`extra_genero_${index}`)) {
     const hombre = document.getElementById(`extra_hombre_${index}`)!;
     const mujer = document.getElementById(`extra_mujer_${index}`)!;
     
-    const genero = document.getElementById(`genero_${index}`)! as HTMLInputElement;
+    const genero = document.getElementById(`extra_genero_${index}`)! as HTMLInputElement;
     hombre.addEventListener('click',  function(){
         
             genero.value = "hombre";
@@ -591,6 +592,8 @@ while (document.getElementById(`extra_genero_${index}`)) {
         if (contentType && contentType.includes("text/html")) {
             const html = await response.text();
             document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+            // Desplazarse hacia el div de error
+            document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
         } else if (contentType && contentType.includes("application/json")) {
             const jsonResponse = await response.json();
             if (jsonResponse.success) {
@@ -652,11 +655,14 @@ while (document.getElementById(`extra_genero_${index}`)) {
     background-color: rgba(39, 39, 39, 0.75);
 }
 .hombre {
-    background: rgba(0, 89, 255, 0.75); /* Color para hombre */
+    background: rgba(0, 89, 255, 0.75);
+    /* background: rgb(255, 199, 0.75); */
+     /* Color para hombre */
 }
 
 .mujer {
     background-color: rgba(255, 0, 200, 0.75);
+    /* background: rgb(255, 199, 0.75); */
     
 }
 

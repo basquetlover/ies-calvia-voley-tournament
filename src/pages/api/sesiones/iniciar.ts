@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import bcrypt from 'bcrypt';
-import { supabaseAdmin } from "../../../lib/supabase"; // Asegúrate de que esto apunte a tu configuración de Supabase
+import CryptoJS from 'crypto-js';
+import { supabase, supabaseAdmin } from "../../../lib/supabase"; // Asegúrate de que esto apunte a tu configuración de Supabase
 
 interface Usuario {
     id: string;
@@ -13,6 +14,8 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     const formData = await request.formData();
     const nombre = formData.get("nombre")?.toString();
     const password = formData.get("password")?.toString();
+
+     
 
     // Validar que se proporcionen nombre y contraseña
     if (!nombre || !password) {
@@ -46,8 +49,23 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
         );
     }
 
+    
+
+
+
+const secretKey = "8a0a6b86ab0faebd915652fb11a5b4131e76849c7403d93756f677a4b1a85714"; 
+
+function encrypt(text: string) {
+    return CryptoJS.AES.encrypt(text, secretKey).toString();
+  }
+const encrypted = encrypt(password);
+
+// Ejemplo de uso
+
+
     // Si la contraseña es válida, establecer la cookie de sesión
     cookies.set('session', Usuarios.id, { httpOnly: true, path: '/' });
+    
     function obtenerColor() {
         const opciones = [
             'bg-red-500',
@@ -72,6 +90,37 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     .update({ logo: color })
     .eq('id', Usuarios.id)
     .select()
+
+    
+    let { data: Administradores } = await supabaseAdmin
+    .from('Administradores')
+    .select('id')
+    .eq('user_email', Usuarios.email)
+    .select();
+
+    if(Administradores){
+        const email = Usuarios.email
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+        
+          if (error) {
+            return new Response(error.message, { status: 500 });
+          }
+        
+          const { access_token, refresh_token } = data.session;
+          cookies.set("sb-access-token", access_token, {
+            path: "/",
+          });
+          cookies.set("sb-refresh-token", refresh_token, {
+            path: "/",
+          });
+    }
+
+
+
+
 
     // Redirigir a la página principal
     return new Response(

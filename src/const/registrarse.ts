@@ -101,3 +101,8 @@ export const CURSO_P = [
         label: "Professor",
     }
 ]
+export const Admin = [
+    {
+        label: "Staff",
+    }
+]

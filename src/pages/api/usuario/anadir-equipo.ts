@@ -8,7 +8,7 @@ import { supabase, supabaseAdmin } from "../../../lib/supabase";
 export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
   const nombre_equipo = formData.get("nombre_equipo")?.toString().trim() || "";
-  const capitan = formData.get("capitan")?.toString().trim();
+  const capitan = formData.get("input_capitan")?.toString().trim();
   const acompañante = formData.get("entrenador")?.toString().trim() || "";
   
   function removeAccents(str: string): string  {
@@ -39,14 +39,28 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   let hombres = 0;
   let mujeres = 0;
   const jugadores = [];
-  let index = 1;
+  let index = 0;
   while (formData.has(`player_${index}_name`)) {
     const nombre = formData.get(`player_${index}_name`)?.toString().trim();
     const curso = formData.get(`player_${index}_curso`)?.toString().trim();
     const _1r_apellido = formData.get(`player_${index}_1r_apellido`)?.toString().trim();
     const _2n_apellido = formData.get(`player_${index}_2n_apellido`)?.toString().trim();
     const genero = formData.get(`genero_${index}`)?.toString().trim();
-    const email = formData.get(`player_${index + 1}_email`)?.toString().trim();
+    const email = formData.get(`player_${index}_email`)?.toString().trim();
+    if (email) { 
+      const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
+      const dominioConArroba = '@' + dominio;
+      if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+        console.log(`El email del ${index + 1}. Jugador ha de ser del centre`)
+        return new Response(
+              `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email del ${index + 1}. Jugador ha de ser del centre</div>`, 
+              { status: 401, headers: { "Content-Type": "text/html" } }
+          );
+    }
+  } else {
+      // Manejo del caso en que email es undefined o vacío
+      console.error("El email no es válido.");
+  }
     if (!genero) {
       return new Response(
         `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Seleccioni el gènere del ${index}. Jugador</div>`, 
@@ -57,7 +71,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       hombres++;
     }
     if(genero === "mujer"){
-      hombres++;
+      mujeres++;
     }
     jugadores.push({ nombre, curso, _1r_apellido, _2n_apellido, genero, email });
     index++;
@@ -65,7 +79,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
   // Recoger la información de los jugadores extra
   const jugadores_extra = [];
-  index = 1;
+  index = 0;
   while (formData.has(`extra_player_${index}_name`)) {
     const nombre = formData.get(`extra_player_${index}_name`)?.toString().trim();
     const _1r_apellido = formData.get(`extra_player_${index}_1r_apellido`)?.toString().trim();
@@ -90,11 +104,15 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   }
 
 
-  if (!nombre_equipo || !capitan) {
-    return new Response("nombre y capitan son obligatorios", { status: 400 });
+  if (!capitan) {
+    return new Response(
+      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Ha de haber un capità a l'equip</div>`, 
+      { status: 401, headers: { "Content-Type": "text/html" } }
+  );
   }
   
   if(hombres <2 || mujeres <2){
+    console.log("Falta variedad de genero", hombres, mujeres)
     return new Response(
       `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Ha de haber un minim de 2 nins i 2 nines</div>`, 
       { status: 401, headers: { "Content-Type": "text/html" } }

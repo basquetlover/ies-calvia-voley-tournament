@@ -40,5 +40,8 @@ export const CURSOS = [
     },
     {
         label: "Professor",
+    },
+    {
+        label: "Staff",
     }
 ]

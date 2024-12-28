@@ -63,7 +63,7 @@ import LayoutVacio from "@layouts/LayoutVacio.astro";
             return;
         }
         // Validar el formato del email
-        const emailPattern = /^(.*@iescalvia\.com|.*@a\.iescalvia\.com)$/;
+        const emailPattern = /^(.*@iescalvia.com|.*@a\.iescalvia.com)$/;
         if (!emailPattern.test(email)) {
             console.log("El email debe ser del centro: @iescalvia.com o @a.iescalvia.com");
             mostrarError(emailInput, "El email debe ser de la forma @iescalvia.com o @a.iescalvia.com");
