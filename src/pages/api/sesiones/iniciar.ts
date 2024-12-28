@@ -99,6 +99,7 @@ const encrypted = encrypt(password);
     .select();
 
     if(Administradores){
+        console.log("El usuario es un admin")
         const email = Usuarios.email
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
@@ -106,7 +107,12 @@ const encrypted = encrypt(password);
           });
         
           if (error) {
-            return new Response(error.message, { status: 500 });
+            console.error("La contraseña de admin no es la misma que la de user");
+            return new Response(
+                JSON.stringify({ success: true }), 
+                { status: 200, headers: { "Content-Type": "application/json" } }
+            );
+            // return new Response(error.message, { status: 500 });
           }
         
           const { access_token, refresh_token } = data.session;
@@ -116,6 +122,7 @@ const encrypted = encrypt(password);
           cookies.set("sb-refresh-token", refresh_token, {
             path: "/",
           });
+          
     }
 
 
