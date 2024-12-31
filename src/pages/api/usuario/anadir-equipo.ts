@@ -368,9 +368,19 @@ console.log("URL pública del escudo:", publicUrl);
     </div>
     <h2 style="color: #FFC107; font-size: 24px; margin-bottom: 16px;">Equip Inscrit Per:</h2>
     <div style="display: grid; grid-template-columns: max-content 1fr max-content; align-items: center; place-items: center; text-lg; color: #ffffff; margin-bottom: 20px;">
-      <p style="margin: 0;">${usuario_nombre}</p>
-      <p style="margin: 0;">${usuario_email}</p>
-      <p style="margin: 0;">${usuario_curso}</p>
+    <table>
+      <tr>
+        <th>
+          <p style="margin: 0;">${usuario_nombre}</p>
+        </th>
+        <th>
+          <p style="margin: 0;">${usuario_email}</p>
+        </th>
+        <th>
+          <p style="margin: 0;">${usuario_curso}</p>
+        </th>
+      </tr>
+    </table>
     </div>
     <div style="text-align: center; margin: 20px 0;">
       <h3 style="font-size: 32px; background-color: transparent; color: #FFC107; padding: 10px; border-radius: 5px;">IES Calvià Voley Team</h3>
@@ -386,9 +396,17 @@ console.log("URL pública del escudo:", publicUrl);
     <h4 style="margin-top: 20px; font-size: 24px; color: #FFC107;">Entrenador</h4>
     <div style="margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
         <div style="display: flex; flex-direction: column; margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
+        <table>
+          <tr>
             <p style="margin: 0; font-weight: bold; color: #ffffff;">${acompañante_nombre} ${acompañante_1r_apellido} ${acompañante_2n_apellido}</p>
+          </tr>
+          <tr>
             <p style="color: #ffffff;">Curs: ${acompañante_curso} </p>
+          </tr>
+          <tr>
             <p style="color: #ffffff; text-decoration:none;">Email: ${acompañante_email}</p>
+          </tr>
+        </table>
         </div>
     </div>
     
@@ -396,18 +414,34 @@ console.log("URL pública del escudo:", publicUrl);
     ${jugadores.map(jugador => `
       <div style="margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
         <div style="display: flex; flex-direction: column; margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
+        <table>
+          <tr>
             <p style="margin: 0; font-weight: bold; color: #ffffff;">${jugador.nombre} ${jugador._1r_apellido} ${jugador._2n_apellido}</p>
+          </tr>
+          <tr>
             <p style="color: #ffffff;">Curs: ${jugador.curso}</p>
+          </tr>
+          <tr>
             <p style="color: #ffffff;">Email: ${jugador.email}</p>
+          </tr>
+        </table>
         </div>
       </div>
     `).join('')}
     ${jugadores_extra.map(jugador => `
       <div style="margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
         <div style="display: flex; flex-direction: column; margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
+            <table>
+          <tr>
             <p style="margin: 0; font-weight: bold; color: #ffffff;">${jugador.nombre} ${jugador._1r_apellido} ${jugador._2n_apellido}</p>
+          </tr>
+          <tr>
             <p style="color: #ffffff;">Curs: ${jugador.curso}</p>
+          </tr>
+          <tr>
             <p style="color: #ffffff;">Email: ${jugador.email}</p>
+          </tr>
+        </table>
         </div>
       </div>
     `).join('')}
