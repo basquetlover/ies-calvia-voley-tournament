@@ -57,6 +57,7 @@ export const onRequest: MiddlewareHandler = async ({ locals, cookies }, next) =>
       locals.session = null;
       cookies.delete('sb-access-token', { path: '/' });
       cookies.delete('sb-refresh-token', { path: '/' });
+      cookies.delete('session', { path: '/' });
     } else if (data.session) {
       locals.StaffUser = {
         id: data.user?.id ?? '',
@@ -91,6 +92,7 @@ export const onRequest: MiddlewareHandler = async ({ locals, cookies }, next) =>
       locals.session = null;
       cookies.delete('sb-access-token', { path: '/' });
       cookies.delete('sb-refresh-token', { path: '/' });
+      cookies.delete('session', { path: '/' });
     }
   } catch (error) {
     console.error('Middleware - Error:', error);
@@ -98,6 +100,7 @@ export const onRequest: MiddlewareHandler = async ({ locals, cookies }, next) =>
     locals.session = null;
     cookies.delete('sb-access-token', { path: '/' });
     cookies.delete('sb-refresh-token', { path: '/' });
+    cookies.delete('session', { path: '/' });
   }
 
   return next();
