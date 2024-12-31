@@ -226,130 +226,130 @@ async function uploadFile(file: File, id_equipo: string) {
   return filePath; // Devuelve la ruta del archivo
 }
 
-// // Llama a la función para subir el escudo
-// const escudoPath = await uploadFile(escudo, id_equipo);
+// Llama a la función para subir el escudo
+const escudoPath = await uploadFile(escudo, id_equipo);
 
-// //Obtener la URL pública del escudo subido
-// const { data: urlData } = supabaseAdmin.storage
-//     .from('EquiposIMG')
-//     .getPublicUrl(escudoPath); // Usa el escudoPath que se generó al subir el archivo
+//Obtener la URL pública del escudo subido
+const { data: urlData } = supabaseAdmin.storage
+    .from('EquiposIMG')
+    .getPublicUrl(escudoPath); // Usa el escudoPath que se generó al subir el archivo
 
-// // Verifica si urlData contiene la propiedad publicUrl
-// if (!urlData || !urlData.publicUrl) {
-//   //   console.error("No se pudo obtener la URL pública del escudo.");
-//   //   return new Response(
-//   //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
-//   //     { status: 401, headers: { "Content-Type": "text/html" } }
-//   // );
-// }
-// if (urlData) {
-//   publicUrl = urlData.publicUrl;
-// }
-
-
-// // Ahora puedes usar urlData.publicUrl para insertar en la base de datos
-
-// console.log("URL pública del escudo:", publicUrl);
-    
-    
-//   // Insertar los datos en la tabla 'administradores'
-//    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-//     .from('EquiposSS')
-//     .insert([
-//         { nombre_equipo: nombre_equipo ,
-//           id_equipo: id_equipo ,
-//           capitan: capitan,
-//           entrenador: acompañante,
-//           escudo: publicUrl,
-//           inscrito: usuario_id,
-//         },
-//     ])
-//     .select()
-
-//   if (equipoError) {
-//     console.error("Error insertando en equipos:", equipoError.message);
-//     return new Response(
-//       `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en afegir l'equip.. Torna-ho a intentar més tard.</div>`, 
-//       { status: 401, headers: { "Content-Type": "text/html" } }
-//   );
-//   }
-
-  // const { data: equipoData, error: busquedaError } = await supabaseAdmin
-  //   .from('EquiposSS')
-  //   .select('id')
-  //   .eq('nombre_equipo', nombre_equipo)
-  //   .single();
-
-  // if (busquedaError || !equipoData) {
-  //   console.error("Error buscando el ID del equipo:", busquedaError?.message);
+// Verifica si urlData contiene la propiedad publicUrl
+if (!urlData || !urlData.publicUrl) {
+  //   console.error("No se pudo obtener la URL pública del escudo.");
   //   return new Response(
-  //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en processar l'equip.. Torna-ho a intentar més tard.</div>`, 
+  //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
   //     { status: 401, headers: { "Content-Type": "text/html" } }
   // );
-  // }
+}
+if (urlData) {
+  publicUrl = urlData.publicUrl;
+}
 
-  // const equipoId = equipoData.id;
 
-  // for (const jugador of jugadores) {
-  //   const { error: jugadorError } = await supabaseAdmin
-  //     .from('JugadoresSS')
-  //     .insert([
-  //       {   nombre: jugador.nombre, 
-  //           _1r_apellido: jugador._1r_apellido,
-  //           _2n_apellido: jugador._2n_apellido,
-  //           curso: jugador.curso,
-  //           genero: jugador.genero,
-  //           pertenece_equipo: equipoId,
-  //           email: jugador.email,
-  //           ficha: 'jugador',
-  //         },
-  //     ]).select()
+// Ahora puedes usar urlData.publicUrl para insertar en la base de datos
 
-  //   if (jugadorError) {
-  //     console.error("Error insertando jugador principal:", jugadorError.message);
-  //     // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-  //   }
-  // }
+console.log("URL pública del escudo:", publicUrl);
+    
+    
+  // Insertar los datos en la tabla 'administradores'
+   const { data: datosEquipos, error: equipoError } = await supabaseAdmin
+    .from('EquiposSS')
+    .insert([
+        { nombre_equipo: nombre_equipo ,
+          id_equipo: id_equipo ,
+          capitan: capitan,
+          entrenador: acompañante,
+          escudo: publicUrl,
+          inscrito: usuario_id,
+        },
+    ])
+    .select()
 
-  // for (const jugador of jugadores_extra) {
-  //   const { error: jugadorExtraError } = await supabaseAdmin
-  //     .from('JugadoresSS')
-  //     .insert([
-  //       { nombre: jugador.nombre, 
-  //         _1r_apellido: jugador._1r_apellido,
-  //         _2n_apellido: jugador._2n_apellido,
-  //         curso: jugador.curso,
-  //         genero: jugador.genero_extra,
-  //         pertenece_equipo: equipoId,
-  //         email: jugador.email,
-  //         ficha: 'jugador',
-  //       },
-  //   ]).select()
+  if (equipoError) {
+    console.error("Error insertando en equipos:", equipoError.message);
+    return new Response(
+      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en afegir l'equip.. Torna-ho a intentar més tard.</div>`, 
+      { status: 401, headers: { "Content-Type": "text/html" } }
+  );
+  }
 
-  //   if (jugadorExtraError) {
-  //     console.error("Error insertando jugador extra:", jugadorExtraError.message);
-  //     // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-  //   }
-  // }
+  const { data: equipoData, error: busquedaError } = await supabaseAdmin
+    .from('EquiposSS')
+    .select('id')
+    .eq('nombre_equipo', nombre_equipo)
+    .single();
 
-  // const { error: jugadorExtraError } = await supabaseAdmin
-  //     .from('JugadoresSS')
-  //     .insert([
-  //       { nombre: acompañante_nombre, 
-  //         _1r_apellido: acompañante_1r_apellido,
-  //         _2n_apellido: acompañante_2n_apellido,
-  //         curso: acompañante_curso,
-  //         genero: acompañante_genero,
-  //         email: acompañante_email,
-  //         pertenece_equipo: equipoId,
-  //         ficha: 'entrenador',
-  //       },
-  //   ]).select()
+  if (busquedaError || !equipoData) {
+    console.error("Error buscando el ID del equipo:", busquedaError?.message);
+    return new Response(
+      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en processar l'equip.. Torna-ho a intentar més tard.</div>`, 
+      { status: 401, headers: { "Content-Type": "text/html" } }
+  );
+  }
 
-  //   if (jugadorExtraError) {
-  //     console.error("Error insertando jugador extra:", jugadorExtraError.message);
-  //     // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-  //   }
+  const equipoId = equipoData.id;
+
+  for (const jugador of jugadores) {
+    const { error: jugadorError } = await supabaseAdmin
+      .from('JugadoresSS')
+      .insert([
+        {   nombre: jugador.nombre, 
+            _1r_apellido: jugador._1r_apellido,
+            _2n_apellido: jugador._2n_apellido,
+            curso: jugador.curso,
+            genero: jugador.genero,
+            pertenece_equipo: equipoId,
+            email: jugador.email,
+            ficha: 'jugador',
+          },
+      ]).select()
+
+    if (jugadorError) {
+      console.error("Error insertando jugador principal:", jugadorError.message);
+      // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+    }
+  }
+
+  for (const jugador of jugadores_extra) {
+    const { error: jugadorExtraError } = await supabaseAdmin
+      .from('JugadoresSS')
+      .insert([
+        { nombre: jugador.nombre, 
+          _1r_apellido: jugador._1r_apellido,
+          _2n_apellido: jugador._2n_apellido,
+          curso: jugador.curso,
+          genero: jugador.genero_extra,
+          pertenece_equipo: equipoId,
+          email: jugador.email,
+          ficha: 'jugador',
+        },
+    ]).select()
+
+    if (jugadorExtraError) {
+      console.error("Error insertando jugador extra:", jugadorExtraError.message);
+      // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+    }
+  }
+
+  const { error: jugadorExtraError } = await supabaseAdmin
+      .from('JugadoresSS')
+      .insert([
+        { nombre: acompañante_nombre, 
+          _1r_apellido: acompañante_1r_apellido,
+          _2n_apellido: acompañante_2n_apellido,
+          curso: acompañante_curso,
+          genero: acompañante_genero,
+          email: acompañante_email,
+          pertenece_equipo: equipoId,
+          ficha: 'entrenador',
+        },
+    ]).select()
+
+    if (jugadorExtraError) {
+      console.error("Error insertando jugador extra:", jugadorExtraError.message);
+      // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+    }
 
 
   console.log("Equipo añadido correctamente");
@@ -378,13 +378,13 @@ async function uploadFile(file: File, id_equipo: string) {
         <table style="width: 100%;">
           <tr>
             <th>
-              <p style="margin: 0;">${usuario_nombre}</p>
+              <p style="margin: 0; color: #ffffff;">${usuario_nombre}</p>
             </th>
             <th>
-              <p style="margin: 0;">${usuario_email}</p>
+              <p style="margin: 0; color: #ffffff;">${usuario_email}</p>
             </th>
             <th>
-              <p style="margin: 0;">${usuario_curso}</p>
+              <p style="margin: 0; color: #ffffff;">${usuario_curso}</p>
             </th>
           </tr>
         </table>
