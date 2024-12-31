@@ -6,12 +6,12 @@ const usuario = await verificarSesion(Astro.request);
 let equipo = "Sense Equip"
 let escudo = "/img/escudos/sin-escudo-blanco.png"
 let inscrito = false;
-let admin = false
+let admin = false;
 
 if(usuario){
     const usuario_nombre = usuario.nombre;
     const usuario_email = usuario.email;
-
+    
     
 
     let { data: Jugador, error: errorJ } = await supabaseAdmin
@@ -21,27 +21,25 @@ if(usuario){
     .single(); // Use .single() to get a single record
 
     if (errorJ) {
-    console.error('Jugador sin equipo',);
+    console.error('Jugador sin equipo', errorJ.message);
     // Handle the error appropriately
     }
-
+    
     if (!Jugador) {
         console.error('Jugador no encontrado');
-            
         let { data: Administradores, error } = await supabaseAdmin
         .from('Administradores')
         .select('rango')
         .eq('user_email', usuario_email)
-        .select();
+        .single();
 
-        if(!Administradores){
+    if(!Administradores){
             console.error("Este usuario no es Staff");
         } else{
+            admin = true;
             equipo = "IES Calvià Voley Team";
             escudo = "/web-app-manifest-192x192.png";
-            admin = true;
         }
-
     } else {
     let { data: Equipos, error: errorE } = await supabaseAdmin
         .from('EquiposSS')
@@ -54,10 +52,21 @@ if(usuario){
         // Handle the error appropriately
     }
     if(Equipos){
+        let { data: Administradores, error } = await supabaseAdmin
+        .from('Administradores')
+        .select('rango')
+        .eq('user_email', usuario_email)
+        .single();
+
+    if(!Administradores){
+            console.error("Este usuario no es Staff");
+        } else{
+            admin = true;
+        }
         equipo = Equipos.nombre_equipo
         escudo = Equipos.escudo
         inscrito = true;
-        admin = false;
+        
     }
     }
 }
@@ -132,10 +141,10 @@ if(usuario){
         {admin === true ? (
             <div class="w-[95%] h-[2px] my-4 bg-accent rounded-full mx-auto">&nbsp;</div>
             
-            <a href="/admin" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center ${inscrito === false ? " text-white hover:text-amarillo group duration-300 transition-all" : " text-gray-500 cursor-not-allowed pointer-events-none "} `}>
+            <a href="/admin" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all`}>
                     <span class="w-5 h-5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 -960 960 960">
-                            <path  class={` ${inscrito === false ? "fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all" : " fill-gray-500 "}`} d="M480-440q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0-80q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0 440q-139-35-229-159t-91-277v-244l320-120 320 120v244q0 152-90 277T480-80Zm0-400Zm0-315-240 90v189q0 54 15 105t41 96q42-21 88-33t96-12q50 0 96 12t88 33q26-45 41-96t15-105v-189l-240-90Zm0 515q-36 0-70 8t-65 22q29 30 63 52t72 34q38-12 72-34t63-52q-31-14-65-22t-70-8Z"/>
+                            <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all`} d="M480-440q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0-80q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0 440q-139-35-229-159t-91-277v-244l320-120 320 120v244q0 152-90 277T480-80Zm0-400Zm0-315-240 90v189q0 54 15 105t41 96q42-21 88-33t96-12q50 0 96 12t88 33q26-45 41-96t15-105v-189l-240-90Zm0 515q-36 0-70 8t-65 22q29 30 63 52t72 34q38-12 72-34t63-52q-31-14-65-22t-70-8Z"/>
                         </svg>
                     </span>
                     <p>Panell de Staff</p>
