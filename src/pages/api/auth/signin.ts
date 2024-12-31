@@ -20,6 +20,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   if (error) {
     return new Response(error.message, { status: 500 });
   }
+  
   const user_session = cookies.get("session");
   if(!user_session){
     const { data: Usuarios } = await supabaseAdmin
@@ -27,7 +28,15 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
         .select('*')
         .eq('email', email)
         .single();
-  cookies.set('session', Usuarios.id, { httpOnly: true, path: '/' });
+
+        if(!Usuarios){
+          console.log("El administrador ", email, " no tiene cuenta de usuario")
+        }
+
+        if(Usuarios){
+          cookies.set('session', Usuarios.id, { httpOnly: true, path: '/' });
+        }
+  
   }
   
   const { access_token, refresh_token } = data.session;
