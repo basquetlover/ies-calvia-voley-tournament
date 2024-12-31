@@ -355,7 +355,35 @@ console.log("URL pública del escudo:", publicUrl);
   console.log("Equipo añadido correctamente");
 
 
-  const resend = new Resend(import.meta.env.RESEND_API_KEY);
+  //Enviar Email
+  const acceso_emails = "email-inscripcion";
+  let accessibleBlocks = [];
+  
+  // Obtén las páginas a las que el usuario tiene acceso
+  try {
+      const { data: pageAccess, error } = await supabaseAdmin
+          .from('AccesoUsuarios')
+          .select('pagina, acceso');
+  
+      if (error) {
+          console.error("Error al obtener acceso:", error);
+      } else if (pageAccess) {
+          // Filtra las páginas a las que el usuario tiene acceso
+          accessibleBlocks = pageAccess
+              .filter(page => page.acceso === true) // Solo páginas con acceso true
+              .map(page => page.pagina); // Obtiene solo las páginas
+          // console.log(accessibleBlocks);
+      }
+  } catch (err) {
+      console.error("Error al obtener acceso:", err);
+  }
+  
+  // Verifica si el usuario tiene acceso a la página actual
+  const userHasAccess = accessibleBlocks.includes(acceso_emails);
+  if(userHasAccess){
+    console.log("Se envian emails");
+
+    const resend = new Resend(import.meta.env.RESEND_API_KEY);
   const emailContent = `
 <!DOCTYPE html>
 <html>
@@ -510,6 +538,12 @@ try {
 } catch (error) {
   console.error("Error al enviar el correo:", error);
 }
+
+  }else{
+    console.log("No se envian emails");
+  }
+
+  
 
 // try {
 //   send: defineAction({
