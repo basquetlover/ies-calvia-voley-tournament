@@ -17,7 +17,7 @@ if(usuario){
     let { data: Jugador, error: errorJ } = await supabaseAdmin
     .from('Jugadores')
     .select('pertenece_equipo')
-    .eq('nombre', usuario_nombre)
+    .eq('email', usuario_email)
     .single(); // Use .single() to get a single record
 
     if (errorJ) {
