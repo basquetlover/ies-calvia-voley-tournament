@@ -1,0 +1,116 @@
+---
+import { supabaseAdmin } from "src/lib/supabase";
+
+let { data: Usuarios, error } = await supabaseAdmin
+  .from('Usuarios')
+  .select('nombre, curso, email');
+---
+<div class="max-w-2xl w-auto mx-auto h-auto content-center mb-10">
+    <div class="flex flex-col relative w-[80%] mx-auto ">
+        <h3 class="text-amarillo text-center text-3xl my-5">Lista Usuarios</h3>
+        <div class="w-full rounded-lg p-4 text-blanco text-lg bg-gris-claro">
+            <table class="w-full font-normal">
+                <tr class="w-full text-amarillo">
+                    <th><p>Nombre</p></th>
+                    <th><p>Curso</p></th>
+                    <th><p>Email</p></th>
+                </tr>
+                {Usuarios ? (
+                    Usuarios.map((usuario) => (
+                        <tr class="font-normal" >
+                            <th><p>{usuario.nombre}</p></th>
+                            <th><p>{usuario.curso}</p></th>
+                            <th><p>{usuario.email}</p></th>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td class="text-center">No hay usuarios disponibles</td>
+                    </tr>
+                    
+                )}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+    .centrar {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .formulario {
+        z-index: 10000;
+    }
+    .form {
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+    
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 25px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #0E347D;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked + .slider {
+        background-color: #34A853;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(22px);
+        -ms-transform: translateX(22px);
+        transform: translateX(22px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>

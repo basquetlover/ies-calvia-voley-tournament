@@ -6,6 +6,7 @@ import { supabaseAdmin } from "../../lib/supabase";
 import SinPermisos from '@components/admin/SinPermisos.astro';
 import ControlUsuarios from '@sections/administracion/control-usuarios.astro';
 import AñadirPagina from '@sections/administracion/AñadirPagina.astro';
+import ListaUsuarios from '@sections/administracion/ListaUsuarios.astro';
 
 // Verifica si hay un usuario autenticado
 const user = Astro.locals.StaffUser;
@@ -55,6 +56,7 @@ const userHasAccess = accessibleBlocks.includes(pathname);
     <>
     <AñadirPagina />
     <ControlUsuarios />
+    <ListaUsuarios />
     </>
 ) : (
     <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
