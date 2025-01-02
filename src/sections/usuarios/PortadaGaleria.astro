@@ -7,8 +7,9 @@ import { verificarSesion } from "src/lib/session";
 import { supabaseAdmin } from "src/lib/supabase";
 
 const usuario = await verificarSesion(Astro.request);
-let equipo = "Sense Equip"
-let escudo = "/img/escudos/sin-escudo-blanco.png"
+let equipo = "Sense Equip";
+let escudo = "/img/galeria/sin-equipo/portada-3.jpg";
+let id_equipo = "sin-equipo";
 let inscrito = false;
 let admin = false;
 
@@ -20,7 +21,7 @@ if(usuario){
 
     let { data: Jugador, error: errorJ } = await supabaseAdmin
     .from('Jugadores')
-    .select('pertenece_equipo')
+    .select('pertenece_equipo, curso')
     .eq('email', usuario_email)
     .single(); // Use .single() to get a single record
 
@@ -36,11 +37,25 @@ if(usuario){
         .select('rango')
         .eq('user_email', usuario_email)
         .single();
+
+       
+        
     } else {
+        let { data: Administradores, error } = await supabaseAdmin
+        .from('Administradores')
+        .select('rango')
+        .eq('user_email', usuario_email)
+        .single();
+
+        if(Administradores){
+            escudo = "/img/logo_torneo.png"
+        }
+
+
 
     let { data: Equipos, error: errorE } = await supabaseAdmin
         .from('Equipos')
-        .select('nombre_equipo, escudo')
+        .select('nombre_equipo, escudo, id_equipo')
         .eq('id', Jugador.pertenece_equipo)
         .single(); // Use .single() to get a single record
 
@@ -51,6 +66,7 @@ if(usuario){
     if(Equipos){
         equipo = Equipos.nombre_equipo
         escudo = Equipos.escudo
+        id_equipo = Equipos.id_equipo
         
     }
     }
@@ -58,29 +74,32 @@ if(usuario){
 ---
 <section class=" w-full mx-auto h-[85vh] relative">
     <div class="w-full h-full grid grid-cols-3 grid-rows-2 place-items-center">
-        <div class="w-96 h-60 bg-[url('/img/galeria/general-1.jpg')] bg-cover scale-125  -skew-y-3 overflow-hidden select-none relative">
-            <!-- <img src="/img/galeria/general-1.jpg" class="w-full h-full" alt="Imagen general del torneo" />
-            <div class="w-full z-20 h-full absolute top-0 left-0 ">
-                &nbsp;
-            </div> -->
-            &nbsp;
-        </div>
-        <div class={`w-96 h-60 bg-[url('/img/galeria/team-teto/portada-1.jpg')] bg-cover skew-y-6 scale-110`}>
-            &nbsp;
-            
-        </div>
-        <div class="w-96 h-60 bg-[url('/img/galeria/team-teto/portada-2.jpg')] bg-cover -skew-y-3 rotate-3">
-            &nbsp;
+        <div class="w-96 h-60 scale-125  -skew-y-3 overflow-hidden  select-none relative">
+            <img src={`/img/galeria/general-1.jpg`} alt={`Imagen `} class="h-full w-auto mx-auto img" />
+            <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
         </div>
 
-        <div class="w-96 h-60 bg-[url('/img/galeria/team-teto/portada-4.jpg')] bg-cover -skew-y-3 scale-110">
-            &nbsp;
+        <div class={`w-96 h-60 relative skew-y-6 scale-110`}>
+            <img src={`/img/galeria/${id_equipo}/portada-1.jpg`} alt={`Imagen `} class="h-full w-auto mx-auto img" />
+            <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
         </div>
-        <div class="w-96 h-60 skew-y-3 overflow-hidden">
+        <div class="w-96 h-60 relative -skew-y-3 rotate-3">
+            <img src={`/img/galeria/${id_equipo}/portada-2.jpg`} alt={`Imagen `} class="h-full w-auto mx-auto img" />
+            <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
+        </div>
+
+        <div class="w-96 h-60 relative -skew-y-3 scale-110">
+            <img src={`/img/galeria/${id_equipo}/portada-4.jpg`} alt={`Imagen `} class="h-full w-auto mx-auto img" />
+            <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
+        </div>
+        <div class="w-96 h-60 skew-y-3 relative overflow-hidden">
             <img src={escudo} alt="Escudo equipo" class="h-full w-auto mx-auto" />
+            
+            <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
         </div>
-        <div class="w-96 h-60 bg-[url('/img/galeria/general-2.jpg')] bg-cover skew-y-3">
-            &nbsp;
+        <div class="w-96 h-60 relative skew-y-3">
+            <img src={`/img/galeria/general-2.jpg`} alt={`Imagen `} class="h-full w-auto mx-auto img" />
+            <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
         </div>
     </div>
     <div class="centrar">
@@ -96,10 +115,18 @@ if(usuario){
 </section>
 
 <style>
+    .placeholder{
+  opacity: 0;
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+}
     .centrar{
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate( -50%, -50%);
     }
+
 </style>
