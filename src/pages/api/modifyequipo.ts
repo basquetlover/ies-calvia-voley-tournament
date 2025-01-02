@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { supabase, supabaseAdmin } from "../../lib/supabase";
+import Email from "../email.astro";
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
@@ -8,6 +9,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const id_equipo = nombre_equipo.toLowerCase().replace(/\s+/g, '-');
   const capitan = formData.get("capitan")?.toString().trim();
   const acompañante = formData.get("entrenador")?.toString().trim() || "";
+  const email_entrenador = formData.get("email_entrenador")?.toString().trim() || "";
   
   const { data: equipoData, error } = await supabaseAdmin
   .from('Equipos')
@@ -37,12 +39,13 @@ const id = equipoData.id;
     let index = 0; // Comienza en 0 para que coincida con el índice del frontend
     while (formData.has(`jugador_id_${index}`)) {
         const nombre = formData.get(`player_${index + 1}_name`);
+        const email = formData.get(`player_${index + 1}_email`);
         const opcion = formData.get(`player_${index + 1}_opcion`);
         const curso = formData.get(`player_${index + 1}_curso`)?.toString().trim();
         const id_jugador = formData.get(`jugador_id_${index}`); // Asegúrate de que el nombre coincida
 
         if (nombre && curso) {
-            jugadores.push({ nombre, curso, id_jugador, opcion });
+            jugadores.push({ nombre, curso, id_jugador, opcion, email });
         }
         index++;
     }
@@ -133,6 +136,7 @@ async function uploadFile(file: File, id_equipo: string) {
         capitan: capitan,
         entrenador: acompañante,
         escudo: publicUrl,
+        email_entrenador: email_entrenador,
      })
      .eq("id", id)
      .select();
@@ -157,6 +161,7 @@ async function uploadFile(file: File, id_equipo: string) {
         { 
             nombre: jugador.nombre, 
             curso: jugador.curso,
+            email: jugador.email,
           },
       ])
       .eq("id", jugador.id_jugador )

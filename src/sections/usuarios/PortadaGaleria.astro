@@ -1,0 +1,105 @@
+---
+const equipo_id = "team-teto"
+
+const portada1 = `/img/galeria/${equipo_id}/portada-1.jpg`
+
+import { verificarSesion } from "src/lib/session";
+import { supabaseAdmin } from "src/lib/supabase";
+
+const usuario = await verificarSesion(Astro.request);
+let equipo = "Sense Equip"
+let escudo = "/img/escudos/sin-escudo-blanco.png"
+let inscrito = false;
+let admin = false;
+
+if(usuario){
+    const usuario_nombre = usuario.nombre;
+    const usuario_email = usuario.email;
+    
+    
+
+    let { data: Jugador, error: errorJ } = await supabaseAdmin
+    .from('Jugadores')
+    .select('pertenece_equipo')
+    .eq('email', usuario_email)
+    .single(); // Use .single() to get a single record
+
+    if (errorJ) {
+    console.error('Jugador sin equipo', errorJ.message);
+    // Handle the error appropriately
+    }
+    
+    if (!Jugador) {
+        console.error('Jugador no encontrado');
+        let { data: Administradores, error } = await supabaseAdmin
+        .from('Administradores')
+        .select('rango')
+        .eq('user_email', usuario_email)
+        .single();
+    } else {
+
+    let { data: Equipos, error: errorE } = await supabaseAdmin
+        .from('Equipos')
+        .select('nombre_equipo, escudo')
+        .eq('id', Jugador.pertenece_equipo)
+        .single(); // Use .single() to get a single record
+
+    if (errorE) {
+        console.error('Error fetching Equipos:', errorE);
+        // Handle the error appropriately
+    }
+    if(Equipos){
+        equipo = Equipos.nombre_equipo
+        escudo = Equipos.escudo
+        
+    }
+    }
+}
+---
+<section class=" w-full mx-auto h-[85vh] relative">
+    <div class="w-full h-full grid grid-cols-3 grid-rows-2 place-items-center">
+        <div class="w-96 h-60 bg-[url('/img/galeria/general-1.jpg')] bg-cover scale-125  -skew-y-3 overflow-hidden select-none relative">
+            <!-- <img src="/img/galeria/general-1.jpg" class="w-full h-full" alt="Imagen general del torneo" />
+            <div class="w-full z-20 h-full absolute top-0 left-0 ">
+                &nbsp;
+            </div> -->
+            &nbsp;
+        </div>
+        <div class={`w-96 h-60 bg-[url('/img/galeria/team-teto/portada-1.jpg')] bg-cover skew-y-6 scale-110`}>
+            &nbsp;
+            
+        </div>
+        <div class="w-96 h-60 bg-[url('/img/galeria/team-teto/portada-2.jpg')] bg-cover -skew-y-3 rotate-3">
+            &nbsp;
+        </div>
+
+        <div class="w-96 h-60 bg-[url('/img/galeria/team-teto/portada-4.jpg')] bg-cover -skew-y-3 scale-110">
+            &nbsp;
+        </div>
+        <div class="w-96 h-60 skew-y-3 overflow-hidden">
+            <img src={escudo} alt="Escudo equipo" class="h-full w-auto mx-auto" />
+        </div>
+        <div class="w-96 h-60 bg-[url('/img/galeria/general-2.jpg')] bg-cover skew-y-3">
+            &nbsp;
+        </div>
+    </div>
+    <div class="centrar">
+        <h1 class="text-8xl font-bold text-accent bg-gris-claro bg-opacity-60 text-center p-2">Galeria Torneig Nadal 24-25</h1>
+    </div>
+    <div class="centrar mt-40 flex items-center place-content-center bg-gris-claro bg-opacity-75 p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 -960 960 960">
+            <path d="M480-260q75 0 128-52t52-128q0-75-52-127t-128-53q-75 0-127 53t-53 127q0 75 53 128t127 52Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM160-120q-33 0-56-23t-24-57v-480q0-33 24-56t56-24h126l74-80h240l74 80h126q33 0 57 24t23 56v480q0 33-23 57t-57 23H160Zm0-80h640v-480H638l-73-80H395l-73 80H160v480Zm320-240Z"/>
+          </svg>
+        <h2 class="text-3xl font-semibold text-amarillo  text-center ">Miquel Sureda</h2>
+    </div>
+
+</section>
+
+<style>
+    .centrar{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate( -50%, -50%);
+    }
+</style>

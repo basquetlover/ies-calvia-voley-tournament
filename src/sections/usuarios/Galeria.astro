@@ -1,0 +1,82 @@
+---
+import { verificarSesion } from "src/lib/session";
+import { supabaseAdmin } from "src/lib/supabase";
+
+const usuario = await verificarSesion(Astro.request);
+let equipo = "Sense Equip";
+let equipo_id = "";
+let escudo = "/img/escudos/sin-escudo-blanco.png";
+if(usuario){
+    const usuario_nombre = usuario.nombre;
+    const usuario_email = usuario.email;
+    
+    
+
+    let { data: Jugador, error: errorJ } = await supabaseAdmin
+    .from('Jugadores')
+    .select('pertenece_equipo')
+    .eq('email', usuario_email)
+    .single(); // Use .single() to get a single record
+
+    if (errorJ) {
+    console.error('Jugador sin equipo', errorJ.message);
+    // Handle the error appropriately
+    }
+    
+    if (!Jugador) {
+        console.error('Jugador no encontrado');
+    } else {
+
+    let { data: Equipos, error: errorE } = await supabaseAdmin
+        .from('Equipos')
+        .select('nombre_equipo, escudo, id_equipo')
+        .eq('id', Jugador.pertenece_equipo)
+        .single(); // Use .single() to get a single record
+
+    if (errorE) {
+        console.error('Error fetching Equipos:', errorE);
+        // Handle the error appropriately
+    }
+    if(Equipos){
+        equipo = Equipos.nombre_equipo
+        equipo_id = Equipos.id_equipo
+        escudo = Equipos.escudo
+    }
+    }
+}
+
+const totalImages = 21; // Cambia este número según la cantidad de imágenes que tengas
+const imageArray = [];
+
+// Generar las rutas de las imágenes
+for (let i = 1; i <= totalImages; i++) {
+    imageArray.push(`/img/galeria/${equipo_id}/imagen${i}.jpg`);
+}
+
+console.log(imageArray)
+
+
+---
+<div class="image-gallery">
+    {imageArray.map((imgSrc, index) => (
+        <div  class="w-96 h-60 bg-black overflow-hidden text-blanco">
+            <img src={imgSrc} alt={`Imagen ${index + 1}`} class="h-full w-auto img" />
+        </div>
+    ))}
+</div>
+<!-- {
+ imageArray.map((imgSrc, index) =>{
+    <div class="w-96 h-60 bg-black overflow-hidden">
+        <img src={imgSrc} alt={`Imagen ${index}`} class="h-full w-auto img" />
+    </div>
+ })
+} -->
+
+<style>
+    .img {
+    user-select: none; /* Para navegadores modernos */
+    -webkit-user-drag: none; /* Para Safari */
+    -moz-user-select: none; /* Para Firefox */
+    -ms-user-select: none; /* Para Internet Explorer/Edge */
+    }
+</style>
