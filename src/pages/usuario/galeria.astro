@@ -7,7 +7,12 @@ import PortadaGaleria from "@sections/usuarios/PortadaGaleria.astro";
 import GaleriaFotos from "@sections/usuarios/Galeria.astro";
 ---
 <ControlAcces>
-<LayoutUsuarioMenu title="Galeria | IES Calvià Voley Tournament" descripcion="" >
+    <script>
+        document.addEventListener("contextmenu", function(e){
+            e.preventDefault();
+        }, false)
+    </script>
+<LayoutUsuarioMenu title="Galeria | IES Calvià Voley Tournament" descripcion="Galeria d'imatges de la edició de Nadal" >
     <PortadaGaleria />
     <GaleriaFotos />
     <div class="w-full h-10 mt-10 flex items-center place-content-center">
