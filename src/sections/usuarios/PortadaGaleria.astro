@@ -72,18 +72,18 @@ if(usuario){
     }
 }
 ---
-<section class=" w-full mx-auto h-[85vh] relative">
-    <div class="w-full h-full grid grid-cols-3 grid-rows-2 place-items-center xs:hidden sm:hidden md:grid">
+<section class=" w-full mx-auto h-[85vh] overflow-hidden relative">
+    <div class="w-full h-full grid grid-cols-3 grid-rows-2 place-items-center ">
         <div class="w-96 h-60 scale-125  -skew-y-3 overflow-hidden  select-none relative">
             <img src={`/img/galeria/general-1.jpg`} alt={`Imagen `} class="h-full w-auto mx-auto img" />
             <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
         </div>
 
-        <div class={`w-96 h-60 relative skew-y-6 scale-110`}>
+        <div class={`w-96 h-60 relative xs:opacity-0 sm:opacity-0 md:opacity-100 opacity-100 skew-y-6 scale-110`}>
             <img src={`/img/galeria/${id_equipo}/portada-1.jpg`} alt={`Imagen `} class="h-full w-auto mx-auto img" />
             <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
         </div>
-        <div class="w-96 h-60 relative -skew-y-3 rotate-3">
+        <div class="w-96 h-60 relative -skew-y-3  rotate-3">
             <img src={`/img/galeria/${id_equipo}/portada-2.jpg`} alt={`Imagen `} class="h-full w-auto mx-auto img" />
             <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
         </div>
@@ -92,7 +92,7 @@ if(usuario){
             <img src={`/img/galeria/${id_equipo}/portada-4.jpg`} alt={`Imagen `} class="h-full w-auto mx-auto img" />
             <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
         </div>
-        <div class="w-96 h-60 skew-y-3 relative overflow-hidden">
+        <div class="w-96 h-60 skew-y-3 relative overflow-hidden  xs:opacity-0 sm:opacity-0 md:opacity-100 opacity-100">
             <img src={escudo} alt="Escudo equipo" class="h-full w-auto mx-auto" />
             
             <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
@@ -102,10 +102,12 @@ if(usuario){
             <img src="/img/img-block.png" alt="" class="placeholder w-96 h-60" />
         </div>
     </div>
-    <div class="centrar">
-        <h1 class="text-8xl font-bold text-accent bg-gris-claro bg-opacity-60 text-center p-2">Galeria Torneig Nadal 24-25</h1>
+
+    <div class="centrar xs:scale-75 sm:scale-75 md:scale-100 scale-100">
+        <h1 class="text-8xl xs:text-6xl sm:text-6xl md:text-8xl font-bold text-accent bg-gris-claro bg-opacity-75 text-center p-2">Galeria Torneig Nadal 24-25</h1>
     </div>
-    <div class="centrar mt-40 flex items-center place-content-center bg-gris-claro bg-opacity-75 p-2">
+
+    <div class="centrar mt-40 xs:mt-44 sm:mt-44 md:mt-40 flex items-center place-content-center bg-gris-claro bg-opacity-75 p-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="fill-amarillo w-10 h-10" viewBox="0 -960 960 960">
             <path d="M480-260q75 0 128-52t52-128q0-75-52-127t-128-53q-75 0-127 53t-53 127q0 75 53 128t127 52Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM160-120q-33 0-56-23t-24-57v-480q0-33 24-56t56-24h126l74-80h240l74 80h126q33 0 57 24t23 56v480q0 33-23 57t-57 23H160Zm0-80h640v-480H638l-73-80H395l-73 80H160v480Zm320-240Z"/>
           </svg>

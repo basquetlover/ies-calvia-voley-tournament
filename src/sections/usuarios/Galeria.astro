@@ -46,12 +46,13 @@ if(usuario){
 }
 
 ---
-<div class="h-[2px] bg-accent rounded-full max-w-8xl w-auto mx-auto my-10">
+<section class="  w-[95%] mx-auto overflow-hidden">
+<div class="h-[2px] bg-accent rounded-full w-[95%] mx-auto my-10">
 
 </div>
-<div class="max-w-8xl mx-auto w-full h-auto flex place-content-center items-center flex-wrap  gap-4">
+<div class="max-w-full mx-auto w-full h-auto flex  place-content-center items-center flex-wrap gap-y-4 gap-x-4 xs:gap-x-0 sm:gap-x-2 md-gap-x-4 ">
     {IMAGENES.map((img, index) => (
-        <div class="w-96 h-60 overflow-hidden relative text-blanco cursor-pointer" id={`image-${index}`}>
+        <div class="w-96 h-60 overflow-hidden relative xs:scale-90 sm:scale-90 md:scale-100 scale-100 text-blanco cursor-pointer" id={`image-${index}`}>
             <img src={img.enlace} alt={`Imagen ${index + 1}`} loading="lazy" class="h-full w-auto mx-auto img" />
             <img src="/img/img-block.png" alt="" loading="lazy" class="placeholder w-96 h-60" />
         </div>
@@ -64,7 +65,7 @@ if(usuario){
     <span class="next" id="nextImage">&#10095;</span>
     <img id="modalImage" src="/img/galeria/sin-equipo/portada-1.jpg" alt="Imagen ampliada" />
 </div>
-
+</section>
 <style>
 
 .placeholder{
