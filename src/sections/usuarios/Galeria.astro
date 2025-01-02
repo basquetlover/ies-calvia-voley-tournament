@@ -81,20 +81,27 @@ if(usuario){
 </div>
 <div class="max-w-full mx-auto w-full h-auto flex  place-content-center items-center flex-wrap gap-y-4 gap-x-4 xs:gap-x-0 sm:gap-x-2 md-gap-x-4 ">
     {IMAGENES.map((img, index) => (
-        <div class="w-96 h-60 overflow-hidden relative xs:scale-90 sm:scale-90 md:scale-100 scale-100 text-blanco cursor-pointer" id={`image-${index}`}>
+        <div class={`w-96 h-60 overflow-hidden relative xs:scale-90 sm:scale-90 md:scale-100 scale-100 text-blanco ${block === true ? " cursor-pointer" : " cursor-not-allowed "} `} id={`image-${index}`}>
             <img src={img.enlace} alt={`Imagen ${index + 1}`} loading="lazy" class="h-full w-auto mx-auto img" />
             <img src="/img/img-block.png" alt="" loading="lazy" class={`placeholder w-96 h-60 ${block === true ? " opacity-0" : " opacity-100 "} `} />
         </div>
     ))}
 </div>
+{
+    block === true ? (
+    <div id="modal" class="modal" style="display: none;">
+        <input type="text" id="numero-img" disabled class="bg-transparent text-base text-blanco absolute top-10 left-5" />
+        <span class="close w-16 h-16 bg-cancelar flex items-center place-content-center text-5xl rounded-full " id="closeModal">X</span>
+        <span class="prev" id="prevImage">&#10094;</span>
+        <span class="next" id="nextImage">&#10095;</span>
+        <img id="modalImage" src="/img/galeria/sin-equipo/portada-1.jpg" alt="Imagen ampliada" />
+    </div>
+        
+    ):(
+    <></>
+    )
+}
 
-<div id="modal" class="modal" style="display: none;">
-    <input type="text" id="numero-img" disabled class="bg-transparent text-base text-blanco absolute top-10 left-5" />
-    <span class="close w-16 h-16 bg-cancelar flex items-center place-content-center text-5xl rounded-full " id="closeModal">X</span>
-    <span class="prev" id="prevImage">&#10094;</span>
-    <span class="next" id="nextImage">&#10095;</span>
-    <img id="modalImage" src="/img/galeria/sin-equipo/portada-1.jpg" alt="Imagen ampliada" />
-</div>
 </section>
 
 <style>
