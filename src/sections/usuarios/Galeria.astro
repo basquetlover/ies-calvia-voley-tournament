@@ -88,7 +88,8 @@ if(usuario){
     ))}
 </div>
 
-<div id="modal" class="modal" style="display: none;">
+<div id="modal" class="modal" style="display: flex;">
+    <input type="text" id="numero-img" disabled class="bg-transparent text-base text-blanco absolute top-10 left-5" />
     <span class="close w-16 h-16 bg-cancelar flex items-center place-content-center text-5xl rounded-full " id="closeModal">X</span>
     <span class="prev" id="prevImage">&#10094;</span>
     <span class="next" id="nextImage">&#10095;</span>
@@ -112,6 +113,7 @@ if(usuario){
         -ms-user-select: none; /* /* Para Internet Explorer/Edge */
     }
     .modal {
+        z-index: 10000000;
         display: none;
         position: fixed;
         top: 0;
@@ -162,6 +164,7 @@ if(usuario){
         // Suponiendo que IMAGENES es un array de objetos con la propiedad 'enlace'
         const imageArray = IMAGENES.map(img => img.enlace); // Extraemos las URLs de las imágenes
         let currentIndex = 0;
+        const numero_img = document.getElementById('numero-img') as HTMLInputElement;
 
         function openModal(index: number): void {
             currentIndex = index;
@@ -169,6 +172,7 @@ if(usuario){
             const modalImage = document.getElementById('modalImage') as HTMLImageElement;
             if (modalImage) {
                 modalImage.src = imageArray[currentIndex];
+                numero_img.value = `Imatge Nº ${currentIndex + 1}`;
             }
             if (modal) {
                 modal.style.display = 'flex';
@@ -192,6 +196,7 @@ if(usuario){
             const modalImage = document.getElementById('modalImage') as HTMLImageElement;
             if (modalImage) {
                 modalImage.src = imageArray[currentIndex];
+                numero_img.value = `Imatge Nº ${currentIndex + 1}`;
             }
         }
 
