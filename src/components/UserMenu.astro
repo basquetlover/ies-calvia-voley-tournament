@@ -120,24 +120,35 @@ if(usuario){
         {/* Acceso usuario */}
         
         <div class="w-[95%] h-[2px] my-4 bg-accent rounded-full mx-auto">&nbsp;</div>
-            {/* Inscribir Equipo */}
-        <a href="/usuario/inscripcion" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center ${inscrito === false ? " text-white hover:text-amarillo group duration-300 transition-all" : " text-gray-500 cursor-not-allowed pointer-events-none "} `}>
+           
+        <nav class="flex flex-col gap-y-2">
+            <a href="/usuario/galeria" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all `}>
                 <span class="w-5 h-5">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 -960 960 960">
-                        <path  class={` ${inscrito === false ? "fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all" : " fill-gray-500 "}`} d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                        <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all}`} d="M360-400h400L622-580l-92 120-62-80-108 140Zm-40 160q-33 0-56-23t-24-57v-480q0-33 24-56t56-24h480q33 0 57 24t23 56v480q0 33-23 57t-57 23H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56-23t-24-57v-560h80v560h560v80H160Zm160-720v480-480Z"/>
+                    </svg>
+                </span>
+                <p>Galeria Torneig Nadal</p>
+            </a>
+             {/* Inscribir Equipo */}
+            <a href="/usuario/inscripcion" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center ${inscrito === true ? " text-white hover:text-amarillo group duration-300 transition-all" : " text-gray-500 cursor-not-allowed pointer-events-none "} `}>
+                <span class="w-5 h-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 -960 960 960">
+                        <path  class={` ${inscrito === true ? "fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all" : " fill-gray-500 "}`} d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
                     </svg>
                 </span>
                 <p>Inscriure Equip</p>
-        </a>
+            </a>
             {/* Modificar Equipo */}
-            <div class="w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2 text-blanco items-center">
+            <div class="w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2 text-gray-500 items-center">
                 <span class="w-5 h-5">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 -960 960 960">
-                        <path fill="#E8EAED" d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 27-17t30-6q16 0 31 6t26 18l55 56q12 11 18 26t5 30q0 16-5 31t-18 26L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
+                        <path class="fill-gray-500" d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 27-17t30-6q16 0 31 6t26 18l55 56q12 11 18 26t5 30q0 16-5 31t-18 26L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
                     </svg>
                 </span>
                 <a>Modificar Equip</a>
-        </div>
+            </div>
+        </nav>
         {admin === true ? (
             <div class="w-[95%] h-[2px] my-4 bg-accent rounded-full mx-auto">&nbsp;</div>
             
@@ -153,7 +164,7 @@ if(usuario){
         (<></>)
         }
 
-           
+    
         
         {/* <!--Cerrar Session --> */}
         <div class="w-[95%] h-[2px] bg-accent rounded-full mx-auto mt-4">&nbsp;</div>
