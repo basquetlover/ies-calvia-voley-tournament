@@ -6,6 +6,35 @@ const usuario = await verificarSesion(Astro.request);
 let equipo = "Sense Equip";
 let equipo_id = "";
 let escudo = "/img/escudos/sin-escudo-blanco.png";
+let block = false;
+const acceso_fotos = "ver-fotos-galeria";
+  let accessibleBlocks = [];
+  
+  // Obtén las páginas a las que el usuario tiene acceso
+  try {
+      const { data: pageAccess, error } = await supabaseAdmin
+          .from('AccesoUsuarios')
+          .select('pagina, acceso');
+  
+      if (error) {
+          console.error("Error al obtener acceso:", error);
+      } else if (pageAccess) {
+          // Filtra las páginas a las que el usuario tiene acceso
+          accessibleBlocks = pageAccess
+              .filter(page => page.acceso === true) // Solo páginas con acceso true
+              .map(page => page.pagina); // Obtiene solo las páginas
+          // console.log(accessibleBlocks);
+      }
+  } catch (err) {
+      console.error("Error al obtener acceso:", err);
+  }
+  
+  // Verifica si el usuario tiene acceso a la página actual
+  const userHasAccess = accessibleBlocks.includes(acceso_fotos);
+
+  if(userHasAccess){
+    block = true;
+  }
 if(usuario){
     const usuario_nombre = usuario.nombre;
     const usuario_email = usuario.email;
@@ -54,7 +83,7 @@ if(usuario){
     {IMAGENES.map((img, index) => (
         <div class="w-96 h-60 overflow-hidden relative xs:scale-90 sm:scale-90 md:scale-100 scale-100 text-blanco cursor-pointer" id={`image-${index}`}>
             <img src={img.enlace} alt={`Imagen ${index + 1}`} loading="lazy" class="h-full w-auto mx-auto img" />
-            <img src="/img/img-block.png" alt="" loading="lazy" class="placeholder w-96 h-60" />
+            <img src="/img/img-block.png" alt="" loading="lazy" class={`placeholder w-96 h-60 ${block === true ? " opacity-0" : " opacity-100 "} `} />
         </div>
     ))}
 </div>
@@ -69,7 +98,7 @@ if(usuario){
 <style>
 
 .placeholder{
-  opacity: 0;
+
   
   position: absolute;
   top: 0;
