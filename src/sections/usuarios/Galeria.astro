@@ -95,6 +95,7 @@ if(usuario){
         <span class="prev" id="prevImage">&#10094;</span>
         <span class="next" id="nextImage">&#10095;</span>
         <img id="modalImage" src="/img/galeria/sin-equipo/portada-1.jpg" alt="Imagen ampliada" />
+        <img src="/img/img-block-2.png" alt="" loading="lazy" class={`placeholder2 ${block === true ? " opacity-0" : " opacity-100 "} `} />
     </div>
         
     ):(
@@ -105,13 +106,19 @@ if(usuario){
 </section>
 
 <style>
-
 .placeholder{
-
-  
   position: absolute;
   top: 0;
   left: 0;
+
+}
+.placeholder2{
+  position: absolute;
+  width: auto;
+  height: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
     .img {
         user-select: none; /* Para navegadores modernos */

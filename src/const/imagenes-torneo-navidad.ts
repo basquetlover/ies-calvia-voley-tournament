@@ -284,9 +284,9 @@ export const IMAGENES = [
 {
  enlace: '/img/torneo-navidad/20122024-_MSR5843.jpg',
 },
-{
- enlace: '/img/torneo-navidad/20122024-_MSR5839.jpg',
-},
+// {
+//  enlace: '/img/torneo-navidad/20122024-_MSR5839.jpg',
+// },
 {
  enlace: '/img/torneo-navidad/20122024-_MSR5841.jpg',
 },
