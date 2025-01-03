@@ -26,14 +26,12 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const hashedPassword = await hashPassword(password);
   console.log(nombre, email, password, curso, id)
 
-    if(password === "contraseña-no-cambiada"){
-        const { data, error } = await supabaseAdmin
-    .from('Usuarios')
-    .update([
-        { contraseña: hashedPassword },
-    ])
-    .eq('id', id)
-    .select()
+    if(password !== "contraseña-no-cambiada"){
+      const { data } = await supabaseAdmin
+      .from('Usuarios')
+      .update({ contraseña: hashedPassword })
+      .eq('id', id)
+      .select()
     }
   const { data, error } = await supabaseAdmin
   .from('Usuarios')
