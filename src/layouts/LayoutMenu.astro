@@ -24,7 +24,7 @@ const images = [
 const randomImage = images[Math.floor(Math.random() * images.length)];
 
 
-
+import Analytics from '@vercel/analytics/astro'
 ---
 
 <!DOCTYPE html>
@@ -82,6 +82,7 @@ const randomImage = images[Math.floor(Math.random() * images.length)];
 	
 
 	<body class="bg-gris ">
+		<Analytics />
 		<Loading />
 		<div class="grid min-h-dvh grid-rows-[auto_1fr_auto]">
 			<Header />

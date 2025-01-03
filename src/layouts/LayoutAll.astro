@@ -15,7 +15,7 @@ const { title } = Astro.props;
 
 
 const user = Astro.locals.StaffUser
-
+import Analytics from '@vercel/analytics/astro'
 ---
 
 <!DOCTYPE html>
@@ -43,7 +43,7 @@ const user = Astro.locals.StaffUser
 	</head>
 
 	<body class="bg-gris ">
-		
+		<Analytics />
 		{user && (
 		<div class="grid grid-cols-[max-content_1fr] grid-rows-1 gap-0">
 		

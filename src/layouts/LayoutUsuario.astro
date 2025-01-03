@@ -26,7 +26,7 @@ const images = [
 const randomImage = images[Math.floor(Math.random() * images.length)];
 
 const usuario = await verificarSesion(Astro.request);
-
+import Analytics from '@vercel/analytics/astro'
 ---
 
 <!DOCTYPE html>
@@ -83,6 +83,7 @@ const usuario = await verificarSesion(Astro.request);
 	
 
 	<body class="bg-gris ">
+		<Analytics />
 		<Loading />
 		<div class="grid min-h-dvh grid-rows-[auto_1fr_auto]">
       <div class="hidden">

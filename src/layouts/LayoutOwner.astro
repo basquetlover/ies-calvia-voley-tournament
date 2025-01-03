@@ -36,7 +36,7 @@ try {
 } catch (err) {
     console.error("Error al obtener datos del usuario:", err);
 }
-
+import Analytics from '@vercel/analytics/astro'
 ---
 
 <!DOCTYPE html>
@@ -64,7 +64,7 @@ try {
 	</head>
 
 	<body class="bg-gris ">
-		
+		<Analytics />
 		{user && (
 		<div class="grid grid-cols-[max-content_1fr] grid-rows-1 gap-0">
 		
