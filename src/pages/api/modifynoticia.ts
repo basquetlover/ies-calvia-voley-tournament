@@ -135,7 +135,7 @@ async function uploadFile(file: File, id_equipo: string) {
     try {
       const escudoPath = await uploadFile(imagen_noticia, id_noticia);
       const { data: urlData } = supabaseAdmin.storage
-        .from('EquiposIMG')
+        .from('NoticiasIMG')
         .getPublicUrl(escudoPath);
 
       if (!urlData || !urlData.publicUrl) {
