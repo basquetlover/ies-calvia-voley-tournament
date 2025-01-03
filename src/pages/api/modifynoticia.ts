@@ -115,10 +115,10 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 async function uploadFile(file: File, id_equipo: string) {
     const extension = file.name.split('.').pop();
     const uniqueFileName = `${id_equipo}_${Date.now()}.${extension}`;
-    const filePath = `escudos/${uniqueFileName}`;
+    const filePath = `${uniqueFileName}`;
 
     const { data, error } = await supabase.storage
-      .from('EquiposIMG')
+      .from('NoticiasIMG')
       .upload(filePath, file, { upsert: true });
 
     if (error) {
