@@ -47,6 +47,7 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
                   <img 
                     class="w-full h-full rounded-lg" 
                     src={noticia.imagen_noticia} 
+                    loading="lazy"
                     alt={`escudo noticia ${noticia.titulo}`} 
                   />
                 ) : (
