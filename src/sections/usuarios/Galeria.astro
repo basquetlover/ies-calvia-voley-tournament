@@ -143,6 +143,7 @@ if(usuario){
         max-height: 90%;
     }
     .close, .prev, .next {
+        z-index: 100000000000;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -150,6 +151,7 @@ if(usuario){
         font-size: 40px;
         cursor: pointer;
         transition-duration: .3s;
+        user-select: none;
     }
     .close {
         top: 50px;
