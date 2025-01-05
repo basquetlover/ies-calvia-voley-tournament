@@ -12,8 +12,8 @@ export const ENLACES = [
         nombre: 'Base de Competició',
     },
     {
-        href: '',
-        nombre: 'Instalació',
+        href: '/informacion',
+        nombre: 'Informació',
     },
     {
         href: '/normativa',
