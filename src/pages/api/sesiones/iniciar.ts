@@ -11,7 +11,10 @@ interface Usuario {
 }
 
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
-    const formData = await request.formData();
+    const politica_cookies = cookies.get("all_cookies");
+
+    if(politica_cookies){
+        const formData = await request.formData();
     const nombre = formData.get("nombre")?.toString();
     const password = formData.get("password")?.toString();
 
@@ -134,6 +137,12 @@ const encrypted = encrypt(password);
       JSON.stringify({ success: true }), 
       { status: 200, headers: { "Content-Type": "application/json" } }
   );
+    }
+    return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">No s'han acceptat les cookies necessàries.</div>`, 
+        { status: 400, headers: { "Content-Type": "text/html" } }
+    );
+    
 };
 
 // import type { APIRoute } from "astro";

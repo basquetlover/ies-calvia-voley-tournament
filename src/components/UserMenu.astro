@@ -33,12 +33,12 @@ if(usuario){
     .single(); // Use .single() to get a single record
 
     if (errorJ) {
-    console.error('Jugador sin equipo', errorJ.message);
+    // console.error('Jugador sin equipo', errorJ.message);
     // Handle the error appropriately
     }
     
     if (!Jugador) {
-        console.error('Jugador no encontrado');
+        // console.error('Jugador no encontrado');
         let { data: Administradores, error } = await supabaseAdmin
         .from('Administradores')
         .select('rango')
@@ -46,7 +46,7 @@ if(usuario){
         .single();
 
     if(!Administradores){
-            console.error("Este usuario no es Staff");
+            // console.error("Este usuario no es Staff");
         } else{
             admin = true;
             equipo = "IES Calvià Voley Team";
@@ -60,7 +60,7 @@ if(usuario){
         .single(); // Use .single() to get a single record
 
     if (errorE) {
-        console.error('Error fetching Equipos:', errorE);
+        // console.error('Error fetching Equipos:', errorE);
         // Handle the error appropriately
     }
     if(Equipos){
@@ -71,7 +71,7 @@ if(usuario){
         .single();
 
     if(!Administradores){
-            console.error("Este usuario no es Staff");
+            // console.error("Este usuario no es Staff");
         } else{
             admin = true;
         }

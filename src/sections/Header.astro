@@ -57,12 +57,12 @@ if(usuario){
     .single(); // Use .single() to get a single record
 
     if (errorJ) {
-    console.error('Jugador sin equipo',);
+    // console.error('Jugador sin equipo',);
     // Handle the error appropriately
     }
 
     if (!Jugador) {
-    console.error('No Jugador found for the given nombre');
+    // console.error('No Jugador found for the given nombre');
     // Handle the case where no Jugador is found
     } else {
     let { data: Equipos, error: errorE } = await supabaseAdmin
@@ -72,7 +72,7 @@ if(usuario){
         .single(); // Use .single() to get a single record
 
     if (errorE) {
-        console.error('Error fetching Equipos:', errorE);
+        // console.error('Error fetching Equipos:', errorE);
         // Handle the error appropriately
     }
     if(Equipos){

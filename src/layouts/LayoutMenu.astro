@@ -25,6 +25,8 @@ const randomImage = images[Math.floor(Math.random() * images.length)];
 
 
 import Analytics from '@vercel/analytics/astro'
+import CookiesAlert from '@components/CookiesAlert.astro';
+
 ---
 
 <!DOCTYPE html>
@@ -85,6 +87,7 @@ import Analytics from '@vercel/analytics/astro'
 	<body class="bg-gris ">
 		<Analytics />
 		<Loading />
+		<CookiesAlert />
 		<div class="grid min-h-dvh grid-rows-[auto_1fr_auto]">
 			<Header />
 			<main class="flex-col items-center justify-center p-3">
