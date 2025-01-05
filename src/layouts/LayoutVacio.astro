@@ -24,7 +24,7 @@ const images = [
 const randomImage = images[Math.floor(Math.random() * images.length)];
 
 
-
+import Analytics from '@vercel/analytics/astro'
 ---
 
 <!DOCTYPE html>
@@ -41,7 +41,7 @@ const randomImage = images[Math.floor(Math.random() * images.length)];
 		<meta name="generator" content={Astro.generator} />
 	
 		<!-- Title -->
-		<title>{title} | IES Calvià Voley Tournament</title>
+		<title>{title}</title>
 	
 		<!-- Favicon -->
 		
@@ -59,6 +59,7 @@ const randomImage = images[Math.floor(Math.random() * images.length)];
 		
 
 		<link rel="manifest" href="/site.webmanifest" /> 
+		<meta name="google-adsense-account" content="ca-pub-9638256301440894">
 	
 		<!-- Open Graph Meta Tags -->
 		<meta property="og:title" content={title} />
@@ -76,13 +77,18 @@ const randomImage = images[Math.floor(Math.random() * images.length)];
 		<meta name="twitter:image" content={`${new URL(randomImage || '/img/fondo-enlaces.png', Astro.site)}`} />
 		
 		<SchemaMarkup />
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9638256301440894"
+     crossorigin="anonymous"></script>
 	</head>
 	
 
 	<body class="bg-gris ">
+		<Analytics />
 		<Loading />
 		<div class="grid min-h-dvh grid-rows-[auto_1fr_auto]">
-			
+			<div class="hidden">
+			<Header />
+		</div>
 			<main class="flex-col items-center justify-center p-3">
 				<slot />
 			</main>

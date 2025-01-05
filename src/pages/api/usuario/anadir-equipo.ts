@@ -505,7 +505,7 @@ console.log("URL pública del escudo:", publicUrl);
           <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; font-size: 16px;">
               <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
                 <img src="https://iescalvia-voley.com/img/licencia/cc.png" style="width: 20px; height:20px; margin: 0 4px;" alt="Creative Comons"/>
-                2024 - IES Calvià Voley Tournament
+                2025 - IES Calvià Voley Tournament
               </div>
               <span style="margin: 0 4px;">|</span>
               <span>
