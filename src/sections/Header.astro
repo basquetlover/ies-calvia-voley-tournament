@@ -8,8 +8,8 @@ const paginas_importantes = [
     { name: "Inici", 
       href: "/" 
     },
-    { name: "Normativa", 
-      href: "/normativa",
+    { name: "Galeria", 
+      href: "/usuario/galeria",
     },
     { name: "Clasificació",
       href: "/clasificacion" 
@@ -24,6 +24,7 @@ const paginas_importantes = [
 
 const paginas_secundarias = [
     { name: "Equips", href: "/equipos" },
+    { name: "Normativa", href: "/normativa" },
     { name: "Bases de Competició", href: "/bases-de-competicion" },
     { name: "Contacte", href: "/contacto" },
     { name: "Informació", href: "/informacion" },
@@ -269,7 +270,8 @@ cerrar_user_menu.addEventListener('click', function() {
         </div>
         
         <!--Enlaces No importantes -->
-        <nav class="w-[90%] h-auto pt-4 hidden grid-cols-5 grid-rows-1 place-items-center justify-center m-auto border-t-2 border-accent rounded-1 p-2" id="noimp-desk">
+        <!-- grid-cols-5 grid-rows-1 place-items-center justify-center-->
+        <nav class="w-[90%] h-auto pt-4 hidden flex-wrap gap-4 items-center place-content-around  m-auto border-t-2 border-accent rounded-1 p-2" id="noimp-desk">
             
             {
                 paginas_secundarias.map(({ name, href, isActive }) => (
@@ -479,7 +481,7 @@ cerrar_user_menu.addEventListener('click', function() {
         display: none;
     }
     .active{
-        display: grid;
+        display: flex;
     }
     .active-flex{
         display: flex;
