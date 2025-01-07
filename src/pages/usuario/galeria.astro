@@ -5,6 +5,7 @@ import LayoutUsuarioMenu from "@layouts/LayoutUsuarioMenu.astro";
 import CrearEquipoUser from "@sections/usuarios/CrearEquipoUser.astro";
 import PortadaGaleria from "@sections/usuarios/PortadaGaleria.astro";
 import GaleriaFotos from "@sections/usuarios/Galeria.astro";
+import SpamDescarga from "@sections/usuarios/SpamDescarga.astro";
 ---
 <ControlAcces>
     <script>
@@ -13,6 +14,7 @@ import GaleriaFotos from "@sections/usuarios/Galeria.astro";
         }, false)
     </script>
 <LayoutUsuarioMenu title="Galeria | IES Calvià Voley Tournament" descripcion="Galeria d'imatges de la edició de Nadal" >
+    <SpamDescarga />
     <PortadaGaleria />
     <GaleriaFotos />
     <div class="w-full h-10 mt-10 flex items-center place-content-center">
