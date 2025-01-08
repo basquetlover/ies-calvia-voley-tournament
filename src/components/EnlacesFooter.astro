@@ -34,9 +34,43 @@ import { ENLACES } from "@const/enlaces"
                 </svg>
             </span>
         </a>
+        <div id="delte_cookies" class="text-blanco text-2xl max-h-13 my-1 h-auto p-1 group hover:text-amarillo flex flex-row content-center items-center duration-300">
+            Gestionar Cookies
+            <span class="w-6 h-6 ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"> 
+                <svg class="w-6 h-6 fill-amarillo" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" >
+                        <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/>
+                </svg>
+            </span>
+        </div>
     </nav>
 </section>
+<script>
+    function eliminarAllCookie() {
+    // Establece la cookie con el mismo nombre y una fecha de expiración en el pasado
+    const nombre = "all_cookies";
+    document.cookie = nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    location.reload();
+}
+function eliminarEssencialCookie() {
+    // Establece la cookie con el mismo nombre y una fecha de expiración en el pasado
+    const nombre = "essencial_cookies";
+    document.cookie = nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    location.reload();
+}
 
+const btn_eliminar_cookies = document.getElementById("delte_cookies");
+btn_eliminar_cookies?.addEventListener('click', function(){
+    const cookies = document.cookie;
+    if(cookies === "all_cookies=aceptadas"){
+        eliminarAllCookie();
+    }
+    if(cookies === "essencial_cookies=aceptadas"){
+        eliminarEssencialCookie();
+    }
+    // eliminarAllCookie();
+})
+
+</script>
 <style>
     .centrar{
         
