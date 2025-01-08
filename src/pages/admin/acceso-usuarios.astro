@@ -54,10 +54,17 @@ const userHasAccess = accessibleBlocks.includes(pathname);
 <LayoutAll title='Usuarios'>
 {userHasAccess ? (
     <>
-    <AñadirPagina />
-    <ControlUsuarios />
-    <ListaUsuarios />
+    {/* // <section class="w-full gap-5 flex flex-wrap items-center place-content-center">
+    //     <div> */}
+            <AñadirPagina />
+            <ControlUsuarios />
+        {/* // </div>
+        // <div> */}
+            <ListaUsuarios />
+    {/* //     </div>
+    // </section> */}
     </>
+   
 ) : (
     <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
 )}
