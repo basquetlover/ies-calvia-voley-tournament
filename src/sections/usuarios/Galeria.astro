@@ -7,6 +7,7 @@ let equipo = "Sense Equip";
 let equipo_id = "";
 let escudo = "/img/escudos/sin-escudo-blanco.png";
 let block = false;
+let admin = false;
 const acceso_fotos = "ver-fotos-galeria";
   let accessibleBlocks = [];
   
@@ -38,7 +39,17 @@ const acceso_fotos = "ver-fotos-galeria";
 if(usuario){
     const usuario_nombre = usuario.nombre;
     const usuario_email = usuario.email;
-    
+    let { data: Administradores, error } = await supabaseAdmin
+        .from('Administradores')
+        .select('rango')
+        .eq('user_email', usuario_email)
+        .single();
+
+    if(!Administradores){
+            // console.error("Este usuario no es Staff");
+        } else{
+            admin = true;
+        }
     
 
     let { data: Jugador, error: errorJ } = await supabaseAdmin
@@ -90,7 +101,8 @@ if(usuario){
 {
     block === true ? (
     <div id="modal" class="modal" style="display: none;">
-        <input type="text" id="numero-img" disabled class="bg-transparent text-base text-blanco absolute top-10 left-5" />
+        <input type="text" id="numero-img" disabled class="bg-transparent text-base text-blanco absolute top-8 left-5" />
+        <input type="hidden" id="src-img" disabled  class="bg-transparent w-max text-base text-blanco absolute top-14 left-5" />
         <span class="close w-16 h-16 bg-cancelar flex items-center place-content-center text-5xl rounded-full " id="closeModal">X</span>
         <span class="prev" id="prevImage">&#10094;</span>
         <span class="next" id="nextImage">&#10095;</span>
@@ -181,6 +193,7 @@ if(usuario){
         const imageArray = IMAGENES.map(img => img.enlace); // Extraemos las URLs de las imágenes
         let currentIndex = 0;
         const numero_img = document.getElementById('numero-img') as HTMLInputElement;
+        const src_img = document.getElementById('src-img') as HTMLInputElement;
 
         function openModal(index: number): void {
             currentIndex = index;
@@ -189,6 +202,7 @@ if(usuario){
             if (modalImage) {
                 modalImage.src = imageArray[currentIndex];
                 numero_img.value = `Imatge Nº ${currentIndex + 1}`;
+                src_img.value = imageArray[currentIndex];
             }
             if (modal) {
                 modal.style.display = 'flex';
@@ -212,7 +226,9 @@ if(usuario){
             const modalImage = document.getElementById('modalImage') as HTMLImageElement;
             if (modalImage) {
                 modalImage.src = imageArray[currentIndex];
+                // src_img.value = `${imageArray[currentIndex]}`;
                 numero_img.value = `Imatge Nº ${currentIndex + 1}`;
+                
             }
         }
 
