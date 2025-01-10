@@ -5,14 +5,21 @@ import NoticiasList from "@sections/NoticiasList.astro";
 import { supabaseAdmin } from "../lib/supabase";
 import SinPermisos from "@components/admin/SinPermisos.astro";
 import LayoutMenu from "@layouts/LayoutMenu.astro";
+import DescripcionSection from "@components/DescripcionSection.astro";
 
 
 ---
-<LayoutMenu title="Notícies" descripcion="Aqui podras ver las ultimas novedades del torneo. Descubre las ultimas noticias.">
+<LayoutMenu title="Notícies | IES Calvià Voley Tournament" descripcion="Aqui podras ver las ultimas novedades del torneo. Descubre las ultimas noticias.">
 
         
-        <h2 class="text-center text-accent font-bold text-5xl">
+        <!-- <h1 class="text-center text-accent font-bold text-5xl">
             Notícies
-        </h2> 
+        </h1> -->
+        <DescripcionSection>
+            <h1 class="text-accent text-center font-bold text-6xl">Notícies</h1>
+            <p class="text-blanco text-center text-xl my-4">
+                Posat al dia de les darreres novetats de l'IES Calvià Voley Tournament. Aquí trobaràs totes les notícies i darreres novetats del torneig.
+            </p>
+        </DescripcionSection>
         <NoticiasList />
 </LayoutMenu>
