@@ -34,7 +34,7 @@ import { ENLACES } from "@const/enlaces"
                 </svg>
             </span>
         </a>
-        <div id="delte_cookies" class="text-blanco text-2xl max-h-13 my-1 h-auto p-1 group hover:text-amarillo flex flex-row content-center items-center duration-300">
+        <div id="conf_cookies" class="text-blanco text-2xl max-h-13 my-1 h-auto p-1 group hover:text-amarillo flex flex-row content-center cursor-pointer items-center duration-300">
             Gestionar Cookies
             <span class="w-6 h-6 ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"> 
                 <svg class="w-6 h-6 fill-amarillo" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" >
@@ -44,33 +44,93 @@ import { ENLACES } from "@const/enlaces"
         </div>
     </nav>
 </section>
-<script>
-    function eliminarAllCookie() {
-    // Establece la cookie con el mismo nombre y una fecha de expiración en el pasado
-    const nombre = "all_cookies";
-    document.cookie = nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-    location.reload();
+<!--Mensaje cookies -->
+<div id="CookiesAlert" class="max-w-xl desaparecido w-auto min-h-60 h-auto fixed bottom-2 left-2 rounded-lg z-50 bg-azul grid grid-cols-[200px_1fr] place-items-center p-2">
+    <img src="/img/cookies.png" class="w-48 h-auto" alt="Imatge avis cookies" />
+    <div>
+        <h2 class="text-4xl text-amarillo font-bold">Cookies</h2>
+        <p class="text-base text-blanco">Utilitzem cookies pròpies i de tercers per a millorar els nostres serveis.</p>
+        <div class="flex flex-wrap gap-1 items-center place-content-center">
+            <div id="todas" class="cursor-pointer text-center px-2 py-1 text-gris font-semibold bg-amarillo rounded-md text-base">
+                Acceptar Totes
+            </div>
+            <div id="esenciales" class="cursor-pointer text-center px-2 py-1 text-gris font-semibold bg-amarillo rounded-md text-base">
+                Acceptar les Essencials
+            </div>
+            <a href="/cookies" target="_blank" class="cursor-pointer text-center px-2 py-1 text-gris font-semibold bg-amarillo rounded-md text-base">
+                Avís de cookies
+            </a>
+        </div>
+    </div>
+    </div>
+
+    <style>
+        .desaparecido{
+            display: none;
+        }
+    </style>
+    <script>
+         function eliminarAllCookie() {
+            // Establece la cookie con el mismo nombre y una fecha de expiración en el pasado
+            const nombre = "all_cookies";
+            document.cookie = nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            location.reload();
 }
-function eliminarEssencialCookie() {
-    // Establece la cookie con el mismo nombre y una fecha de expiración en el pasado
-    const nombre = "essencial_cookies";
-    document.cookie = nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-    location.reload();
+    function eliminarEssencialCookie() {
+            // Establece la cookie con el mismo nombre y una fecha de expiración en el pasado
+            const nombre = "essencial_cookies";
+            document.cookie = nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            location.reload();
 }
 
-const btn_eliminar_cookies = document.getElementById("delte_cookies");
-btn_eliminar_cookies?.addEventListener('click', function(){
-    const cookies = document.cookie;
-    if(cookies === "all_cookies=aceptadas"){
-        eliminarAllCookie();
-    }
-    if(cookies === "essencial_cookies=aceptadas"){
-        eliminarEssencialCookie();
-    }
-    // eliminarAllCookie();
-})
+        console.log("Script cargado!")
+        const CookiesAlert = document.getElementById('CookiesAlert');
+        const todas = document.getElementById('todas');
+        const esenciales = document.getElementById('esenciales');
+    
+        todas?.addEventListener('click', function() {
+            CookiesAlert?.classList.add('desaparecido');
+            
+            const cookies = document.cookie;
+            if(cookies === "all_cookies=aceptadas"){
+                eliminarAllCookie();
+            }
+            if(cookies === "essencial_cookies=aceptadas"){
+                eliminarEssencialCookie();
+            }
+
+            document.cookie = "all_cookies=aceptadas; expires=Fri, 31 Dec 2026 23:59:59 GMT; path=/";
+        })
+
+        esenciales?.addEventListener('click', function() {
+            CookiesAlert?.classList.add('desaparecido');
+            
+            const cookies = document.cookie;
+            if(cookies === "all_cookies=aceptadas"){
+                eliminarAllCookie();
+            }
+            if(cookies === "essencial_cookies=aceptadas"){
+                eliminarEssencialCookie();
+            }
+
+            document.cookie = "essencial_cookies=aceptadas; expires=Fri, 31 Dec 2026 23:59:59 GMT; path=/";
+        })
+        
+        const btn_conf_cookies = document.getElementById("conf_cookies");
+        btn_conf_cookies?.addEventListener('click', function(){
+            CookiesAlert?.classList.remove('desaparecido');
+            // eliminarAllCookie();
+        })
+
+        
+    </script>
+<script>
+
+
+
 
 </script>
+
 <style>
     .centrar{
         
