@@ -33,9 +33,13 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
     ) : (
       topNoticias.map((noticia, index) => {
         const isCenter = index === 0; // El primer elemento es el de mayor ID
-        const sizeClass = isCenter ? 'scale-100 z-10 hover:scale-105' : 'scale-90 grid xs:hidden sm:hidden md:grid hover:scale-95';
+        const sizeClass = isCenter ? 'scale-100 z-10 bg-gris-claro hover:scale-105' : 'scale-90 grid xs:hidden sm:hidden md:grid hover:scale-95';
         
         return (
+          <article 
+            class={`w-80 h-96 relative rounded-lg  pointer group  transition-all  duration-300 ${sizeClass}`}
+            style={isCenter ? 'grid-column: 2; grid-row: 1;' : (index === 1 ? 'grid-column: 1; grid-row: 1; -z-10' : 'grid-column: 3; grid-row: 1; -z-10')}
+          >
           <a 
             href={`/noticias/${noticia.id_noticia}`}
             class={`w-80 h-96 relative rounded-lg bg-gris-claro pointer group  transition-all  duration-300 ${sizeClass}`}
@@ -64,6 +68,7 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
               <p class="text-accent text-4xl font-semibold px-2" translate="no">{noticia.titulo}</p>
             </div>
           </a>
+        </article>
         )
       })
     )}
