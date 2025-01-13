@@ -98,7 +98,8 @@ import CookiesAlert from '@components/CookiesAlert.astro';
 				{usuario ? (
 					<slot />
 				) : (
-					<SinSession />
+				<slot />
+					// <SinSession />
 				)}
 			</main>
 
