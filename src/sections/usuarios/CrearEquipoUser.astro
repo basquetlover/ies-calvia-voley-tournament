@@ -44,12 +44,12 @@ file.addEventListener('change', (e: Event) => {
   <form id="equipo-form" method="POST" class="space-y-4" action="/api/usuario/anadir-equipo"  enctype="multipart/form-data">
     <div id="errorbox" class="text-red-500 text-center"></div>
     <!-- Datos usuario -->
-    <div class="w-full hidden">
+    <!-- <div class="w-full hidden">
       <input type="text" name="usuario_id" class="bg-transparent w-auto h-max text-blanco" value={usuario.id}/>
       <input type="text" name="usuario_nombre" class="bg-transparent w-auto h-max text-blanco" value={usuario.nombre}/>
       <input type="text" name="usuario_email" class="bg-transparent w-auto h-max text-blanco" value={usuario.email}/>
       <input type="text" name="usuario_curso" class="bg-transparent w-auto h-max text-blanco" value={usuario.curso}/>
-    </div>
+    </div> -->
     <!-- Datos Equipo -->
     <div class="mx-auto w-max">
       <input
@@ -633,12 +633,12 @@ file.addEventListener('change', (e: Event) => {
    
     <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
       <a href="/" rel="noreferrer" class="px-3 py-2 flex flex-row items-center select-none place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
-      <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-xl hover:scale-110  duration-300 transition-all transform">
+      <div class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-gris-claro cursor-pointer rounded-full text-xl hover:scale-110  duration-300 transition-all transform">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
               <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
           </svg>
           Crear Equip
-        </button>
+        </div>
   </div>
   </form>
 </div>
