@@ -961,6 +961,13 @@ try {
   }
 
   console.log("Correo enviado correctamente", data);
+  let asunto = `Inscripció Realitzada de l'equip ${nombre_equipo}`
+  const { data: Emails, error: EmailsError } = await supabaseAdmin
+  .from('Emails')
+  .insert([
+    { destinatario: usuario_email, asunto: asunto, contenido: emailBody, id_resend: data?.id },
+  ])
+  .select()
 } catch (error) {
   console.error("Error al enviar el correo:", error);
 }
