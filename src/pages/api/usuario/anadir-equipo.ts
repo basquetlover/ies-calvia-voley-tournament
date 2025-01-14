@@ -93,6 +93,7 @@ export const POST: APIRoute = async ({ request }) => {
     const _2n_apellido = formData.get(`player_${index}_2n_apellido`)?.toString().trim();
     const genero = formData.get(`genero_${index}`)?.toString().trim();
     const email = formData.get(`player_${index}_email`)?.toString().trim();
+    const numero = index + 1;
     if (email) { 
       const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
       const dominioConArroba = '@' + dominio;
@@ -119,7 +120,7 @@ export const POST: APIRoute = async ({ request }) => {
     if(genero === "mujer"){
       mujeres++;
     }
-    jugadores.push({ nombre, curso, _1r_apellido, _2n_apellido, genero, email });
+    jugadores.push({ nombre, curso, _1r_apellido, _2n_apellido, genero, email, numero });
     index++;
   }
 
@@ -134,6 +135,7 @@ export const POST: APIRoute = async ({ request }) => {
       const genero_extra = formData.get(`extra_genero_${index}`)?.toString().trim();
       const curso = formData.get(`extra_player_${index}_curso`)?.toString().trim();
       const email = formData.get(`extra_player_${index}_email`)?.toString().trim();
+      const numero = index + 7;
       if (email) { 
         const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
         const dominioConArroba = '@' + dominio;
@@ -160,7 +162,7 @@ export const POST: APIRoute = async ({ request }) => {
       if(genero_extra === "mujer"){
         mujeres++;
       }
-      jugadores_extra.push({ nombre, curso, _1r_apellido, _2n_apellido, genero_extra, email });
+      jugadores_extra.push({ nombre, curso, _1r_apellido, _2n_apellido, genero_extra, email, numero });
     }
     index++;
   }
@@ -384,150 +386,574 @@ console.log("URL pública del escudo:", publicUrl);
     console.log("Se envian emails");
 
     const resend = new Resend(import.meta.env.RESEND_API_KEY);
-  const emailContent = `
-<!DOCTYPE html>
-<html>
-  <head>
-      <meta charset="UTF-8" />
-      <title>IES Calvià Voley Tournament</title>
-  </head>
-  <body>
-    <div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif; background-color: #1a1a1a; color: #ffffff; padding: 20px; border-radius: 8px;">
-        <a href="https://iescalvia-voley.com" style="display: flex; align-items: center; gap: 4px; text-decoration: none;">
-            <img src="https://iescalvia-voley.com/web-app-manifest-192x192.png" alt="Logo IES Calvia voley tournament" style="width: 60px; height:60px;"/>
-            <h1 style="color: #ffc107; font-size:20px; font-weight:bold;">IES Calvià Voley Tournament</h1>
-        </a>
-        <hr style="border: 1px solid #333; border-radius: 10px; margin: 30px 0" />
-        <div style="margin-bottom: 16px; font-family:Roboto Condensed, sans-serif;font-size:32px; font-weight:bold; line-height:38px;text-align:center; color: #1666FF;">
-            Equip inscrit correctament al torneig de Setmana Santa
-        </div>
-        <h2 style="color: #FFC107; font-size: 24px; margin-bottom: 16px;">Equip Inscrit Per:</h2>
-        <div style="display: grid; grid-template-columns: max-content 1fr max-content; align-items: center; place-items: center; text-lg; color: #ffffff; margin-bottom: 20px;">
-        <table style="width: 100%;">
-          <tr>
-            <th>
-              <p style="margin: 0; color: #ffffff;">${usuario_nombre}</p>
-            </th>
-            <th>
-              <p style="margin: 0; color: #ffffff;">${usuario_email}</p>
-            </th>
-            <th>
-              <p style="margin: 0; color: #ffffff;">${usuario_curso}</p>
-            </th>
-          </tr>
-        </table>
-        </div>
-        <div style="text-align: center; margin: 20px 0;">
-          <h3 style="font-size: 32px; background-color: transparent; color: #FFC107; padding: 10px; border-radius: 5px;">IES Calvià Voley Team</h3>
-        </div>
-        <div style="width: 240px; height: 240px; margin: auto; border-radius: 10px; overflow: hidden;">
-          <img src=${publicUrl} alt="Logo equipo" style="width: 100%; height: 100%; object-fit: cover;" />
-        </div>
-        <div style="display: flex; align-items: center; margin-top: 16px;">
-          <label style="color: #FFC107; font-size: 20px; margin-right: 8px;">Capità: <span style="color: #fff;">${capitan}</span></label>
-          <p style="background-color: transparent; color: #ffffff; padding: 8px; border-radius: 5px;"></p>
-        </div>
-        
-        <h4 style="margin-top: 20px; font-size: 24px; color: #FFC107;">Entrenador</h4>
-        <div style="margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
-            <div style="display: flex; flex-direction: column; margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
-            <table>
-              <tr>
-                <p style="margin: 0; font-weight: bold; color: #ffffff;">${acompañante_nombre} ${acompañante_1r_apellido} ${acompañante_2n_apellido}</p>
-              </tr>
-              <tr>
-                <p style="color: #ffffff;">Curs: ${acompañante_curso} </p>
-              </tr>
-              <tr>
-                <p style="color: #ffffff; text-decoration:none;">Email: ${acompañante_email}</p>
-              </tr>
-            </table>
-            </div>
-        </div>
-        
-        <h4 style="margin-top: 20px; font-size: 24px; color: #FFC107;">Alumnes Jugadors</h4>
-        ${jugadores.map(jugador => `
-          <div style="margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
-                <table>
-              <tr>
-                <p style="margin: 0; font-weight: bold; color: #ffffff;">${jugador.nombre} ${jugador._1r_apellido} ${jugador._2n_apellido}</p>
-              </tr>
-              <tr>
-                <p style="color: #ffffff;">Curs: ${jugador.curso}</p>
-              </tr>
-              <tr>
-                <p style="color: #ffffff;">Email: ${jugador.email}</p>
-              </tr>
-            </table>
-            
-          </div>
-        `).join('')}
-        ${jugadores_extra.map(jugador => `
-          <div style="margin-bottom: 10px; padding: 10px; background-color: #333; border-radius: 5px;">
-            <table>
-              <tr>
-                <p style="margin: 0; font-weight: bold; color: #ffffff;">${jugador.nombre} ${jugador._1r_apellido} ${jugador._2n_apellido}</p>
-              </tr>
-              <tr>
-                <p style="color: #ffffff;">Curs: ${jugador.curso}</p>
-              </tr>
-              <tr>
-                <p style="color: #ffffff;">Email: ${jugador.email}</p>
-              </tr>
-            </table>
-            
-          </div>
-        `).join('')}
 
-        <hr style="border: 1px solid #ffc107; border-radius: 10px; margin: 30px 0" />
-        <div style="width: 100%;">
-          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-          <table style="width: 100%;">
-            <tr>
-              <h4 style="color: #1666FF; font-size: 22px; white-space: nowrap; font-weight: 600; text-transform: uppercase; text-align: center;">Organitzat per</h4>
-            </tr>
-            <tr>
-              <th>
-                  <a>
-                      <img src="https://iescalvia-voley.com/img/team-teto.png" style="width: 175px; height: 175px;" alt="TEAM Teto" />
-                  </a>
-              </th>
-              <th>
-                  <a href="https://sites.google.com/iescalvia.com/iescalvia/inici" target="_blank">
-                      <img src="https://iescalvia-voley.com/img/ies-calvia.png" style="width: 175px; height: 175px;" alt="IES Calvi=C3=A0" />
-                  </a>
-                </th>
-            </tr>
-          </table>
-              
-          </div>
-          
-          <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; font-size: 16px;">
-              <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                <img src="https://iescalvia-voley.com/img/licencia/cc.png" style="width: 20px; height:20px; margin: 0 4px;" alt="Creative Comons"/>
-                2025 - IES Calvià Voley Tournament
-              </div>
-              <span style="margin: 0 4px;">|</span>
-              <span>
-              <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/?refselecter-v1" style="display: flex; flex-direction: row; justify-content: center; align-items: center; font-size: 16px; color: #fff;" target="_blank" rel="licencia noopener noreferrer">Tots els drets reservats.
-                <img src="https://iescalvia-voley.com/img/licencia/attribution.png" style="width: 20px; height:20px; margin: 0 4px;" alt="Attribution"/>
-                <img src="https://iescalvia-voley.com/img/licencia/nc.png" style="width: 20px; height:20px; margin: 0 4px;" alt="NonCommercial"/>
-                <img src="https://iescalvia-voley.com/img/licencia/nd.png" style="width: 20px; height:20px; margin: 0 4px;" alt="NoDerivatives"/>
-              </a>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+
+const emailBody =`
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="ca">
+ <head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="telephone=no" name="format-detection">
+  <title>Nuevo mensaje 2</title><!--[if (mso 16)]>
+    <style type="text/css">
+    a {text-decoration: none;}
+    </style>
+    <![endif]--><!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]--><!--[if gte mso 9]>
+<noscript>
+         <xml>
+           <o:OfficeDocumentSettings>
+           <o:AllowPNG></o:AllowPNG>
+           <o:PixelsPerInch>96</o:PixelsPerInch>
+           </o:OfficeDocumentSettings>
+         </xml>
+      </noscript>
+<![endif]--><!--[if mso]><xml>
+    <w:WordDocument xmlns:w="urn:schemas-microsoft-com:office:word">
+      <w:DontUseAdvancedTypographyReadingMail/>
+    </w:WordDocument>
+    </xml><![endif]-->
+  <style type="text/css">
+.rollover:hover .rollover-first {
+  max-height:0px!important;
+  display:none!important;
+}
+.rollover:hover .rollover-second {
+  max-height:none!important;
+  display:block!important;
+}
+.rollover span {
+  font-size:0px;
+}
+u + .body img ~ div div {
+  display:none;
+}
+#outlook a {
+  padding:0;
+}
+span.MsoHyperlink,
+span.MsoHyperlinkFollowed {
+  color:inherit;
+  mso-style-priority:99;
+}
+a.es-button {
+  mso-style-priority:100!important;
+  text-decoration:none!important;
+}
+a[x-apple-data-detectors],
+#MessageViewBody a {
+  color:inherit!important;
+  text-decoration:none!important;
+  font-size:inherit!important;
+  font-family:inherit!important;
+  font-weight:inherit!important;
+  line-height:inherit!important;
+}
+.es-desk-hidden {
+  display:none;
+  float:left;
+  overflow:hidden;
+  width:0;
+  max-height:0;
+  line-height:0;
+  mso-hide:all;
+}
+@media only screen and (max-width:600px) {.es-m-p10t { padding-top:10px!important } .es-m-p0r { padding-right:0px!important } .es-m-p0l { padding-left:0px!important } .es-m-p10r { padding-right:10px!important } .es-m-p20r { padding-right:20px!important } .es-m-p10b { padding-bottom:10px!important } .es-m-p20l { padding-left:20px!important } .es-p-default { } *[class="gmail-fix"] { display:none!important } p, a { line-height:150%!important } h1, h1 a { line-height:120%!important } h2, h2 a { line-height:120%!important } h3, h3 a { line-height:120%!important } h4, h4 a { line-height:120%!important } h5, h5 a { line-height:120%!important } h6, h6 a { line-height:120%!important } .es-header-body p { } .es-content-body p { } .es-footer-body p { } .es-infoblock p { } h1 { font-size:30px!important; text-align:left } h2 { font-size:24px!important; text-align:left } h3 { font-size:20px!important; text-align:left } h4 { font-size:24px!important; text-align:left } h5 { font-size:20px!important; text-align:left } h6 { font-size:16px!important; text-align:left } .es-header-body h1 a, .es-content-body h1 a, .es-footer-body h1 a { font-size:30px!important } .es-header-body h2 a, .es-content-body h2 a, .es-footer-body h2 a { font-size:24px!important } .es-header-body h3 a, .es-content-body h3 a, .es-footer-body h3 a { font-size:20px!important } .es-header-body h4 a, .es-content-body h4 a, .es-footer-body h4 a { font-size:24px!important } .es-header-body h5 a, .es-content-body h5 a, .es-footer-body h5 a { font-size:20px!important } .es-header-body h6 a, .es-content-body h6 a, .es-footer-body h6 a { font-size:16px!important } .es-menu td a { font-size:14px!important } .es-header-body p, .es-header-body a { font-size:14px!important } .es-content-body p, .es-content-body a { font-size:14px!important } .es-footer-body p, .es-footer-body a { font-size:16px!important } .es-infoblock p, .es-infoblock a { font-size:12px!important } .es-m-txt-c, .es-m-txt-c h1, .es-m-txt-c h2, .es-m-txt-c h3, .es-m-txt-c h4, .es-m-txt-c h5, .es-m-txt-c h6 { text-align:center!important } .es-m-txt-r, .es-m-txt-r h1, .es-m-txt-r h2, .es-m-txt-r h3, .es-m-txt-r h4, .es-m-txt-r h5, .es-m-txt-r h6 { text-align:right!important } .es-m-txt-j, .es-m-txt-j h1, .es-m-txt-j h2, .es-m-txt-j h3, .es-m-txt-j h4, .es-m-txt-j h5, .es-m-txt-j h6 { text-align:justify!important } .es-m-txt-l, .es-m-txt-l h1, .es-m-txt-l h2, .es-m-txt-l h3, .es-m-txt-l h4, .es-m-txt-l h5, .es-m-txt-l h6 { text-align:left!important } .es-m-txt-r img, .es-m-txt-c img, .es-m-txt-l img { display:inline!important } .es-m-txt-r .rollover:hover .rollover-second, .es-m-txt-c .rollover:hover .rollover-second, .es-m-txt-l .rollover:hover .rollover-second { display:inline!important } .es-m-txt-r .rollover span, .es-m-txt-c .rollover span, .es-m-txt-l .rollover span { line-height:0!important; font-size:0!important; display:block } .es-spacer { display:inline-table } a.es-button, button.es-button { font-size:18px!important; padding:10px 20px 10px 20px!important; line-height:120%!important } a.es-button, button.es-button, .es-button-border { display:inline-block!important } .es-m-fw, .es-m-fw.es-fw, .es-m-fw .es-button { display:block!important } .es-m-il, .es-m-il .es-button, .es-social, .es-social td, .es-menu { display:inline-block!important } .es-adaptive table, .es-left, .es-right { width:100%!important } .es-content table, .es-header table, .es-footer table, .es-content, .es-footer, .es-header { width:100%!important; max-width:600px!important } .adapt-img { width:100%!important; height:auto!important } .es-mobile-hidden, .es-hidden { display:none!important } .es-desk-hidden { width:auto!important; overflow:visible!important; float:none!important; max-height:inherit!important; line-height:inherit!important } tr.es-desk-hidden { display:table-row!important } table.es-desk-hidden { display:table!important } td.es-desk-menu-hidden { display:table-cell!important } .es-menu td { width:1%!important } table.es-table-not-adapt, .esd-block-html table { width:auto!important } .h-auto { height:auto!important } .img-6359 { width:200px!important; height:auto!important } .img-6730 { width:84px!important; height:auto!important } h1 a { text-align:left } h2 a { text-align:left } .es-m-w0 { width:0px!important } h3 a { text-align:left } .es-text-3268 .es-text-mobile-size-18.es-override-size, .es-text-3268 .es-text-mobile-size-18.es-override-size * { font-size:18px!important; line-height:150%!important } table.es-spacer-6583 { width:100%!important } .es-text-9774 .es-text-mobile-size-14.es-override-size, .es-text-9774 .es-text-mobile-size-14.es-override-size * { font-size:14px!important; line-height:150%!important } .es-text-8594 .es-text-mobile-size-14.es-override-size, .es-text-8594 .es-text-mobile-size-14.es-override-size * { font-size:14px!important; line-height:150%!important } .es-text-3285 .es-text-mobile-size-14.es-override-size, .es-text-3285 .es-text-mobile-size-14.es-override-size * { font-size:14px!important; line-height:150%!important } .es-text-2485 .es-text-mobile-size-36, .es-text-2485 .es-text-mobile-size-36 * { font-size:36px!important; line-height:150%!important } .es-text-2701 .es-text-mobile-size-16, .es-text-2701 .es-text-mobile-size-16 * { font-size:16px!important; line-height:150%!important } .es-text-4830 .es-text-mobile-size-16, .es-text-4830 .es-text-mobile-size-16 * { font-size:16px!important; line-height:150%!important } .es-text-8859 .es-text-mobile-size-16, .es-text-8859 .es-text-mobile-size-16 * { font-size:16px!important; line-height:150%!important } .es-text-6521 .es-text-mobile-size-16, .es-text-6521 .es-text-mobile-size-16 * { font-size:16px!important; line-height:150%!important } .es-text-9225 .es-text-mobile-size-16, .es-text-9225 .es-text-mobile-size-16 * { font-size:16px!important; line-height:150%!important } .es-text-8976 .es-text-mobile-size-16, .es-text-8976 .es-text-mobile-size-16 * { font-size:16px!important; line-height:150%!important } .es-text-8417 .es-text-mobile-size-16, .es-text-8417 .es-text-mobile-size-16 * { font-size:16px!important; line-height:150%!important } .es-text-9857 .es-text-mobile-size-18, .es-text-9857 .es-text-mobile-size-18 * { font-size:18px!important; line-height:150%!important } }
+@media screen and (max-width:384px) {.mail-message-content { width:414px!important } }
+</style>
+ </head>
+ <body class="body" style="width:100%;height:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
+  <div dir="ltr" class="es-wrapper-color" lang="ca" style="background-color:#E0DFDF"><!--[if gte mso 9]>
+ <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
+   <v:fill type="tile"  color="#e0dfdf" origin="0.5, 0" position="0.5, 0"></v:fill>
+ </v:background>
+<![endif]-->
+   <table cellspacing="0" cellpadding="0" width="100%" class="es-wrapper" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-repeat:repeat;background-position:center top;background-color:#E0DFDF">
+     <tr>
+      <td valign="top" style="padding:0;Margin:0">
+       <table cellspacing="0" cellpadding="0" align="center" class="es-header" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important;background-color:transparent;background-repeat:repeat;background-position:center top">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-header-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#ffffff;width:600px" role="none">
+             <tr>
+              <td bgcolor="#1B1D20" align="left" style="padding:10px;Margin:0;background-color:#1B1D20">
+               <table cellspacing="0" cellpadding="0" width="100%" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td valign="top" align="center" style="padding:0;Margin:0;width:580px">
+                   <table cellspacing="0" cellpadding="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><a href="https://iescalvia-voley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#1376C8;font-size:14px"><img src="https://epqqhnq.stripocdn.email/content/guids/CABINET_0cb0af73485e28aee9f8c657f4585c662890522ff24809cfe8f5a3e6e5f27897/images/webappmanifest192x192.png" alt="" width="84" class="img-6730" height="84" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
+                      <td align="left" class="es-text-3268" style="padding:0;Margin:0"><h1 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:30px;font-style:normal;font-weight:normal;line-height:36px;color:#FFC700"><strong class="es-override-size es-text-mobile-size-18" style="font-size:22px">IES Calvià Voley Tournament</strong></h1></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+             <tr>
+              <td align="left" style="padding:20px;Margin:0">
+               <table cellspacing="0" cellpadding="0" width="100%" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
+                   <table cellspacing="0" cellpadding="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0"><h2 class="es-m-txt-c" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:28.8px;color:#333333"><b style="color:#1666ff">Preinscripció realitzada correctament al Torneig de Setmana Santa</b></h2></td>
+                     </tr>
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-right:20px;padding-left:20px;font-size:0">
+                       <table cellspacing="0" cellpadding="0" width="10%" height="100%" border="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                         <tr>
+                          <td style="padding:0;Margin:0;border-bottom:3px solid #FFC700;background:none;height:0px;width:100%;margin:0px"></td>
+                         </tr>
+                       </table></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Benvolguts/des,<br><br>Hem rebut correctament la vostra preinscripció al Torneig de Setmana Santa. Us informem que aquesta preinscripció serà revisada pel nostre equip de staff per assegurar que compleix amb tots els requisits necessaris. Un cop validada, rebreu un correu electrònic confirmant l'acceptació definitiva de la vostra inscripció.<br><br>Gràcies per la vostra participació i no dubteu a contactar-nos si teniu cap dubte.</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#31cb4b" align="center" class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#31cb4b;width:600px" role="none">
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#2cb543" align="center" class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#2cb543;width:600px" role="none">
+             <tr>
+              <td bgcolor="#2cb543" align="left" style="padding:0;Margin:0;background-color:#2cb543"><!--[if mso]><table style="width:600px" cellpadding="0" cellspacing="0"><tr><td style="width:290px" valign="top"><![endif]-->
+               <table cellspacing="0" cellpadding="0" align="left" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+                 <tr>
+                 </tr>
+               </table><!--[if mso]></td><td style="width:20px"></td><td style="width:290px" valign="top"><![endif]-->
+               <table cellspacing="0" cellpadding="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                 <tr>
+                 </tr>
+               </table><!--[if mso]></td></tr></table><![endif]--></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+             <tr>
+              <td bgcolor="#2cb543" align="left" style="padding:0;Margin:0;background-color:#2cb543"><!--[if mso]><table style="width:600px" cellpadding="0" cellspacing="0"><tr><td style="width:300px" valign="top"><![endif]-->
+               <table cellspacing="0" cellpadding="0" align="left" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+                 <tr>
+                 </tr>
+               </table><!--[if mso]></td><td style="width:0px"></td><td style="width:300px" valign="top"><![endif]-->
+               <table cellspacing="0" cellpadding="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                 <tr>
+                 </tr>
+               </table><!--[if mso]></td></tr></table><![endif]--></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1B1D20;width:600px">
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="center" bgcolor="#1B1D20" class="es-m-p10t" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px;font-size:0">
+                       <table cellspacing="0" cellpadding="0" width="100%" height="100%" border="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                         <tr>
+                          <td style="padding:0;Margin:0;border-bottom:2px solid #FFC700;background:none;height:0px;width:100%;margin:0px"></td>
+                         </tr>
+                       </table></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0"><h4 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:28.8px;color:#FFC700">Equip Inscrit Per:</h4></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" class="es-m-p0r es-m-p0l" style="Margin:0;padding-right:20px;padding-left:20px;padding-top:20px;padding-bottom:10px">
+               <table cellpadding="0" cellspacing="0" class="esdev-mso-table" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:560px">
+                 <tr>
+                  <td valign="top" class="esdev-mso-td" style="padding:0;Margin:0">
+                   <table cellpadding="0" cellspacing="0" align="left" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0;width:130px">
+                       <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                         <tr>
+                          <td align="center" class="es-text-3285" style="padding:0;Margin:0"><p class="es-override-size es-text-mobile-size-14 es-m-txt-c" style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;letter-spacing:0;color:#FFFFFF;font-size:16px">${usuario_nombre}</p></td>
+                         </tr>
+                       </table></td>
+                     </tr>
+                   </table></td>
+                  <td class="es-m-w0" style="padding:0;Margin:0;width:10px"></td>
+                  <td valign="top" class="esdev-mso-td" style="padding:0;Margin:0">
+                   <table cellpadding="0" cellspacing="0" align="left" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0;width:280px">
+                       <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                         <tr>
+                          <td align="center" class="es-text-9774" style="padding:0;Margin:0"><p class="es-text-mobile-size-14 es-override-size" style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:19.2px;letter-spacing:0;color:#FFFFFF;font-size:16px">${usuario_email}</p></td>
+                         </tr>
+                       </table></td>
+                     </tr>
+                   </table></td>
+                  <td class="es-m-w0" style="padding:0;Margin:0;width:10px"></td>
+                  <td valign="top" class="esdev-mso-td" style="padding:0;Margin:0">
+                   <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0;width:130px">
+                       <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                         <tr>
+                          <td align="center" class="es-text-8594" style="padding:0;Margin:0"><p class="es-text-mobile-size-14 es-override-size" style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;letter-spacing:0;color:#FFFFFF;font-size:16px">${usuario_curso}</p></td>
+                         </tr>
+                       </table></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="center" class="es-text-2485" style="padding:0;Margin:0"><h1 class="es-text-mobile-size-36 es-m-txt-c" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:36px;font-style:normal;font-weight:normal;line-height:43.2px;color:#1666ff"><strong>Team Teto</strong></h1></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><img src="https://epqqhnq.stripocdn.email/content/guids/CABINET_0cb0af73485e28aee9f8c657f4585c662890522ff24809cfe8f5a3e6e5f27897/images/teamteto.png" alt="" width="250" class="img-6359" height="250" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" class="es-m-p10t" style="padding:0;Margin:0;padding-right:20px;padding-left:20px">
+               <table cellpadding="0" cellspacing="0" class="esdev-mso-table" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:560px">
+                 <tr>
+                  <td valign="top" class="esdev-mso-td" style="padding:0;Margin:0">
+                   <table cellpadding="0" cellspacing="0" align="left" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0;width:57px">
+                       <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                         <tr>
+                          <td align="left" style="padding:0;Margin:0"><h4 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:28.8px;color:#1666ff">Estat:</h4></td>
+                         </tr>
+                       </table></td>
+                     </tr>
+                   </table></td>
+                  <td class="es-m-w0 es-m-p10r" style="padding:0;Margin:0;width:10px"></td>
+                  <td valign="top" class="esdev-mso-td" style="padding:0;Margin:0">
+                   <table cellpadding="0" cellspacing="0" align="left" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0;width:81px">
+                       <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                         <tr>
+                          <td align="left" bgcolor="#ffd966" class="es-text-9857" style="Margin:0;padding-top:4px;padding-right:8px;padding-bottom:4px;padding-left:8px;border-radius:10px"><p class="es-text-mobile-size-18" style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:27px;letter-spacing:0;color:#bf9000;font-size:18px;border-radius:10px"><strong>REVISANT</strong></p></td>
+                         </tr>
+                       </table></td>
+                     </tr>
+                   </table></td>
+                  <td class="es-m-w0 es-m-p10r" style="padding:0;Margin:0;width:10px"></td>
+                  <td valign="top" class="esdev-mso-td" style="padding:0;Margin:0">
+                   <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0;width:402px">
+                       <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                         <tr>
+                          <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px"><br></p></td>
+                         </tr>
+                       </table></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" class="es-m-p10t" style="padding:0;Margin:0;padding-right:20px;padding-left:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" class="es-text-2701" style="padding:0;Margin:0"><p class="es-text-mobile-size-16" style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;letter-spacing:0;color:#FFFFFF;font-size:16px"><span style="color:#FFC700">Capità:</span> ${capitan}</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0"><h4 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:28.8px;color:#FFC700">Entrenador</h4></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" class="es-m-p20l es-m-p20r es-m-p10t es-m-p10b" style="padding:0;Margin:0;padding-top:20px;padding-right:40px;padding-left:40px;border-radius:10px">
+               <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:520px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" bgcolor="#313131" style="border-radius:10px;padding:10px;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px"><strong>${acompañante_nombre} ${acompañante_1r_apellido} ${acompañante_2n_apellido}</strong></p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Curs: ${acompañante_curso}</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Email: ${acompañante_email}</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0"><h4 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:28.8px;color:#FFC700">Alumnes Jugadors</h4></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             
+             ${jugadores.map(jugador => `
+              <tr>
+              <td align="left" class="es-m-p20l es-m-p20r" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-right:40px;padding-left:40px;border-radius:10px">
+               <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:520px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" bgcolor="#313131" class="es-text-4830" style="border-radius:10px;padding:10px;Margin:0"><h5 class="es-text-mobile-size-16" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:16px;font-style:normal;font-weight:normal;line-height:19.2px;color:#1666ff"><strong>Jugador ${jugador.numero}</strong></h5><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px"><strong>${jugador.nombre} ${jugador._1r_apellido} ${jugador._2n_apellido}</strong></p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Curs: ${jugador.curso}</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Email: ${jugador.email}</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+            `).join('')}
+            ${jugadores_extra.map(jugador => `
+              <tr>
+              <td align="left" class="es-m-p20l es-m-p20r" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-right:40px;padding-left:40px;border-radius:10px">
+               <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:520px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" bgcolor="#313131" class="es-text-4830" style="border-radius:10px;padding:10px;Margin:0"><h5 class="es-text-mobile-size-16" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:16px;font-style:normal;font-weight:normal;line-height:19.2px;color:#1666ff"><strong>Jugador ${jugador.numero}</strong></h5><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px"><strong>${jugador.nombre} ${jugador._1r_apellido} ${jugador._2n_apellido}</strong></p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Curs: ${jugador.curso}</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Email: ${jugador.email}</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+            `).join('')}
+             <tr>
+              <td align="left" bgcolor="#0E347D" style="Margin:0;padding-top:20px;padding-right:10px;padding-bottom:20px;padding-left:10px;background-color:#0E347D">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:580px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Aquest és un correu generat automàticament, per la qual cosa no podem respondre els missatges enviats a aquesta adreça. Si necessiteu ajuda o teniu algun dubte, si us plau, poseu-vos en contacte amb nosaltres a través del correu voley_tournament@iescalvia.com.</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px"><!--[if mso]><table style="width:560px" cellpadding="0" cellspacing="0"><tr><td style="width:193px" valign="top"><![endif]-->
+               <table cellpadding="0" cellspacing="0" align="left" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+               </table><!--[if mso]></td><td style="width:173px" valign="top"><![endif]-->
+               <table cellpadding="0" cellspacing="0" align="left" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:173px">
+                   <table cellspacing="0" cellpadding="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0"><h3 class="es-m-txt-c" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:normal;line-height:24px;color:#333333"><strong style="color:#1666ff">Organitzat per</strong></h3></td>
+                     </tr>
+                     <tr>
+                      <td style="padding:0;Margin:0">
+                       <table cellspacing="0" cellpadding="0" class="es-table-not-adapt" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                       </table></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:173px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0;width:270px">
+                       <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                         <tr>
+                          <td align="center" style="padding:0;Margin:0;font-size:0"><img src="https://epqqhnq.stripocdn.email/content/guids/CABINET_0cb0af73485e28aee9f8c657f4585c662890522ff24809cfe8f5a3e6e5f27897/images/organizadores.png" alt="" width="250" height="100" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                         </tr><!--[if !mso]><!-- -->
+                         <tr class="es-desk-hidden" style="display:none;float:left;overflow:hidden;width:0;max-height:0;line-height:0;mso-hide:all">
+                          <td align="center" bgcolor="#1B1D20" class="es-m-p10b es-m-p10t" style="padding:0;Margin:0;padding-right:40px;padding-left:40px;padding-bottom:40px;font-size:0">
+                           <table cellspacing="0" cellpadding="0" width="100%" height="100%" border="0" class="es-spacer-6583" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                             <tr>
+                              <td style="padding:0;Margin:0;border-bottom:1px solid #1666ff;background:none;height:0px;width:100%;margin:0px"></td>
+                             </tr>
+                           </table></td>
+                         </tr><!--<![endif]-->
+                       </table></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table><!--[if mso]></td><td style="width:20px"</td><td style="width:174px" valign="top"><![endif]-->
+               <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                 <tr>
+                  <td align="center" style="padding:0;Margin:0;width:174px">
+                   <table cellspacing="0" cellpadding="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;padding-top:10px;font-size:0"><img src="https://epqqhnq.stripocdn.email/content/guids/CABINET_0cb0af73485e28aee9f8c657f4585c662890522ff24809cfe8f5a3e6e5f27897/images/group_245.png" alt="" width="125" height="107" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table><!--[if mso]></td></tr></table><![endif]--></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-footer" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important;background-color:transparent;background-repeat:repeat;background-position:center top">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" align="center" class="es-footer-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#333333;width:600px">
+             <tr>
+              <td align="left" bgcolor="#1B1D20" style="padding:20px;Margin:0;background-color:#1B1D20">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><img src="https://epqqhnq.stripocdn.email/content/guids/CABINET_0cb0af73485e28aee9f8c657f4585c662890522ff24809cfe8f5a3e6e5f27897/images/group_246.png" alt="" width="560" class="adapt-img" height="21" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table></td>
+     </tr>
+   </table>
+  </div>
+ </body>
 </html>
 `;
 try {
   const { data, error } = await resend.emails.send({
     from: 'IES Calvià Voley Tournament <onboarding@resend.dev>',
     to: [usuario_email], // Asegúrate de que esta variable tenga el valor correcto
-    subject: `Inscripció Completada de ${nombre_equipo}`,
-    html: emailContent,
+    subject: `Inscripció Realitzada de l'equip ${nombre_equipo}`,
+    html: emailBody,
   });
 
   if (error) {
