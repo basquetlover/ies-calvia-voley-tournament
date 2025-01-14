@@ -1,0 +1,86 @@
+---
+import LayoutAll from "@layouts/LayoutAll.astro";
+
+import { supabaseAdmin } from "../../lib/supabase";
+import SinPermisos from "@components/admin/SinPermisos.astro";
+
+// Verifica si hay un usuario autenticado
+const user = Astro.locals.StaffUser;
+const pathname = Astro.url.pathname;
+let userWithRango = {
+    email: user?.email || "Desconocido",
+    rango: "Sin rango"
+};
+
+try {
+    // Obtén el rango del usuario autenticado
+    if (user?.email) {
+        const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango")
+            .eq("user_email", user.email)
+            .single(); // Obtiene un único registro
+
+        if (error) {
+            console.error("Error al obtener rango:", error.message);
+        } else if (adminData) {
+            userWithRango.rango = adminData.rango || "Sin rango";
+        }
+    }
+} catch (err) {
+    console.error("Error al obtener datos del usuario:", err);
+}
+
+let accessibleBlocks = [];
+
+try {
+    const { data: pageAccess, error } = await supabaseAdmin
+        .from('Whitlist')
+        .select('*')
+        .or(`nombre.eq.${userWithRango.email},role.eq.${userWithRango.rango}`); // Verifica acceso por email o rol
+
+    if (pageAccess) {
+        accessibleBlocks = pageAccess.map(item => item.pagina); // Extrae las páginas a las que tiene acceso
+    }
+} catch (err) {
+    console.error("Error al obtener acceso:", err);
+}
+const userHasAccess = accessibleBlocks.includes(pathname);
+---
+
+<LayoutAll title="Email Personalizado | IES Calvià Voley Tournament">
+    {userHasAccess ? (
+
+        <>
+            <div class="max-w-2xl w-auto mx-auto p-4 bg-gris-claro h-auto">
+                <form method="POST" action="/api/SendEmail">
+                    <div class="flex flex-row items-center gap-2">
+                        <label class="text-base text-blanco">Para</label>
+                        <input type="text" name="destinatario" class="bg-transparent border-none text-amarillo w-auto max-w-xl" placeholder="ejemplo@gmail.com" />
+                    </div>
+                    <div class="flex flex-row items-center gap-2">
+                        <label class="text-base text-blanco">Asunto</label>
+                        <input type="text" name="asunto" class="bg-transparent border-none text-amarillo w-auto max-w-xl" placeholder=" | IES Calvià Voley Tournament" />
+                    </div>
+                    <div class="flex flex-col place-content-center gap-2">
+                        <label class="text-base text-blanco">Codigo HTML</label>
+                        {/* <input type="text" name="codigo" class="bg-transparent border-none text-amarillo w-auto " placeholder=" | IES Calvià Voley Tournament" /> */}
+                        <textarea name="codigo_html" class="bg-transparent border-none text-blanco w-auto min-h-96" placeholder="Pegar aquí codigo HTML"></textarea>
+                    </div>
+
+                    <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
+              <a href="/admin" rel="noreferrer" class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+              <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                      <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                  </svg>
+                  Enviar Email
+              </button>
+          </div>
+                </form>
+            </div>
+          </>
+    ) : (
+        <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
+    )}
+</LayoutAll>
