@@ -9,51 +9,37 @@ interface UserWithRango {
 
 let error = null;
 let usersWithRangos: UserWithRango[] = [];
+let Owners: UserWithRango[] = [];
 
-try {
-    // Paso 1: Obtener los correos electrónicos desde auth.users
-    const { data: userData, error: fetchUsersError } = await supabaseAdmin.auth.admin.listUsers();
 
-    if (fetchUsersError) {
-        throw new Error(`Error al obtener usuarios: ${fetchUsersError.message}`);
-    }
 
-    const users = userData?.users
-        ?.map((user) => user.email)
-        .filter((email): email is string => email !== undefined); // Filtrar emails undefined
-
-    // Paso 2: Obtener los rangos desde la tabla Administradores
-    const { data: administradoresData, error: fetchAdminError } = await supabaseAdmin
+const { data: OwnerData, error: fetchOwnerError } = await supabaseAdmin
         .from("Administradores")
-        .select("rango, user_email");
-
-    if (fetchAdminError) {
-        throw new Error(`Error al obtener rangos: ${fetchAdminError.message}`);
-    }
-
-    // Paso 3: Crear un mapa para asociar emails con sus rangos
-    const rangosMap = new Map(
-        administradoresData?.map((admin) => [admin.user_email, admin.rango])
-    );
-
-    // Paso 4: Combinar los usuarios con sus rangos
-    usersWithRangos = users.map((email) => ({
-        email,
-        rango: rangosMap.get(email) || "Sin Rango", // "Sin Rango" si no está en la tabla Administradores
-    }));
-}  catch (err) {
-    console.error("Error al procesar los datos:", err);
-
-    // Verifica el tipo del error
-    if (err instanceof Error) {
-        error = err.message; // Accede al mensaje del error
-    } else {
-        error = "Error desconocido"; // Mensaje genérico para casos no esperados
-    }
-} 
+        .select("rango, user_email")
+        .eq('rango', 'Owner');
+const { data: CoOwnerData, error: fetchCoOwnerError } = await supabaseAdmin
+        .from("Administradores")
+        .select("rango, user_email")
+        .eq('rango', 'Co-Owner');
+const { data: StaffData, error: fetchStaffError } = await supabaseAdmin
+        .from("Administradores")
+        .select("rango, user_email")
+        .eq('rango', 'Staff');
+const { data: OfMesaData, error: fetchOfMesaError } = await supabaseAdmin
+        .from("Administradores")
+        .select("rango, user_email")
+        .eq('rango', 'Oficial de Mesa');
+const { data: ArbitrosData, error: fetchArbitrosError } = await supabaseAdmin
+        .from("Administradores")
+        .select("rango, user_email")
+        .eq('rango', 'Arbitro');
+const { data: SinRangoData, error: fetchSinRangoError } = await supabaseAdmin
+        .from("Administradores")
+        .select("rango, user_email")
+        .eq('rango', '');
 ---
 
-<section class="max-w-4xl w-full h-auto p-10 mx-auto my-auto">
+<section class="max-w-4xl w-full h-auto p-10 mx-auto mb-10">
     {error ? (
         <p class="text-red-500 text-center text-2xl">Ocurrió un error al obtener los datos: {error}</p>
     ) : (
@@ -61,12 +47,19 @@ try {
             <h2 class="text-center text-accent font-bold text-5xl">
                 Usuarios Registrados
             </h2>  
+
+
+
+            <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                Owner
+            </h2>
             <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
-            <tr><td><h4 class="text-amarillo font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-amarillo font-bold text-3xl my-2">Curs</h4></td> <td></td></tr>
-            {usersWithRangos.map((user) => (
+            <tr><td><h4 class="text-accent font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Rango</h4></td> <td></td></tr>
+            {OwnerData ? (
+                   OwnerData.map((user) => (
                 <tr >
                     <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
-                        {user.email}
+                        {user.user_email}
                     </td>
                     
                     <td class="text-center">
@@ -74,7 +67,7 @@ try {
                     </td>
 
                     <td>
-                        <a href={`/admin/lista-administradores/${user.email}`} class="group">
+                        <a href={`/admin/lista-administradores/${user.user_email}`} class="group">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 group-hover:fill-amarillo" fill="none" viewBox="0 0 60 60">
                                 <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
                                 <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
@@ -83,8 +76,190 @@ try {
                     </td>
                 </tr>
                  
-            ))}
+            ))
+                ) : (
+                    <tr>
+                        <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                    </tr>
+                    
+                )}
             </table>
+
+            <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                Co-Owner
+            </h2>
+            <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+            <tr><td><h4 class="text-accent font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Rango</h4></td> <td></td></tr>
+            {CoOwnerData ? (
+                   CoOwnerData.map((user) => (
+                <tr >
+                    <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
+                        {user.user_email}
+                    </td>
+                    
+                    <td class="text-center">
+                        {user.rango}
+                    </td>
+
+                    <td>
+                        <a href={`/admin/lista-administradores/${user.user_email}`} class="group">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 group-hover:fill-amarillo" fill="none" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
+                                <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                 
+            ))
+                ) : (
+                    <tr>
+                        <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                    </tr>
+                    
+                )}
+            </table>
+
+            <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                Staff
+            </h2>
+            <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+            <tr><td><h4 class="text-accent font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Rango</h4></td> <td></td></tr>
+            {StaffData ? (
+                   StaffData.map((user) => (
+                <tr >
+                    <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
+                        {user.user_email}
+                    </td>
+                    
+                    <td class="text-center">
+                        {user.rango}
+                    </td>
+
+                    <td>
+                        <a href={`/admin/lista-administradores/${user.user_email}`} class="group">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 group-hover:fill-amarillo" fill="none" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
+                                <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                 
+            ))
+                ) : (
+                    <tr>
+                        <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                    </tr>
+                    
+                )}
+            </table>
+
+            <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                Oficial de Mesa
+            </h2>
+            <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+            <tr><td><h4 class="text-accent font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Rango</h4></td> <td></td></tr>
+            {OfMesaData ? (
+                   OfMesaData.map((user) => (
+                <tr >
+                    <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
+                        {user.user_email}
+                    </td>
+                    
+                    <td class="text-center">
+                        {user.rango}
+                    </td>
+
+                    <td>
+                        <a href={`/admin/lista-administradores/${user.user_email}`} class="group">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 group-hover:fill-amarillo" fill="none" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
+                                <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                 
+            ))
+                ) : (
+                    <tr>
+                        <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                    </tr>
+                    
+                )}
+            </table>
+
+            <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                Arbitros
+            </h2>
+            <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+            <tr><td><h4 class="text-accent font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Rango</h4></td> <td></td></tr>
+            {ArbitrosData ? (
+                   ArbitrosData.map((user) => (
+                <tr >
+                    <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
+                        {user.user_email}
+                    </td>
+                    
+                    <td class="text-center">
+                        {user.rango}
+                    </td>
+
+                    <td>
+                        <a href={`/admin/lista-administradores/${user.user_email}`} class="group">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 group-hover:fill-amarillo" fill="none" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
+                                <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                 
+            ))
+                ) : (
+                    <tr>
+                        <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                    </tr>
+                    
+                )}
+            </table>
+
+            <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                Sin Rango
+            </h2>
+            <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+            <tr><td><h4 class="text-accent font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Rango</h4></td> <td></td></tr>
+            {SinRangoData ? (
+                   SinRangoData.map((user) => (
+                <tr >
+                    <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
+                        {user.user_email}
+                    </td>
+                    
+                    <td class="text-center">
+                        {user.rango}
+                    </td>
+
+                    <td>
+                        <a href={`/admin/lista-administradores/${user.user_email}`} class="group">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 group-hover:fill-amarillo" fill="none" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
+                                <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                 
+            ))
+                ) : (
+                    <tr>
+                        <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                    </tr>
+                    
+                )}
+            </table>
+            
                 
         </>
     )}
