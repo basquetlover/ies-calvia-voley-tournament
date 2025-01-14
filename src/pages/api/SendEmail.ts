@@ -19,9 +19,10 @@ export const POST: APIRoute = async ({ request }) => {
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
+
 try {
   const { data, error } = await resend.emails.send({
-    from: 'IES Calvià Voley Tournament <onboarding@resend.dev>',
+    from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
     to: [destinatario], // Asegúrate de que esta variable tenga el valor correcto
     subject: `${asunto}`,
     html: codigo_html,
