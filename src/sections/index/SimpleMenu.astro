@@ -23,7 +23,7 @@ export const ENLAZES_IMPORTANTE = [
 ]
 ---
 
-<section class="max-w-xl  h-[600px] xs:h-[400px] s:h-[500px] sm:h-[500px] md:h-[650px]  m-auto my-10 grid grid-cols-2 grid-rows-2 place-items-center justify-center gap-6 xs:gap-2  s:gap-2  sm:gap-3  md:gap-4  overflow-hidden">
+<!-- <section class="max-w-xl  h-[600px] xs:h-[400px] s:h-[500px] sm:h-[500px] md:h-[650px]  m-auto my-10 grid grid-cols-2 grid-rows-2 place-items-center justify-center gap-6 xs:gap-2  s:gap-2  sm:gap-3  md:gap-4  overflow-hidden">
 
     {ENLAZES_IMPORTANTE.map(({ name, href, img }) => (
 
@@ -45,6 +45,81 @@ export const ENLAZES_IMPORTANTE = [
         </a>
 
 ))}
+</section> -->
+
+<section class="max-w-3xl w-auto h-auto flex flex-col mx-auto my-20 gap-y-10 items-center place-content-center">
+    <!-- Equipos -->
+<article class="max-w-3xl w-auto h-56 rounded-lg bg-gris-claro grid grid-cols-[1fr_max-content] items-center xs:grid-cols-1 xs:grid-rows-[1fr_max-content] xs:h-auto xs:w-56 sm:grid-cols-1 sm:grid-rows-[1fr_max-content] sm:h-auto sm:w-56 md:grid-cols-[1fr_max-content] md:grid-rows-1 md:h-56 md:w-auto">
+    <div class="w-auto text-blanco p-3 gap-4 flex flex-col xs:items-center sm:items-center md:items-start">
+        <h4 class="text-3xl text-amarillo uppercase">
+            Equips
+        </h4>
+        <p class="text-base">
+            Descobreix tots els equips participants en el torneig, amb informació detallada sobre els seus membres, entrenadors i capità. Explora la trajectòria de cada equip i coneix quins seran els rivals més forts.
+        </p>
+        <a href="/equipos" class="px-3 py-2 w-max h-max hover:scale-105 duration-300 transition-all text-amarillo rounded-lg text-lg bg-accent ml-20 xs:ml-0 sm:ml-0 md:ml-20">
+            Més Informació
+        </a>
+    </div>
+
+    <div class="h-56 w-h-56">
+        <img src="/img/icons/nuevo_equipos.png" class="h-56 w-h-56" alt="Imagen enlace correspondiente"/>
+    </div>
+</article>
+<!-- Clasificació -->
+<article class="max-w-3xl w-auto h-56 rounded-lg bg-gris-claro grid grid-cols-[max-content_1fr] items-center xs:grid-cols-1 xs:grid-rows-[max-content_1fr] xs:h-auto xs:w-56 sm:grid-cols-1 sm:grid-rows-[max-content_1fr] sm:h-auto sm:w-56 md:grid-cols-[max-content_1fr] md:grid-rows-1 md:h-56 md:w-auto">
+    <div class="h-56 w-h-56">
+        <img src="/img/icons/nuevo_clasificacion.png" class="h-56 w-h-56" alt="Imagen enlace correspondiente"/>
+    </div>
+
+    <div class="w-auto text-blanco p-3 gap-4 flex flex-col items-end xs:items-center sm:items-center md:items-end">
+        <h4 class="text-3xl text-amarillo uppercase">
+            Clasificació
+        </h4>
+        <p class="text-base text-end xs:text-start sm:text-start md:text-end">
+            Consulta la classificació actualitzada dels equips, amb punts, victòries i estadístiques destacades. Segueix l'evolució de cada partit i descobreix qui està liderant la competició.
+        </p>
+        <a href="/clasificacion" class="px-3 py-2 w-max h-max hover:scale-105 duration-300 transition-all text-amarillo rounded-lg text-lg bg-accent mr-20 xs:mr-0 sm:mr-0 md:mr-20">
+            Més Informació
+        </a>
+    </div>
+</article>
+<!-- Bases de Competició -->
+<article class="max-w-3xl w-auto h-56 rounded-lg bg-gris-claro grid grid-cols-[1fr_max-content] items-center xs:grid-cols-1 xs:grid-rows-[1fr_max-content] xs:h-auto xs:w-56 sm:grid-cols-1 sm:grid-rows-[1fr_max-content] sm:h-auto sm:w-56 md:grid-cols-[1fr_max-content] md:grid-rows-1 md:h-56 md:w-auto">
+    <div class="w-auto text-blanco p-3 gap-4 flex flex-col xs:items-center sm:items-center md:items-start">
+        <h4 class="text-3xl text-amarillo uppercase">
+            Bases de Competició
+        </h4>
+        <p class="text-base">
+            Llegeix el reglament complet del torneig per conèixer totes les normes i criteris de puntuació. Assegura't de saber com es gestionen els desempat i altres situacions especials.
+        </p>
+        <a href="/bases-de-competicion" class="px-3 py-2 w-max h-max hover:scale-105 duration-300 transition-all text-amarillo rounded-lg text-lg bg-accent ml-20 xs:ml-0 sm:ml-0 md:ml-20">
+            Més Informació
+        </a>
+    </div>
+
+    <div class="h-56 w-h-56">
+        <img src="/img/icons/nuevo_bases.png" class="h-56 w-h-56" alt="Imagen enlace correspondiente"/>
+    </div>
+</article>
+<!-- INFORMACIÓ -->
+<article class="max-w-3xl w-auto h-56 rounded-lg bg-gris-claro grid grid-cols-[max-content_1fr] items-center xs:grid-cols-1 xs:grid-rows-[max-content_1fr] xs:h-auto xs:w-56 sm:grid-cols-1 sm:grid-rows-[max-content_1fr] sm:h-auto sm:w-56 md:grid-cols-[max-content_1fr] md:grid-rows-1 md:h-56 md:w-auto">
+    <div class="h-56 w-h-56">
+        <img src="/img/icons/nuevo_info.png" class="h-56 w-h-56" alt="Imagen enlace correspondiente"/>
+    </div>
+
+    <div class="w-auto text-blanco p-3 gap-4 flex flex-col items-end xs:items-center sm:items-center md:items-end">
+        <h4 class="text-3xl text-amarillo uppercase">
+            Informació
+        </h4>
+        <p class="text-base text-end xs:text-start sm:text-start md:text-end">
+            Troba tota la informació essencial del torneig, incloent l'horari dels partits, la ubicació de les pistes i recomanacions per als assistents. També podràs consultar els serveis disponibles al recinte.
+        </p>
+        <a href="/informacion" class="px-3 py-2 w-max h-max hover:scale-105 duration-300 transition-all text-amarillo rounded-lg text-lg bg-accent mr-20 xs:mr-0 sm:mr-0 md:mr-20">
+            Més Informació
+        </a>
+    </div>
+</article>
 </section>
 <!-- 
 transform transition-transform duration-300 ease-in-out scale-100 xs:scale-50 sm:scale-75 md:scale-90 
