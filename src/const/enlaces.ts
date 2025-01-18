@@ -8,6 +8,10 @@ export const ENLACES = [
         nombre: 'Equips',
     },
     {
+        href: '/clasificacion',
+        nombre: 'Clasificació',
+    },
+    {
         href: '/bases-de-competicion',
         nombre: 'Base de Competició',
     },
@@ -18,5 +22,10 @@ export const ENLACES = [
     {
         href: '/normativa',
         nombre: 'Normativa',
+    },
+    {
+        href: '/galeria',
+        nombre: 'Galeria',
     }
+
 ]

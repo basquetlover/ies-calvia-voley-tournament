@@ -39,8 +39,23 @@ import Organizadores from "@components/Organizadores.astro";
     </section>
     
 </div>
+
+
     <!--Licencia -->
-    <div class="my-2 text-base text-blanco flex flex-row justify-center place-items-center xs:flex-col sm:flex-col md:flex-row">
+    <div class=" max-w-lg w-full flex flex-row xs:flex-col sm:flex-col md:flex-row overflow-hidden items-center place-content-around h-auto">
+      <a href="/aviso-legal" target="_blank" class="text-blanco text-base max-h-13 h-auto  group hover:text-amarillo flex flex-row content-center items-center duration-300">
+          Avís Legal
+      </a>
+      <p class="text-xl text-blanco">·</p>
+      <a href="/cookies" target="_blank" class="text-blanco text-base max-h-13 h-auto  group hover:text-amarillo flex flex-row content-center items-center duration-300">
+          Política de Cookies
+      </a>
+      <p class="text-xl text-blanco">·</p>
+      <div id="conf_cookies" class="text-blanco text-base max-h-13 h-auto  group hover:text-amarillo flex flex-row content-center cursor-pointer items-center duration-300">
+          Gestionar Cookies
+      </div>
+    </div>
+    <div class="my-2  text-base text-blanco flex flex-row justify-center place-items-center xs:flex-col sm:flex-col md:flex-row">
         <div class="flex flex-row justify-center place-items-center">
           <img  src="/img/licencia/cc.png" loading="lazy" class="w-5 h-auto mx-1" alt="Creative Comons"/>
           <h3 class="ml-1 text-base text-blanco">2025 - IES Calvià Voley Tournament</h3>
@@ -58,4 +73,86 @@ import Organizadores from "@components/Organizadores.astro";
         </a>
       </span>
     </div>
+
+    
 </footer>
+
+<!--Mensaje cookies -->
+<div id="CookiesAlert" class="max-w-xl desaparecido w-auto min-h-60 h-auto fixed bottom-2 left-2 rounded-lg z-50 bg-azul grid grid-cols-[200px_1fr] place-items-center p-2">
+  <img src="/img/cookies.png" class="w-48 h-auto" alt="Imatge avis cookies" />
+  <div>
+      <h2 class="text-4xl text-amarillo font-bold">Cookies</h2>
+      <p class="text-base text-blanco">Utilitzem cookies pròpies i de tercers per a millorar els nostres serveis.</p>
+      <div class="flex flex-wrap gap-1 items-center place-content-center">
+          <div id="todas" class="cursor-pointer text-center px-2 py-1 text-gris font-semibold bg-amarillo rounded-md text-base">
+              Acceptar Totes
+          </div>
+          <div id="esenciales" class="cursor-pointer text-center px-2 py-1 text-gris font-semibold bg-amarillo rounded-md text-base">
+              Acceptar les Essencials
+          </div>
+          <a href="/cookies" target="_blank" class="cursor-pointer text-center px-2 py-1 text-gris font-semibold bg-amarillo rounded-md text-base">
+              Avís de cookies
+          </a>
+      </div>
+  </div>
+  </div>
+<style>
+  .desaparecido{
+      display: none;
+  }
+</style>
+<script>
+   function eliminarAllCookie() {
+      // Establece la cookie con el mismo nombre y una fecha de expiración en el pasado
+      const nombre = "all_cookies";
+      document.cookie = nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      location.reload();
+}
+function eliminarEssencialCookie() {
+      // Establece la cookie con el mismo nombre y una fecha de expiración en el pasado
+      const nombre = "essencial_cookies";
+      document.cookie = nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      location.reload();
+}
+
+  console.log("Script cargado!")
+  const CookiesAlert = document.getElementById('CookiesAlert');
+  const todas = document.getElementById('todas');
+  const esenciales = document.getElementById('esenciales');
+
+  todas?.addEventListener('click', function() {
+      CookiesAlert?.classList.add('desaparecido');
+      
+      const cookies = document.cookie;
+      if(cookies === "all_cookies=aceptadas"){
+          eliminarAllCookie();
+      }
+      if(cookies === "essencial_cookies=aceptadas"){
+          eliminarEssencialCookie();
+      }
+
+      document.cookie = "all_cookies=aceptadas; expires=Fri, 31 Dec 2026 23:59:59 GMT; path=/";
+  })
+
+  esenciales?.addEventListener('click', function() {
+      CookiesAlert?.classList.add('desaparecido');
+      
+      const cookies = document.cookie;
+      if(cookies === "all_cookies=aceptadas"){
+          eliminarAllCookie();
+      }
+      if(cookies === "essencial_cookies=aceptadas"){
+          eliminarEssencialCookie();
+      }
+
+      document.cookie = "essencial_cookies=aceptadas; expires=Fri, 31 Dec 2026 23:59:59 GMT; path=/";
+  })
+  
+  const btn_conf_cookies = document.getElementById("conf_cookies");
+  btn_conf_cookies?.addEventListener('click', function(){
+      CookiesAlert?.classList.remove('desaparecido');
+      // eliminarAllCookie();
+  })
+
+  
+</script>
