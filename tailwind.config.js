@@ -5,6 +5,7 @@ export default {
 	  extend: {
 		colors: {
 		  azul: '#0E347D',
+		  'azul-suave': '#0140B9',
 		  accent: '#1666FF',
 		  amarillo: '#FFC700',
 		  'gris-claro': '#313131',
@@ -13,6 +14,13 @@ export default {
 		  cancelar: '#A83434',
 		  aceptar: '#34A853',
 		  gold: '#EFBF04',
+		  naranja: '#D27C2C',
+		  'naranja-claro': '#FFBF65',
+		  rojo: '#A83434',
+		  'rojo-claro': '#E63946',
+		  verde: '#13702C',
+		  'verde-claro': '#50C878',
+
 		},
 		screens: {
 		  xs: '250px',  // Agrega un breakpoint para pantallas más pequeñas

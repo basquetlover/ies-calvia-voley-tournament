@@ -36,6 +36,9 @@ const id_equipo = Astro.url.pathname.split('/').pop();
 let nombre_equipo = 'Sin Nombre';
 let escudo = "";
 let capitan = "";
+let estado = "";
+let aceptado = "";
+let fecha_inscripcion = "";
 
 let id = "";
 let inscrito = "";
@@ -67,7 +70,7 @@ try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: equipoData, error } = await supabaseAdmin
     .from('EquiposSS')
-    .select('nombre_equipo, id, capitan, escudo, inscrito')
+    .select('nombre_equipo, id, capitan, escudo, inscrito, estado, aceptado, fecha_inscripcion')
     .eq('id_equipo', id_equipo)
     .single();
 
@@ -79,6 +82,9 @@ try {
     capitan = equipoData.capitan;
     id = equipoData.id;
     inscrito = equipoData.inscrito;
+    estado = equipoData.estado;
+    aceptado = equipoData.aceptado;
+    fecha_inscripcion = equipoData.fecha_inscripcion;
   }
 
   const { data: UsuarioInscripcion } = await supabaseAdmin
@@ -161,6 +167,12 @@ try {
 
 <LayoutStaff title=`Equip ${nombre_equipo}`>
     <div class="max-w-4xl mx-auto my-10">
+      <div class="flex flex-row items-center place-content-around">
+        <p class={`w-max h-max px-2 py-1 rounded-xl ${estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{estado}</p>
+        <p class={`w-max h-max px-2 py-1 rounded-xl ${aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${aceptado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} `}>{aceptado}</p>
+        <p class="text-blanco bg-gris-claro px-3 py-2 rounded-lg">Data inscripció: {fecha_inscripcion}</p>
+
+      </div>
         <section class="space-y-4" >
             <div>
                 <h2 class="text-amarillo text-2xl">Equip Inscrit Per:</h2>
@@ -275,7 +287,7 @@ try {
           {jugadores.map((jugador, index) => (
             <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
             <div class="flex flex-row gap-2 items-end">
-        <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1}. Jugador</p>
+            <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1}. Jugador</p>
         
         
          {/* Genero */}

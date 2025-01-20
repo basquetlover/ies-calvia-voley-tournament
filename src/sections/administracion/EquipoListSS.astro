@@ -7,11 +7,14 @@ interface Equipo {
   capitan: string;
   entrenador: string;
   escudo: string | null; // o string dependiendo de si puede ser nulo
+  inscrito: number;
+  estado: string | null;
+  aceptado: string | null;
 }
 // Obtener los equipos de la base de datos
 const { data: equipos, error } = await supabaseAdmin
   .from('EquiposSS')
-  .select('id_equipo, nombre_equipo, capitan, entrenador, escudo')
+  .select('id_equipo, nombre_equipo, capitan, entrenador, escudo, inscrito, estado, aceptado')
   .order('id', { ascending: true });
 
 
@@ -22,6 +25,7 @@ if (error) {
 } else {
   console.log(`Se encontraron ${equipos.length} equipos`);
 }
+
 ---
 {!equipos || equipos.length === 0  && (
   <>
@@ -39,27 +43,31 @@ if (error) {
   </div>
   </>
   )}
-<div class="max-w-7xl my-10 w-auto mx-auto flex flex-wrap gap-4 items-center place-items-center">
+<div class="max-w-7xl my-10 w-auto mx-auto flex flex-wrap gap-4 items-center place-content-center">
     {equipos && equipos.map((equipo) => (
-      <a href={`/admin/equiposSS/${equipo.id_equipo}`} class="w-72 h-72 p-4 relative rounded-lg bg-amarillo group transition-all duration-300">
-        <div class="w-full h-full  grid grid-cols-1 grid-rows-[auto_1fr_auto]">
-          <p class="text-azul text-2xl font-semibold" translate="no">{equipo.nombre_equipo}</p>
+      <a href={`/admin/equiposSS/${equipo.id_equipo}`} class="w-80 h-80 p-4 relative rounded-lg bg-azul-suave group transition-all duration-300">
+        <div class="w-full h-full  grid grid-cols-1 grid-rows-[auto_1fr_auto_auto]">
+          <p class="text-blanco text-lg font-semibold" translate="no">{equipo.nombre_equipo}</p>
           <div class="flex items-center justify-center w-full h-full">
             {equipo.escudo && equipo.escudo.trim() !== "" ? (
               <img 
                 transition:name="equipo-escudo" 
-                class="w-40 h-40 rounded-lg" 
+                class="w-36 h-36 rounded-lg" 
                 src={equipo.escudo} 
                 alt={`escudo equipo ${equipo.nombre_equipo}`} 
               />
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-w-40" fill="none" viewBox="0 0 650 650">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-36 h-36" fill="none" viewBox="0 0 650 650">
                 <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
                 <rect width="450" height="20" x="100" y="315" fill="#313131" rx="10"/>
               </svg>
             )}
           </div>
-          <p class="text-azul text-xl"><span class="font-semibold">Capitán:</span> {equipo.capitan}</p>
+          <p class="text-blanco text-base"><span class="font-semibold">Capità:</span> {equipo.capitan}</p>
+          <div class="flex flex-row items-center place-content-around">
+            <p class={`w-max h-max px-2 py-1 rounded-lg ${equipo.estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${equipo.estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${equipo.estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{equipo.estado}</p>
+            <p class={`w-max h-max px-2 py-1 rounded-lg ${equipo.aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${equipo.aceptado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} `}>{equipo.aceptado}</p>
+          </div>
         </div>
         <div class="group-hover:opacity-100 opacity-0 absolute top-0 left-0 flex items-center place-content-center rounded-lg w-full h-full bg-amarillo bg-opacity-60 transition-all duration-300">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-52 h-52" viewBox="0 0 200 200">

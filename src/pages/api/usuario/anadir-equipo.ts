@@ -48,6 +48,21 @@ export const POST: APIRoute = async ({ request }) => {
     // Manejo del caso en que email es undefined o vacío
     console.error("El email no es válido.");
 }
+const { data: existingCoach, error: checkError } = await supabaseAdmin
+  .from("JugadoresSS")
+  .select("id") // Seleccionar un campo mínimo
+  .eq("email", acompañante_email);
+
+  if(existingCoach){
+    return new Response(
+      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'entrenador ja està inscript en un altre Equip</div>`, 
+      { status: 401, headers: { "Content-Type": "text/html" } }
+  );
+  }
+  if(checkError){
+    console.log("Entrenador no inscrito en otro equipo")
+  }
+
   if (!acompañante_genero) {
     return new Response(
       `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Seleccioni el gènere de l'entrenador</div>`, 
@@ -943,6 +958,28 @@ a[x-apple-data-detectors],
          </tr>
        </table></td>
      </tr>
+           <tr>
+        <td align="left" bgcolor="#0E347D" class="esd-structure es-p20t es-p20r es-p20l" style="background-color: #0E347D">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td width="560" align="left" class="esd-container-frame">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation">
+                    <tbody>
+                      <tr>
+                        <td align="left" class="esd-block-text">
+                          <p>
+                            Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web <a target="_blank" href="https://iescalvia-coley.com" style="color: #FFC700"><strong>iescalvia-voley.com</strong></a> utilitzant el compte de correu <strong style="color: #FFC700"><a style="color: #FFC700">${usuario_email}</a></strong>.
+                          </p>
+                          <p>
+                            Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="color: #FFC700">Avís Legal</a> i <a target="_blank" href="https://iescalvia-voley.com/cookies" style="color: #FFC700">Política de Cookies</a>.&nbsp;
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
    </table>
   </div>
  </body>
