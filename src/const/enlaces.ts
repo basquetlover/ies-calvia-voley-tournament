@@ -26,6 +26,10 @@ export const ENLACES = [
     {
         href: '/galeria',
         nombre: 'Galeria',
+    },
+    {
+        href: '/',
+        nombre: 'Inici',
     }
 
 ]
