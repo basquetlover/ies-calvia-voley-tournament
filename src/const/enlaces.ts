@@ -24,7 +24,7 @@ export const ENLACES = [
         nombre: 'Normativa',
     },
     {
-        href: '/galeria',
+        href: '/usuario/galeria',
         nombre: 'Galeria',
     },
     {
