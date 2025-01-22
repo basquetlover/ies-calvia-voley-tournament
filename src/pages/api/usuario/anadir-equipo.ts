@@ -271,25 +271,7 @@ console.log("URL pública del escudo:", publicUrl);
 const fechaActual = new Date();
 
 // Opciones para formatear la fecha
-const opciones = {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-  hour12: false,
-  locale: 'ca-ES' // Establecer el locale a catalán
-};
 
-// Formatear la fecha
-const fechaFormateada = fechaActual.toLocaleString('ca-ES', opciones);
-
-// Reemplazar la coma por "del" y ajustar el formato
-const fechaFinal = fechaFormateada.replace(',', ' del');
-
-// Aquí puedes usar la constante `fechaFinal` para lo que necesites
-const fechaConstante = fechaFinal;
     
   // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
@@ -303,7 +285,7 @@ const fechaConstante = fechaFinal;
           inscrito: usuario_id,
           estado: 'Revisant',
           aceptado: `Llista d'espera`,
-          fechaConstante: fechaConstante,
+          fechaConstante: fechaActual,
         },
     ])
     .select()
