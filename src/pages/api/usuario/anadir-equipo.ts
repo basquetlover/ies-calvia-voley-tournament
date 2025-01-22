@@ -48,20 +48,20 @@ export const POST: APIRoute = async ({ request }) => {
     // Manejo del caso en que email es undefined o vacío
     console.error("El email no es válido.");
 }
-const { data: existingCoach, error: checkError } = await supabaseAdmin
-  .from("JugadoresSS")
-  .select("id") // Seleccionar un campo mínimo
-  .eq("email", acompañante_email);
+//const { data: existingCoach, error: checkError } = await supabaseAdmin
+  //.from("JugadoresSS")
+  //.select("id") // Seleccionar un campo mínimo
+  //.eq("email", acompañante_email);
 
-  if(existingCoach){
-    return new Response(
-      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'entrenador ja està inscript en un altre Equip</div>`, 
-      { status: 401, headers: { "Content-Type": "text/html" } }
-  );
-  }
-  if(checkError){
-    console.log("Entrenador no inscrito en otro equipo")
-  }
+ // if(existingCoach){
+   // return new Response(
+     // `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'entrenador ja està inscript en un altre Equip</div>`, 
+     // { status: 401, headers: { "Content-Type": "text/html" } }
+ // );
+  //}
+ // if(checkError){
+  //  console.log("Entrenador no inscrito en otro equipo")
+//}
 
   if (!acompañante_genero) {
     return new Response(
@@ -267,7 +267,29 @@ if (urlData) {
 // Ahora puedes usar urlData.publicUrl para insertar en la base de datos
 
 console.log("URL pública del escudo:", publicUrl);
-    
+
+const fechaActual = new Date();
+
+// Opciones para formatear la fecha
+const opciones = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+  locale: 'ca-ES' // Establecer el locale a catalán
+};
+
+// Formatear la fecha
+const fechaFormateada = fechaActual.toLocaleString('ca-ES', opciones);
+
+// Reemplazar la coma por "del" y ajustar el formato
+const fechaFinal = fechaFormateada.replace(',', ' del');
+
+// Aquí puedes usar la constante `fechaFinal` para lo que necesites
+const fechaConstante = fechaFinal;
     
   // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
@@ -279,6 +301,9 @@ console.log("URL pública del escudo:", publicUrl);
           entrenador: acompañante,
           escudo: publicUrl,
           inscrito: usuario_id,
+          estado: 'Revisant',
+          aceptado: `Llista d'espera`,
+          fechaConstante: fechaConstante,
         },
     ])
     .select()
