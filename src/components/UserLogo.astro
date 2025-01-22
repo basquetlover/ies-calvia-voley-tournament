@@ -15,8 +15,8 @@ if (nombre) {
     console.log("El nombre está vacío");
 }
 ---
-<div class={`w-full h-full flex items-center place-content-center relative uppercase p-2 text-xl text-blanco rounded-full ${img != "" ? `bg-[url(${img})]` : `${color}` } `}>
-    {img != "" ?
+<div class={`w-full h-full flex items-center place-content-center relative uppercase p-2 text-xl text-blanco rounded-full ${img  ? `bg-[url(${img})]` : `${color}` } `}>
+    {img ?
     (
     <img src={img} class="w-full h-full rounded-full scale-125"/>
     ):(

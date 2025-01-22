@@ -959,12 +959,8 @@ a[x-apple-data-detectors],
                  </tr>
                </table></td>
              </tr>
-           </table></td>
-         </tr>
-       </table></td>
-     </tr>
-           <tr>
-        <td align="left" bgcolor="#0E347D" class="esd-structure es-p20t es-p20r es-p20l" style="background-color: #0E347D">
+             <tr>
+        <td align="left" bgcolor="#0E347D" class="esd-structure es-p20t es-p20r es-p20l" style="background-color: #0E347D,color: #fff">
           <table width="100%" cellpadding="0" cellspacing="0">
             <tbody>
               <tr>
@@ -985,6 +981,12 @@ a[x-apple-data-detectors],
                   </table>
                 </td>
               </tr>
+           </table></td>
+         </tr>
+         
+       </table></td>
+     </tr>
+           
    </table>
   </div>
  </body>
