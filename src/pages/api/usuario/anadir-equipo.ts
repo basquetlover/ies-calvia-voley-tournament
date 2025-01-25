@@ -14,6 +14,16 @@ export const POST: APIRoute = async ({ request }) => {
   const usuario_curso = formData.get("usuario_curso")?.toString().trim() || "";
   const usuario_id = formData.get("usuario_id")?.toString().trim() || "";
   const capitan = formData.get("capitan")?.toString().trim();
+  const condiciones = formData.get("condiciones")?.toString().trim();
+
+
+  if(!condiciones){
+    console.log(condiciones)
+    return new Response(
+      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">És necessari acceptar les condicions d'inscripció, l'avís legal i la política de privacitat per continuar amb el procés.</div>`, 
+      { status: 401, headers: { "Content-Type": "text/html" } }
+  );
+  }
 
   let publicUrl = "https://iescalvia-voley.com/img/escudos/sin-escudo.png";
   let acompañante_nombre = "";
@@ -201,28 +211,28 @@ export const POST: APIRoute = async ({ request }) => {
   }
   
 
-//   // Verificar si el equipo ya existe en la tabla 'EquiposSS'
-//   const { data: existingEquipo, error: checkError } = await supabaseAdmin
-//   .from("EquiposSS")
-//   .select("id") // Seleccionar un campo mínimo
-//   .eq("nombre_equipo", nombre_equipo);
+  // Verificar si el equipo ya existe en la tabla 'EquiposSS'
+  const { data: existingEquipo, error: checkError } = await supabaseAdmin
+  .from("EquiposSS")
+  .select("id") // Seleccionar un campo mínimo
+  .eq("nombre_equipo", nombre_equipo);
 
-// if (checkError) {
-//   console.error("Error al verificar la existencia:", checkError.message);
-//   return new Response(
-//     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Error: Torna-ho a intentar més tard.</div>`, 
-//     { status: 401, headers: { "Content-Type": "text/html" } }
-// );
-// }
+if (checkError) {
+  console.error("Error al verificar la existencia:", checkError.message);
+  return new Response(
+    `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Error: Torna-ho a intentar més tard.</div>`, 
+    { status: 401, headers: { "Content-Type": "text/html" } }
+);
+}
 
 
-// if (existingEquipo && existingEquipo.length > 0) {
-//   console.log("El equipo ya esta inscrito.")
-//   return new Response(
-//     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Ja existeix un equip amb aquest nom</div>`, 
-//     { status: 401, headers: { "Content-Type": "text/html" } }
-// );
-// }
+if (existingEquipo && existingEquipo.length > 0) {
+  console.log("El equipo ya esta inscrito.")
+  return new Response(
+    `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Ja existeix un equip amb aquest nom</div>`, 
+    { status: 401, headers: { "Content-Type": "text/html" } }
+);
+}
    
 async function uploadFile(file: File, id_equipo: string) {
   // Extraer la extensión del archivo
@@ -268,7 +278,14 @@ if (urlData) {
 
 console.log("URL pública del escudo:", publicUrl);
 
-const fechaActual = new Date();
+const getCurrentDateInCatalan = () => {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = new Date();
+  return new Intl.DateTimeFormat('ca-ES', options).format(date);
+};
+
+const currentDate = getCurrentDateInCatalan();
+console.log(currentDate);
 
     
   // Insertar los datos en la tabla 'administradores'
@@ -283,7 +300,7 @@ const fechaActual = new Date();
           inscrito: usuario_id,
           estado: 'Revisant',
           aceptado: `Llista d'espera`,
-          fecha_inscripcion: fechaActual,
+          fecha_inscripcion: currentDate,
         },
     ])
     .select()
@@ -942,54 +959,73 @@ a[x-apple-data-detectors],
            </table></td>
          </tr>
        </table>
-       <table cellspacing="0" cellpadding="0" align="center" class="es-footer" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important;background-color:transparent;background-repeat:repeat;background-position:center top">
-         <tr>
-          <td align="center" style="padding:0;Margin:0">
-           <table cellspacing="0" cellpadding="0" align="center" class="es-footer-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#333333;width:600px">
-             <tr>
-              <td align="left" bgcolor="#1B1D20" style="padding:20px;Margin:0;background-color:#1B1D20">
-               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                 <tr>
-                  <td align="left" style="padding:0;Margin:0;width:560px">
-                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                     <tr>
-                      <td align="center" style="padding:0;Margin:0;font-size:0"><img src="https://epqqhnq.stripocdn.email/content/guids/CABINET_0cb0af73485e28aee9f8c657f4585c662890522ff24809cfe8f5a3e6e5f27897/images/group_246.png" alt="" width="560" class="adapt-img" height="21" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></td>
-                     </tr>
-                   </table></td>
-                 </tr>
-               </table></td>
-             </tr>
-             <tr>
-        <td align="left" bgcolor="#0E347D" class="esd-structure es-p20t es-p20r es-p20l" style="background-color: #0E347D,color: #fff">
-          <table width="100%" cellpadding="0" cellspacing="0">
-            <tbody>
-              <tr>
-                <td width="560" align="left" class="esd-container-frame">
-                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation">
-                    <tbody>
-                      <tr>
-                        <td align="left" class="esd-block-text">
-                          <p>
-                            Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web <a target="_blank" href="https://iescalvia-coley.com" style="color: #FFC700"><strong>iescalvia-voley.com</strong></a> utilitzant el compte de correu <strong style="color: #FFC700"><a style="color: #FFC700">${usuario_email}</a></strong>.
-                          </p>
-                          <p>
-                            Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="color: #FFC700">Avís Legal</a> i <a target="_blank" href="https://iescalvia-voley.com/cookies" style="color: #FFC700">Política de Cookies</a>.&nbsp;
-                          </p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-           </table></td>
-         </tr>
-         
-       </table></td>
-     </tr>
-           
-   </table>
-  </div>
- </body>
+        <table cellspacing="0" cellpadding="0" align="center" class="es-footer">
+                <tbody>
+                  <tr>
+                    <td align="center" class="esd-stripe">
+                      <table cellspacing="0" cellpadding="0" width="600" align="center" class="es-footer-body">
+                        <tbody>
+                          <tr>
+                            <td align="left" bgcolor="#1B1D20" class="esd-structure es-p20" style="background-color:#1B1D20">
+                              <table width="100%" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                  <tr>
+                                    <td width="560" align="left" class="esd-container-frame">
+                                      <table cellpadding="0" cellspacing="0" width="100%" role="presentation">
+                                        <tbody>
+                                          <tr>
+                                            <td align="center" class="esd-block-image" style="font-size:0">
+                                              <a target="_blank">
+                                                <img width="560" src="https://epqqhnq.stripocdn.email/content/guids/CABINET_0cb0af73485e28aee9f8c657f4585c662890522ff24809cfe8f5a3e6e5f27897/images/group_246.png" alt="" class="adapt-img">
+                                              </a>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="left" bgcolor="#0E347D" class="esd-structure es-p20t es-p20r es-p20l" style="background-color:#0E347D">
+                              <table cellspacing="0" width="100%" cellpadding="0">
+                                <tbody>
+                                  <tr>
+                                    <td align="left" width="560" class="esd-container-frame">
+                                      <table cellpadding="0" cellspacing="0" width="100%" role="presentation">
+                                        <tbody>
+                                          <tr>
+                                            <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">
+                                              <p style="color:#FFFFFF">
+                                                Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web <a target="_blank" href="https://iescalvia-coley.com" style="color:#FFC700"><strong>iescalvia-voley.com</strong></a> utilitzant el compte de correu <strong style="color:#FFC700"><a style="color:#FFC700">${usuario_email}</a></strong>.
+                                              </p>
+                                              <p style="color:#FFFFFF">
+                                                Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="color:#FFC700">Avís Legal</a> i <a target="_blank" href="https://iescalvia-voley.com/cookies" style="color:#FFC700">Política de Cookies</a>.&nbsp;
+                                              </p>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
 </html>
 `;
 try {
