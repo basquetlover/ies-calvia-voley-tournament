@@ -27,8 +27,20 @@ try {
     console.error("Error al obtener acceso:", err);
 }
 
+const usuario = await verificarSesion(Astro.request);
+const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango")
+            .eq("user_email", usuario.email)
+            .single();
+
+
 // Verifica si el usuario tiene acceso a la página actual
-const userHasAccess = accessibleBlocks.includes(pathname);
+let userHasAccess = accessibleBlocks.includes(pathname);
+
+if(adminData){
+    userHasAccess = true;
+}
 ---
 
     <>
