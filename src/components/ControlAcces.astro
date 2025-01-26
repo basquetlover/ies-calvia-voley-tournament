@@ -26,21 +26,31 @@ try {
 } catch (err) {
     console.error("Error al obtener acceso:", err);
 }
-
+// Verifica si el usuario tiene acceso a la página actual
+let userHasAccess = accessibleBlocks.includes(pathname);
 const usuario = await verificarSesion(Astro.request);
-const { data: adminData, error } = await supabaseAdmin
+if(usuario){
+    const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
             .select("rango")
             .eq("user_email", usuario.email)
             .single();
-
-
-// Verifica si el usuario tiene acceso a la página actual
-let userHasAccess = accessibleBlocks.includes(pathname);
+if(error){
+    console.log(
+        "Usuario sin cuenta de admin"
+    )
+}
 
 if(adminData){
     userHasAccess = true;
 }
+}
+
+
+
+
+
+
 ---
 
     <>
