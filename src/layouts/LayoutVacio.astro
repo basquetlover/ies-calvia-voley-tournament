@@ -77,7 +77,15 @@ import Analytics from '@vercel/analytics/astro'
 		<meta name="twitter:image" content={`${new URL(randomImage || '/img/fondo-enlaces.png', Astro.site)}`} />
 		
 		<SchemaMarkup />
+			 <!-- Google tag (gtag.js) -->
+			 <script type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-W6R732RQ9Q"></script>
+			 <script type="text/partytown">
+				 window.dataLayer = window.dataLayer || [];
+				 function gtag(){dataLayer.push(arguments);}
+				 gtag('js', new Date());
 		
+				 gtag('config', 'G-W6R732RQ9Q');
+			 </script>
 	</head>
 	
 

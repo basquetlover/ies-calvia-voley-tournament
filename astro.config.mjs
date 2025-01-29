@@ -5,6 +5,8 @@ import tailwind from '@astrojs/tailwind';
 
 import vercel from '@astrojs/vercel/serverless';
 
+import partytown from '@astrojs/partytown'
+
 // import db from '@astrojs/db';
 
 // https://astro.build/config
@@ -12,8 +14,15 @@ export default defineConfig({
   devToolbar: {
     enabled: false
   },
-  site: 'https://ies-calvia-voley-tournament.vercel.app/',
-  integrations: [tailwind()],
+  // site: 'https://ies-calvia-voley-tournament.vercel.app/',
+  site: 'https://iescalvia-voley.com',
+  integrations: [tailwind(),
+    partytown({
+        config: {
+          forward: ["dataLayer.push"],
+        },
+    }),
+  ],
   output: 'server',
   adapter: vercel(),
   vite: {
