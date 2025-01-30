@@ -60,7 +60,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
           .eq('id', Usuarios.id)
           .select();
   
-          console.log("Lo que va a la db", session_id)
+          
           id_session = session_id;
       }
   
@@ -70,7 +70,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
       // Si la contraseña es válida, establecer la cookie de sesión
   
       if(id_session !== ""){
-          console.log("Lo que va a la cookie", id_session)
+         
           cookies.set('session_id', id_session, { path: '/' });
       }
         

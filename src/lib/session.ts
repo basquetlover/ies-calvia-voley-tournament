@@ -15,7 +15,6 @@ export async function verificarSesion(request: Request) {
 
   const sessionId = cookies.get('session_id');
 
-  console.log(sessionId)
   
   if (!sessionId) {
     return null; // No hay sesión
@@ -32,7 +31,7 @@ export async function verificarSesion(request: Request) {
     console.log(error)
     return null; // Sesión no válida
   }
-  console.log(usuario)
+ 
 
   return usuario; // Devuelve el usuario si la sesión es válida
 }
