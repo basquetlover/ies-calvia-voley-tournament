@@ -13,8 +13,10 @@ export async function verificarSesion(request: Request) {
     });
   }
 
-  const sessionId = cookies.get('session');
+  const sessionId = cookies.get('session_id');
 
+  console.log(sessionId)
+  
   if (!sessionId) {
     return null; // No hay sesión
   }
@@ -23,12 +25,17 @@ export async function verificarSesion(request: Request) {
   const { data: usuario, error } = await supabaseAdmin
     .from('Usuarios')
     .select('*')
-    .eq('id', sessionId)
+    .eq('session_id', sessionId)
     .single();
 
   if (error || !usuario) {
+    console.log(error)
     return null; // Sesión no válida
   }
+  console.log(usuario)
 
   return usuario; // Devuelve el usuario si la sesión es válida
 }
+
+// U2FsdGVkX1%2FYrCi4JtdxDACrmyTENAXEV23R5do0zoI%3D
+//U2FsdGVkX1/YrCi4JtdxDACrmyTENAXEV23R5do0zoI=

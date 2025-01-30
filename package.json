@@ -1,7 +1,7 @@
 {
   "name": "ies-calvia-voley-tournament",
   "type": "module",
-  "version": "1.4.0",
+  "version": "2.4.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

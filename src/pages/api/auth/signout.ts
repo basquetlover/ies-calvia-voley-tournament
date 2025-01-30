@@ -4,9 +4,9 @@ import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async ({ cookies, redirect }) => {
   // Elimina cookies si existen
-  const user_session = cookies.get("session");
+  const user_session = cookies.get("session_id");
   if(user_session){
-    cookies.delete('session', { path: '/' });
+    cookies.delete('session_id', { path: '/' });
   }
   
   const accessToken = cookies.get("sb-access-token");

@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import bcrypt from 'bcrypt';
 import CryptoJS from 'crypto-js';
 import { supabase, supabaseAdmin } from "../../../lib/supabase"; // Asegúrate de que esto apunte a tu configuración de Supabase
+import { setSourceMapRange } from "typescript";
 
 interface Usuario {
     id: string;
@@ -17,7 +18,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
         const formData = await request.formData();
     const nombre = formData.get("nombre")?.toString();
     const password = formData.get("password")?.toString();
-
+    let id_session = "";
      
 
     // Validar que se proporcionen nombre y contraseña
@@ -61,13 +62,45 @@ const secretKey = "8a0a6b86ab0faebd915652fb11a5b4131e76849c7403d93756f677a4b1a85
 function encrypt(text: string) {
     return CryptoJS.AES.encrypt(text, secretKey).toString();
   }
+
+function encryptAlfaNum(text: string) {
+    // Encriptar el texto
+    const encrypted = CryptoJS.AES.encrypt(text, secretKey).toString();
+
+    // Codificar en Base64
+    const base64Encoded = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encrypted));
+
+    // Reemplazar caracteres no alfanuméricos
+    const alphanumeric = base64Encoded.replace(/[^a-zA-Z0-9]/g, ''); // Elimina caracteres no alfanuméricos
+
+    return alphanumeric;
+}
 const encrypted = encrypt(password);
 
 // Ejemplo de uso
 
+    if(!Usuarios.session_id){
+        const session_id = encryptAlfaNum(nombre);
+        const { data, error } = await supabaseAdmin
+        .from('Usuarios')
+        .update({ session_id: session_id })
+        .eq('id', Usuarios.id)
+        .select();
 
+        console.log("Lo que va a la db", session_id)
+        id_session = session_id;
+    }
+
+    if(Usuarios.session_id){
+        id_session = Usuarios.session_id
+    }
     // Si la contraseña es válida, establecer la cookie de sesión
-    cookies.set('session', Usuarios.id, { httpOnly: true, path: '/' });
+
+    if(id_session !== ""){
+        console.log("Lo que va a la cookie", id_session)
+        cookies.set('session_id', id_session, { path: '/', httpOnly: true, secure: true });
+    }
+    
     
     function obtenerColor() {
         const opciones = [
