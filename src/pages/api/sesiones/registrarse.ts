@@ -12,6 +12,45 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const password = formData.get("password")?.toString();
     const curso = formData.get("curso")?.toString();
 
+    if (nombre === "") {
+      console.log("Es necesario un nombre de usuario");
+      return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Es requereix un nom d'usuari</div>`, 
+        { status: 400, headers: { "Content-Type": "text/html" } }
+      );
+  }
+
+  if (email === "" || !email) {
+      console.log("Es necesario un email de usuario");
+      return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">És requereix un email de contacte</div>`, 
+        { status: 400, headers: { "Content-Type": "text/html" } }
+      );
+  }
+  // Validar el formato del email
+  const emailPattern = /^(.*@iescalvia.com|.*@a\.iescalvia.com)$/;
+  if (!emailPattern.test(email)) {
+      console.log("El email debe ser del centro: @iescalvia.com o @a.iescalvia.com");
+      return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'email ha de ser del centre @iescalvia o @a.iescalvia</div>`, 
+        { status: 400, headers: { "Content-Type": "text/html" } }
+      );
+  }
+  console.log(password)
+  if (password === "") {
+      console.log("Es necesario una contraseña de usuario");
+      return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Es requereix una contrasenya</div>`, 
+        { status: 400, headers: { "Content-Type": "text/html" } }
+      );
+  }
+  if (curso === "" || !curso) {
+      console.log("Es necesario un curso de usuario");
+      return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Es requereix un curs seleccionat</div>`, 
+        { status: 400, headers: { "Content-Type": "text/html" } }
+      );
+  }
     if (!nombre || !email || !password || !curso) {
       return new Response("Correo electrónico y contraseña obligatorios", { status: 400 });
     }
@@ -24,15 +63,42 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     // Esperar el resultado de hashPassword
     const hashedPassword = await hashPassword(password);
 
+    let { data: Usuarios, error } = await supabaseAdmin
+    .from('Usuarios')
+    .select('nombre,email')
+
+    if (Usuarios) {
+      // Verificar si ya existe un usuario con el mismo nombre
+      const userExistsByName = Usuarios.some(usuario => usuario.nombre === nombre);
       
-    const { data, error } = await supabaseAdmin
+      if (userExistsByName) {
+        return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Ja existeix un usuari amb aquest nom</div>`, 
+          { status: 400, headers: { "Content-Type": "text/html" } }
+        );
+      }
+    
+      // Verificar si ya existe un usuario con el mismo email
+      const userExistsByEmail = Usuarios.some(usuario => usuario.email === email);
+      
+      if (userExistsByEmail) {
+        return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Ja existeix un usuari amb aquest email</div>`, 
+          { status: 400, headers: { "Content-Type": "text/html" } }
+        );
+      }
+    }
+
+
+      
+    const { data, error: ERRenviar } = await supabaseAdmin
     .from('Usuarios')
     .insert([
       { nombre: nombre, email: email, contraseña: hashedPassword, curso: curso },
     ])
 
-    if (error) {
-      return new Response(error.message, { status: 500 });
+    if (ERRenviar) {
+      return new Response(ERRenviar.message, { status: 500 });
     }
 
     return redirect("/");
