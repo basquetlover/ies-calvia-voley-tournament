@@ -92,7 +92,28 @@ export const CURSO_2B = [
 
 export const CURSO_FP = [
     {
-        label: "FP",
+        label: "1r FPB Cuina i restauració",
+    },
+    {
+        label: "2n FPB Cuina i restauració",
+    },
+    {
+        label: "1r GM Cuina i gastronomia",
+    },
+    {
+        label: "2n GM Cuina i gastronomia",
+    },
+    {
+        label: "1r GM Serveis en restauració",
+    },
+    {
+        label: "2n GM Serveis en restauració",
+    },
+    {
+        label: "1r GM Gestió administrativa",
+    },
+    {
+        label: "2n GM Gestió administrativa",
     }
 ]
 export const CURSO_P = [
