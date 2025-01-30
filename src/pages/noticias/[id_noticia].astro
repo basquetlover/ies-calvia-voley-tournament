@@ -97,8 +97,8 @@ try {
               <p class="border-none ml-2 text-2xl text-amarillo bg-transparent rounded py-2 px-3 w-auto">{fecha}</p>
           </div>
       </div>
-      <div class="max-w-3xl mx-auto flex flex-row text-lg text-blanco gap-2" >
-        
+      <div class="max-w-3xl mx-auto flex flex-row text-lg mt-5 text-blanco gap-2" >
+        <textarea disabled class="bg-gris text-blanco">{cuerpo}</textarea>
       </div>
 
       
@@ -129,15 +129,10 @@ try {
         top: -20px;
         left: 20px;
     }
-    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
-
-pre{
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: <weight>;
-  font-style: normal;
-}
+    textarea{
+      field-sizing: content;
+      resize: none;
+	}
 
 .error {
    background-color: rgba(168, 52, 52, 0.6);
