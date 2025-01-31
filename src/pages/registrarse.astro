@@ -1,6 +1,6 @@
 ---
 import ControlAcces from "@components/ControlAcces.astro";
-import {CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
+import {CURSO_1E, CURSO_2E, CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
 import LayoutMenu from "@layouts/LayoutMenu.astro";
 import LayoutVacio from "@layouts/LayoutVacio.astro";
 
@@ -151,6 +151,18 @@ import LayoutVacio from "@layouts/LayoutVacio.astro";
                                 class="px-3 py-2 w-64 h-12 bg-gris rounded-full text-base text-blanco border-none"
                                     >
                                     <option value="" disabled selected>Selecciona un curso</option>
+                                    {CURSO_1E.map(({ label }) => (
+                                        <option value={label}>
+                                        {label}
+                                        </option>
+                                    ))}
+                                    <hr class="border-accent">
+                                    {CURSO_2E.map(({ label }) => (
+                                        <option value={label}>
+                                        {label}
+                                        </option>
+                                    ))}
+                                    <hr class="border-accent">
                                     {CURSO_3E.map(({ label }) => (
                                         <option value={label}>
                                         {label}

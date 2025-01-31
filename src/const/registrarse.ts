@@ -53,7 +53,56 @@ export const CURSO_4E = [
                 label: "4t ESO H",
             },
     ]
+    export const CURSO_1E = [
+        {
+            label: "1r ESO A",
+        },
+        {
+            label: "1r ESO B",
+        },
+        {
+            label: "1r ESO C",
+        },
+        {
+            label: "1r ESO D",
+        },
+        {
+            label: "1r ESO E",
+        },
+        {
+            label: "1r ESO F",
+        },
+        {
+            label: "1r ESO G",
+        },
+]
 
+export const CURSO_2E = [
+    {
+        label: "2n ESO A",
+    },
+    {
+        label: "2n ESO B",
+    },
+    {
+        label: "2n ESO C",
+    },
+    {
+        label: "2n ESO D",
+    },
+    {
+        label: "2n ESO E",
+    },
+    {
+        label: "2n ESO F",
+    },
+    {
+        label: "2n ESO G",
+    },
+    {
+        label: "2n ESO H",
+    },
+]
 export const CURSO_1B = [
     {
         label: "1r BAT A",
