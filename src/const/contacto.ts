@@ -46,5 +46,37 @@ export const CONTACTO = [
         // email: 'jgonzalez@iescalvia.com',
         email: 'voley_tournament@iescalvia.com',
         descripcion: 'En Juanjo és responsable de assegurar-se que tot el material necessari estigui a punt. Des de les xarxes fins a les pilotes, ell s\'assegura que els partits es juguin sense problemes.',
+    },
+    {
+        nombre: 'Pere Alemany Tomàs',
+        tooltip: 'Pere',
+        cargo: 'Desenvolupador Web',
+        // email: 'jgonzalez@iescalvia.com',
+        email: 'voley_tournament@iescalvia.com',
+        descripcion: `En Pere és l'encarregat del desenvolupament i manteniment de la web del torneig, assegurant que tota la informació estigui disponible i actualitzada. És responsable de la implementació de noves funcionalitats, la resolució de problemes tècnics i l'optimització del lloc per oferir una experiència fluida als usuaris.`,
+    },
+    {
+        nombre: 'Estefania Escamilla Garcia',
+        tooltip: 'Estefania',
+        cargo: 'Responsable de la Playlist',
+        // email: 'jgonzalez@iescalvia.com',
+        email: 'voley_tournament@iescalvia.com',
+        descripcion: `Na Estefania és l'encarregada de seleccionar i gestionar la playlist oficial del torneig, creant l’ambient perfecte perquè jugadors i espectadors gaudeixin de l’experiència. S’assegura que la música motivi els equips abans, durant i després dels partits, adaptant la selecció de cançons segons el moment de la competició. Si tens alguna suggerència musical, pots contactar amb ella!`,
+    },
+    {
+        nombre: 'Miquel Sureda Rossello',
+        tooltip: 'Miquel',
+        cargo: 'Responsable de Fotografia',
+        // email: 'jgonzalez@iescalvia.com',
+        email: 'voley_tournament@iescalvia.com',
+        descripcion: `En Miquel s'encarrega d'immortalitzar els millors moments del torneig. Des de les jugades més espectaculars fins a l'ambient a les grades, captura cada detall perquè els participants tinguin records visuals de l'esdeveniment.`,
+    },
+    {
+        nombre: 'Marina Piña Muñoz',
+        tooltip: 'Marina',
+        cargo: `Responsable d'Oficials de Taula`,
+        // email: 'jgonzalez@iescalvia.com',
+        email: 'voley_tournament@iescalvia.com',
+        descripcion: `Na Marina és l’encarregada de portar el control oficial dels partits des de la taula d’anotació. Registra els punts, controla el temps de joc i assegura que totes les incidències siguin anotades correctament en l’acta del partit. També col·labora amb els àrbitres per garantir que les normatives es compleixin i que els resultats siguin registrats de manera precisa.`,
     }
 ];
