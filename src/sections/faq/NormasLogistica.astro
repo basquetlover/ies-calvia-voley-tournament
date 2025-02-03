@@ -1,0 +1,33 @@
+---
+import DescripcionSection from "@components/DescripcionSection.astro";
+
+const CONTENIDO = [
+    {
+        pregunta: `Què passa si un equip no es presenta a un partit?`,
+        respuesta: `Si un equip no es presenta al seu partit sense una justificació prèvia, es considerarà una falta de compromís amb el torneig i s’aplicaran mesures disciplinàries. Els jugadors d’aquest equip no podran inscriure’s en el pròxim torneig, ja que la seva absència afecta el desenvolupament de la competició i perjudica tant l’organització com els altres equips participants.`,
+        respuesta2: `Per evitar aquesta situació, es recomana als equips que es coordinin correctament i, en cas de no poder jugar un partit per una causa justificada, avisin amb antelació a l’organització. Si es presenta una justificació vàlida, l’organització valorarà la situació i podrà decidir si aplica o no la sanció.`,
+    },
+    {
+        pregunta: `Quant duren els partits i quants sets es juguen?`,
+        respuesta: `Els partits tenen una durada aproximada de 20 minuts. Es juguen a 2 sets de 10 punts cadascun, i en cas d’empat en els sets, es disputa un tercer set extra, que es juga a 7 punts. Aquesta estructura permet que els partits siguin dinàmics i intensos, mantenint l’interès dels participants i espectadors al llarg de la competició.`,
+        respuesta2: `És important tenir en compte que la durada dels partits pot variar lleugerament en funció de la dinàmica del torneig o de les condicions específiques de cada edició, però en general se seguirà aquest format.`,
+    },
+    {
+        pregunta: `Es permet l’ús de genolleres i altres equipaments de protecció?`,
+        respuesta: `L'ús de genolleres i altres equipaments de protecció és totalment permès i fins i tot recomanat. La seguretat i benestar dels participants és una de les nostres prioritats, i volem que tots els jugadors se sentin còmodes i protegits durant els partits. Per tant, es poden utilitzar genolleres, canelleres, tires de suport o qualsevol altre material de protecció que considerin necessari.`,
+        respuesta2: `Tot i això, l’organització no es farà responsable de possibles pèrdues o robatoris d’equipament personal durant el torneig. Es recomana que els participants estiguin atents als seus objectes personals en tot moment.`,
+    }
+]
+---
+<DescripcionSection>
+    <h2 class="text-4xl text-accent font-bold text-start">Normes i logística</h2>
+    {
+    CONTENIDO.map(({pregunta, respuesta, respuesta2}) => (
+        <details class="bg-gris-claro rounded-lg text-blanco p-3 cursor-pointer my-3 group">
+            <summary class="text-xl font-semibold group-open:text-amarillo transition-all duration-300">{pregunta}</summary>
+            <p>{respuesta}</p>
+            <p class="mt-2">{respuesta2}</p>
+        </details>
+    ))
+    }
+</DescripcionSection>

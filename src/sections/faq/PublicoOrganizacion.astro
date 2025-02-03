@@ -1,0 +1,38 @@
+---
+import DescripcionSection from "@components/DescripcionSection.astro";
+
+const CONTENIDO = [
+    {
+        pregunta: `Poden venir espectadors a veure els partits?`,
+        respuesta: `Inicialment, l’accés al torneig està restringit només als participants, ja que l’espai i els recursos disponibles són limitats. No obstant això, els alumnes que vulguin assistir com a espectadors poden fer-ho, sempre que trobin un professor disposat a passar tot el dia amb ells al pavelló. Per tal de garantir la supervisió i el bon funcionament de l’activitat, es recomana que els alumnes organitzin grups i es coordinin amb els professors.`,
+        respuesta2: `Aquesta mesura ajuda a mantenir l’ordre i assegurar que els espectadors no interfereixin amb el desenvolupament dels partits. Si tens dubtes sobre el procés o necessites més informació, pots contactar amb l’organització per rebre orientació.`,
+    },
+    {
+        pregunta: `Hi haurà premis per als guanyadors?`,
+        respuesta: `L’organització està treballant per assegurar que els premis per als guanyadors millorin cada any. En l’edició actual, els equips guanyadors rebran una medalla commemorativa com a reconeixement de la seva victòria en el torneig. Tot i això, gràcies a la col·laboració dels participants i l’esforç de l’equip organitzador, l’objectiu és ampliar els premis en futures edicions, oferint més obsequis i reconeixements per als millors equips.`,
+        respuesta2: `L’organització està oberta a suggeriments i idees per millorar l’experiència de tots els participants, incloent-hi els premis. Així que, si tens alguna proposta, no dubtis a compartir-la!`,
+    },
+    {
+        pregunta: `On puc consultar els resultats i classificacions en directe?`,
+        respuesta: `Pots consultar els resultats i les classificacions en directe a l'apartat de "Classificació" de la web del torneig. En aquesta secció, trobaràs actualitzacions en temps real dels partits i els resultats de tots els equips participants, així com la classificació actualitzada a mesura que avanci la competició. Això permetrà als participants i espectadors seguir el desenvolupament dels partits i veure quins equips es mantenen al capdavant.`,
+        respuesta2: `A més, aquesta secció també podrà incloure informació sobre el calendari dels pròxims partits i qualsevol modificació de l’horari o l’ordre dels partits.`,
+    },
+    {
+        pregunta: `A qui puc contactar si tinc dubtes o problemes durant el torneig?`,
+        respuesta: `Si tens dubtes o problemes durant el torneig, el staff estarà disponible per ajudar-te. A les instal·lacions del pavelló, el personal de l’organització estarà identificat amb camisetes especials de l’equip organitzador. A més, al centre de les pistes trobaràs una taula d’atenció on es trobaran membres del staff per resoldre qualsevol consulta o incidència.`,
+        respuesta2: `No dubtis a apropar-te a qualsevol membre de l’organització per rebre assistència en el moment que ho necessitis. L’objectiu és garantir que el torneig transcorri de la millor manera possible per a tots els participants.`,
+    }
+]
+---
+<DescripcionSection>
+    <h2 class="text-4xl text-accent font-bold text-start">Públic i organització</h2>
+    {
+    CONTENIDO.map(({pregunta, respuesta, respuesta2}) => (
+        <details class="bg-gris-claro rounded-lg text-blanco p-3 cursor-pointer my-3 group">
+            <summary class="text-xl font-semibold group-open:text-amarillo transition-all duration-300">{pregunta}</summary>
+            <p>{respuesta}</p>
+            <p class="mt-2">{respuesta2}</p>
+        </details>
+    ))
+    }
+</DescripcionSection>

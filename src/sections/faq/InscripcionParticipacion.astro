@@ -1,0 +1,38 @@
+---
+import DescripcionSection from "@components/DescripcionSection.astro";
+
+const CONTENIDO = [
+    {
+        pregunta: `Com puc inscriure el meu equip al torneig?`,
+        respuesta: `A diferència de l’edició anterior, en aquesta ocasió no utilitzarem un formulari de Google per a les inscripcions. En el seu lloc, el nostre equip de desenvolupadors ha creat un nou apartat dins la web del torneig, dissenyat per facilitar el procés d’inscripció tant per als jugadors com per a l’equip organitzador.`,
+        respuesta2: `Aquest nou sistema permet registrar equips de manera més eficient, assegurant que tota la informació necessària es reculli correctament i es gestioni de manera òptima. Per inscriure el teu equip, simplement accedeix a la secció corresponent de la web i segueix els passos indicats. En cas de dubtes o problemes durant el procés, pots contactar amb l’organització per rebre assistència.`,
+    },
+    {
+        pregunta: `Hi ha algun límit de jugadors per equip?`,
+        respuesta: `Sí, hi ha un límit de jugadors per equip. Cada equip ha de tenir un mínim de 6 jugadors i un màxim de 9 jugadors. A més, és obligatori que com a mínim 2 dels jugadors siguin nines. Aquesta norma busca fomentar la participació mixta i equilibrada dins del torneig.`,
+        respuesta2: `A més, els equips tenen l’opció d’afegir un entrenador, que podrà ajudar en l’organització i l’estratègia de l’equip, però que no podrà jugar ni comptarà per al requisit de tenir dues nines a l’equip. Aquesta figura pot ser qualsevol alumne del centre que vulgui assumir aquest rol de suport.`,
+    },
+    {
+        pregunta: `És obligatori que tots els jugadors siguin alumnes de l’institut?`,
+        respuesta: `Sí, és obligatori que tots els jugadors siguin alumnes de l’institut. Com que el torneig està organitzat pel centre educatiu, només poden participar estudiants matriculats des de 3r d’ESO fins a 2n de Batxillerat i Formació Professional. Aquesta norma assegura que el torneig es mantingui com una competició interna i fomenta la participació dels alumnes dins de l’ambient escolar.`,
+        respuesta2: `L’organització podrà verificar que tots els jugadors compleixen aquest requisit durant el procés d’inscripció. En cas que es detecti que un equip ha inscrit algun jugador extern, aquest podrà ser desqualificat.`,
+    },
+    {
+        pregunta: `Es poden fer canvis a la plantilla de l’equip després de la inscripció?`,
+        respuesta: `Els canvis a la plantilla de l’equip es poden realitzar a través de la web, mitjançant el panell d’usuari personalitzat. El termini per realitzar modificacions va des de la inscripció de l’equip fins dues o tres setmanes abans de la data del torneig. Durant aquest període, els canvis només seran acceptats per causes justificables, com lesions o altres circumstàncies imprevistes.`,
+        respuesta2: `A partir d’aquest termini, no es permetran més canvis a la plantilla, de manera que l’equip haurà de competir amb els jugadors inicialment registrats. Per a qualsevol sol·licitud de canvi, es recomana contactar amb l’organització per revisar la situació de manera individualitzada.`,
+    }
+]
+---
+<DescripcionSection>
+    <h2 class="text-4xl text-accent font-bold text-start">Inscripció i participació</h2>
+    {
+    CONTENIDO.map(({pregunta, respuesta, respuesta2}) => (
+        <details class="bg-gris-claro rounded-lg text-blanco p-3 cursor-pointer my-3 group">
+            <summary class="text-xl font-semibold group-open:text-amarillo transition-all duration-300">{pregunta}</summary>
+            <p>{respuesta}</p>
+            <p class="mt-2">{respuesta2}</p>
+        </details>
+    ))
+    }
+</DescripcionSection>

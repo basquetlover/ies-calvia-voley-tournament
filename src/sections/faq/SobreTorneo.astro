@@ -1,0 +1,40 @@
+---
+import DescripcionSection from "@components/DescripcionSection.astro";
+
+const CONTENIDO = [
+    {
+        pregunta: `Quan i on se celebra el torneig?`,
+        respuesta: `El torneig se celebra l'últim dia abans de començar les vacances escolars. L’edició anterior es va dur a terme just abans de les vacances de Nadal, el 20 de desembre de 2024. La data exacta de cada edició pot variar lleugerament, per la qual cosa es recomana estar atent a les comunicacions oficials del torneig per conèixer la data definitiva.`,
+    },
+    {
+        pregunta: `Qui pot participar en el torneig?`,
+        respuesta: `El torneig està obert a la participació de tots els grups dels cursos compresos entre 3r d’ESO i 2n de Batxillerat, així com als alumnes de Formació Professional i al professorat. Això permet que tant estudiants com professors puguin gaudir de l’experiència esportiva i competir en un ambient lúdic i de companyonia. Cada grup o col·lectiu té l’oportunitat de formar el seu propi equip i enfrontar-se a altres en un torneig que fomenta la diversió, l'esportivitat i la convivència dins de l’institut.`,
+    },
+    {
+        pregunta: `Quants equips participen?`,
+        respuesta: `El nombre d’equips participants pot variar en funció de diferents factors, com la disponibilitat de temps i el nombre de pistes disponibles per a la competició. En l’edició anterior, el torneig va comptar amb un màxim de 16 equips. Cada any, l’organització estableix el límit de participants en funció de la logística del torneig.`,
+    },
+    {
+        pregunta: `Quines són les regles específiques del torneig?`,
+        respuesta: `Les regles del torneig no segueixen estrictament el reglament oficial del voleibol, ja que es tracta d’una competició de caràcter amateur. Algunes normes poden adaptar-se en funció de les condicions logístiques, el nivell dels participants i el temps disponible per a la competició. Això permet garantir que tots els equips puguin gaudir d’una experiència dinàmica i equilibrada.`,
+        respuesta2: `Per conèixer en detall les normes específiques aplicades a cada edició, incloent-hi aspectes com el format dels partits, el sistema de puntuació, les substitucions o altres ajustos reglamentaris, es recomana consultar les bases de competició actualitzades del torneig.`,
+    },
+    {
+        pregunta: `Hi haurà àrbitres oficials als partits?`,
+        respuesta: `Al torneig hi haurà un mínim de quatre àrbitres que s’alternaran al llarg de la competició per garantir el bon desenvolupament dels partits. Tot i que no són àrbitres federats, estan formats per conèixer les normes bàsiques del torneig i són alumnes o professors del centre que col·laboren en l’organització.`,
+        respuesta2: `A més dels àrbitres, també es requereixen oficials de taula per portar el control del marcador i el temps de joc. Si estàs interessat a participar com a àrbitre o oficial de taula, pots emplenar el següent qüestionari per unir-te a l’equip d’organització i contribuir al bon funcionament del torneig.`,
+    }
+]
+---
+<DescripcionSection>
+    <h2 class="text-4xl text-accent font-bold text-start">Sobre el torneig</h2>
+    {
+    CONTENIDO.map(({pregunta, respuesta, respuesta2}) => (
+        <details class="bg-gris-claro rounded-lg text-blanco p-3 cursor-pointer my-3 group">
+            <summary class="text-xl font-semibold group-open:text-amarillo transition-all duration-300">{pregunta}</summary>
+            <p>{respuesta}</p>
+            <p class="mt-2">{respuesta2}</p>
+        </details>
+    ))
+    }
+</DescripcionSection>

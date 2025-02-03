@@ -24,6 +24,10 @@ export const ENLACES = [
         nombre: 'Normativa',
     },
     {
+        href: '/preguntas-frecuentes',
+        nombre: 'Preguntes Freqüents',
+    },
+    {
         href: '/usuario/galeria',
         nombre: 'Galeria',
     },
