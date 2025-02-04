@@ -1,31 +1,32 @@
 ---
 const REQUISITOS_EQUIPO = [
 {
-        texto: 'Cursos que poden participar: 3r ESO, 4t ESO, 1r Bat, 2n Bat, FP i Professorat',
+        texto: `Cursos que poden participar: Poden inscriure's equips formats per alumnes de qualsevol dels següents cursos: 3r ESO, 4t ESO, 1r Batxillerat, 2n Batxillerat, Cicles Formatius (FP) i Professorat.`,
     },
     {
-        texto: 'Mínim: 6 jugadors    |   Màxim: 9 jugadors    |   Opcional: Professor    |   Opcional: Entrenador',
+        texto: `Nombre mínim i màxim de jugadors: Cada equip haurà de tenir com a mínim 6 jugadors, amb un límit màxim de 9 jugadors. Aquest límit garanteix que els equips siguin competitius i no excessivament nombrosos.`,
     },
     {
-        texto: 'Mínim 2 representants de cada gènere',
+        texto: `Opció de professor i entrenador: És opcional incloure un professor i/o entrenador en cada equip. Això pot ser útil per a l'orientació i la supervisió durant el torneig, però no és un requisit obligatori.`,
     },
     {
-        texto: 'Possibilitat de barrejar classes i cursos',
+        texto: `Representació de gènere: Es requereix que cada equip compti com a mínim amb 2 representants de cada gènere. Aquesta mesura es fa per garantir la diversitat i la igualtat de gènere en el torneig.`,
     },
-    //{
-      //  texto: 'Possibilitat de barrejar alumnes i professors',
-    //}
     {
-        texto: 'Es pot afegir un logotip de 500px x 500px',
+       texto: `Composició de l'equip: Els jugadors d'un mateix equip poden provenir de diferents cursos i classes, fet que permet una gran flexibilitat a l'hora de formar els equips.`,
+    },
+    {
+        texto: `Logotip de l'equip: Cada equip pot afegir un logotip de 500px x 500px per personalitzar el seu perfil i identificar-se visualment durant el torneig.`,
     }
 ]
 ---
 <section class="max-w-[1600px] h-auto m-auto my-10 ">
-    <h3 class="text-accent text-4xl font-bold "> Requisits d'inscripció</h3>
+    
     <p class="text-blanco text-xl font-bold ml-4 mt-2">
         
-Els equips inscrits hauran de seguir les següents pautes per a poder inscriure's i disputar el torneig.
+        És important destacar que per a poder participar en el torneig, cal complir amb uns requisits específics pel que fa al nombre de jugadors, la categoria escolar i altres consideracions relatives a la formació de l'equip. A continuació, trobaràs els requisits detallats per tal que puguis completar la inscripció sense inconvenients.
         </p>
+        <h3 class="text-accent text-4xl font-bold "> Requisits d'inscripció</h3>
     <ul class="text-blanco text-lg ml-6 mt-4 custom-punto">
         {
             REQUISITOS_EQUIPO.map(({texto}) => (
@@ -35,6 +36,14 @@ Els equips inscrits hauran de seguir les següents pautes per a poder inscriure'
             ))
         }
     </ul>
+    <p class="text-blanco text-lg  ml-4 mt-2">
+        Aquesta secció de la web també inclou un formulari de registre en línia, on podràs omplir tots els camps necessaris per a completar la inscripció del teu equip. El formulari és senzill i ràpid de completar, i et permetrà enviar la informació requerida de manera segura i eficaç. Recorda que la data límit per a inscriure's serà estricta, així que no deixis passar l'oportunitat de participar. Assegura't de revisar tots els requisits abans de començar el procés d'inscripció.
+    </p>
+    <h4 class="text-3xl font-semibold text-amarillo mt-10">Contacte per a Resoldre Dubtes:</h4>
+    <p class="text-blanco text-lg  ml-4 mt-2">
+        Entenem que el procés d'inscripció pot generar dubtes o preguntes. Per això, en aquesta secció també trobaràs un canal de contacte directe, on podràs enviar qualsevol consulta relacionada amb la inscripció. Un membre de l'equip organitzador et donarà resposta a la teva pregunta en el menor temps possible, assegurant que puguis completar el registre del teu equip sense cap dificultat.
+    </p>
+    
 </section>
 
 <style>
