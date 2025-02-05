@@ -14,8 +14,10 @@ export const POST: APIRoute = async ({ request }) => {
   const usuario_curso = formData.get("usuario_curso")?.toString().trim() || "";
   const usuario_id = formData.get("usuario_id")?.toString().trim() || "";
   const capitan = formData.get("capitan")?.toString().trim();
+  const capitan_email = formData.get("capitan_email")?.toString().trim() || "";
   const condiciones = formData.get("condiciones")?.toString().trim();
 
+  const capitan_edit = formData.get("capitan_edit")?.toString().trim();
 
   if(!condiciones){
     console.log(condiciones)
@@ -72,6 +74,23 @@ export const POST: APIRoute = async ({ request }) => {
  // if(checkError){
   //  console.log("Entrenador no inscrito en otro equipo")
 //}
+let { data: Usuarios, error } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('email')
+
+    if (Usuarios) {
+  
+    
+      // Verificar si ya existe un usuario con el mismo email
+      const userExistsByEmail = Usuarios.some(usuario => usuario.email === acompañante_email);
+      
+      if (userExistsByEmail) {
+        return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'entrenador ja es troba inscrit.</div>`, 
+          { status: 400, headers: { "Content-Type": "text/html" } }
+        );
+      }
+    }
 
   if (!acompañante_genero) {
     return new Response(
@@ -145,6 +164,23 @@ export const POST: APIRoute = async ({ request }) => {
     if(genero === "mujer"){
       mujeres++;
     }
+    let { data: Usuarios, error } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('email')
+
+    if (Usuarios) {
+  
+    
+      // Verificar si ya existe un usuario con el mismo email
+      const userExistsByEmail = Usuarios.some(usuario => usuario.email === email);
+      
+      if (userExistsByEmail) {
+        return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El jugador Nº${index +1} ja es troba inscrit</div>`, 
+          { status: 400, headers: { "Content-Type": "text/html" } }
+        );
+      }
+    }
     jugadores.push({ nombre, curso, _1r_apellido, _2n_apellido, genero, email, numero });
     index++;
   }
@@ -187,6 +223,23 @@ export const POST: APIRoute = async ({ request }) => {
       if(genero_extra === "mujer"){
         mujeres++;
       }
+      let { data: Usuarios, error } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('email')
+
+    if (Usuarios) {
+  
+    
+      // Verificar si ya existe un usuario con el mismo email
+      const userExistsByEmail = Usuarios.some(usuario => usuario.email === email);
+      
+      if (userExistsByEmail) {
+        return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El jugador Nº${index +7} ja es troba inscrit</div>`, 
+          { status: 400, headers: { "Content-Type": "text/html" } }
+        );
+      }
+    }
       jugadores_extra.push({ nombre, curso, _1r_apellido, _2n_apellido, genero_extra, email, numero });
     }
     index++;
@@ -1028,11 +1081,13 @@ a[x-apple-data-detectors],
   </body>
 </html>
 `;
+
+//Realizador Inscripcion
 try {
   const { data, error } = await resend.emails.send({
     from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
     to: [usuario_email], // Asegúrate de que esta variable tenga el valor correcto
-    subject: `Inscripció Realitzada de l'equip ${nombre_equipo}`,
+    subject: `Inscripció Realitzada de l'equip ${nombre_equipo} | Versió Inscriptor`,
     html: emailBody,
   });
 
@@ -1041,7 +1096,7 @@ try {
   }
 
   console.log("Correo enviado correctamente", data);
-  let asunto = `Inscripció Realitzada de l'equip ${nombre_equipo}`
+  let asunto = `Inscripció Realitzada de l'equip ${nombre_equipo}  | Versió Inscriptor`
   const { data: Emails, error: EmailsError } = await supabaseAdmin
   .from('Emails')
   .insert([
@@ -1051,6 +1106,39 @@ try {
 } catch (error) {
   console.error("Error al enviar el correo:", error);
 }
+
+//Capitan
+if (capitan_email !== usuario_email){
+  if(capitan_edit === "si_edit"){
+    try {
+      const { data, error } = await resend.emails.send({
+        from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+        to: [capitan_email], // Asegúrate de que esta variable tenga el valor correcto
+        subject: `Inscripció Realitzada de l'equip ${nombre_equipo} | Versió Capità`,
+        html: emailBody,
+      });
+    
+      if (error) {
+        throw new Error(error.message); // Lanza un error si hay un problema
+      }
+    
+      console.log("Correo enviado correctamente", data);
+      let asunto = `Inscripció Realitzada de l'equip ${nombre_equipo} | Versió Capità`
+      const { data: Emails, error: EmailsError } = await supabaseAdmin
+      .from('Emails')
+      .insert([
+        { destinatario: capitan_email, asunto: asunto, contenido: emailBody, id_resend: data?.id },
+      ])
+      .select()
+    } catch (error) {
+      console.error("Error al enviar el correo:", error);
+    }
+  }
+}
+
+
+
+
 
   }else{
     console.log("No se envian emails");

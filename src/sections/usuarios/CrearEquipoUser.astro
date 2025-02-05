@@ -44,7 +44,7 @@ file.addEventListener('change', (e: Event) => {
 <!-- action="/api/usuario/anadir-equipo" -->
 <div class="max-w-5xl w-full h-max py-2  overflow-hidden mx-auto my-10 ">
   <form id="equipo-form" method="POST" class="space-y-4" action="/api/usuario/anadir-equipo"  enctype="multipart/form-data">
-    <div id="errorbox" class="text-red-500 text-center"></div>
+    <div id="errorbox" class="text-red-500 bg-gris rounded-lg px-3 py-2 text-center error-box"></div>
     <!-- Datos usuario -->
     <div class="w-full hidden">
       <input type="text" name="usuario_id" class="bg-transparent w-auto h-max text-blanco" value={usuario.id}/>
@@ -90,6 +90,14 @@ file.addEventListener('change', (e: Event) => {
         
         class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
       />
+      <input
+      type="hidden"
+      id="input_capitan_email_form"
+      name="capitan_email"
+      placeholder="Seleccioni un capita amb ©"
+      
+      class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
+    />
     </div>
 
     <!-- Entrenador -->
@@ -442,6 +450,7 @@ file.addEventListener('change', (e: Event) => {
             </label>
             <input
             type="email"
+            id={`player_${index}_email`}
             name={`player_${index}_email`}
             placeholder="Email del jugador"
             class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
@@ -618,6 +627,7 @@ file.addEventListener('change', (e: Event) => {
             </label>
             <input
             type="email"
+            id={`extra_player_${index}_email`}
             name={`extra_player_${index}_email`}
             placeholder="Email del jugador"
             class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
@@ -630,6 +640,29 @@ file.addEventListener('change', (e: Event) => {
   </div>
 ))} 
 
+<div class="w-max flex flex-row gap-2 px-6">
+  <p class="text-lg text-blanco">Permets que el capità pugui modificar l'equip?</p>
+  <div class="flex flex-col relative">
+    <label class="genero relative">
+        <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+        
+    </label>
+        <input 
+            id={`capitan_edit`}
+            type="hidden"
+            name={`capitan_edit`} 
+            value="no_edit" 
+            class="w-10" 
+        />
+        <span id={`si_edit`} class="desactivado w-9 h-9 flex items-center place-content-center font-semibold text-blanco">
+            <p>SI</p>
+        </span>
+        <span id={`no_edit`} class="desactivado no_edit w-9 h-9 flex items-center place-content-center font-semibold text-blanco">
+            <p>NO</p>
+        </span>
+    </label>
+</div>
+</div>
 <div class="w-max flex flex-row gap-2 px-6">
   <!-- <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Alumnes Jugadors</h4></div> -->
   <div class="checkbox-wrapper-12">
@@ -674,24 +707,32 @@ file.addEventListener('change', (e: Event) => {
   </div>
   <PoliticaInscripcion />
 </div>
+
 <!-- Seleccionar Capitan -->
 <script>
 window.addEventListener('load', function(){
     console.log("Script Capitan cargado")
     const input_capitan = document.getElementById(`input_capitan`) as HTMLInputElement;
     const input_capitan_form = document.getElementById(`input_capitan_form`) as HTMLInputElement;
+    const input_capitan_email_form = document.getElementById(`input_capitan_email_form`) as HTMLInputElement;
     let currentCapitanIndex: number | null = null; // Declarar el tipo explícitamente
 
     // Función para agregar el evento de clic a los capitanes
-    function agregarEventoCapitan(index: number, capitanId: string, nombreId: string, apellidoId: string) {
+    function agregarEventoCapitan(index: number, capitanId: string, nombreId: string, apellidoId: string, emailId: string) {
         const capitan = document.getElementById(capitanId)!;
         const nombre = document.getElementById(nombreId) as HTMLInputElement;
+        let nombre_value = nombre.value;
         const _1r_apellido = document.getElementById(apellidoId) as HTMLInputElement;
+        let apellido_value = nombre.value;
+        const email = document.getElementById(emailId) as HTMLInputElement;
+        let email_value = email.value;
+        console.log(email);
 
-        if (nombre || _1r_apellido) {
+        //if (nombre_value !== "" || apellido_value !== "" || email_value !== "") {
             // Usar una función de cierre para capturar el valor de index
             (function(index) {
                 capitan.addEventListener('click', function() {
+                  if( nombre.value || _1r_apellido.value || email.value){
                     // Si ya hay un capitán seleccionado, desactivar su botón
                     if (currentCapitanIndex !== null) {
                         const previousCapitan = document.getElementById(`capitan_${currentCapitanIndex}`) || document.getElementById(`extra_capitan_${currentCapitanIndex}`);
@@ -708,32 +749,67 @@ window.addEventListener('load', function(){
                     const valor_apellido = _1r_apellido.value;
                     input_capitan.value = nombre.value + " " + valor_apellido; // Obtiene el valor del input del nuevo capitán
                     input_capitan_form.value = nombre.value + " " + valor_apellido;
+                    input_capitan_email_form.value = email.value;
                     
-                    console.log("Capitán seleccionado:", nombre.value, valor_apellido, currentCapitanIndex);
+                    console.log("Capitán seleccionado:", nombre.value, valor_apellido, currentCapitanIndex, email.value);
 
                     // Activar el botón del nuevo capitán (opcional, si necesitas algún estilo)
                     capitan.classList.add('active-c'); // Cambia esto según tu lógica de estilos
-                });
+                  }else{
+                    let html = `<div id="error-capitan" class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">És necessari les dades del jugador per poder seleccionar-lo com a capità.</div>`
+                    document.getElementById('errorbox')!.innerHTML = html;
+                    setTimeout(() => {
+                        document.getElementById('error-capitan')!.remove(); // Elimina el contenido
+                    }, 30000);
+                  }
+                  });
             })(index); // Llamar a la función con el valor actual de index
-        }
-    }
+       // } 
+    } 
 
     // Manejar jugadores normales
     let index = 0;
     while (document.getElementById(`capitan_${index}`)) {
-        agregarEventoCapitan(index, `capitan_${index}`, `player_${index}_name`, `player_${index}_1r_apellido`);
+        agregarEventoCapitan(index, `capitan_${index}`, `player_${index}_name`, `player_${index}_1r_apellido`, `player_${index}_email`);
         index++;
     }
 
     // Manejar jugadores extra
     index = 0;
     while (document.getElementById(`extra_capitan_${index}`)) {
-        agregarEventoCapitan(index, `extra_capitan_${index}`, `extra_player_${index}_name`, `extra_player_${index}_1r_apellido`);
+        agregarEventoCapitan(index, `extra_capitan_${index}`, `extra_player_${index}_name`, `extra_player_${index}_1r_apellido`, `extra_player_${index}_email`);
         index++;
     }
 })
 </script>
 
+<!--Permitir editar al capitan -->
+<script>
+  window.addEventListener('load', function(){
+    console.log("Script Selec Genero cargado")
+   
+    const si_edit = document.getElementById(`si_edit`)!;
+    const no_edit = document.getElementById(`no_edit`)!;
+    
+    const capitan_edit = document.getElementById(`capitan_edit`)! as HTMLInputElement;
+    si_edit.addEventListener('click',  function(){
+        
+            capitan_edit.value = "si_edit";
+            si_edit.classList.add("si_edit");
+            si_edit.classList.remove("desactivado");
+            no_edit.classList.remove("no_edit");
+            no_edit.classList.add("desactivado");
+    });
+    no_edit.addEventListener('click',  function(){
+        
+        capitan_edit.value = "no_edit";
+        no_edit.classList.add("no_edit");
+        no_edit.classList.remove("desactivado");
+        si_edit.classList.remove("si_edit");
+        si_edit.classList.add("desactivado");
+});
+  });
+</script>
 <!-- Ver avisos legales -->
 <script>
   console.log("Script Documentos Legales cargado")
@@ -932,6 +1008,25 @@ while (document.getElementById(`extra_genero_${index}`)) {
     background-color: rgba(255, 0, 200, 0.75);
     /* background: rgb(255, 199, 0.75); */
     
+}
+
+.si_edit {
+    background: rgba(20, 156, 2, 0.75);
+    /* background: rgb(255, 199, 0.75); */
+     /* Color para hombre */
+}
+
+.no_edit {
+    background-color: rgba(150, 1, 1, 0.75);
+    /* background: rgb(255, 199, 0.75); */
+    
+}
+
+.error-box{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100000000;
 }
 
 
