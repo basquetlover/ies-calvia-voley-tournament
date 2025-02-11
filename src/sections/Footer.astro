@@ -107,6 +107,7 @@ import Organizadores from "@components/Organizadores.astro";
   }
 </style>
 <script>
+window.addEventListener('load', function(){    
    function eliminarAllCookie() {
       // Establece la cookie con el mismo nombre y una fecha de expiración en el pasado
       const nombre = "all_cookies";
@@ -158,5 +159,5 @@ function eliminarEssencialCookie() {
       // eliminarAllCookie();
   })
 
-  
+});
 </script>

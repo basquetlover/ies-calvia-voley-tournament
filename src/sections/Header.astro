@@ -85,6 +85,7 @@ if(usuario){
 
 ---
 <script>
+window.addEventListener('load', function(){
 //SubMenu desktop
 const boton_subemnu_desktop = document.getElementById('bot-noimp-desk')!;
 const boton_subemnu_desktop_icon = document.getElementById('bot-noimp-desk-icon')!;
@@ -127,8 +128,10 @@ boton_subemnu_movil.addEventListener('click', function() {
     }
 });
 
+});
 </script>
 <script>
+window.addEventListener('load', function(){
     //Menu Usuario
 const usuario = document.getElementById('usuario')!;
 const user_menu = document.getElementById('user-menu')!;
@@ -156,9 +159,10 @@ cerrar_user_menu.addEventListener('click', function() {
     console.log("Sesion no iniciada")
 }
 
-
+});
 </script>
 <script>
+window.addEventListener('load', function(){
     //Menu Usuario
 const usuario = document.getElementById('usuario-m')!;
 const user_menu = document.getElementById('user-menu-m')!;
@@ -183,6 +187,7 @@ cerrar_user_menu.addEventListener('click', function() {
 });
 }
 
+});
 </script>
 
 <header class=" w-full flex flex-row content-center justify-center  ">
