@@ -11,6 +11,7 @@ let equipo = "Sense Equip"
 let escudo = "/img/escudos/sin-escudo-blanco.png"
 let inscripcion = true;
 let admin = false;
+let profesor = false;
 if(usuario){
     const usuario_nombre = usuario.nombre;
     const usuario_email = usuario.email;
@@ -25,6 +26,19 @@ if(usuario){
         acceso_inscripcion = AccesoInscripcion.acceso;
         if( acceso_inscripcion === true ){
         inscripcion = false
+        }
+    }
+    let { data: JugadorCurso, error: errorJC } = await supabaseAdmin
+    .from('Usuarios')
+    .select('curso')
+    .eq('email', usuario_email)
+    .single();
+
+    if(JugadorCurso){
+        
+        if(JugadorCurso.curso === "Professor"){
+            
+            profesor = true;
         }
     }
     
@@ -89,7 +103,7 @@ if(usuario){
 ---
 <ControlAcces>
 <LayoutUsuarioMenu title="Panell Usuari | IES Calvià Voley Tournament" descripcion="" >
-    <sectio class="max-w-8xl gap-x-2 mx-auto w-auto h-auto flex flex-wrap items-center place-content-center my-10">
+    <sectio class="max-w-8xl gap-x-2 xs:gap-x-0 xs:gap-y-2 sm:gap-x-0 sm:gap-y-2 md:gap-x-2 mx-auto w-auto h-auto flex flex-wrap items-center place-content-center my-10">
         <div class="w-[450px] h-[400px] bg-gris-claro rounded-lg ">
                     {/* Datos usuario */}
                     
@@ -157,8 +171,63 @@ if(usuario){
 
 
 
-        <div class="max-w-4xl w-full h-[400px] bg-gris-claro rounded-lg ">
-
+        <div class="max-w-4xl w-full flex flex-wrap items-center place-content-around h-[400px] bg-gris-claro rounded-lg ">
+            <a href="/usuario/galeria" class={`px-1 h-32 w-32 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center  text-white hover:text-amarillo group duration-300 transition-all `}>
+                <span class="w-20 h-20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
+                        <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all}`} d="M360-400h400L622-580l-92 120-62-80-108 140Zm-40 160q-33 0-56-23t-24-57v-480q0-33 24-56t56-24h480q33 0 57 24t23 56v480q0 33-23 57t-57 23H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56-23t-24-57v-560h80v560h560v80H160Zm160-720v480-480Z"/>
+                    </svg>
+                </span>
+                <p>Galeria Nadal</p>
+            </a>
+            {/* Inscribir Equipo */}
+            <a href="/usuario/inscripcion" class={`px-1 h-32 w-32 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center ${inscripcion === false ? " text-white hover:text-amarillo group duration-300 transition-all" : " text-gray-500 cursor-not-allowed pointer-events-none "} `}>
+                <span class="w-20 h-20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
+                        <path  class={` ${inscripcion === false ? "fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all" : " fill-gray-500 "}`} d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                    </svg>
+                </span>
+                <p>Inscriure Equip</p>
+            </a>
+            {/* Modificar Equipo */}
+            <div class="px-1 h-32 w-32 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center text-gray-500 items-center">
+                <span class="w-20 h-20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
+                        <path class="fill-gray-500" d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 27-17t30-6q16 0 31 6t26 18l55 56q12 11 18 26t5 30q0 16-5 31t-18 26L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
+                    </svg>
+                </span>
+                <a>Modificar Equip</a>
+            </div>
+        </nav>
+        {profesor === true || admin === true ? (
+            
+            
+            <a href="/usuario/lista-alumnos" class={`px-1 h-32 w-32 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center  text-white hover:text-amarillo group duration-300 transition-all`}>
+                    <span class="w-20 h-20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
+                            <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all`} d="M0-240v-63q0-43 44-70t116-27l25 1 23 2q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 18-58t49-47q32-20 77-30t96-10q53 0 98 10t76 30q32 20 49 47t17 58v65H240Zm540 0v-65q0-26-6-49t-20-43q11-2 23-2t23-1q72 0 116 27t44 70v63H780Zm-455-80h311q-10-20-55-35t-101-15q-55 0-100 15t-55 35ZM160-440q-33 0-56-23t-24-57q0-34 24-57t56-23q34 0 57 23t23 57q0 33-23 57t-57 23Zm640 0q-33 0-56-23t-24-57q0-34 24-57t56-23q34 0 57 23t23 57q0 33-23 57t-57 23Zm-320-40q-50 0-85-35t-35-85q0-51 35-85t85-35q51 0 86 35t34 85q0 50-34 85t-86 35Zm0-80q17 0 29-11t11-29q0-17-11-28t-29-12q-17 0-28 12t-12 28q0 17 12 29t28 11Zm1 240Zm-1-280Z"/>
+                        </svg>
+                        
+                    </span>
+                    <p>Llista Alumnes</p>
+            </a>
+        ):
+        (<></>)
+        }
+        {admin === true ? (
+            
+            
+            <a href="/admin" class={`px-1 h-32 w-32 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center  text-white hover:text-amarillo group duration-300 transition-all`}>
+                    <span class="w-20 h-20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
+                            <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all`} d="M480-440q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0-80q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0 440q-139-35-229-159t-91-277v-244l320-120 320 120v244q0 152-90 277T480-80Zm0-400Zm0-315-240 90v189q0 54 15 105t41 96q42-21 88-33t96-12q50 0 96 12t88 33q26-45 41-96t15-105v-189l-240-90Zm0 515q-36 0-70 8t-65 22q29 30 63 52t72 34q38-12 72-34t63-52q-31-14-65-22t-70-8Z"/>
+                        </svg>
+                    </span>
+                    <p>Zona Staff</p>
+            </a>
+        ):
+        (<></>)
+        }
         </div>
     </sectio>
 </LayoutUsuarioMenu>

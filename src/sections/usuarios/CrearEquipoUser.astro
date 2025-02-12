@@ -429,12 +429,7 @@ file.addEventListener('change', (e: Event) => {
               {label}
             </option>
           ))}
-          <hr class="border-accent" />
-          {CURSO_P.map(({ label }) => (
-            <option value={label}>
-              {label}
-            </option>
-          ))}
+          
           
         </select>
         </div>
@@ -454,6 +449,29 @@ file.addEventListener('change', (e: Event) => {
             name={`player_${index}_email`}
             placeholder="Email del jugador"
             class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            required
+            value={jugador.nombre}
+            />
+        
+        </div>
+
+        {/* Imagen cara */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Imatge Cara
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="file"
+            id={`player_${index}_img`}
+            name={`player_${index}_img`}
+            placeholder="Email del jugador"
+            class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+            accept=".png, .jpg, .jpeg, .webp"
             required
             value={jugador.nombre}
             />
@@ -606,12 +624,7 @@ file.addEventListener('change', (e: Event) => {
               {label}
             </option>
           ))}
-          <hr class="border-accent" />
-          {CURSO_P.map(({ label }) => (
-            <option value={label}>
-              {label}
-            </option>
-          ))}
+          
         </select>
         </div>
 
@@ -637,6 +650,28 @@ file.addEventListener('change', (e: Event) => {
         
         </div>
         
+        {/* Imagen cara */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Imatge Cara
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="file"
+            id={`extra_player_${index}_img`}
+            name={`extra_player_${index}_img`}
+            placeholder="Email del jugador"
+            class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+            accept=".png, .jpg, .jpeg, .webp"
+            
+            value={jugador.nombre}
+            />
+        
+        </div>
   </div>
 ))} 
 

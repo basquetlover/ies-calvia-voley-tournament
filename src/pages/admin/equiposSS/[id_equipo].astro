@@ -53,6 +53,7 @@ interface Jugador {
   _2n_apellido: string;
   genero: string;
   email: string;
+  img: string;
   
 };
 let entrenador_nombre = "";
@@ -100,9 +101,10 @@ try {
 
   const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
     .from('JugadoresSS')
-    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img')
     .eq('pertenece_equipo', id)
-    .eq('ficha', 'jugador');
+    .eq('ficha', 'jugador')
+    .order('id', { ascending: true });
 
   if(jugadorError){
     console.error(`Error al buscar jugadores`, error?.message);
@@ -167,7 +169,7 @@ try {
 
 <LayoutStaff title=`Equip ${nombre_equipo}`>
     <div class="max-w-4xl mx-auto my-10">
-      <div class="flex flex-row items-center place-content-around">
+      <div class="flex flex-wrap items-center place-content-around gap-2">
         <p class={`w-max h-max px-2 py-1 rounded-xl ${estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{estado}</p>
         <p class={`w-max h-max px-2 py-1 rounded-xl ${aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${aceptado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} `}>{aceptado}</p>
         <p class="text-blanco bg-gris-claro px-3 py-2 rounded-lg">Data inscripció: {fecha_inscripcion}</p>
@@ -176,7 +178,7 @@ try {
         <section class="space-y-4" >
             <div>
                 <h2 class="text-amarillo text-2xl">Equip Inscrit Per:</h2>
-                <div class="grid grid-cols-[max-content_1fr_max-content] place-items-center text-lg text-blanco">
+                <div class="flex flex-wrap items-center place-content-around gap-2 text-lg text-blanco">
                     <p>{creador_nombre}</p>
                     <p>{creador_email}</p>
                     <p>{creador_curso}</p>
@@ -309,7 +311,11 @@ try {
              </div>
              </div>
       </div>
-            <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
+      <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
+            <div class="w-20 h-20 overflow-hidden flex items-center justify-center">
+                <img src={jugador.img} alt={`Imagen jugador ${index + 1}`} class="h-full w-auto object-cover" />
+            </div>
+            <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               
               {/* Nombre */}
               <div class="flex flex-col relative">
@@ -353,6 +359,7 @@ try {
               </div>
              
              </div>
+            </div>
         ))}
 
           
