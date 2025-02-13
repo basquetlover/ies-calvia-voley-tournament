@@ -25,9 +25,10 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   let id_session = "";
   const secretKey = "8a0a6b86ab0faebd915652fb11a5b4131e76849c7403d93756f677a4b1a85714"; 
   
-  function encrypt(text: string) {
-      return CryptoJS.AES.encrypt(text, secretKey).toString();
-    }
+  // function encrypt(text: string) {
+  //     return CryptoJS.AES.encrypt(text, secretKey).toString();
+  //   }
+
       function encryptAlfaNum(text: string) {
         // Encriptar el texto
         const encrypted = CryptoJS.AES.encrypt(text, secretKey).toString();
@@ -40,7 +41,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     
         return alphanumeric;
     }
-  const encrypted = encrypt(password);
+  // const encrypted = encrypt(password);
   if(!user_session){
     const { data: Usuarios } = await supabaseAdmin
         .from('Usuarios') // Especifica el tipo aquí
