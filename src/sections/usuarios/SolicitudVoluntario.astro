@@ -126,7 +126,7 @@ file.addEventListener('change', (e: Event) => {
             <input
             type="text"
             id={`voluntari_name`}
-            name={`voluntari_name`}
+            name={`voluntario_name`}
             placeholder="Nom de l'voluntari"
             class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
             required
@@ -147,7 +147,7 @@ file.addEventListener('change', (e: Event) => {
             
             <input
             type="text"
-            name={`voluntari_1r_apellido`}
+            name={`voluntario_1r_apellido`}
             id={`voluntari_1r_apellido`}
             placeholder="Cognom del voluntari"
             class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
@@ -161,7 +161,7 @@ file.addEventListener('change', (e: Event) => {
             <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
             <input
             type="text"
-            name={`voluntari_2n_apellido`}
+            name={`voluntario_2n_apellido`}
             placeholder="Segon Cognom del voluntari"
             class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
             
@@ -307,11 +307,14 @@ file.addEventListener('change', (e: Event) => {
 
    
     <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
-      <a href="/" rel="noreferrer" class="px-3 py-2 flex flex-row items-center select-none place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
-      <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-xl hover:scale-110  duration-300 transition-all transform">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
-              <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+      <a href="/" rel="noreferrer" class="px-3 py-2 flex flex-row items-center select-none place-content-center font-medium w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-lg hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+      <button class="px-3 py-2 flex flex-row items-center place-content-center font-medium w-52 h-12 fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-lg hover:scale-110  duration-300 transition-all transform">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10" viewBox="0 0 512 512" >
+              <path d="M253 148c-149 54-233 85-235 87s-3 7-1 10l56 21 55 20 17 80c17 86 16 82 23 82 3 0 10-6 57-53l54-53a1798 1798 0 0 1 90 26l4-2c2-2 122-288 123-294 0-4-3-8-8-8l-235 84zm162 79-52 123-138-42 31-26 139-119 71-60-51 124zm4-121L136 270l-86-30 48-18a277117 277117 0 0 0 323-116zm-15 28a133849 133849 0 0 1-202 173l-14 41-15 50-3 10-13-62-11-62 55-33a159917 159917 0 0 0 203-117zM237 329l24 7a1500 1500 0 0 1-75 74 1113 1113 0 0 1 27-88l24 7z"/>
           </svg>
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 512 512">
+            <path />
+          </svg> -->
           Envia Sol·licitud
         </button>
   </div>

@@ -13,7 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
   const usuario_email = formData.get("usuario_email")?.toString().trim() || "";
   const usuario_curso = formData.get("usuario_curso")?.toString().trim() || "";
   const usuario_id = formData.get("usuario_id")?.toString().trim() || "";
-
+  const descripcion = formData.get("descripcion")?.toString().trim() || "";
   const condiciones = formData.get("condiciones")?.toString().trim();
 
 
@@ -67,23 +67,32 @@ export const POST: APIRoute = async ({ request }) => {
     console.error("El email no es válido.");
 }
 
-// let { data: Usuarios, error } = await supabaseAdmin
-//     .from('JugadoresSS')
-//     .select('email')
-
-//     if (Usuarios) {
+let { data: Usuarios, error } = await supabaseAdmin
+    .from('Voluntarios')
+    .select('email')
+    
+    if (Usuarios) {
   
     
-//       // Verificar si ya existe un usuario con el mismo email
-//       const userExistsByEmail = Usuarios.some(usuario => usuario.email === voluntario_email);
+      // Verificar si ya existe un usuario con el mismo email
+      const userExistsByEmail = Usuarios.some(usuario => usuario.email === voluntario_email);
       
-//       if (userExistsByEmail) {
-//         return new Response(
-//           `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'entrenador ja es troba inscrit.</div>`, 
-//           { status: 400, headers: { "Content-Type": "text/html" } }
-//         );
-//       }
-//     }
+      if (userExistsByEmail) {
+        return new Response(
+          `
+          <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
+        <span>
+      <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
+        <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
+      </svg>
+        </span>
+        <p>El voluntari ja es troba inscrit.</p>
+        </div>
+          `, 
+          { status: 400, headers: { "Content-Type": "text/html" } }
+        );
+      }
+    }
 
   if (!voluntario_genero) {
     return new Response(
@@ -144,14 +153,14 @@ export const POST: APIRoute = async ({ request }) => {
   console.log("Tipo de archivo:", escudo.type);
   console.log("Tamaño de archivo:", escudo.size);
    
-async function uploadFile(file: File, id_equipo: string) {
+async function uploadFile(file: File, email: string) {
   // Extraer la extensión del archivo
   const extension = file.name.split('.').pop(); // Obtiene la extensión
-  const uniqueFileName = `${id_equipo}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-  const filePath = `escudosSS/${uniqueFileName}`; // Define la ruta del archivo
+  const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
+  const filePath = `${uniqueFileName}`; // Define la ruta del archivo
 
   const { data, error } = await supabaseAdmin.storage
-      .from('EquiposIMG')
+      .from('JugadoresIMG')
       .upload(filePath, file); // Sube el archivo
 
   if (error) {
@@ -163,30 +172,30 @@ async function uploadFile(file: File, id_equipo: string) {
   return filePath; // Devuelve la ruta del archivo
 }
 
-// // Llama a la función para subir el escudo
-// const escudoPath = await uploadFile(escudo, voluntario_email);
+// Llama a la función para subir el escudo
+const escudoPath = await uploadFile(escudo, voluntario_email);
 
-// //Obtener la URL pública del escudo subido
-// const { data: urlData } = supabaseAdmin.storage
-//     .from('EquiposIMG')
-//     .getPublicUrl(escudoPath); // Usa el escudoPath que se generó al subir el archivo
+//Obtener la URL pública del escudo subido
+const { data: urlData } = supabaseAdmin.storage
+    .from('JugadoresIMG')
+    .getPublicUrl(escudoPath); // Usa el escudoPath que se generó al subir el archivo
 
-// // Verifica si urlData contiene la propiedad publicUrl
-// if (!urlData || !urlData.publicUrl) {
-//   //   console.error("No se pudo obtener la URL pública del escudo.");
-//   //   return new Response(
-//   //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
-//   //     { status: 401, headers: { "Content-Type": "text/html" } }
-//   // );
-// }
-// if (urlData) {
-//   publicUrl = urlData.publicUrl;
-// }
+// Verifica si urlData contiene la propiedad publicUrl
+if (!urlData || !urlData.publicUrl) {
+  //   console.error("No se pudo obtener la URL pública del escudo.");
+  //   return new Response(
+  //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+  //     { status: 401, headers: { "Content-Type": "text/html" } }
+  // );
+}
+if (urlData) {
+  publicUrl = urlData.publicUrl;
+}
 
 
-// // Ahora puedes usar urlData.publicUrl para insertar en la base de datos
+// Ahora puedes usar urlData.publicUrl para insertar en la base de datos
 
-// console.log("URL pública del escudo:", publicUrl);
+console.log("URL pública del escudo:", publicUrl);
 
 const getCurrentDateInCatalan = () => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -198,30 +207,31 @@ const currentDate = getCurrentDateInCatalan();
 console.log(currentDate);
 
     
-//   // Insertar los datos en la tabla 'administradores'
-//    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-//     .from('')
-//     .insert([
-//         { nombre_equipo: nombre_equipo ,
-//           id_equipo: id_equipo ,
-//           capitan: capitan,
-//           entrenador: acompañante,
-//           escudo: publicUrl,
-//           inscrito: usuario_id,
-//           estado: 'Revisant',
-//           aceptado: `Llista d'espera`,
-//           fecha_inscripcion: currentDate,
-//         },
-//     ])
-//     .select()
+  // Insertar los datos en la tabla 'administradores'
+   const { data: datosEquipos, error: equipoError } = await supabaseAdmin
+    .from('Voluntarios')
+    .insert([
+        { nombre: voluntario_nombre ,
+          _1r_apellido: voluntario_1r_apellido ,
+          _2n_apellido: voluntario_2n_apellido,
+          curso: voluntario_curso,
+          genero: voluntario_genero,
+          email: voluntario_email,
+          tipo: tipo,
+          descripcion: descripcion,
+          estado: `Revisant`,
+          img: publicUrl,
+        },
+    ])
+    .select()
 
-//   if (equipoError) {
-//     console.error("Error insertando en equipos:", equipoError.message);
-//     return new Response(
-//       `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en afegir l'equip.. Torna-ho a intentar més tard.</div>`, 
-//       { status: 401, headers: { "Content-Type": "text/html" } }
-//   );
-//   }
+  if (equipoError) {
+    console.error("Error insertando en equipos:", equipoError.message);
+    return new Response(
+      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en afegir l'equip.. Torna-ho a intentar més tard.</div>`, 
+      { status: 401, headers: { "Content-Type": "text/html" } }
+  );
+  }
 
 
 
