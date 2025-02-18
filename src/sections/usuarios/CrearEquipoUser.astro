@@ -6,6 +6,7 @@ import { verificarSesion } from "src/lib/session";
 import { supabaseAdmin } from "../../lib/supabase";
 import CondicionesInscripcion from "src/pages/condiciones-inscripcion.astro";
 import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
+import FormSend from "@components/FormSend.astro";
 
 const usuario = await verificarSesion(Astro.request);
 interface Jugador {
@@ -40,7 +41,14 @@ file.addEventListener('change', (e: Event) => {
   }
 });
 </script>
-
+<div id="espera" class=" oculto w-full h-full bg-gris bg-opacity-60 overflow-hidden">
+  <div class="bg-gris-claro rounded-xl relative max-w-2xl w-full h-96 flex flex-col items-center place-content-center">
+    <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-5">Enviant Dades</h2>
+    <FormSend />
+    <p class="text-blanco text-center absolute bottom-5">Estem treballant per enviar-te tota la informació necessària sobre la inscripció. Actualment, estem processant les dades i t'agraïm la teva paciència.
+      </p>
+  </div>
+  </div>
 <!-- action="/api/usuario/anadir-equipo" -->
 <div class="max-w-5xl w-full h-max py-2  overflow-hidden mx-auto my-10 ">
   <form id="equipo-form" method="POST" class="space-y-4" action="/api/usuario/anadir-equipo"  enctype="multipart/form-data">
@@ -949,6 +957,11 @@ while (document.getElementById(`extra_genero_${index}`)) {
         const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
         const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
 
+
+        const espera = document.getElementById('espera');
+        espera?.classList.add("centrar");
+        espera?.classList.remove("oculto");
+
         const response = await fetch(form.action, {
             method: 'POST',
             body: formData,
@@ -959,6 +972,8 @@ while (document.getElementById(`extra_genero_${index}`)) {
             const html = await response.text();
             document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
             // Desplazarse hacia el div de error
+            espera?.classList.remove("centrar");
+          espera?.classList.add("oculto");
             document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
         } else if (contentType && contentType.includes("application/json")) {
             const jsonResponse = await response.json();
