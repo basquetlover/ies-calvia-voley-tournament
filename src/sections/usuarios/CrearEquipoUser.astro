@@ -2,6 +2,7 @@
 import {CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
 export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "" }));
 export const jugadores_extra = Array.from({ length: 3 }, () => ({ nombre: "", curso: "" }));
+export const staff = Array.from({ length: 5 }, () => ({ nombre: "", curso: "" }));
 import { verificarSesion } from "src/lib/session";
 import { supabaseAdmin } from "../../lib/supabase";
 import CondicionesInscripcion from "src/pages/condiciones-inscripcion.astro";
@@ -683,6 +684,202 @@ file.addEventListener('change', (e: Event) => {
   </div>
 ))} 
 
+
+<!--Staff (Publico) -->
+<div class="w-max flex flex-row gap-2">
+  <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Alumnes Staff</h4><p class="text-gris-claro text-sm">(No poden jugar)</p></div>
+</div>
+{staff.map((jugador, index) => (
+  <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+  <div class="flex flex-row gap-2 items-end">
+        <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1}. Staff</p>
+        
+
+        {/* Genero */}
+        <div class="flex flex-col relative">
+            <label class="genero relative">
+                <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+                <input 
+                    id={`staff_genero_${index}`}
+                    type="hidden"
+                    name={`staff_genero_${index}`} 
+                    value="" 
+                    class="w-10" 
+                />
+                <span id={`staff_hombre_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                    </svg>
+                </span>
+                <span id={`staff_mujer_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                    </svg>
+                </span>
+            </label>
+        </div>
+      </div>
+  <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap  items-center gap-x-2 gap-y-8 space-x-2">
+            {/* Nombre */}
+            <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Nom
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="text"
+            name={`staff_player_${index}_name`}
+            id={`staff_player_${index}_name`}
+            placeholder="Nom del jugador"
+            class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            value={jugador.nombre}
+            
+            />
+        </div>
+        {/* 1r Apellido */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                1r Cognom
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            
+            <input
+            type="text"
+            name={`staff_player_${index }_1r_apellido`}
+            id={`staff_player_${index }_1r_apellido`}
+            placeholder="Cognom del jugador"
+            class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            value={jugador.nombre}
+            />
+        </div>
+
+        {/* 2n Apellido */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+            <input
+            type="text"
+            name={`staff_player_${index}_2n_apellido`}
+            placeholder="Segon Cognom del jugador"
+            class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            value={jugador.nombre}
+            />
+        </div>
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Curs
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            
+        <select
+          name={`staff_player_${index}_curso`}
+          class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+          
+          value={jugador.curso}
+          
+        >
+          <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
+          {CURSO_3E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
+          {CURSO_4E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
+          {CURSO_1B.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
+          {CURSO_2B.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
+          {CURSO_FP.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          
+        </select>
+        </div>
+
+        {/* Email */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Email
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="email"
+            id={`staff_player_${index}_email`}
+            name={`staff_player_${index}_email`}
+            placeholder="Email del jugador"
+            class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            value={jugador.nombre}
+            />
+        
+        </div>
+        
+        {/* Imagen cara */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Imatge Cara
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="file"
+            id={`staff_player_${index}_img`}
+            name={`staff_player_${index}_img`}
+            placeholder="Email del jugador"
+            class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+            accept=".png, .jpg, .jpeg, .webp"
+            
+            value={jugador.nombre}
+            />
+        
+        </div>
+  </div>
+))} 
+
 <div class="w-max flex flex-row gap-2 px-6">
   <p class="text-lg text-blanco">Permets que el capità pugui modificar l'equip?</p>
   <div class="flex flex-col relative">
@@ -907,6 +1104,31 @@ while (document.getElementById(`extra_genero_${index}`)) {
     const mujer = document.getElementById(`extra_mujer_${index}`)!;
     
     const genero = document.getElementById(`extra_genero_${index}`)! as HTMLInputElement;
+    hombre.addEventListener('click',  function(){
+        
+            genero.value = "hombre";
+            hombre.classList.add("hombre");
+            hombre.classList.remove("desactivado");
+            mujer.classList.remove("mujer");
+            mujer.classList.add("desactivado");
+    });
+    mujer.addEventListener('click',  function(){
+        
+        genero.value = "mujer";
+        mujer.classList.add("mujer");
+        mujer.classList.remove("desactivado");
+        hombre.classList.remove("hombre");
+        hombre.classList.add("desactivado");
+});
+    index++;
+}
+
+index = 0;
+while (document.getElementById(`staff_genero_${index}`)) {
+    const hombre = document.getElementById(`staff_hombre_${index}`)!;
+    const mujer = document.getElementById(`staff_mujer_${index}`)!;
+    
+    const genero = document.getElementById(`staff_genero_${index}`)! as HTMLInputElement;
     hombre.addEventListener('click',  function(){
         
             genero.value = "hombre";
