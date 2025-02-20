@@ -1,0 +1,210 @@
+---
+import ControlAcces from "@components/ControlAcces.astro";
+import LayoutUsuarioMenu from "@layouts/LayoutUsuarioMenu.astro";
+
+import { supabaseAdmin } from "../../lib/supabase";
+
+// Define una estructura para los usuarios con rango
+interface UserWithRango {
+    email: string;
+    rango: string;
+}
+
+let error = null;
+let usersWithRangos: UserWithRango[] = [];
+let Owners: UserWithRango[] = [];
+
+
+
+const { data: StaffData, error: fetchOwnerError } = await supabaseAdmin
+        .from("Administradores")
+        .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
+        .in('rango', ['Owner', 'Co-Owner', 'Staff'])
+        .eq('lista', 'si')
+        .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E']);
+
+const { data: VoluntarioData, error: fetchVoluntarioError } = await supabaseAdmin
+        .from("Administradores")
+        .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
+        .in('rango', ['Arbitro', 'Oficial de Mesa', 'Voluntario'])
+        .eq('lista', 'si')
+        .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E']);
+
+const { data: Jugador2BatData, error: fetchJugador2BatError } = await supabaseAdmin
+        .from("JugadoresSS")
+        .select(" nombre, curso, _1r_apellido, _2n_apellido")
+        .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E']);
+
+const { data: Voluntario1Data, error: fetchVoluntario1Error } = await supabaseAdmin
+        .from("Administradores")
+        .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
+        .in('rango', ['Arbitro', 'Oficial de Mesa', 'Voluntario'])
+        .eq('lista', 'si')
+        .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E']);
+
+const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAdmin
+        .from("JugadoresSS")
+        .select(" nombre, curso, _1r_apellido, _2n_apellido")
+        .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E']);
+
+
+---
+
+<ControlAcces>
+    <LayoutUsuarioMenu title="Llista d'alumnes | IES Calvià Voley Tournament" descripcion="Consulta els alumnes que participen en el torneig.">
+        <section class="max-w-4xl flex flex-wrap gap-x-2 w-full h-auto p-10 mx-auto mb-10">
+            {error ? (
+                <p class="text-red-500 text-center text-2xl">Ocurrió un error al obtener los datos: {error}</p>
+            ) : (
+                <>
+                {/* 1r Batchiller */}
+                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2">
+                    <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                        1r BAT
+                    </h2>
+                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
+                    
+                    {Voluntario1Data ? (
+                        Voluntario1Data.map((user, index) => (
+                        <tr >
+                            <td class="w-max" translate="no">
+                                {user.nombre}
+                            </td>
+                            
+                            <td class="w-max">
+                                {user._1r_apellido} {user._2n_apellido}
+                            </td>
+        
+                            <td class="text-center w-max">
+                                {user.curso}
+                            </td>
+                        </tr>
+                        
+                    ))
+                        ) : (
+                            <tr>
+                                <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                            </tr>
+                            
+                        )}
+                    {Jugador1BatData ? (
+                        Jugador1BatData.map((user, index) => (
+                        <tr class={index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300'}>
+                            <td class="w-max" translate="no">
+                                {user.nombre}
+                            </td>
+                            
+                            <td class=" w-max">
+                                {user._1r_apellido} {user._2n_apellido}
+                            </td>
+        
+                            <td class="text-center w-max">
+                                {user.curso}
+                            </td>
+                        </tr>
+                        
+                    ))
+                        ) : (
+                            <tr>
+                                <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                            </tr>
+                            
+                        )}
+                    </table>
+        
+                </div>
+                {/* 2n Batchiller */}
+                <div class="w-[400px] h-auto bg-gris-claro rounded-lg px-2">
+                    <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                        2n BAT
+                    </h2>
+                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
+                    {StaffData ? (
+                        StaffData.map((user) => (
+                        <tr >
+                            <td class="w-max" translate="no">
+                                {user.nombre}
+                            </td>
+                            
+                            <td class="w-max">
+                                {user._1r_apellido} {user._2n_apellido}
+                            </td>
+        
+                            <td class="text-center w-max">
+                                {user.curso}
+                            </td>
+                        </tr>
+                        
+                    ))
+                        ) : (
+                            <tr>
+                                <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                            </tr>
+                            
+                        )}
+                    {VoluntarioData ? (
+                        VoluntarioData.map((user, index) => (
+                        <tr >
+                            <td class="w-max" translate="no">
+                                {user.nombre}
+                            </td>
+                            
+                            <td class="w-max">
+                                {user._1r_apellido} {user._2n_apellido}
+                            </td>
+        
+                            <td class="text-center w-max">
+                                {user.curso}
+                            </td>
+                        </tr>
+                        
+                    ))
+                        ) : (
+                            <tr>
+                                <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                            </tr>
+                            
+                        )}
+                    {Jugador2BatData ? (
+                        Jugador2BatData.map((user, index) => (
+                        <tr class={index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300'}>
+                            <td class="w-max" translate="no">
+                                {user.nombre}
+                            </td>
+                            
+                            <td class=" w-max">
+                                {user._1r_apellido} {user._2n_apellido}
+                            </td>
+        
+                            <td class="text-center w-max">
+                                {user.curso}
+                            </td>
+                        </tr>
+                        
+                    ))
+                        ) : (
+                            <tr>
+                                <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                            </tr>
+                            
+                        )}
+                    </table>
+        
+                </div>
+                </>
+            )}
+        </section>
+    </LayoutUsuarioMenu>
+</ControlAcces>
+
+<style>
+    .bg-gray-200 {
+    background-color: #525252; /* Gris claro */
+}
+
+.bg-gray-300 {
+    background-color: transparent; /* Gris un poco más oscuro */
+}
+</style>
