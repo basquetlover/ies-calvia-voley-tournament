@@ -7,12 +7,18 @@ let equipo = "Sense Equip"
 let escudo = "/img/escudos/sin-escudo-blanco.png"
 let inscripcion = true;
 let admin = false;
+let profesor = false;
 
 if(usuario){
     const usuario_nombre = usuario.nombre;
     const usuario_email = usuario.email;
+    const curso = usuario.curso;
     let acceso_inscripcion = false;
-    
+
+    if(curso === "Professor"){
+        profesor = true;
+    }
+
     let { data: AccesoInscripcion, error } = await supabaseAdmin
         .from('AccesoUsuarios')
         .select('acceso')
@@ -171,7 +177,22 @@ if(usuario){
                 </span>
                 <a>Modificar Equip</a>
             </div>
+            {profesor === true || admin === true ? (
+            
+            
+                <a href="/admin" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all`}>
+                        <span class="w-5 h-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 -960 960 960">
+                                <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all`} d="M0-240v-63q0-43 44-70t116-27l25 1 23 2q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 18-58t49-47q32-20 77-30t96-10q53 0 98 10t76 30q32 20 49 47t17 58v65H240Zm540 0v-65q0-26-6-49t-20-43q11-2 23-2t23-1q72 0 116 27t44 70v63H780Zm-455-80h311q-10-20-55-35t-101-15q-55 0-100 15t-55 35ZM160-440q-33 0-56-23t-24-57q0-34 24-57t56-23q34 0 57 23t23 57q0 33-23 57t-57 23Zm640 0q-33 0-56-23t-24-57q0-34 24-57t56-23q34 0 57 23t23 57q0 33-23 57t-57 23Zm-320-40q-50 0-85-35t-35-85q0-51 35-85t85-35q51 0 86 35t34 85q0 50-34 85t-86 35Zm0-80q17 0 29-11t11-29q0-17-11-28t-29-12q-17 0-28 12t-12 28q0 17 12 29t28 11Zm1 240Zm-1-280Z"/>
+                            </svg>
+                        </span>
+                        <p>Llista Alumnes</p>
+                </a>
+            ):
+            (<></>)
+            }
         </nav>
+        
         {admin === true ? (
             <div class="w-[95%] h-[2px] my-4 bg-accent rounded-full mx-auto">&nbsp;</div>
             

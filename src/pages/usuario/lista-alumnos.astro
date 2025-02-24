@@ -47,16 +47,102 @@ const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAd
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E']);
 
+const { data: Jugador4ESOData, error: fetchJugador4ESOError } = await supabaseAdmin
+        .from("JugadoresSS")
+        .select(" nombre, curso, _1r_apellido, _2n_apellido")
+        .in('curso', ['4t ESO A', '4t ESO B', '4t ESO C', '4t ESO D', '4t ESO E', '4t ESO F', '4t ESO G', '4t ESO H']);
+
+const { data: Jugador3ESOData, error: fetchJugador3ESOError } = await supabaseAdmin
+        .from("JugadoresSS")
+        .select(" nombre, curso, _1r_apellido, _2n_apellido")
+        .in('curso', ['3r ESO A', '3r ESO B', '3r ESO C', '3r ESO D', '3r ESO E', '3r ESO F', '3r ESO G', '3r ESO H']);
+
+const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
+        .from("JugadoresSS")
+        .select(" nombre, curso, _1r_apellido, _2n_apellido")
+        .in('curso', ['1r FPB Cuina i restauració', '2n FPB Cuina i restauració', '1r GM Cuina i gastronomia', '2n GM Cuina i gastronomia', '1r GM Serveis en restauració', '2n GM Serveis en restauració', '1r GM Gestió administrativa', '2n GM Gestió administrativa']);
+
 
 ---
 
 <ControlAcces>
     <LayoutUsuarioMenu title="Llista d'alumnes | IES Calvià Voley Tournament" descripcion="Consulta els alumnes que participen en el torneig.">
-        <section class="max-w-4xl flex flex-wrap gap-x-2 w-full h-auto p-10 mx-auto mb-10">
+        <h1 class="text-5xl text-accent font-bold text-center mt-10">Lista d'alumnes Torneig Setmana Santa</h1>
+        <p class="text-blanco max-w-xl w-full mx-auto text-center text-sm my-4 px-3 py-2 bg-gris-claro rounded-lg">
+            La llista s’actualitza automàticament a mesura que els alumnes són acceptats al torneig. Si un alumne no apareix a la llista, significa que no ha estat inscrit i no forma part del torneig.
+        </p>
+        <section class="place-content-center flex flex-wrap gap-2 w-full h-auto p-10 mx-auto mb-10">
             {error ? (
                 <p class="text-red-500 text-center text-2xl">Ocurrió un error al obtener los datos: {error}</p>
             ) : (
                 <>
+                {/* 3r ESO */}
+                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2">
+                    <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                        3r ESO
+                    </h2>
+                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
+                    
+                    {Jugador3ESOData ? (
+                        Jugador3ESOData.map((user, index) => (
+                        <tr >
+                            <td class="w-max" translate="no">
+                                {user.nombre}
+                            </td>
+                            
+                            <td class="w-max">
+                                {user._1r_apellido} {user._2n_apellido}
+                            </td>
+        
+                            <td class="text-center w-max">
+                                {user.curso}
+                            </td>
+                        </tr>
+                        
+                    ))
+                        ) : (
+                        <p class="text-center text-blanco text-xl">No hi ha alumnes</p>
+                            
+                        )}
+                    </table>
+
+                 
+                </div>
+
+                {/* 4t ESO */}
+                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2">
+                    <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                        4t ESO
+                    </h2>
+                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
+                    
+                    {Jugador4ESOData ? (
+                        Jugador4ESOData.map((user, index) => (
+                        <tr >
+                            <td class="w-max" translate="no">
+                                {user.nombre}
+                            </td>
+                            
+                            <td class="w-max">
+                                {user._1r_apellido} {user._2n_apellido}
+                            </td>
+        
+                            <td class="text-center w-max">
+                                {user.curso}
+                            </td>
+                        </tr>
+                        
+                    ))
+                        ) : (
+                        <p class="text-center text-blanco text-xl">No hi ha alumnes</p>
+                            
+                        )}
+                    </table>
+
+                 
+                </div>
                 {/* 1r Batchiller */}
                 <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2">
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
@@ -114,6 +200,7 @@ const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAd
                     </table>
         
                 </div>
+
                 {/* 2n Batchiller */}
                 <div class="w-[400px] h-auto bg-gris-claro rounded-lg px-2">
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
@@ -146,7 +233,7 @@ const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAd
                         )}
                     {VoluntarioData ? (
                         VoluntarioData.map((user, index) => (
-                        <tr >
+                        <tr>
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -169,7 +256,7 @@ const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAd
                         )}
                     {Jugador2BatData ? (
                         Jugador2BatData.map((user, index) => (
-                        <tr class={index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300'}>
+                        <tr class={index % 2 === 0 ? '' : ''}>
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -193,13 +280,50 @@ const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAd
                     </table>
         
                 </div>
+
+                 {/* FP */}
+                 <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2">
+                    <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                        FP
+                    </h2>
+                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
+                    
+                    {JugadorFPData ? (
+                        JugadorFPData.map((user, index) => (
+                        <tr >
+                            <td class="w-max" translate="no">
+                                {user.nombre}
+                            </td>
+                            
+                            <td class="w-max">
+                                {user._1r_apellido} {user._2n_apellido}
+                            </td>
+        
+                            <td class="text-center w-max">
+                                {user.curso}
+                            </td>
+                        </tr>
+                        
+                    ))
+                        ) : (
+                        <p class="text-center text-blanco text-xl">No hi ha alumnes</p>
+                            
+                        )}
+                    </table>
+
+                 
+                </div>
                 </>
             )}
         </section>
+        <p class="text-blanco max-w-xl w-full mx-auto text-center text-sm my-4 px-3 py-2 bg-gris-claro rounded-lg">
+            Aquesta llista inclou tant els alumnes jugadors com els alumnes organitzadors i voluntaris del torneig.
+        </p>
     </LayoutUsuarioMenu>
 </ControlAcces>
 
-<style>
+<!-- <style>
     .bg-gray-200 {
     background-color: #525252; /* Gris claro */
 }
@@ -207,4 +331,4 @@ const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAd
 .bg-gray-300 {
     background-color: transparent; /* Gris un poco más oscuro */
 }
-</style>
+</style> -->
