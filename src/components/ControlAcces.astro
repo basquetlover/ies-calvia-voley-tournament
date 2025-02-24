@@ -32,7 +32,7 @@ const usuario = await verificarSesion(Astro.request);
 if(usuario){
     const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
-            .select("rango")
+            .select("rango, user_email")
             .eq("user_email", usuario.email)
             .single();
 if(error){
@@ -40,7 +40,7 @@ if(error){
         "Usuario sin cuenta de admin"
     )
 }
-
+// adminData?.rango === "Owner" || 
 if(adminData){
     userHasAccess = true;
 }

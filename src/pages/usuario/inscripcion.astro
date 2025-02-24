@@ -4,9 +4,67 @@ import LayoutMenu from "@layouts/LayoutMenu.astro";
 import LayoutUsuario from "@layouts/LayoutUsuario.astro";
 import LayoutUsuarioMenu from "@layouts/LayoutUsuarioMenu.astro";
 import CrearEquipoUser from "@sections/usuarios/CrearEquipoUser.astro";
+
+const fechaInicio = new Date('2025-3-5'); // Cambia esta fecha según tus necesidades
+const fechaFin = new Date('2025-3-21'); // Cambia esta fecha según tus necesidades
+
+import { supabaseAdmin } from "src/lib/supabase";
+const pathname = Astro.url.pathname;
+let accessibleBlocks = [];
+
+// Obtén las páginas a las que el usuario tiene acceso
+try {
+    const { data: pageAccess, error } = await supabaseAdmin
+        .from('AccesoUsuarios')
+        .select('pagina, acceso');
+
+    if (error) {
+        console.error("Error al obtener acceso:", error);
+    } else if (pageAccess) {
+        // Filtra las páginas a las que el usuario tiene acceso
+        accessibleBlocks = pageAccess
+            .filter(page => page.acceso === true) // Solo páginas con acceso true
+            .map(page => page.pagina); // Obtiene solo las páginas
+        // console.log(accessibleBlocks);
+    }
+} catch (err) {
+    console.error("Error al obtener acceso:", err);
+}
+// Verifica si el usuario tiene acceso a la página actual
+let userHasAccess = accessibleBlocks.includes(pathname);
+
+if(userHasAccess){
+    let RangoFechas;
+
+    const fechaActual = new Date();
+
+    // Compara la fecha actual con las fechas de inicio y fin
+    if (fechaActual < fechaInicio) {
+        const { data: pageAccess, error } = await supabaseAdmin
+        .from('AccesoUsuarios')
+        .update({acceso: 'false'})
+        .eq('pagina', '/usuario/inscripcion');
+
+        RangoFechas = 'Dentro del rango de fechas';
+        
+    } else if (fechaActual > fechaFin) {
+        const { data: pageAccess, error } = await supabaseAdmin
+        .from('AccesoUsuarios')
+        .update({acceso: 'false'})
+        .eq('pagina', '/usuario/inscripcion');
+
+        RangoFechas = 'Dentro del rango de fechas';
+        
+    } else {
+    RangoFechas = 'Dentro del rango de fechas';
+    }
+    
+    
+}
+
 ---
 <ControlAcces>
-<LayoutUsuario title="Inscripció" descripcion="" >
+<LayoutUsuario title="Inscripció Torneig Setmana Santa | IES Calvià Voley Tournament" descripcion="" >
     <CrearEquipoUser />
 </LayoutUsuario>
 </ControlAcces>
