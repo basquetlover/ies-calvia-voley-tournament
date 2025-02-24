@@ -218,7 +218,7 @@ cerrar_user_menu.addEventListener('click', function() {
 
                     <a
                         href={page.href}
-                        class={` ${page.isActive ? 'actual' : 'hover:text-amarillo'} group relative flex flex-col items-center w-max text-center text-2xl text-white transition-all ${!page.href ? 'pointer-events-none' : ''}`}
+                        class={` ${page.isActive ? 'actual' : 'hover:text-amarillo'} group relative flex flex-col items-center w-max text-center text-xl text-white transition-all ${!page.href ? 'pointer-events-none' : ''}`}
                         title={`Página ${page.name.toLowerCase()}`}
                         >
                         {page.name}
@@ -254,7 +254,7 @@ cerrar_user_menu.addEventListener('click', function() {
             <!-- Cuenta -->
             <div>
                 {usuario ? (
-                    <div class="w-96 h-14">
+                    <div class="w-64 h-14">
                         <div id="usuario" class="w-max mx-auto min-w-40 px-1 h-14 rounded-lg uppercase text-lg flex flex-row gap-2 text-blanco items-center place-content-center border-2 border-accent cursor-pointer">
                             <span class="w-10 h-10 rounded-full">
                                 {/* <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 40 40">
@@ -277,13 +277,13 @@ cerrar_user_menu.addEventListener('click', function() {
         
         <!--Enlaces No importantes -->
         <!-- grid-cols-5 grid-rows-1 place-items-center justify-center-->
-        <nav class="w-[90%] h-auto pt-4 hidden flex-wrap gap-4 items-center place-content-around  m-auto border-t-2 border-accent rounded-1 p-2" id="noimp-desk">
+        <nav class="w-[90%] h-auto pt-6 pb-2 hidden flex-wrap gap-4 items-center place-content-around  m-auto border-t-2 border-accent rounded-1 p-2" id="noimp-desk">
             
             {
                 paginas_secundarias.map(({ name, href, isActive }) => (
                   <a
                     href={href}
-                    class={`redirect ${isActive ? 'actual' : 'hover:text-amarillo'} group relative flex flex-col items-center w-max text-center text-2xl text-white transition-all ${!href ? 'pointer-events-none' : ''}`}
+                    class={`redirect ${isActive ? 'actual' : 'hover:text-amarillo'} group relative flex flex-col items-center w-max text-center text-xl text-white transition-all ${!href ? 'pointer-events-none' : ''}`}
                     title={`Página ${name.toLowerCase()}`}
                   >
                     {name}
