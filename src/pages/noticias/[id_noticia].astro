@@ -69,7 +69,19 @@ try {
   console.error('Error al obtener rango:', err);
 }
 ---
+<script>
+  // Asegúrate de que el contenido de 'cuerpo' esté disponible aquí
+  const textarea = document.getElementById("contenido-noticia") as HTMLInputElement;
+  const contenido = textarea.value;
+  // Selecciona el div con id 'output'
+  
+  const outputDiv = document.getElementById('output');
 
+  // Asigna el contenido de 'cuerpo' al div
+  if (outputDiv) {
+      outputDiv.innerHTML = contenido;
+  }
+</script>
 
 <LayoutMenu title=`${titulo} | IES Calvià Voley Tournament` descripcion="Noticia">
   <article class="max-w-3xl relative mx-auto my-10 flex flex-col items-center ">
@@ -96,17 +108,71 @@ try {
               <p class="border-none ml-2 text-2xl text-amarillo bg-transparent rounded py-2 px-3 w-auto">{fecha}</p>
           </div>
       </div>
-      <div class="max-w-3xl mx-auto flex flex-row text-lg mt-5 text-blanco gap-2" >
-        <textarea disabled class="bg-gris text-blanco">{cuerpo}</textarea>
+      <textarea hidden disabled id="contenido-noticia" class="bg-gris text-blanco">{cuerpo}</textarea>
+      <div class="max-w-3xl mx-auto text-lg mt-5 text-blanco gap-2" id="output">
+        
       </div>
+       
+          
 
-      <p class="text-blanco text-center text-sm my-4 px-3 py-2 bg-gris-claro rounded-lg">
+      <p class="text-blanco text-center my-4 px-3  py-2 bg-gris-claro rounded-lg">
         ⚠️ Atenció: És possible que en dispositius Apple les notícies no es mostrin correctament. Estem treballant per solucionar-ho. Disculpeu les molèsties.
     </p>   
 </article>
 </article>
 </LayoutMenu>
 <style>
+  #output{
+    h1 {
+    font-size: 2em; /* 32px */
+}
+a{
+  color: #1666FF;
+  text-decoration: underline;
+}
+
+h2 {
+    font-size: 1.5em; /* 24px */
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 1.17em; /* 20px */
+}
+
+h4 {
+    font-size: 1em; /* 16px */
+}
+
+h5 {
+    font-size: 0.83em; /* 13.28px */
+}
+
+h6 {
+    font-size: 0.67em; /* 11.68px */
+}
+
+p {
+    font-size: 1rem; /* 1rem es igual al tamaño de fuente del elemento raíz (normalmente 16px) */
+}
+
+ol {
+    margin: 20px 0;
+    padding-left: 20px; /* Espaciado a la izquierda */
+}
+li[data-list="bullet"] {
+            list-style-type: disc; /* Puntos para listas no ordenadas */
+        }
+
+        li[data-list="ordered"] {
+            list-style-type: decimal; /* Números para listas ordenadas */
+        }
+li {
+    margin-bottom: 5px; /* Espaciado entre elementos de la lista */
+}
+  }
+
+
   input[type="file"]::file-selector-button {
   display: none;
 }

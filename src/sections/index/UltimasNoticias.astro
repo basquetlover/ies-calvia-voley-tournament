@@ -63,9 +63,9 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
               </div>
               <div class="flex flex-row items-center px-3 my-2 justify-between">
                 <p class="text-accent text-xl underline max-w-[50%] w-full">{noticia.category}</p>
-                <p class="text-amarillo text-xl max-w-[50%] w-full">{noticia.fecha}</p>
+                <p class="text-amarillo  text-xl max-w-[50%] w-full">{noticia.fecha}</p>
               </div>
-              <p class="text-accent text-3xl font-semibold px-2" translate="no">{noticia.titulo}</p>
+              <p class="text-accent text-4xl puntos font-semibold px-2" translate="no">{noticia.titulo}</p>
             </div>
           </a>
         </article>
@@ -74,7 +74,14 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
     )}
   </div>
 </div>
-
+<style>
+  .puntos{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+</style>
 <!-- 
     ---
 

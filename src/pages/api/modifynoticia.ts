@@ -112,6 +112,8 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   
 //   // Ahora puedes usar urlData.publicUrl para insertar en la base de datos
 //   const publicUrl = urlData.publicUrl;
+
+
 async function uploadFile(file: File, id_equipo: string) {
     const extension = file.name.split('.').pop();
     const uniqueFileName = `${id_equipo}_${Date.now()}.${extension}`;

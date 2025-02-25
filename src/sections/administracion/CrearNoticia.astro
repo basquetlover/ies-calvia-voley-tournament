@@ -1,0 +1,49 @@
+---
+import Quill from 'quill'; // Importa Quill
+    import 'quill/dist/quill.snow.css'; // Importa el CSS de Quill
+    let editorContent = ''; // Variable para almacenar el contenido del editor
+
+// onMount(() => {
+//   const quill = new Quill('#editor', {
+//     theme: 'snow',
+//     modules: {
+//       toolbar: [
+//         [{ header: [1, 2, false] }],
+//         ['bold', 'italic', 'underline'],
+//         ['image', 'code-block'],
+//         ['clean'] // remove formatting button
+//       ]
+//     }
+//   });
+
+  // Función para guardar el contenido
+//   const saveContent = () => {
+//     editorContent = quill.root.innerHTML; // Guarda el contenido en formato HTML
+//     console.log(editorContent); // Muestra el contenido en la consola
+//   };
+
+//   // Agregar el evento al botón
+//   const saveButton = document.getElementById('save-button');
+//   if (saveButton) {
+//     saveButton.addEventListener('click', saveContent);
+//   }
+// });
+
+
+---
+
+<div>
+  <h2>Editor de Texto con Quill.js</h2>
+  <div id="editor" style="height: 400px;"></div>
+  <button id="save-button">Guardar Contenido</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+
+
+<script>
+    import Quill from 'quill'; // Importa Quill
+  const quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+</script>

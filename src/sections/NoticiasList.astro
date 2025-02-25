@@ -65,7 +65,7 @@ if (error) {
             <p class="text-amarillo text-xl  ">{noticia.fecha}</p>
             
           </div>
-          <p class="text-accent text-3xl font-semibold px-2" translate="no">{noticia.titulo}</p>
+          <p class="text-accent text-3xl puntos font-semibold px-2" translate="no">{noticia.titulo}</p>
           
         </div>
       </a>
@@ -74,3 +74,11 @@ if (error) {
 
     
   </div>
+  <style>
+    .puntos{
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+  </style>

@@ -95,8 +95,66 @@ try {
 } catch (err) {
     console.error("Error al obtener datos del usuario:", err);
 }
-
 ---
+
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<script>
+  import Quill from 'quill'; // Importa Quill
+const quill = new Quill('#editor', {
+  modules: {
+  toolbar: [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+['blockquote'],
+['link', 'image',],
+
+[{ 'header': 1 }, { 'header': 2 }],               // custom button values
+[{ 'list': 'ordered'}, { 'list': 'bullet' }],
+[{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+[{ 'direction': 'rtl' }],                         // text direction
+
+
+[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+
+[{ 'align': [] }],
+
+  ],
+},
+  theme: 'snow'
+});
+
+//Importar Antiguo texto
+// Al cambiar el contenido del textarea, actualiza Quill automáticamente
+
+            const textarea = document.getElementById("contenido-noticia") as HTMLInputElement;
+            const contenido = textarea.value;
+
+            // Limpia el editor antes de insertar nuevo contenido
+            quill.setContents([]); // Limpia el contenido actual
+
+            // Inserta el contenido del textarea en Quill
+            quill.clipboard.dangerouslyPasteHTML(contenido);
+   
+
+        
+
+//Mandar nuevo texto
+const form = document.getElementById('team-form');
+if (form) {
+  form.addEventListener('submit', () => {
+      const contenido = quill.root.innerHTML; // Obtiene el contenido del editor
+      const cuerpoInput = document.getElementById('cuerpo') as HTMLInputElement; // Asegúrate de que sea un input
+      if (cuerpoInput) {
+          cuerpoInput.value = contenido; // Asigna el contenido al campo oculto
+      }
+  });
+}
+</script>
+
 <script>
     const file = document.getElementById('foto') as HTMLInputElement;
     const img = document.getElementById('img') as HTMLImageElement;
@@ -206,9 +264,19 @@ try {
               />
           </div>
       </div>
-      <div class="w-full flex flex-row gap-2">
-          <label for="cuerpo"></label>
-          <textarea name="cuerpo" class="w-full min-h-72 h-auto bg-gris-claro border-none rounded-xl p-2 text-blanco">{cuerpo}</textarea>
+      <!-- 
+          <textarea id="contenido-noticia" class="w-full min-h-72 h-auto bg-gris-claro border-none rounded-xl p-2 text-blanco">{cuerpo}</textarea>
+      <div class="w-full text-blanco gap-2" id="output">
+        
+      </div> -->
+      <textarea hidden disabled id="contenido-noticia" class="w-full min-h-72 h-auto bg-gris-claro border-none rounded-xl p-2 text-blanco">{cuerpo}</textarea>
+      <input type="hidden" name="cuerpo" id="cuerpo" />
+      <div class="bg-gris-claro text-blanco">
+ 
+        <div id="editor" style="height: 400px;">
+
+        </div>
+        
       </div>
 
       
@@ -228,6 +296,47 @@ try {
 
 </LayoutStaff>
 <style>
+  #output{
+    h1 {
+    font-size: 2em; /* 32px */
+}
+
+h2 {
+    font-size: 1.5em; /* 24px */
+}
+
+h3 {
+    font-size: 1.17em; /* 20px */
+}
+
+h4 {
+    font-size: 1em; /* 16px */
+}
+
+h5 {
+    font-size: 0.83em; /* 13.28px */
+}
+
+h6 {
+    font-size: 0.67em; /* 11.68px */
+}
+
+ol {
+    margin: 20px 0;
+    padding-left: 20px; /* Espaciado a la izquierda */
+}
+li[data-list="bullet"] {
+            list-style-type: disc; /* Puntos para listas no ordenadas */
+        }
+
+        li[data-list="ordered"] {
+            list-style-type: decimal; /* Números para listas ordenadas */
+        }
+li {
+    margin-bottom: 5px; /* Espaciado entre elementos de la lista */
+}
+  }
+  
   input[type="file"]::file-selector-button {
   display: none;
 }

@@ -50,6 +50,7 @@ if (checkError) {
   return new Response("Hubo un error al verificar el correo electrónico.", { status: 500 });
 }
 
+console.log(cuerpo)
 
 async function uploadFile(file: File, id_noticia: string) {
     
@@ -96,7 +97,7 @@ if (existingAdmins && existingAdmins.length > 0) {
   console.log("El usuario ya tiene un categoria asignado.")
 }
 
-  // Insertar los datos en la tabla 'administradores'
+ // Insertar los datos en la tabla 'administradores'
   const { error: adminError } = await supabaseAdmin
     .from("Noticias")
     .insert([
