@@ -16,5 +16,8 @@ export const CATEGORY = [
     },
     {
         value: "Torneig Nadal",
+    },
+    {
+        value: "Torneig SS",
     }
 ]
