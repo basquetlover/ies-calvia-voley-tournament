@@ -249,6 +249,63 @@ let { data: Usuarios, error } = await supabaseAdmin
     index++;
   }
 
+
+  //Recoger la informacion del staff del equipo
+  const staff = [];
+  index = 0;
+  while (formData.has(`staff_player_${index}_name`)) {
+    const nombre = formData.get(`staff_player_${index}_name`)?.toString().trim();
+    if(nombre !== ""){
+      const _1r_apellido = formData.get(`staff_player_${index }_1r_apellido`)?.toString().trim();
+      const _2n_apellido = formData.get(`staff_player_${index}_2n_apellido`)?.toString().trim();
+      const genero_staff = formData.get(`staff_genero_${index}`)?.toString().trim();
+      const curso = formData.get(`staff_player_${index}_curso`)?.toString().trim();
+      const email = formData.get(`staff_player_${index}_email`)?.toString().trim();
+      const img = formData.get(`staff_player_${index}_img`) as File;
+      const numero = index + 7;
+      if (email) { 
+        const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
+        const dominioConArroba = '@' + dominio;
+        if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+          console.log(`El email del ${index + 7}. Jugador ha de ser del centre`)
+          return new Response(
+                `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email del ${index + 7}. Jugador ha de ser del centre</div>`, 
+                { status: 401, headers: { "Content-Type": "text/html" } }
+            );
+      }
+    } else {
+        // Manejo del caso en que email es undefined o vacío
+        console.error("El email no es válido.");
+    }
+      if(!genero_staff) {
+        return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Seleccioni el gènere del ${index + 7}. Jugador ${nombre}</div>`, 
+          { status: 401, headers: { "Content-Type": "text/html" } }
+      );
+      
+      }
+      let { data: Usuarios, error } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('email')
+
+    if (Usuarios) {
+  
+    
+      // Verificar si ya existe un usuario con el mismo email
+      const userExistsByEmail = Usuarios.some(usuario => usuario.email === email);
+      
+      if (userExistsByEmail) {
+        return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El jugador Nº${index +7} ja es troba inscrit</div>`, 
+          { status: 400, headers: { "Content-Type": "text/html" } }
+        );
+      }
+    }
+    staff.push({ nombre, img, curso, _1r_apellido, _2n_apellido, genero_staff, email, numero });
+    }
+    index++;
+  }
+
   console.log("Datos usuario:", {usuario_id, usuario_curso, usuario_email, usuario_nombre });
   console.log("Datos recibidos:", {id_equipo, nombre_equipo, capitan, acompañante, escudo, jugadores,  jugadores_extra });
   if (!capitan) {
@@ -494,6 +551,49 @@ console.log(currentDate);
     }
   }
 
+  for (const jugador of staff) {
+
+    let publicIMGurl = "";
+    // Llama a la función para subir el escudo
+  const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
+  
+  //Obtener la URL pública del escudo subido
+  const { data: urlIMGData } = supabaseAdmin.storage
+      .from('JugadoresIMG')
+      .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
+  
+  // Verifica si urlData contiene la propiedad publicUrl
+  if (!urlIMGData || !urlIMGData.publicUrl) {
+    //   console.error("No se pudo obtener la URL pública del escudo.");
+    //   return new Response(
+    //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+    //     { status: 401, headers: { "Content-Type": "text/html" } }
+    // );
+  }
+  if (urlIMGData) {
+    publicIMGurl = urlIMGData.publicUrl;
+  }
+
+    const { error: jugadorError } = await supabaseAdmin
+      .from('JugadoresSS')
+      .insert([
+        {   nombre: jugador.nombre, 
+            _1r_apellido: jugador._1r_apellido,
+            _2n_apellido: jugador._2n_apellido,
+            curso: jugador.curso,
+            genero: jugador.genero_staff,
+            pertenece_equipo: equipoId,
+            email: jugador.email,
+            ficha: 'cuerpo_tecnico',
+            img: publicIMGurl,
+          },
+      ]).select()
+
+    if (jugadorError) {
+      console.error("Error insertando jugador principal:", jugadorError.message);
+      // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+    }
+  }
   const { error: jugadorExtraError } = await supabaseAdmin
       .from('JugadoresSS')
       .insert([
@@ -1009,6 +1109,34 @@ a[x-apple-data-detectors],
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
                       <td align="left" bgcolor="#313131" class="es-text-4830" style="border-radius:10px;padding:10px;Margin:0"><h5 class="es-text-mobile-size-16" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:16px;font-style:normal;font-weight:normal;line-height:19.2px;color:#1666ff"><strong>Jugador ${jugador.numero}</strong></h5><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px"><strong>${jugador.nombre} ${jugador._1r_apellido} ${jugador._2n_apellido}</strong></p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Curs: ${jugador.curso}</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Email: ${jugador.email}</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+            `).join('')}
+            <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0"><h4 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:28.8px;color:#FFC700">Tècnics d'equip</h4></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             ${staff.map(jugador => `
+              <tr>
+              <td align="left" class="es-m-p20l es-m-p20r" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-right:40px;padding-left:40px;border-radius:10px">
+               <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:520px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" bgcolor="#313131" class="es-text-4830" style="border-radius:10px;padding:10px;Margin:0"><h5 class="es-text-mobile-size-16" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:16px;font-style:normal;font-weight:normal;line-height:19.2px;color:#1666ff"><strong>Staff ${jugador.numero}</strong></h5><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px"><strong>${jugador.nombre} ${jugador._1r_apellido} ${jugador._2n_apellido}</strong></p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Curs: ${jugador.curso}</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Email: ${jugador.email}</p></td>
                      </tr>
                    </table></td>
                  </tr>
