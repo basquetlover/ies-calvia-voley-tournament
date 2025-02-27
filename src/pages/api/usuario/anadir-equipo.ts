@@ -262,7 +262,7 @@ let { data: Usuarios, error } = await supabaseAdmin
       const curso = formData.get(`staff_player_${index}_curso`)?.toString().trim();
       const email = formData.get(`staff_player_${index}_email`)?.toString().trim();
       const img = formData.get(`staff_player_${index}_img`) as File;
-      const numero = index + 7;
+      const numero = index + 1;
       if (email) { 
         const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
         const dominioConArroba = '@' + dominio;
