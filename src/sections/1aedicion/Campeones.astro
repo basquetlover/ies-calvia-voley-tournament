@@ -1,0 +1,88 @@
+
+<div class="max-w-7xl w-auto mx-auto h-auto relative grid grid-cols-[max-content_1fr] place-items-center gap-4 mb-10">
+   <div class=" campeonas-box  w-96 h-96 relative flex flex-col items-center">
+        <p class="text-4xl font-bold text-amarillo letras-arriba">Campions</p>
+        <div class="z-10"><img src="/img/trofeo.webp" alt="Trofeu torneig" class="h-96" /></div>
+        <p class="text-3xl font-bold text-accent letras-abajo uppercase">Las Barbies</p>
+   </div>
+   <div class=" w-[80%] h-auto">
+    <p class="text-base text-blanco">Las Barbies, un equip majoritàriament format per jugadors i jugadores de 1r de Batxillerat, van demostrar un nivell excel·lent durant tot el torneig. Amb un joc sòlid i una gran coordinació, van superar totes les fases fins a arribar a la final, on es van enfrontar a LOS PR en un partit inoblidable.</p>
+    <p class="text-base text-blanco mt-4">Després d'un enfrontament extremadament disputat, on cada punt es va lluitar amb intensitat, Las Barbies van aconseguir la victòria i es van proclamar campiones de la 1a edició del Torneig Nadal. Aquest triomf les converteix en les primeres guanyadores del torneig, deixant el llistó molt alt per a les futures edicions.</p>
+</div>
+</div>
+
+<style>
+.letras-arriba{
+    position: absolute;
+    top: 80px;
+    left: 25px;
+    /* final -30px */
+    z-index: 0;
+    animation: salidaIzq 0.5s ease-in-out forwards;
+}
+.letras-abajo{
+    position: absolute;
+    bottom: 80px;
+    right: 22px;
+    z-index: 0;
+    animation: salidaDer 0.5s ease-in-out forwards;
+}
+
+/* .letras-arriba{
+    left: -30px ;
+    animation: entradaIzq 0.5 ease-in-out;
+}
+.letras-abajo{
+ right: -45px;
+} */
+.campeonas-box:hover .letras-arriba {
+    animation: entradaIzq 0.5s ease-in-out forwards;
+}
+
+.campeonas-box:hover .letras-abajo {
+    animation: entradaDer 0.5s ease-in-out forwards;
+}
+
+
+@keyframes entradaIzq {
+    from {
+        left: 25px;
+        
+    }
+    to {
+        left: -30px;
+       
+    }
+}
+
+@keyframes entradaDer {
+    from {
+        right: 22px;
+       
+    }
+    to {
+        right: -45px;
+       
+    }
+}
+
+@keyframes salidaIzq {
+    from {
+        left: -30px;
+    }
+    to {
+        left: 25px;
+    }
+}
+
+@keyframes salidaDer {
+    from {
+        right: -45px;
+    }
+    to {
+        right: 22px;
+    }
+}
+</style>
+
+
