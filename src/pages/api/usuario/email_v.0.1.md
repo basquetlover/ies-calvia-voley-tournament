@@ -1,4 +1,4 @@
-  const emailContent = `
+  <!-- const emailContent = `
 <!DOCTYPE html>
 <html>
   <head>
@@ -135,4 +135,4 @@
     </div>
   </body>
 </html>
-`;
+`; -->
