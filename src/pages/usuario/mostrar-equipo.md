@@ -39,8 +39,6 @@ let capitan = "";
 let estado = "";
 let aceptado = "";
 let fecha_inscripcion = "";
-let capitan_email = "";
-let capitan_edit= "";
 
 let id = "";
 let inscrito = "";
@@ -56,7 +54,6 @@ interface Jugador {
   genero: string;
   email: string;
   img: string;
-  id: number;
   
 };
 interface Staff {
@@ -67,7 +64,6 @@ interface Staff {
   genero: string;
   email: string;
   img: string;
-  id: number;
   
 };
 let entrenador_nombre = "";
@@ -76,19 +72,18 @@ let entrenador_2n_apellido = "";
 let entrenador_curso = "";
 let entrenador_genero = "";
 let entrenador_email = "";
-let entrenador_img = "";
-let entrenador_id = "";
 
 let jugadores: Jugador[] = [];
 
 let Staff: Staff[] = [];
 // let entrenador: Jugador[] = [];
 
+
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: equipoData, error } = await supabaseAdmin
     .from('EquiposSS')
-    .select('nombre_equipo, id, capitan, escudo, inscrito, estado, aceptado, fecha_inscripcion, email_capitan, capitan_edit')
+    .select('nombre_equipo, id, capitan, escudo, inscrito, estado, aceptado, fecha_inscripcion')
     .eq('id_equipo', id_equipo)
     .single();
 
@@ -103,8 +98,6 @@ try {
     estado = equipoData.estado;
     aceptado = equipoData.aceptado;
     fecha_inscripcion = equipoData.fecha_inscripcion;
-    capitan_email = equipoData.email_capitan;
-    capitan_edit= equipoData.capitan_edit;
   }
 
   const { data: UsuarioInscripcion } = await supabaseAdmin
@@ -120,7 +113,7 @@ try {
 
   const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
     .from('JugadoresSS')
-    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'jugador')
     .order('id', { ascending: true });
@@ -134,7 +127,7 @@ try {
 
   const {data: StaffData, error: StaffError} = await supabaseAdmin
     .from('JugadoresSS')
-    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'cuerpo_tecnico')
     .order('id', { ascending: true });
@@ -147,7 +140,7 @@ try {
 
   const {data: EntrenadorData, error: EntrenadorError} = await supabaseAdmin
     .from('JugadoresSS')
-    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'entrenador')
     .limit(1);
@@ -162,93 +155,63 @@ try {
     entrenador_curso = entrenadorData.curso;
     entrenador_genero = entrenadorData.genero;
     entrenador_email = entrenadorData.email;
-    entrenador_img = entrenadorData.img;
-    entrenador_id = entrenadorData.id;
-    //console.log(entrenador_nombre, entrenador_1r_apellido, entrenador_2n_apellido, entrenador_curso, entrenador_email, entrenador_genero);
+    console.log(entrenador_nombre, entrenador_1r_apellido, entrenador_2n_apellido, entrenador_curso, entrenador_email, entrenador_genero);
 } else {
     console.log("No se encontró ningún entrenador.");
 }
-
+  
   
 
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
 
-let num_jugadores = jugadores.length;
-let num_staff = Staff.length;
-
-const user = Astro.locals.StaffUser
-
-let nombre_staff = "";
-
-// let userWithRango = {
-//     email: user?.email || "Desconocido",
-//     rango: "Sin rango"
-// };
-
-try {
-    // Obtén el rango del usuario autenticado
-    if (user?.email) {
-        const { data: adminData, error } = await supabaseAdmin
-            .from("Administradores")
-            .select("rango, nombre, _1r_apellido")
-            .eq("user_email", user.email)
-            .single(); // Obtiene un único registro
-
-        if (error) {
-            console.error("Error al obtener rango:", error.message);
-        } else if (adminData) {
-            // userWithRango.rango = adminData.rango || "Sin rango";
-          nombre_staff = adminData.nombre + " " + adminData._1r_apellido;
-        }
-    }
-} catch (err) {
-    console.error("Error al obtener datos del usuario:", err);
-}
-
-
-const getCurrentDateInCatalan = () => {
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  const date = new Date();
-  return new Intl.DateTimeFormat('ca-ES', options).format(date);
-};
-
-const currentDate = getCurrentDateInCatalan();
 ---
+<!-- <script>
+    const file = document.getElementById('foto') as HTMLInputElement;
+    const img = document.getElementById('img') as HTMLImageElement;
+    const defaultFile = 'Vector.png'; // Asegúrate de definir defaultFile
+    
+    file.addEventListener('change', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const files = target.files;
+      
+      if (files && files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e: ProgressEvent<FileReader>) {
+          if (e.target && img) {
+            img.src = e.target.result as string;
+          }
+        };
+        reader.readAsDataURL(files[0]);
+      } else {
+        if (img) {
+          img.src = defaultFile;
+        }
+      }
+    });
+    </script> -->
+<script>
+
+</script>
 <LayoutStaff title=`Equip ${nombre_equipo}`>
     <div class="max-w-4xl mx-auto my-10">
       <div class="flex flex-wrap items-center place-content-around gap-2">
         <p class={`w-max h-max px-2 py-1 rounded-xl ${estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{estado}</p>
-        <p class={`w-max h-max px-2 py-1 rounded-xl ${aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${aceptado ===  "Inscrit" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} `}>{aceptado}</p>
+        <p class={`w-max h-max px-2 py-1 rounded-xl ${aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${aceptado ===  "Inscript" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} `}>{aceptado}</p>
         <p class="text-blanco bg-gris-claro px-3 py-2 rounded-lg">Data inscripció: {fecha_inscripcion}</p>
       </div>
-      
-      <div id="encabezado" class="ocultar">
+
+      <div>
         <div class="bg-accent w-full h-[2px] rounded-full my-5"></div>
       <div class="flex flex-wrap items-center place-content-around gap-2">
-        <p class={`w-max h-max px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-base uppercase font-semibold`} id="new-estado">Denegat</p>
-        
-        <p class="text-blanco bg-gris-claro px-3 py-2 rounded-lg">Data Revisió: {currentDate}</p>
+        <p class={`w-max h-max px-2 py-1 rounded-xl`} id="new-estado">Revisant</p>
+        <p class={`w-max h-max px-2 py-1 rounded-xl `}></p>
+        <p class="text-blanco bg-gris-claro px-3 py-2 rounded-lg">Data Revisió: {fecha_inscripcion}</p>
       </div>
     </div>
 
-        <form class="space-y-4" id="equipo-form" method="POST" action="/api/usuario/evaluar">
-          <!--Datos ocultos para mandar api -->
-          <>
-          <input type="hidden" name="nuevo_estado" id="nuevo_estado" />
-          <input type="hidden" name="equipo_id" value={id} />
-          <input type="hidden" name="fecha_inscripcion" value={fecha_inscripcion} />
-          <input type="hidden" name="nombre_equipo" value={nombre_equipo} />
-          <input type="hidden" name="usuario_email" value={creador_email} />
-          <input type="hidden" name="capitan_edit" value={capitan_edit}/>
-          <input type="hidden" name="capitan_email" value={capitan_email}/>
-          <input type="hidden" name="num_jugadores" value={num_jugadores} />
-          <input type="hidden" name="num_staff" value={num_staff} />
-          </>
-
-
-          <div id="errorbox" class="text-red-500 bg-gris rounded-lg px-3 py-2 text-center error-box"></div>
+        <section class="space-y-4" >
             <div>
                 <h2 class="text-amarillo text-2xl">Equip Inscrit Per:</h2>
                 <div class="flex flex-wrap items-center place-content-around gap-2 text-lg text-blanco">
@@ -273,11 +236,6 @@ const currentDate = getCurrentDateInCatalan();
                 )}
             
             
-          </div>
-          
-          <div id="probl-tit_logo" class="ocultar">
-            <h3 class="text-2xl text-naranja font-semibold">¿Problemas en Nombre de Equipo o Logo?</h3>
-            <textarea name="probl_tit_logo" class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
           </div>
 
           <!--Capitan -->
@@ -310,37 +268,11 @@ const currentDate = getCurrentDateInCatalan();
                   </span>
              </div>
             </div>
-
-            
-            
           </div>
           <div class="flex flex-col items-center ml-2">
     
             <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               
-              <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
-                <div class="w-20 min-h-20 h-auto overflow-hidden flex flex-col items-center justify-center">
-                  {entrenador_img ? (
-                    <img 
-                        src={entrenador_img} 
-                        alt={`Imagen Entrenador`} 
-                        class="h-full w-auto object-cover" 
-                      />
-                
-              ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="#e8eaed" viewBox="0 -960 960 960">
-                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
-                  </svg>
-                  )}
-                  <input type="hidden" name="entrenador_id" value={entrenador_id}/>
-                  <input type="hidden" name="img-entrenador" class="w-14" id="img-entrenador" value={`${entrenador_img ? (""): ("foto-denegada")}`} required/>
-                                  <div title={`${entrenador_img ? (""): ("IMG no valida")}`} class={`flex flex-row items-center gap-x-1 place-content-center ${entrenador_img ? ("cursor-pointer"): ("cursor-not-allowed  ")}`}>
-                                        <span id="img-entrenador-si" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${entrenador_img ? (""): ("pointer-events-none")}`}>Si</span>
-                                        <span id="img-entrenador-no" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${entrenador_img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
-                                  </div>
-                  </div>
-                
-                  <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               {/* Nombre */}
               <div class="flex flex-col relative">
                   <p class="form bg-gris-claro flex flex-row items-center place-content-center rounded-full px-3 py-1 text-blanco text-xl">
@@ -382,15 +314,6 @@ const currentDate = getCurrentDateInCatalan();
               
               </div>
             </div>
-            </div>
-            </div>
-  
-
-            
-          </div>
-          <div id="probl-entrenador" class="ocultar">
-            <h3 class="text-2xl text-naranja font-semibold">¿Problemas con el entrenador?</h3>
-            <textarea name="probl-entrenador" class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
           </div>
          
 
@@ -432,17 +355,15 @@ const currentDate = getCurrentDateInCatalan();
                       alt={`Imagen jugador ${index + 1}`} 
                       class="h-20 w-auto object-cover" 
                     />
-                    
+                  
                 ) : (
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="#e8eaed" viewBox="0 -960 960 960">
                   <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
                 </svg>
                 )}
-                <input type="hidden" name={`player_id_${index}`} value={jugador.id}/>
-                <input type="hidden" name={`img-jugador_${index}`} class="w-14" id={`img-jugador_${index}`} value={`${jugador.img ? (""): ("foto-denegada")}`} required/>
-                <div title={`${jugador.img ? (""): ("IMG no valida")}`} class={`flex flex-row items-center gap-x-1 place-content-center ${jugador.img ? ("cursor-pointer"): ("cursor-not-allowed  ")}`}>
-                      <span id={`img-jugador-si-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${jugador.img ? (""): ("pointer-events-none")}`}>Si</span>
-                      <span id={`img-jugador-no-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${jugador.img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
+                <div class="flex flex-row items-center gap-x-1 place-content-center">
+                  <span class=" w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60">Si</span>
+                  <span class=" w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60">No</span>
                 </div>
             </div>
             <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
@@ -489,17 +410,12 @@ const currentDate = getCurrentDateInCatalan();
               </div>
              
              </div>
-             
             </div>
-            <div id={`probl-jugador_${index}`} class="ocultar">
-            <h3 class="text-2xl text-naranja font-semibold">¿Problemas en el Jugador Nº{index +1}?</h3>
-            <textarea name={`probl_player_${index}`} class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
-          </div>
     ))}
 
 
 <div class="w-max flex flex-row gap-2">
-  <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Tècnics d'equip</h4></div>
+  <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Alumnes Jugadors</h4></div>
 </div>
 
 
@@ -529,7 +445,7 @@ const currentDate = getCurrentDateInCatalan();
    </div>
 </div>
 <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
-  <div class="w-20 min-h-20 h-auto overflow-hidden flex flex-col items-center justify-center">
+  <div class="w-20 h-20 overflow-hidden flex items-center justify-center">
     {jugador.img ? (
   <img 
       src={jugador.img} 
@@ -542,12 +458,6 @@ const currentDate = getCurrentDateInCatalan();
   <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
 </svg>
 )}
-<input type="hidden" name={`staff_id_${index}`} value={jugador.id}/>
-<input type="hidden" name={`img-staff_${index}`} class="w-14" id={`img-staff_${index}`} value={`${jugador.img ? (""): ("foto-denegada")}`} required/>
-                <div title={`${jugador.img ? (""): ("IMG no valida")}`} class={`flex flex-row items-center gap-x-1 place-content-center ${jugador.img ? ("cursor-pointer"): ("cursor-not-allowed  ")}`}>
-                      <span id={`img-staff-si-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${jugador.img ? (""): ("pointer-events-none")}`}>Si</span>
-                      <span id={`img-staff-no-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${jugador.img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
-                </div>
   </div>
   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
     
@@ -594,262 +504,26 @@ const currentDate = getCurrentDateInCatalan();
    
    </div>
   </div>
-
-<div id={`probl-staff_${index}`} class="ocultar">
-            <h3 class="text-2xl text-naranja font-semibold">¿Problemas en el Cuerpo Tecnico Nº{index +1}?</h3>
-            <textarea name={`probl_staff_${index}`} class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
-          </div>
 ))}
 
-<div id="botones" class="ocultar">
-<div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
-  <a href="/admin/equipos" rel="noreferrer" class="px-3 py-2 flex flex-row items-center select-none place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
-  <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-xl hover:scale-110  duration-300 transition-all transform">
-      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
-          <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
-      </svg>
-      Evaluar Equipo
-    </button>
-</div>
-</div>
-
-<div id="evaluar" class="centrar ocultar  flex items-center place-content-center bg-gris bg-opacity-75 w-full h-full">
-  <div class=" max-w-2xl rounded-md w-full h-auto min-h-96 bg-gris-claro relative">
-    <p class="text-accent text-3xl text-center font-semibold mt-2">{nombre_equipo}</p>
-    <p class="text-xl text-blanco ml-5">Entrenador: {entrenador_nombre} {entrenador_1r_apellido}</p>
-    <p class="text-xl text-blanco ml-5">Jugadores: {num_jugadores}</p>
-    <p class="text-xl text-blanco ml-5">Cuerpo Tecnico: {num_staff}</p>
-    <br />
-    <p class="text-xl text-blanco ml-5">Fecha inscripción: {fecha_inscripcion}</p>
-
-    <div class="flex flex-wrap px-4 text-xl items-center place-content-around mt-4">
-        <span id="aceptar" class="w-max h-max px-2 py-1 rounded-xl bg-verde-claro text-verde text-base uppercase font-semibold cursor-pointer">Acceptar</span>
-        <span id="denegar" class="w-max h-max px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-base uppercase font-semibold cursor-pointer">Denegar</span>
-    </div>
-    <br />
-    <p class="text-xl text-blanco ml-5">Staff: {nombre_staff}</p>
-    <br />
-    <p class="text-xl text-blanco ml-5">Fecha Revisión: {currentDate}</p>
-
-    
-
-    {estado !== "Revisant"?(<>
-    <div id="advertencia" class="w-full h-full bg-gris-claro absolute top-0 left-0 rounded-md">
-      <h2 class="text-4xl text-amarillo font-bold text-center mt-4">⚠️ ADVERTENCIA ⚠️</h2>
-      <p class="w-[80%] mx-auto mt-10 text-lg text-blanco text-center">El equipo <span class="text-accent">{nombre_equipo}</span> no ha realizado ningun cambio desde la ultima revision.</p>
-      <p class="w-[80%] mx-auto mt-10 text-xl text-blanco text-center">¿Estas seguro que quieres continuar con una nueva revision?</p>
-      <div class="w-[50%] mx-auto flex flex-wrap px-4 text-xl items-center place-content-around mt-4">
-        <span id="advertencia-si" class="w-14 h-14 px-2 py-1 rounded-xl bg-verde-claro text-verde text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">Si</span>
-        <span id="advertencia-no" class="w-14 h-14 px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">No</span>
-    </div>
-    </div>
-    </>):(
-      <>
-      
-      </>)}
-    <div id="btn-cerrar" class="h-10 w-10 rounded-full text-2xl text-blanco bg-cancelar flex items-center place-content-center absolute top-1 right-1 cursor-pointer">
-      X
-    </div>
-  </div>
-</div>
- <div id="btn-evaluar" class="w-20 h-20 rounded-md bg-gris-claro evaluar cursor-pointer">
+ <div id="evaluar" class="w-20 h-20 rounded-md bg-gris-claro evaluar">
   <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" viewBox="0 -960 960 960">
     <path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56-23t-24-57v-640q0-33 24-56t56-24h320l240 240v480q0 33-23 57t-57 23H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/>
   </svg>
   </div>
-
         
-</form>
+</section>
 </div>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-  console.log("Script para entrenador");
-    const si_entrenador = document.getElementById("img-entrenador-si");
-    const no_entrenador = document.getElementById("img-entrenador-no");
-    const foto_entrenador = document.getElementById("img-entrenador") as HTMLInputElement;
-
-    si_entrenador?.addEventListener('click', function() {
-       
-        foto_entrenador.value = "foto-aceptada";
-        si_entrenador.classList.add("si_foto");
-        si_entrenador.classList.remove("desactivado");
-        no_entrenador?.classList.remove("no_foto");
-        no_entrenador?.classList.add("desactivado");
-    });
-
-    no_entrenador?.addEventListener('click', function() {
-        foto_entrenador.value = "foto-denegada";
-        no_entrenador.classList.add("no_foto");
-        no_entrenador.classList.remove("desactivado");
-        si_entrenador?.classList.remove("si_foto");
-        si_entrenador?.classList.add("desactivado");
-    });
-});
-</script>
 
 <script>
   console.log("Script Evaluar Cargado")
-  const boton = document.getElementById("btn-evaluar");
-  const evaluar = document.getElementById("evaluar");
-  const botones_send = document.getElementById("botones");
-
-  const btn_cerrar = document.getElementById("btn-cerrar");
-  const denegar = document.getElementById("denegar");
-  const aceptar = document.getElementById("aceptar");
-  const advertencia = document.getElementById("advertencia");
-  const advertencia_no = document.getElementById("advertencia-no");
-  const advertencia_si = document.getElementById("advertencia-si");
-
-  const nuevo_estado = document.getElementById("nuevo_estado") as HTMLInputElement;
+  const boton = document.getElementById("evaluar");
 
   boton?.addEventListener('click', function(){
-    evaluar?.classList.add("centrar");
-    evaluar?.classList.remove("ocultar");
-  })
-
-  btn_cerrar?.addEventListener('click', function(){
-    evaluar?.classList.remove("centrar");
-    evaluar?.classList.add("ocultar");
-  })
-
-  advertencia_no?.addEventListener('click', function(){
-    evaluar?.classList.remove("centrar");
-    evaluar?.classList.add("ocultar");
-  })
-  advertencia_si?.addEventListener('click', function(){
-    advertencia?.classList.add("ocultar");
-  })
-
-  //aceptar
-  aceptar?.addEventListener('click', function(){
-    evaluar?.classList.remove("centrar");
-    evaluar?.classList.add("ocultar");
-
-    botones_send?.classList.add("equipo-denegado")
-    nuevo_estado.value = "Acceptat";
-  })
-
-  // Denegar
-  const encabezado = document.getElementById("encabezado");
-  const probl_tit_logo = document.getElementById("probl-tit_logo");
-  const probl_entrenador = document.getElementById("probl-entrenador");
-  denegar?.addEventListener('click', function(){
-    evaluar?.classList.remove("centrar");
-    evaluar?.classList.add("ocultar");
-
-    encabezado?.classList.add("equipo-denegado");
-    probl_tit_logo?.classList.add("equipo-denegado");
-    probl_entrenador?.classList.add("equipo-denegado");
-    botones_send?.classList.add("equipo-denegado");
-
-    nuevo_estado.value = "Denegat";
-
-    const jugadores = document.querySelectorAll("[id^='probl-jugador_']");
-    jugadores.forEach(jugadorDiv => {
-      jugadorDiv.classList.add("equipo-denegado");
-    });
-
-    const staff = document.querySelectorAll("[id^='probl-staff_']");
-    staff.forEach(jugadorDiv => {
-      jugadorDiv.classList.add("equipo-denegado");
-    });
-  });
-
-
-//jugadores
-  let index = 0;
-  while (document.querySelectorAll("[id^='img-jugador_']")) {
-    const si = document.getElementById(`img-jugador-si-${index}`)!;
-    const no = document.getElementById(`img-jugador-no-${index}`)!;
     
-    const foto = document.getElementById(`img-jugador_${index}`)! as HTMLInputElement;
-    si.addEventListener('click',  function(){
-        
-            foto.value = "foto-aceptada";
-            si.classList.add("si_foto");
-            si.classList.remove("desactivado");
-            no.classList.remove("no_foto");
-            no.classList.add("desactivado");
-    });
-    no.addEventListener('click',  function(){
-        
-        foto.value = "foto-denegada";
-        no.classList.add("no_foto");
-        no.classList.remove("desactivado");
-        si.classList.remove("si_foto");
-        si.classList.add("desactivado");
-});
-    index++;
-}
-
-//Cuerpo tecnico
-index = 0;
-  while (document.querySelectorAll("[id^='img-staff_']")) {
-    const si = document.getElementById(`img-staff-si-${index}`)!;
-    const no = document.getElementById(`img-staff-no-${index}`)!;
-    
-    const foto = document.getElementById(`img-staff_${index}`)! as HTMLInputElement;
-    si.addEventListener('click',  function(){
-        
-            foto.value = "foto-aceptada";
-            si.classList.add("si_foto");
-            si.classList.remove("desactivado");
-            no.classList.remove("no_foto");
-            no.classList.add("desactivado");
-    });
-    no.addEventListener('click',  function(){
-        
-        foto.value = "foto-denegada";
-        no.classList.add("no_foto");
-        no.classList.remove("desactivado");
-        si.classList.remove("si_foto");
-        si.classList.add("desactivado");
-});
-    index++;
-}
+  })
 </script>
- 
-<!-- Errores -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-      console.log('Script Errores cargado');
-  document.getElementById('equipo-form')?.addEventListener('submit', async (event) => {
-      event.preventDefault(); // Evita el envío del formulario por defecto
-
-      const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
-      const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
-
-
-      // const espera = document.getElementById('espera');
-      // espera?.classList.add("centrar");
-      // espera?.classList.remove("oculto");
-
-      const response = await fetch(form.action, {
-          method: 'POST',
-          body: formData,
-      });
-
-      const contentType = response.headers.get("Content-Type");
-      if (contentType && contentType.includes("text/html")) {
-          const html = await response.text();
-          document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
-          // Desplazarse hacia el div de error
-        //   espera?.classList.remove("centrar");
-        // espera?.classList.add("oculto");
-          document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
-      } else if (contentType && contentType.includes("application/json")) {
-          const jsonResponse = await response.json();
-          if (jsonResponse.success) {
-              // Redirigir a la página principal
-              window.location.href = '/admin/equipos'; // Redirige al usuario
-          } else {
-              // Manejo de errores si es necesario
-              document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
-          }
-      }
-  });
-});
-</script>
+      
       
 <style>
   input[type="file"]::file-selector-button {
@@ -864,22 +538,15 @@ index = 0;
         align-items: center;
         justify-content: center;
 }
-  .ocultar{
-    display: none;
-  }
-
-  .equipo-denegado{
-    display: block;
-  }
    .centrar {
         z-index: 0;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        /* display: flex;
+        display: flex;
         align-items: center;
-        justify-content: center; */
+        justify-content: center;
     }
     .formulario{
         z-index: 10000;
@@ -925,25 +592,7 @@ index = 0;
     
 }
 
-.si_foto {
-    background: rgba(20, 156, 2, 0.75);
-    /* background: rgb(255, 199, 0.75); */
-     /* Color para hombre */
-}
 
-.no_foto {
-    background-color: rgba(150, 1, 1, 0.75);
-    /* background: rgb(255, 199, 0.75); */
-    
-}
-
-
-.error-box{
-  position: fixed;
-  right: 20px;
-  top: 20px;
-  z-index: 100000000;
-}
 
 </style>
 </LayoutStaff>

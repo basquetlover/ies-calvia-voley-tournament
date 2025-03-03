@@ -413,7 +413,8 @@ console.log(currentDate);
           escudo: publicUrl,
           inscrito: usuario_id,
           estado: 'Revisant',
-          aceptado: `Llista d'espera`,
+          email_capitan: capitan_email,
+          capitan_edit: capitan_email,
           fecha_inscripcion: currentDate,
         },
     ])
