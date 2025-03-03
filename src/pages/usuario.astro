@@ -12,11 +12,15 @@ let escudo = "/img/escudos/sin-escudo-blanco.png"
 let inscripcion = true;
 let admin = false;
 let profesor = false;
+let modificar = false;
+let accesoModificar = true;
+let equipo_id = "";
+
 if(usuario){
     const usuario_nombre = usuario.nombre;
     const usuario_email = usuario.email;
     let acceso_inscripcion = false;
-    
+    let acceso_modificacion = false;
     let { data: AccesoInscripcion, error } = await supabaseAdmin
         .from('AccesoUsuarios')
         .select('acceso')
@@ -28,6 +32,20 @@ if(usuario){
         inscripcion = false
         }
     }
+
+    
+    let { data: AccesoModificar, error: a } = await supabaseAdmin
+        .from('AccesoUsuarios')
+        .select('acceso')
+        .eq('pagina', '/usuario/modificar')
+        .single();
+    if(AccesoModificar){
+        acceso_modificacion = AccesoModificar.acceso;
+        if( acceso_modificacion === true ){
+            accesoModificar = false
+        }
+    }
+
     let { data: JugadorCurso, error: errorJC } = await supabaseAdmin
     .from('Usuarios')
     .select('curso')
@@ -72,7 +90,7 @@ if(usuario){
     } else {
     let { data: Equipos, error: errorE } = await supabaseAdmin
         .from('EquiposSS')
-        .select('nombre_equipo, escudo')
+        .select('nombre_equipo, escudo, id_equipo, inscrito, estado, email_capitan, capitan_edit')
         .eq('id', Jugador.pertenece_equipo)
         .single(); // Use .single() to get a single record
 
@@ -92,10 +110,18 @@ if(usuario){
         } else{
             admin = true;
         }
+        equipo_id = Equipos.id_equipo
         equipo = Equipos.nombre_equipo
         escudo = Equipos.escudo
         inscripcion = true;
         
+        if(Equipos.inscrito === usuario.id){
+            modificar = true;
+        }
+        if(Equipos.capitan_edit === "si_edit")
+            if(Equipos.email_capitan === usuario.email){
+                modificar = true;
+            }
     }
     }
 
@@ -190,7 +216,17 @@ if(usuario){
                 <p>Inscriure Equip</p>
             </a>
             {/* Modificar Equipo */}
-            <div class="px-1 h-32 w-32 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center text-gray-500 items-center">
+            {modificar === true ? (<>
+                <a href={`/usuario/modificar/${equipo_id}`} class={`px-1 h-32 w-32 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center ${accesoModificar === false ? " text-white hover:text-amarillo group duration-300 transition-all" : " text-gray-500 cursor-not-allowed pointer-events-none "}`}>
+                    <span class="w-20 h-20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
+                            <path class={` ${accesoModificar === false ? "fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all" : " fill-gray-500 "}`} d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 27-17t30-6q16 0 31 6t26 18l55 56q12 11 18 26t5 30q0 16-5 31t-18 26L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
+                        </svg>
+                    </span>
+                    Modificar Equip
+                </a>
+                </>):(<>
+                <div class="px-1 h-32 w-32 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center text-gray-500 items-center">
                 <span class="w-20 h-20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
                         <path class="fill-gray-500" d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 27-17t30-6q16 0 31 6t26 18l55 56q12 11 18 26t5 30q0 16-5 31t-18 26L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
@@ -198,6 +234,8 @@ if(usuario){
                 </span>
                 <a>Modificar Equip</a>
             </div>
+                </>)}
+            
         </nav>
         {profesor === true || admin === true ? (
             
