@@ -41,6 +41,7 @@ let aceptado = "";
 let fecha_inscripcion = "";
 let capitan_email = "";
 let capitan_edit= "";
+let probl_tit_logo= "";
 
 let id = "";
 let inscrito = "";
@@ -57,7 +58,7 @@ interface Jugador {
   email: string;
   img: string;
   id: number;
-  
+  observaciones: string;
 };
 interface Staff {
   nombre: string;
@@ -68,8 +69,9 @@ interface Staff {
   email: string;
   img: string;
   id: number;
-  
+  observaciones: string;
 };
+
 let entrenador_nombre = "";
 let entrenador_1r_apellido = "";
 let entrenador_2n_apellido = "";
@@ -78,6 +80,7 @@ let entrenador_genero = "";
 let entrenador_email = "";
 let entrenador_img = "";
 let entrenador_id = "";
+let entrenador_observaciones = "";
 
 let jugadores: Jugador[] = [];
 
@@ -88,7 +91,7 @@ try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: equipoData, error } = await supabaseAdmin
     .from('EquiposSS')
-    .select('nombre_equipo, id, capitan, escudo, inscrito, estado, aceptado, fecha_inscripcion, email_capitan, capitan_edit')
+    .select('nombre_equipo, id, capitan, escudo, inscrito, estado, aceptado, fecha_inscripcion, email_capitan, capitan_edit, probl_tit_logo')
     .eq('id_equipo', id_equipo)
     .single();
 
@@ -105,6 +108,7 @@ try {
     fecha_inscripcion = equipoData.fecha_inscripcion;
     capitan_email = equipoData.email_capitan;
     capitan_edit= equipoData.capitan_edit;
+    probl_tit_logo = equipoData.probl_tit_logo;
   }
 
   const { data: UsuarioInscripcion } = await supabaseAdmin
@@ -120,7 +124,7 @@ try {
 
   const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
     .from('JugadoresSS')
-    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'jugador')
     .order('id', { ascending: true });
@@ -134,7 +138,7 @@ try {
 
   const {data: StaffData, error: StaffError} = await supabaseAdmin
     .from('JugadoresSS')
-    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'cuerpo_tecnico')
     .order('id', { ascending: true });
@@ -147,7 +151,7 @@ try {
 
   const {data: EntrenadorData, error: EntrenadorError} = await supabaseAdmin
     .from('JugadoresSS')
-    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'entrenador')
     .limit(1);
@@ -164,6 +168,7 @@ try {
     entrenador_email = entrenadorData.email;
     entrenador_img = entrenadorData.img;
     entrenador_id = entrenadorData.id;
+    entrenador_observaciones = entrenadorData.observaciones;
     //console.log(entrenador_nombre, entrenador_1r_apellido, entrenador_2n_apellido, entrenador_curso, entrenador_email, entrenador_genero);
 } else {
     console.log("No se encontró ningún entrenador.");
@@ -220,7 +225,7 @@ const currentDate = getCurrentDateInCatalan();
     <div class="max-w-4xl mx-auto my-10">
       <div class="flex flex-wrap items-center place-content-around gap-2">
         <p class={`w-max h-max px-2 py-1 rounded-xl ${estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{estado}</p>
-        <p class={`w-max h-max px-2 py-1 rounded-xl ${aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${aceptado ===  "Inscrit" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} `}>{aceptado}</p>
+        <p class={`w-max h-max px-2 py-1 rounded-xl ${aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${aceptado ===  "Inscrit" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""}${aceptado === "Pendent" ? "text-blanco bg-gris-claro":""} `}>{aceptado}</p>
         <p class="text-blanco bg-gris-claro px-3 py-2 rounded-lg">Data inscripció: {fecha_inscripcion}</p>
       </div>
       
@@ -274,9 +279,13 @@ const currentDate = getCurrentDateInCatalan();
             
             
           </div>
+          {probl_tit_logo !== "" || probl_tit_logo === null  ? (<>
+          <textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{probl_tit_logo}</textarea>
+          </>):(<></>)}
           
           <div id="probl-tit_logo" class="ocultar">
             <h3 class="text-2xl text-naranja font-semibold">¿Problemas en Nombre de Equipo o Logo?</h3>
+            
             <textarea name="probl_tit_logo" class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
           </div>
 
@@ -388,6 +397,9 @@ const currentDate = getCurrentDateInCatalan();
 
             
           </div>
+          {entrenador_observaciones !== "" || entrenador_observaciones === null  ? (<>
+          <textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{entrenador_observaciones}</textarea>
+          </>):(<></>)}
           <div id="probl-entrenador" class="ocultar">
             <h3 class="text-2xl text-naranja font-semibold">¿Problemas con el entrenador?</h3>
             <textarea name="probl-entrenador" class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
@@ -487,10 +499,17 @@ const currentDate = getCurrentDateInCatalan();
                   <p class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro flex flex-row items-center rounded-full text-base text-blanco border-none">{jugador.email}</p>
               
               </div>
-             
+              {jugador.observaciones !== "" ? (
+              <><textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>): 
+              (<></>) }
+              
              </div>
-             
+            
+          
             </div>
+           
+          
+
             <div id={`probl-jugador_${index}`} class="ocultar">
             <h3 class="text-2xl text-naranja font-semibold">¿Problemas en el Jugador Nº{index +1}?</h3>
             <textarea name={`probl_player_${index}`} class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
@@ -591,7 +610,9 @@ const currentDate = getCurrentDateInCatalan();
         <p class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro flex flex-row items-center rounded-full text-base text-blanco border-none">{jugador.email}</p>
     
     </div>
-   
+    {jugador.observaciones !== "" ? (
+              <><textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>): 
+              (<></>) }
    </div>
   </div>
 

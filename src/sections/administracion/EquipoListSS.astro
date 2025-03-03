@@ -66,7 +66,7 @@ if (error) {
           <p class="text-blanco text-base"><span class="font-semibold">Capità:</span> {equipo.capitan}</p>
           <div class="flex flex-row items-center place-content-around">
             <p class={`w-max h-max px-2 py-1 rounded-lg ${equipo.estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${equipo.estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${equipo.estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{equipo.estado}</p>
-            <p class={`w-max h-max px-2 py-1 rounded-lg ${equipo.aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${equipo.aceptado ===  "Inscrit" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} `}>{equipo.aceptado}</p>
+            <p class={`w-max h-max px-2 py-1 rounded-lg ${equipo.aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${equipo.aceptado ===  "Inscrit" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${equipo.aceptado === "Pendent" ? "text-blanco bg-gris-claro":""}`}>{equipo.aceptado}</p>
           </div>
         </div>
         <div class="group-hover:opacity-100 opacity-0 absolute top-0 left-0 flex items-center place-content-center rounded-lg w-full h-full bg-amarillo bg-opacity-60 transition-all duration-300">

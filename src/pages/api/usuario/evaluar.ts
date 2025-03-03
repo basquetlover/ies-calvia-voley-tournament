@@ -28,7 +28,11 @@ export const POST: APIRoute = async ({ request }) => {
     const currentDate = getCurrentDateInCatalan();
 
     if(nuevo_estado === "Acceptat"){
-        const { data, error } = await supabaseAdmin
+        const entrenador_id = formData.get("entrenador_id")?.toString().trim();
+        const img_entrenador = formData.get("img-entrenador")?.toString().trim();
+        const probl_entrenador = formData.get("probl-entrenador")?.toString().trim();
+
+        const { data: Aceotado, error: Aceptado } = await supabaseAdmin
         .from('EquiposSS')
         .update({ 
             fecha_revision: currentDate,
@@ -37,6 +41,118 @@ export const POST: APIRoute = async ({ request }) => {
          })
         .eq('id', equipo_id)
         .select()
+
+        const jugadores = [];
+        let index = 0;
+       while (formData.has(`player_id_${index}`)) {
+         const probl_img = formData.get(`img-jugador_${index}`)?.toString().trim();
+         const id = formData.get(`player_id_${index}`)?.toString().trim();
+         const probl_player = formData.get(`probl_player_${index}`)?.toString().trim();
+         const numero = index + 1;
+
+         if(probl_img === ''){
+            return new Response(
+                `
+                <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
+                  <span>
+                <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
+                  <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
+                </svg>
+                  </span>
+                  <p>Es necesario indicar si la foto es valida del jugador ${numero}</p>
+                  </div>
+                `, 
+                { status: 401, headers: { "Content-Type": "text/html" } }
+            );
+         }
+         jugadores.push({ id, probl_img, probl_player, numero });
+         index++;
+       }
+
+       const staff = [];
+       index = 0;
+      while (formData.has(`staff_id_${index}`)) {
+        const probl_img = formData.get(`img-jugador_${index}`)?.toString().trim();
+        const id = formData.get(`staff_id_${index}`)?.toString().trim();
+        const probl_staff = formData.get(`probl_staff_${index}`)?.toString().trim();
+        const numero = index + 1;
+        if(probl_img === ''){
+            return new Response(
+                `
+                <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
+                  <span>
+                <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
+                  <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
+                </svg>
+                  </span>
+                  <p>Es necesario indicar si la foto es valida del cuerpo tecnico ${numero}</p>
+                  </div>
+                `, 
+                { status: 401, headers: { "Content-Type": "text/html" } }
+            );
+         }
+        staff.push({ id, probl_img, probl_staff, numero });
+        index++;
+      }
+
+        const { data, error } = await supabaseAdmin
+        .from('EquiposSS')
+        .update({ 
+            fecha_revision: currentDate,
+            estado: nuevo_estado,
+            aceptado: 'Pendent',
+            probl_tit_logo: '',
+         })
+        .eq('id', equipo_id)
+        .select();
+
+        const { error: jugadorError } = await supabaseAdmin
+              .from('JugadoresSS')
+              .update([
+                {   
+                    observaciones: probl_entrenador,
+                    validar_img: img_entrenador,
+                  },
+              ]).eq('id', entrenador_id)
+               .select();
+        if (jugadorError) {
+                console.error("Error insertando jugador principal:", jugadorError.message);
+                // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+              }
+
+        for (const jugador of jugadores) {
+            const { error: jugadorError } = await supabaseAdmin
+              .from('JugadoresSS')
+              .update([
+                {   
+                    observaciones: jugador.probl_player,
+                    validar_img: jugador.probl_img,
+                  },
+              ]).eq('id', jugador.id)
+               .select()
+        
+            if (jugadorError) {
+              console.error("Error insertando jugador principal:", jugadorError.message);
+              // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+            }
+          }
+
+        for (const jugador of staff) {
+            const { error: jugadorError } = await supabaseAdmin
+              .from('JugadoresSS')
+              .update([
+                {   
+                    observaciones: jugador.probl_staff,
+                    validar_img: jugador.probl_img,
+                  },
+              ]).eq('id', jugador.id)
+               .select()
+        
+            if (jugadorError) {
+              console.error("Error insertando jugador principal:", jugadorError.message);
+              // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+            }
+          }
     }
 
     if(nuevo_estado === "Denegat"){

@@ -1,0 +1,1954 @@
+---
+import ControlAcces from "@components/ControlAcces.astro";
+import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+import LayoutUsuario from "@layouts/LayoutUsuario.astro";
+import LayoutUsuarioMenu from "@layouts/LayoutUsuarioMenu.astro";
+import CrearEquipoUser from "@sections/usuarios/CrearEquipoUser.astro";
+import {CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
+// export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "" }));
+
+//export const staff = Array.from({ length: 5 }, () => ({ nombre: "", curso: "" }));
+import FormSend from "@components/FormSend.astro";
+
+const fechaInicio = new Date('2025-3-5'); // Cambia esta fecha según tus necesidades
+const fechaFin = new Date('2025-3-21'); // Cambia esta fecha según tus necesidades
+
+import { supabaseAdmin } from "src/lib/supabase";
+const pathname = Astro.url.pathname;
+let accessibleBlocks = [];
+
+type AdministradorProps = {
+    id_equipo: string;
+    nombre_equipo: string;
+};
+
+// Genera rutas dinámicas
+export async function getStaticPaths() {
+  // Consulta a la base de datos para obtener user_email y rango
+  const { data, error } = await supabaseAdmin
+    .from('Equipos')
+    .select('id_equipo, nombre_equipo');
+
+  if (error) {
+    console.error('Error fetching administradores:', error.message);
+    return { paths: [] };
+  }
+
+  // Genera las rutas dinámicas con datos adicionales
+  const paths = data.map((equipo) => ({
+    params: { id_equipo: equipo.id_equipo },
+    props: { nombre_equipo: equipo.nombre_equipo }, // Pasamos rango como parte de los props
+  }));
+
+  return { paths };
+}
+const id_equipo = Astro.url.pathname.split('/').pop();
+const totalJugadores = 9;
+const totalStaff = 5;
+
+let nombre_equipo = 'Sin Nombre';
+let escudo = "";
+let capitan = "";
+let estado = "";
+let aceptado = "";
+let fecha_inscripcion = "";
+let capitan_email = "";
+let capitan_edit= "";
+let probl_tit_logo= "";
+
+let id = "";
+let inscrito = "";
+
+let creador_nombre = "";
+let creador_email = "";
+let creador_curso ="";
+interface Jugador {
+  nombre: string;
+  _1r_apellido: string;
+  curso: string;
+  _2n_apellido: string;
+  genero: string;
+  email: string;
+  img: string;
+  id: number;
+  observaciones: string;
+};
+interface Staff {
+  nombre: string;
+  _1r_apellido: string;
+  curso: string;
+  _2n_apellido: string;
+  genero: string;
+  email: string;
+  img: string;
+  id: number;
+  observaciones: string;
+};
+
+let entrenador_nombre = "";
+let entrenador_1r_apellido = "";
+let entrenador_2n_apellido = "";
+let entrenador_curso = "";
+let entrenador_genero = "";
+let entrenador_email = "";
+let entrenador_img = "";
+let entrenador_id = "";
+let entrenador_observaciones = "";
+
+let jugadores: Jugador[] = [];
+
+let staff: Staff[] = [];
+// let entrenador: Jugador[] = [];
+let jugadores_extra: Jugador[] = [];
+
+let Staff_extra: Staff[] = [];
+try {
+  // Buscar el rango correspondiente al email en la tabla Administradores
+  const { data: equipoData, error } = await supabaseAdmin
+    .from('EquiposSS')
+    .select('nombre_equipo, id, capitan, escudo, inscrito, estado, aceptado, fecha_inscripcion, email_capitan, capitan_edit, probl_tit_logo')
+    .eq('id_equipo', id_equipo)
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar nombre_equipo para ${id_equipo}:`, error.message);
+  } else if (equipoData) {
+    nombre_equipo = equipoData.nombre_equipo;
+    escudo = equipoData.escudo;
+    capitan = equipoData.capitan;
+    id = equipoData.id;
+    inscrito = equipoData.inscrito;
+    estado = equipoData.estado;
+    aceptado = equipoData.aceptado;
+    fecha_inscripcion = equipoData.fecha_inscripcion;
+    capitan_email = equipoData.email_capitan;
+    capitan_edit= equipoData.capitan_edit;
+    probl_tit_logo = equipoData.probl_tit_logo;
+  }
+
+  const { data: UsuarioInscripcion } = await supabaseAdmin
+    .from('Usuarios')
+    .select('nombre, email, curso')
+    .eq('id', inscrito)
+    .single();
+    if(UsuarioInscripcion){
+        creador_nombre = UsuarioInscripcion.nombre;
+        creador_email = UsuarioInscripcion.email;
+        creador_curso = UsuarioInscripcion.curso
+    }
+
+  const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
+    .eq('pertenece_equipo', id)
+    .eq('ficha', 'jugador')
+    .order('id', { ascending: true });
+
+  if(jugadorError){
+    console.error(`Error al buscar jugadores`, error?.message);
+  } else if(jugadoresData){
+    jugadores = jugadoresData;
+
+     // Número total de jugadores permitidos
+    const jugadoresFaltantes = totalJugadores - jugadores.length;
+    jugadores_extra = Array.from({ length: Math.max(0, jugadoresFaltantes) });
+ 
+  }
+
+  const {data: StaffData, error: StaffError} = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
+    .eq('pertenece_equipo', id)
+    .eq('ficha', 'cuerpo_tecnico')
+    .order('id', { ascending: true });
+
+  if(StaffError){
+    console.error(`Error al buscar jugadores`, error?.message);
+  } else if(StaffData){
+    staff = StaffData;
+
+    const StaffFaltantes = totalStaff - staff.length;
+    Staff_extra = Array.from({ length: Math.max(0, StaffFaltantes) });
+  }
+
+  const {data: EntrenadorData, error: EntrenadorError} = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
+    .eq('pertenece_equipo', id)
+    .eq('ficha', 'entrenador')
+    .limit(1);
+
+    if (EntrenadorError) {
+    console.error(`Error al buscar entrenador`, EntrenadorError?.message); // Cambiado a EntrenadorError
+} else if (EntrenadorData && EntrenadorData.length > 0) { // Verifica que haya datos
+    const entrenadorData = EntrenadorData[0]; // Toma el primer entrenador
+    entrenador_nombre = entrenadorData.nombre;
+    entrenador_1r_apellido = entrenadorData._1r_apellido;
+    entrenador_2n_apellido = entrenadorData._2n_apellido;
+    entrenador_curso = entrenadorData.curso;
+    entrenador_genero = entrenadorData.genero;
+    entrenador_email = entrenadorData.email;
+    entrenador_img = entrenadorData.img;
+    entrenador_id = entrenadorData.id;
+    entrenador_observaciones = entrenadorData.observaciones;
+    //console.log(entrenador_nombre, entrenador_1r_apellido, entrenador_2n_apellido, entrenador_curso, entrenador_email, entrenador_genero);
+} else {
+    console.log("No se encontró ningún entrenador.");
+}
+
+  
+
+} catch (err) {
+  console.error('Error al obtener rango:', err);
+}
+
+let num_jugadores = jugadores.length;
+let num_staff = staff.length;
+
+const user = Astro.locals.StaffUser
+
+let nombre_staff = "";
+
+// let userWithRango = {
+//     email: user?.email || "Desconocido",
+//     rango: "Sin rango"
+// };
+
+try {
+    // Obtén el rango del usuario autenticado
+    if (user?.email) {
+        const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango, nombre, _1r_apellido")
+            .eq("user_email", user.email)
+            .single(); // Obtiene un único registro
+
+        if (error) {
+            console.error("Error al obtener rango:", error.message);
+        } else if (adminData) {
+            // userWithRango.rango = adminData.rango || "Sin rango";
+          nombre_staff = adminData.nombre + " " + adminData._1r_apellido;
+        }
+    }
+} catch (err) {
+    console.error("Error al obtener datos del usuario:", err);
+}
+
+
+const getCurrentDateInCatalan = () => {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = new Date();
+  return new Intl.DateTimeFormat('ca-ES', options).format(date);
+};
+
+const currentDate = getCurrentDateInCatalan();
+
+
+// Obtén las páginas a las que el usuario tiene acceso
+try {
+    const { data: pageAccess, error } = await supabaseAdmin
+        .from('AccesoUsuarios')
+        .select('pagina, acceso');
+
+    if (error) {
+        console.error("Error al obtener acceso:", error);
+    } else if (pageAccess) {
+        // Filtra las páginas a las que el usuario tiene acceso
+        accessibleBlocks = pageAccess
+            .filter(page => page.acceso === true) // Solo páginas con acceso true
+            .map(page => page.pagina); // Obtiene solo las páginas
+        // console.log(accessibleBlocks);
+    }
+} catch (err) {
+    console.error("Error al obtener acceso:", err);
+}
+// Verifica si el usuario tiene acceso a la página actual
+let userHasAccess = accessibleBlocks.includes(pathname);
+
+if(userHasAccess){
+    let RangoFechas;
+
+    const fechaActual = new Date();
+
+    // Compara la fecha actual con las fechas de inicio y fin
+    if (fechaActual < fechaInicio) {
+        const { data: pageAccess, error } = await supabaseAdmin
+        .from('AccesoUsuarios')
+        .update({acceso: 'false'})
+        .eq('pagina', '/usuario/inscripcion');
+
+        RangoFechas = 'Dentro del rango de fechas';
+        
+    } else if (fechaActual > fechaFin) {
+        const { data: pageAccess, error } = await supabaseAdmin
+        .from('AccesoUsuarios')
+        .update({acceso: 'false'})
+        .eq('pagina', '/usuario/inscripcion');
+
+        RangoFechas = 'Dentro del rango de fechas';
+        
+    } else {
+    RangoFechas = 'Dentro del rango de fechas';
+    }
+    
+    
+}
+
+---
+<ControlAcces>
+<LayoutUsuario title="Modificar Equip Torneig Setmana Santa | IES Calvià Voley Tournament" descripcion="" >
+    
+
+  <!-- Preview IMG escudo -->
+  <script>
+  const file = document.getElementById('foto') as HTMLInputElement;
+  const img = document.getElementById('img') as HTMLImageElement;
+  const defaultFile = 'Vector.png'; // Asegúrate de definir defaultFile
+  
+  file.addEventListener('change', (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    const files = target.files;
+    
+    if (files && files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e: ProgressEvent<FileReader>) {
+        if (e.target && img) {
+          img.src = e.target.result as string;
+        }
+      };
+      reader.readAsDataURL(files[0]);
+    } else {
+      if (img) {
+        img.src = defaultFile;
+      }
+    }
+  });
+  </script>
+
+  <!-- action="/api/usuario/anadir-equipo" -->
+  <div class="max-w-5xl w-full h-max py-2  overflow-hidden mx-auto my-4 ">
+    
+    <div class="max-w-4xl mx-auto my-4">
+      <div class="flex flex-wrap items-center place-content-around gap-2">
+        <p class={`w-max h-max px-2 py-1 rounded-xl ${estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{estado}</p>
+        <p class={`w-max h-max px-2 py-1 rounded-xl ${aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${aceptado ===  "Inscrit" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""}${aceptado === "Pendent" ? "text-blanco bg-gris-claro":""} `}>{aceptado}</p>
+        <p class="text-blanco bg-gris-claro px-3 py-2 rounded-lg">Data inscripció: {fecha_inscripcion}</p>
+      </div>
+    <form id="equipo-form" method="POST" class="space-y-4" action="/api/usuario/modificar-equipo"  enctype="multipart/form-data">
+      <div id="errorbox" class="text-red-500 bg-gris rounded-lg px-3 py-2 text-center error-box"></div>
+
+      <>
+      <!-- Datos usuario -->
+    <div class="w-full hidden">
+      <input type="text" name="capitan_edit" class="bg-transparent w-auto h-max text-blanco" value={capitan_edit}/>
+      <input type="text" name="usuario_nombre" class="bg-transparent w-auto h-max text-blanco" value={creador_nombre}/>
+      <input type="text" name="usuario_email" class="bg-transparent w-auto h-max text-blanco" value={creador_email}/>
+      <input type="text" name="usuario_curso" class="bg-transparent w-auto h-max text-blanco" value={creador_curso}/>
+    </div>
+      <input type="hidden" name="num_jugadores"  value={num_jugadores}/>
+      </>
+      <!-- Datos Equipo -->
+      <div class="mx-auto w-max">
+        <input
+          type="text"
+          id="nombre_equipo"
+          name="nombre_equipo"
+          placeholder="Nom de l'equipo"
+          required
+          class="mx-auto text-4xl xs:text-3xl sm:text-3xl md:text-4xl text-center border-none bg-transparent rounded text-accent py-1 px-2 w-auto"
+          value={nombre_equipo}
+        />
+      </div>
+      <input type="number" hidden name="number_id_equipo" value={id}/>
+  
+      <!--Imagen Escudo -->
+      <input type="hidden" name="escudo_actual" value={escudo}>
+      <div class="w-60  h-60 p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
+        <img src={escudo} class="w-full h-full" alt="avatar" id="img" />
+        <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="escudo" id="foto" accept="image/*" />
+        <label class="hidden" for="escudo"></label>
+      </div>
+      {probl_tit_logo !== "" || probl_tit_logo === null  ? (<>
+          <textarea disabled class="w-full bg-naranja-claro rounded-md px-3 py-2 text-gris">{probl_tit_logo}</textarea>
+          </>
+          ):(<></>)}
+      <!-- Capitan -->
+      <div class="flex flex-row items-center ml-2">
+        <label for="input_capitan" class="block text-amarillo text-2xl font-medium">Capità</label>
+        <input
+          type="text"
+          id="input_capitan"
+          name="input_capitan"
+          placeholder="Seleccioni un capita amb ©"
+          disabled
+          class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
+          value={capitan}
+        />
+        <input
+          type="hidden"
+          id="input_capitan_form"
+          name="capitan"
+          placeholder="Seleccioni un capita amb ©"
+          value={capitan}
+          class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
+        />
+        <input
+        type="hidden"
+        id="input_capitan_email_form"
+        name="capitan_email"
+        placeholder="Seleccioni un capita amb ©"
+        value={capitan_email}
+        class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
+      />
+      </div>
+  
+      <!-- Entrenador -->
+      <div class="w-max flex flex-row gap-2">
+        <div class="px-3 py-2 w-96 h-12 flex flex-row text-4xl text-amarillo border-none">
+          <h4>Entrenador</h4>
+         {/* Genero */}
+         <input type="hidden" name="entrenador_id" value={entrenador_id}/>
+         <div class="flex flex-col relative">
+          <label class="genero relative">
+              <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+              
+              <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                      <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                  </svg> 
+              </span>
+          </label>
+              <input 
+                  id={`genero_entrenador`}
+                  type="hidden"
+                  name={`genero_entrenador`}
+                   
+                  value={entrenador_genero} 
+                  class="w-10" 
+              />
+              <span id={`hombre_entrenador`} class={`desactivado ${entrenador_genero === "hombre" ? 'hombre' : ''}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                      <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                  </svg>
+              </span>
+              <span id={`mujer_entrenador`} class={`desactivado ${entrenador_genero === "mujer" ? 'mujer' : ''}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                      <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                  </svg>
+              </span>
+          </label>
+      </div>
+        </div>
+      </div>
+      <div class="flex flex-col items-center ml-2">
+      
+        <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
+          
+          {/* Nombre */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Nom
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="text"
+              id={`entrenador_name`}
+              name={`entrenador_name`}
+              placeholder="Nom de l'entrenador"
+              class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              value={entrenador_nombre}
+              
+              
+              />
+          </div>
+          {/* 1r Apellido */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  1r Cognom
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              
+              <input
+              type="text"
+              name={`entrenador_1r_apellido`}
+              id={`entrenador_1r_apellido`}
+              placeholder="Cognom de l'entrenador"
+              class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              value={entrenador_1r_apellido}
+              
+              />
+          </div>
+  
+          {/* 2n Apellido */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+              <input
+              type="text"
+              name={`entrenador_2n_apellido`}
+              placeholder="Segon Cognom de l'entrenador"
+              class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              value={entrenador_2n_apellido}
+              />
+          </div>
+  
+           {/* Curso */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Curs
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              
+          <select
+            name={`entrenador_curso`}
+            class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+          >
+            <option value={entrenador_curso} class="bg-accent" selected>{entrenador_curso}</option>
+            <hr class="border-accent" />
+            {CURSO_3E.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_4E.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_1B.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_2B.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_FP.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_P.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            
+          </select>
+          </div>
+          {/* Email */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Email
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="email"
+              name={`entrenador_email`}
+              placeholder="Email de l'entrenador"
+              class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              value={entrenador_email}
+              
+              />
+          
+          </div>
+  
+                  {/* Imagen cara */}
+                  <div class="flex flex-col relative">
+                    <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                        Imatge Cara
+                        <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                                <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                            </svg> 
+                        </span>
+                    </label>
+                    <input
+                    type="file"
+                    id={`entrenador_img`}
+                    name={`entrenador_img`}
+                    placeholder="Email del jugador"
+                    class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+                    accept=".png, .jpg, .jpeg, .webp"
+                    />
+                
+                </div>
+                {entrenador_observaciones !== "" || entrenador_observaciones === null  ? (<>
+          <textarea disabled class="w-full bg-naranja-claro rounded-md px-3 py-2 text-gris">{entrenador_observaciones}</textarea>
+          </>):(<></>)}
+        </div>
+        
+      </div>
+      <div class="w-max flex flex-row gap-2">
+        <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Alumnes Jugadors</h4></div>
+      </div>
+  
+      <!--Jugadores -->
+  {jugadores.map((jugador, index) => (
+        <div class="w-[100%] h-[2px] my-0 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+        <div class="flex flex-row gap-2 items-end">
+          <p class={`text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ${jugador.observaciones !== "" ? "bg-rojo": "bg-verde"}`}>{index + 1}. Jugador</p>
+          <p class="text-blanco  bg-cancelar bg-opacity-55 w-max h-max p-2 rounded-md text-base ">Obligatori</p>
+          <span id={`capitan_${index}`} class={`p-2 bg-gris-claro bg-opacity-55 flex items-center place-content-center rounded-full ${capitan_email === jugador.email ? "active-c": ""}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="#e8eaed" viewBox="0 -960 960 960">
+                  <path d="M400-320h160q17 0 29-11t11-29v-80h-80v40h-80v-160h80v40h80v-80q0-17-11-28t-29-12H400q-17 0-28 12t-12 28v240q0 17 12 29t28 11Zm80 240q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+              </svg>
+          </span>
+          <input type="hidden" name={`player_id_${index}`} value={jugador.id}/>
+          {/* Genero */}
+          <div class="flex flex-col relative">
+              <label class="genero relative">
+                  <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+                  <input 
+                      id={`genero_${index}`}
+                      type="hidden"
+                      name={`genero_${index}`}
+                      required 
+                      value={jugador.genero} 
+                      class="w-10" 
+                  />
+                  <span id={`hombre_${index}`} class={`desactivado ${entrenador_genero === "hombre" ? 'hombre' : ''}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                          <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                      </svg>
+                  </span>
+                  <span id={`mujer_${index}`} class={`desactivado ${entrenador_genero === "mujer" ? 'mujer' : ''}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                          <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                      </svg>
+                  </span>
+              </label>
+          </div>
+        </div>
+        <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
+          
+          {/* Nombre */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Nom
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="text"
+              id={`player_${index}_name`}
+              name={`player_${index}_name`}
+              placeholder="Nom del jugador"
+              class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              required
+              value={jugador.nombre}
+              
+              />
+          </div>
+          {/* 1r Apellido */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  1r Cognom
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              
+              <input
+              type="text"
+              name={`player_${index}_1r_apellido`}
+              id={`player_${index}_1r_apellido`}
+              placeholder="Cognom del jugador"
+              class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              required
+              value={jugador._1r_apellido}
+              />
+          </div>
+  
+          {/* 2n Apellido */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+              <input
+              type="text"
+              name={`player_${index}_2n_apellido`}
+              placeholder="Segon Cognom del jugador"
+              class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              
+              value={jugador._2n_apellido}
+              />
+          </div>
+  
+           {/* Curso */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Curs
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              
+          <select
+            name={`player_${index}_curso`}
+            class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            required
+            value={jugador.curso}
+            
+          >
+            <option value={jugador.curso} class="bg-accent" selected={jugador.curso}>{jugador.curso}</option>
+            <hr class="border-accent" />
+            {CURSO_3E.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_4E.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_1B.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_2B.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_FP.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            
+            
+          </select>
+          </div>
+          {/* Email */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Email
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="email"
+              id={`player_${index}_email`}
+              name={`player_${index}_email`}
+              placeholder="Email del jugador"
+              class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              required
+              value={jugador.email}
+              />
+          
+          </div>
+  
+          {/* Imagen cara */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Imatge Cara
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="file"
+              id={`player_${index}_img`}
+              name={`player_${index}_img`}
+              placeholder="Email del jugador"
+              class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+              accept=".png, .jpg, .jpeg, .webp"
+              
+              
+              />
+          
+          </div>
+          {jugador.observaciones !== "" ? (
+              <><textarea disabled class="w-full bg-naranja-claro rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>): 
+              (<></>) }
+        </div>
+      ))} 
+  
+   {jugadores_extra.map((jugador, index) => (
+    <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+    <div class="flex flex-row gap-2 items-end">
+          <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1 + jugadores.length}. Jugador</p>
+          <span id={`extra_capitan_${index}`} class="p-2 bg-gris-claro bg-opacity-55 flex items-center place-content-center rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="#e8eaed" viewBox="0 -960 960 960">
+                  <path d="M400-320h160q17 0 29-11t11-29v-80h-80v40h-80v-160h80v40h80v-80q0-17-11-28t-29-12H400q-17 0-28 12t-12 28v240q0 17 12 29t28 11Zm80 240q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+              </svg>
+          </span>
+  
+          {/* Genero */}
+          <div class="flex flex-col relative">
+              <label class="genero relative">
+                  <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+                  <input 
+                      id={`extra_genero_${index}`}
+                      type="hidden"
+                      name={`extra_genero_${index}`} 
+                      value="" 
+                      class="w-10" 
+                  />
+                  <span id={`extra_hombre_${index}`} class="desactivado">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                          <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                      </svg>
+                  </span>
+                  <span id={`extra_mujer_${index}`} class="desactivado">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                          <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                      </svg>
+                  </span>
+              </label>
+          </div>
+        </div>
+    <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap  items-center gap-x-2 gap-y-8 space-x-2">
+              {/* Nombre */}
+              <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Nom
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="text"
+              name={`extra_player_${index}_name`}
+              id={`extra_player_${index}_name`}
+              placeholder="Nom del jugador"
+              class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              
+              
+              
+              />
+          </div>
+          {/* 1r Apellido */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  1r Cognom
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              
+              <input
+              type="text"
+              name={`extra_player_${index }_1r_apellido`}
+              id={`extra_player_${index }_1r_apellido`}
+              placeholder="Cognom del jugador"
+              class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              
+              
+              />
+          </div>
+  
+          {/* 2n Apellido */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+              <input
+              type="text"
+              name={`extra_player_${index}_2n_apellido`}
+              placeholder="Segon Cognom del jugador"
+              class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              
+              
+              />
+          </div>
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Curs
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              
+          <select
+            name={`extra_player_${index}_curso`}
+            class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            
+            
+          >
+            <option value="" disabled selected>Selecciona un curso</option>
+            {CURSO_3E.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_4E.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_1B.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_2B.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_FP.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            
+          </select>
+          </div>
+  
+          {/* Email */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Email
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="email"
+              id={`extra_player_${index}_email`}
+              name={`extra_player_${index}_email`}
+              placeholder="Email del jugador"
+              class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              
+              
+              />
+          
+          </div>
+          
+          {/* Imagen cara */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Imatge Cara
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="file"
+              id={`extra_player_${index}_img`}
+              name={`extra_player_${index}_img`}
+              placeholder="Email del jugador"
+              class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+              accept=".png, .jpg, .jpeg, .webp"
+              
+              
+              />
+          
+          </div>
+    </div>
+  ))} 
+  
+  
+  <!--Staff (Publico) -->
+  <div class="w-max flex flex-row items-end gap-2">
+    <div class="px-3 py-2 w-max h-12  text-4xl text-amarillo border-none"><h4>Tècnics d'equip</h4></div>
+    <p class="text-gray-500 text-sm">(No poden jugar)</p>
+  </div>
+  {staff.map((jugador, index) => (
+    <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+    <div class="flex flex-row gap-2 items-end">
+          <p class={`text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ${jugador.observaciones !== "" ? "bg-rojo": "bg-verde"}`}>{index + 1}. Staff</p>
+          
+  
+                    {/* Genero */}
+                    <div class="flex flex-col relative">
+              <label class="genero relative">
+                  <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+                  <input 
+                      id={`staff_genero_${index}`}
+                      type="hidden"
+                      name={`staff_genero_${index}`}
+                       
+                      value={jugador.genero} 
+                      class="w-10" 
+                  />
+                  <span id={`staff_hombre_${index}`} class={`desactivado ${entrenador_genero === "hombre" ? 'hombre' : ''}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                          <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                      </svg>
+                  </span>
+                  <span id={`staff_mujer_${index}`} class={`desactivado ${entrenador_genero === "mujer" ? 'mujer' : ''}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                          <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                      </svg>
+                  </span>
+              </label>
+          </div>
+        </div>
+        <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
+          
+          {/* Nombre */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Nom
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="text"
+              id={`staff_player_${index}_name`}
+              name={`staff_player_${index}_name`}
+              placeholder="Nom del jugador"
+              class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              
+              value={jugador.nombre}
+              
+              />
+          </div>
+          {/* 1r Apellido */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  1r Cognom
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              
+              <input
+              type="text"
+              name={`staff_player_${index}_1r_apellido`}
+              id={`staff_player_${index}_1r_apellido`}
+              placeholder="Cognom del jugador"
+              class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              required
+              value={jugador._1r_apellido}
+              />
+          </div>
+  
+          {/* 2n Apellido */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+              <input
+              type="text"
+              name={`staff_player_${index}_2n_apellido`}
+              placeholder="Segon Cognom del jugador"
+              class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              
+              value={jugador._2n_apellido}
+              />
+          </div>
+  
+           {/* Curso */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Curs
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              
+          <select
+            name={`staff_player_${index}_curso`}
+            class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            value={jugador.curso}
+            
+          >
+            <option value={jugador.curso} class="bg-accent" selected={jugador.curso}>{jugador.curso}</option>
+            {CURSO_3E.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_4E.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_1B.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_2B.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            <hr class="border-accent" />
+            {CURSO_FP.map(({ label }) => (
+              <option value={label}>
+                {label}
+              </option>
+            ))}
+            
+            
+          </select>
+          </div>
+          {/* Email */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Email
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="email"
+              id={`staff_player_${index}_email`}
+              name={`staff_player_${index}_email`}
+              placeholder="Email del jugador"
+              class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+              
+              value={jugador.email}
+              />
+          
+          </div>
+  
+          {/* Imagen cara */}
+          <div class="flex flex-col relative">
+              <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                  Imatge Cara
+                  <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                      </svg> 
+                  </span>
+              </label>
+              <input
+              type="file"
+              id={`staff_player_${index}_img`}
+              name={`staff_player_${index}_img`}
+              placeholder="Email del jugador"
+              class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+              accept=".png, .jpg, .jpeg, .webp"
+              
+              
+              />
+          
+          </div>
+          {jugador.observaciones !== "" ? (
+              <><textarea disabled class="w-full bg-naranja-claro rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>): 
+              (<></>) }
+        </div>
+    
+  ))} 
+
+{Staff_extra.map((jugador, index) => (
+  <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+  <div class="flex flex-row gap-2 items-end">
+        <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1 + staff.length}. Staff</p>
+        
+
+        {/* Genero */}
+        <div class="flex flex-col relative">
+            <label class="genero relative">
+                <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+                <input 
+                    id={`staff_extra_genero_${index}`}
+                    type="hidden"
+                    name={`staff_extra_genero_${index}`} 
+                    value="" 
+                    class="w-10" 
+                />
+                <span id={`staff_extra_hombre_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                    </svg>
+                </span>
+                <span id={`staff_extra_mujer_${index}`} class="desactivado">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                        <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                    </svg>
+                </span>
+            </label>
+        </div>
+      </div>
+  <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap  items-center gap-x-2 gap-y-8 space-x-2">
+            {/* Nombre */}
+            <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Nom
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="text"
+            name={`staff_extra_player_${index}_name`}
+            id={`staff_extra_player_${index}_name`}
+            placeholder="Nom del jugador"
+            class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            
+            
+            />
+        </div>
+        {/* 1r Apellido */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                1r Cognom
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            
+            <input
+            type="text"
+            name={`staff_extra_player_${index }_1r_apellido`}
+            id={`staff_extra_player_${index }_1r_apellido`}
+            placeholder="Cognom del jugador"
+            class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            
+            />
+        </div>
+
+        {/* 2n Apellido */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+            <input
+            type="text"
+            name={`staff_extra_player_${index}_2n_apellido`}
+            placeholder="Segon Cognom del jugador"
+            class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            
+            />
+        </div>
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Curs
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            
+        <select
+          name={`staff_extra_player_${index}_curso`}
+          class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+          
+          
+          
+        >
+          <option value="" disabled selected>Selecciona un curso</option>
+          {CURSO_3E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
+          {CURSO_4E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
+          {CURSO_1B.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
+          {CURSO_2B.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
+          {CURSO_FP.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          
+        </select>
+        </div>
+
+        {/* Email */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Email
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="email"
+            id={`staff_extra_player_${index}_email`}
+            name={`staff_extra_player_${index}_email`}
+            placeholder="Email del jugador"
+            class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+            
+            
+            />
+        
+        </div>
+        
+        {/* Imagen cara */}
+        <div class="flex flex-col relative">
+            <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                Imatge Cara
+                <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                        <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                    </svg> 
+                </span>
+            </label>
+            <input
+            type="file"
+            id={`staff_extra_player_${index}_img`}
+            name={`staff_extra_player_${index}_img`}
+            placeholder="Email del jugador"
+            class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+            accept=".png, .jpg, .jpeg, .webp"
+            
+            
+            />
+        
+        </div>
+  </div>
+))} 
+  
+
+  <div class="w-max flex flex-row gap-2 px-6">
+    <!-- <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Alumnes Jugadors</h4></div> -->
+    <div class="checkbox-wrapper-12">
+      <div class="cbx">
+        <input id="cbx-12" name="condiciones" type="checkbox"/>
+        <label for="cbx-12"></label>
+        <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
+          <path d="M2 8.36364L6.23077 12L13 2"></path>
+        </svg>
+      </div>
+      <!-- Gooey-->
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+          <filter id="goo-12">
+            <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+            <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+            <feblend in="SourceGraphic" in2="goo-12"></feblend>
+          </filter>
+        </defs>
+      </svg>
+    </div>
+     <p class="text-base text-blanco">Accepto les <span id="btn_cond_inscripcion" class="text-amarillo cursor-pointer">condicions d'inscripció</span>, així com  la <span class="text-amarillo cursor-pointer">política de privacitat</span>.</p>
+  </div>
+  
+      
+  
+     
+      <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
+        <a href="/usuario" rel="noreferrer" class="px-3 py-2 flex flex-row items-center select-none place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+        <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-xl hover:scale-110  duration-300 transition-all transform">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+            </svg>
+            Modificar Equip
+          </button>
+    </div>
+    <div id="espera" class="oculto w-full h-full bg-gris bg-opacity-60 overflow-hidden">
+      <div class="bg-gris-claro rounded-xl relative max-w-2xl w-full h-96 flex flex-col items-center place-content-center">
+        <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-5">Enviant Dades</h2>
+        <FormSend />
+        <p class="text-blanco text-center absolute bottom-5">Estem treballant per enviar-te tota la informació necessària sobre la inscripció. Actualment, estem processant les dades i t'agraïm la teva paciència.
+          </p>
+      </div>
+      </div>
+    </form>
+  </div>
+  <div id="cond_inscripcion" class="oculto max-w-xl w-auto max-h-[90svh] h-auto bg-gris-claro overflow-y-scroll no-scrollbar rounded-lg">
+    <div id="btn_cerrar_inscri" class="w-10 h-10 bg-cancelar absolute flex items-center place-content-center cursor-pointer text-blanco font-bold rounded-full">
+      X
+    </div>
+    <PoliticaInscripcion />
+  </div>
+  
+  <!-- Seleccionar Capitan -->
+  <script>
+  window.addEventListener('load', function(){
+    // Función para buscar y actualizar el índice
+
+
+      console.log("Script Capitan cargado")
+      const input_capitan = document.getElementById(`input_capitan`) as HTMLInputElement;
+      const input_capitan_form = document.getElementById(`input_capitan_form`) as HTMLInputElement;
+      const input_capitan_email_form = document.getElementById(`input_capitan_email_form`) as HTMLInputElement;
+      let currentCapitanIndex: number | null = null; // Declarar el tipo explícitamente
+  
+
+      function updateCurrentCapitanIndex() {
+        // Suponiendo que tienes un número máximo de capitanes, por ejemplo, 10
+        const maxCapitanes = 15; // Cambia este valor según tus necesidades
+
+        for (let index = 0; index < maxCapitanes; index++) {
+            const element = document.getElementById(`capitan_${index}`);
+            if (element && element.classList.contains('active-c')) {
+                currentCapitanIndex = index; // Actualiza el índice
+                break; // Sale del bucle una vez que encuentra el primer elemento activo
+            }
+        }
+    }
+
+    // Llama a la función para actualizar el índice
+    updateCurrentCapitanIndex();
+      // Función para agregar el evento de clic a los capitanes
+      function agregarEventoCapitan(index: number, capitanId: string, nombreId: string, apellidoId: string, emailId: string) {
+          const capitan = document.getElementById(capitanId)!;
+          const nombre = document.getElementById(nombreId) as HTMLInputElement;
+          let nombre_value = nombre.value;
+          const _1r_apellido = document.getElementById(apellidoId) as HTMLInputElement;
+          let apellido_value = nombre.value;
+          const email = document.getElementById(emailId) as HTMLInputElement;
+          let email_value = email.value;
+          console.log(email);
+  
+          //if (nombre_value !== "" || apellido_value !== "" || email_value !== "") {
+              // Usar una función de cierre para capturar el valor de index
+              (function(index) {
+                  capitan.addEventListener('click', function() {
+                    if( nombre.value || _1r_apellido.value || email.value){
+                      // Si ya hay un capitán seleccionado, desactivar su botón
+                      if (currentCapitanIndex !== null) {
+                          const previousCapitan = document.getElementById(`capitan_${currentCapitanIndex}`) || document.getElementById(`extra_capitan_${currentCapitanIndex}`);
+                          if (previousCapitan) {
+                              console.log("Desactivando capitán anterior:", currentCapitanIndex);
+                              previousCapitan.classList.remove('active-c'); // Cambia esto según tu lógica de estilos
+                          }
+                      }
+  
+                      // Actualizar el índice del capitán actual
+                      currentCapitanIndex = index;
+  
+                      // Cambiar el valor del input del capitán
+                      const valor_apellido = _1r_apellido.value;
+                      input_capitan.value = nombre.value + " " + valor_apellido; // Obtiene el valor del input del nuevo capitán
+                      input_capitan_form.value = nombre.value + " " + valor_apellido;
+                      input_capitan_email_form.value = email.value;
+                      
+                      console.log("Capitán seleccionado:", nombre.value, valor_apellido, currentCapitanIndex, email.value);
+  
+                      // Activar el botón del nuevo capitán (opcional, si necesitas algún estilo)
+                      capitan.classList.add('active-c'); // Cambia esto según tu lógica de estilos
+                    }else{
+                      let html = `<div id="error-capitan" class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">És necessari les dades del jugador per poder seleccionar-lo com a capità.</div>`
+                      document.getElementById('errorbox')!.innerHTML = html;
+                      setTimeout(() => {
+                          document.getElementById('error-capitan')!.remove(); // Elimina el contenido
+                      }, 30000);
+                    }
+                    });
+              })(index); // Llamar a la función con el valor actual de index
+         // } 
+      } 
+  
+      // Manejar jugadores normales
+      let index = 0;
+      while (document.getElementById(`capitan_${index}`)) {
+          agregarEventoCapitan(index, `capitan_${index}`, `player_${index}_name`, `player_${index}_1r_apellido`, `player_${index}_email`);
+          index++;
+      }
+  
+      // Manejar jugadores extra
+      index = 0;
+      while (document.getElementById(`extra_capitan_${index}`)) {
+          agregarEventoCapitan(index, `extra_capitan_${index}`, `extra_player_${index}_name`, `extra_player_${index}_1r_apellido`, `extra_player_${index}_email`);
+          index++;
+      }
+  })
+  </script>
+  
+
+  <!-- Ver avisos legales -->
+  <script>
+    console.log("Script Documentos Legales cargado")
+      const btn_cond_inscripcion = document.getElementById(`btn_cond_inscripcion`)!;
+      const cond_inscripcion = document.getElementById(`cond_inscripcion`)!;
+      const btn_cerrar_inscri = document.getElementById(`btn_cerrar_inscri`)!;
+  
+      btn_cond_inscripcion.addEventListener('click',  function(){
+  
+          cond_inscripcion.classList.add("fijado");
+          cond_inscripcion.classList.remove("oculto");   
+      });
+      
+      btn_cerrar_inscri.addEventListener('click',  function(){
+  
+        cond_inscripcion.classList.remove("fijado");
+        cond_inscripcion.classList.add("oculto");
+  });
+  </script>
+  
+  <!-- Seleccionar genero -->
+  <script>
+  window.addEventListener('load', function(){
+      console.log("Script Selec Genero cargado")
+      let index = 0;
+    while (document.getElementById(`genero_${index}`)) {
+      const hombre = document.getElementById(`hombre_${index}`)!;
+      const mujer = document.getElementById(`mujer_${index}`)!;
+      
+      const genero = document.getElementById(`genero_${index}`)! as HTMLInputElement;
+      hombre.addEventListener('click',  function(){
+          
+              genero.value = "hombre";
+              hombre.classList.add("hombre");
+              hombre.classList.remove("desactivado");
+              mujer.classList.remove("mujer");
+              mujer.classList.add("desactivado");
+      });
+      mujer.addEventListener('click',  function(){
+          
+          genero.value = "mujer";
+          mujer.classList.add("mujer");
+          mujer.classList.remove("desactivado");
+          hombre.classList.remove("hombre");
+          hombre.classList.add("desactivado");
+  });
+      index++;
+  }
+  index = 0;
+  while (document.getElementById(`extra_genero_${index}`)) {
+      const hombre = document.getElementById(`extra_hombre_${index}`)!;
+      const mujer = document.getElementById(`extra_mujer_${index}`)!;
+      
+      const genero = document.getElementById(`extra_genero_${index}`)! as HTMLInputElement;
+      hombre.addEventListener('click',  function(){
+          
+              genero.value = "hombre";
+              hombre.classList.add("hombre");
+              hombre.classList.remove("desactivado");
+              mujer.classList.remove("mujer");
+              mujer.classList.add("desactivado");
+      });
+      mujer.addEventListener('click',  function(){
+          
+          genero.value = "mujer";
+          mujer.classList.add("mujer");
+          mujer.classList.remove("desactivado");
+          hombre.classList.remove("hombre");
+          hombre.classList.add("desactivado");
+  });
+      index++;
+  }
+  
+  index = 0;
+  while (document.getElementById(`staff_genero_${index}`)) {
+      const hombre = document.getElementById(`staff_hombre_${index}`)!;
+      const mujer = document.getElementById(`staff_mujer_${index}`)!;
+      
+      const genero = document.getElementById(`staff_genero_${index}`)! as HTMLInputElement;
+      hombre.addEventListener('click',  function(){
+          
+              genero.value = "hombre";
+              hombre.classList.add("hombre");
+              hombre.classList.remove("desactivado");
+              mujer.classList.remove("mujer");
+              mujer.classList.add("desactivado");
+      });
+      mujer.addEventListener('click',  function(){
+          
+          genero.value = "mujer";
+          mujer.classList.add("mujer");
+          mujer.classList.remove("desactivado");
+          hombre.classList.remove("hombre");
+          hombre.classList.add("desactivado");
+  });
+      index++;
+  }
+  index = 0;
+  while (document.getElementById(`staff_extra_genero_${index}`)) {
+      const hombre = document.getElementById(`staff_extra_hombre_${index}`)!;
+      const mujer = document.getElementById(`staff_extra_mujer_${index}`)!;
+      
+      const genero = document.getElementById(`staff_extra_genero_${index}`)! as HTMLInputElement;
+      hombre.addEventListener('click',  function(){
+          
+              genero.value = "hombre";
+              hombre.classList.add("hombre");
+              hombre.classList.remove("desactivado");
+              mujer.classList.remove("mujer");
+              mujer.classList.add("desactivado");
+      });
+      mujer.addEventListener('click',  function(){
+          
+          genero.value = "mujer";
+          mujer.classList.add("mujer");
+          mujer.classList.remove("desactivado");
+          hombre.classList.remove("hombre");
+          hombre.classList.add("desactivado");
+  });
+      index++;
+  }
+
+      const hombre = document.getElementById(`hombre_entrenador`)!;
+      const mujer = document.getElementById(`mujer_entrenador`)!;
+      
+      const genero = document.getElementById(`genero_entrenador`)! as HTMLInputElement;
+      hombre.addEventListener('click',  function(){
+          
+              genero.value = "hombre";
+              hombre.classList.add("hombre");
+              hombre.classList.remove("desactivado");
+              mujer.classList.remove("mujer");
+              mujer.classList.add("desactivado");
+      });
+      mujer.addEventListener('click',  function(){
+          
+          genero.value = "mujer";
+          mujer.classList.add("mujer");
+          mujer.classList.remove("desactivado");
+          hombre.classList.remove("hombre");
+          hombre.classList.add("desactivado");
+  });
+  })
+  </script>
+  <!-- Errores -->
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          console.log('Script Errores cargado');
+      document.getElementById('equipo-form')?.addEventListener('submit', async (event) => {
+          event.preventDefault(); // Evita el envío del formulario por defecto
+  
+          const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+          const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+  
+  
+          const espera = document.getElementById('espera');
+          espera?.classList.add("centrar");
+          espera?.classList.remove("oculto");
+  
+          const response = await fetch(form.action, {
+              method: 'POST',
+              body: formData,
+          });
+  
+          const contentType = response.headers.get("Content-Type");
+          if (contentType && contentType.includes("text/html")) {
+              const html = await response.text();
+              document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+              // Desplazarse hacia el div de error
+              espera?.classList.remove("centrar");
+              espera?.classList.add("oculto");
+              document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+          } else if (contentType && contentType.includes("application/json")) {
+              const jsonResponse = await response.json();
+              if (jsonResponse.success) {
+                  // Redirigir a la página principal
+                  window.location.href = '/usuario'; // Redirige al usuario
+              } else {
+                  // Manejo de errores si es necesario
+                  document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
+              }
+          }
+      });
+  });
+  </script>
+  
+  <style>
+    input[type="file"]::file-selector-button {
+    display: none;
+  }
+     .centrar {
+          z-index: 10000;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      .oculto{
+        display: none;
+      }
+      .activado{
+        display: block;
+      }
+      .fijado {
+          z-index: 1000;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+      }
+      .formulario{
+          z-index: 10000;
+      }
+      .form{
+          
+          position: absolute;
+          top: -20px;
+          left: 20px;
+      }
+  
+      .active-c{
+          background-color: rgb(239, 191, 4, 0.5);
+      }
+      .genero {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 90px;
+      height: 25px;
+  }
+  
+  .genero span {
+      border-radius: 10px;
+      fill: white;
+      transition: background-color 0.3s;
+  }
+  .desactivado{
+      background-color: rgba(39, 39, 39, 0.75);
+  }
+  .hombre {
+      background: rgba(0, 89, 255, 0.75);
+      /* background: rgb(255, 199, 0.75); */
+       /* Color para hombre */
+  }
+  
+  .mujer {
+      background-color: rgba(255, 0, 200, 0.75);
+      /* background: rgb(255, 199, 0.75); */
+      
+  }
+  
+  .si_edit {
+      background: rgba(20, 156, 2, 0.75);
+      /* background: rgb(255, 199, 0.75); */
+       /* Color para hombre */
+  }
+  
+  .no_edit {
+      background-color: rgba(150, 1, 1, 0.75);
+      /* background: rgb(255, 199, 0.75); */
+      
+  }
+  
+  .error-box{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 100000000;
+  }
+  
+  
+  
+  </style>
+  <!-- estilos checkbox terminos -->
+  <style>
+    .checkbox-wrapper-12 {
+      position: relative;
+      z-index: 1000;
+    }
+    .checkbox-wrapper-12 > svg {
+      position: absolute;
+      top: -130%;
+      left: -170%;
+      width: 110px;
+      pointer-events: none;
+    }
+    .checkbox-wrapper-12 * {
+      box-sizing: border-box;
+    }
+    .checkbox-wrapper-12 input[type="checkbox"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+      margin: 0;
+    }
+    .checkbox-wrapper-12 input[type="checkbox"]:focus {
+      outline: 0;
+    }
+    .checkbox-wrapper-12 .cbx {
+      width: 24px;
+      height: 24px;
+      top: calc(50vh - 12px);
+      left: calc(50vw - 12px);
+    }
+    .checkbox-wrapper-12 .cbx input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #bfbfc0;
+      border-radius: 50%;
+    }
+    .checkbox-wrapper-12 .cbx label {
+      width: 24px;
+      height: 24px;
+      background: none;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      -webkit-filter: url("#goo-12");
+      filter: url("#goo-12");
+      transform: trasnlate3d(0, 0, 0);
+      pointer-events: none;
+    }
+    .checkbox-wrapper-12 .cbx svg {
+      position: absolute;
+      top: 5px;
+      left: 4px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .checkbox-wrapper-12 .cbx svg path {
+      stroke: #fff;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 19;
+      stroke-dashoffset: 19;
+      transition: stroke-dashoffset 0.3s ease;
+      transition-delay: 0.2s;
+    }
+    .checkbox-wrapper-12 .cbx input:checked + label {
+      animation: splash-12 0.6s ease forwards;
+    }
+    .checkbox-wrapper-12 .cbx input:checked + label + svg path {
+      stroke-dashoffset: 0;
+    }
+    @-moz-keyframes splash-12 {
+      40% {
+        background: #1666FF;
+        box-shadow: 0 -18px 0 -8px #1666FF, 16px -8px 0 -8px #1666FF, 16px 8px 0 -8px #1666FF, 0 18px 0 -8px #1666FF, -16px 8px 0 -8px #1666FF, -16px -8px 0 -8px #1666FF;
+      }
+      100% {
+        background: #1666FF;
+        box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+      }
+    }
+    @-webkit-keyframes splash-12 {
+      40% {
+        background: #1666FF;
+        box-shadow: 0 -18px 0 -8px #1666FF, 16px -8px 0 -8px #1666FF, 16px 8px 0 -8px #1666FF, 0 18px 0 -8px #1666FF, -16px 8px 0 -8px #1666FF, -16px -8px 0 -8px #1666FF;
+      }
+      100% {
+        background: #1666FF;
+        box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+      }
+    }
+    @-o-keyframes splash-12 {
+      40% {
+        background: #1666FF;
+        box-shadow: 0 -18px 0 -8px #1666FF, 16px -8px 0 -8px #1666FF, 16px 8px 0 -8px #1666FF, 0 18px 0 -8px #1666FF, -16px 8px 0 -8px #1666FF, -16px -8px 0 -8px #1666FF;
+      }
+      100% {
+        background: #1666FF;
+        box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+      }
+    }
+    @keyframes splash-12 {
+      40% {
+        background: #1666FF;
+        box-shadow: 0 -18px 0 -8px #1666FF, 16px -8px 0 -8px #1666FF, 16px 8px 0 -8px #1666FF, 0 18px 0 -8px #1666FF, -16px 8px 0 -8px #1666FF, -16px -8px 0 -8px #1666FF;
+      }
+      100% {
+        background: #1666FF;
+        box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+      }
+    }
+  </style>
+
+</LayoutUsuario>
+</ControlAcces>
