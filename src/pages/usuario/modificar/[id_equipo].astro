@@ -11,11 +11,12 @@ import {CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const
 //export const staff = Array.from({ length: 5 }, () => ({ nombre: "", curso: "" }));
 import FormSend from "@components/FormSend.astro";
 
-const fechaInicio = new Date('2025-3-5'); // Cambia esta fecha según tus necesidades
-const fechaFin = new Date('2025-3-21'); // Cambia esta fecha según tus necesidades
+
 
 import { supabaseAdmin } from "src/lib/supabase";
-const pathname = Astro.url.pathname;
+import { verificarSesion } from "src/lib/session";
+import ControlAccesModificar from "@components/ControlAccesModificar.astro";
+const pathname = "/usuario/modificar";
 let accessibleBlocks = [];
 
 type AdministradorProps = {
@@ -206,35 +207,6 @@ try {
 let num_jugadores = jugadores.length;
 let num_staff = staff.length;
 
-const user = Astro.locals.StaffUser
-
-let nombre_staff = "";
-
-// let userWithRango = {
-//     email: user?.email || "Desconocido",
-//     rango: "Sin rango"
-// };
-
-try {
-    // Obtén el rango del usuario autenticado
-    if (user?.email) {
-        const { data: adminData, error } = await supabaseAdmin
-            .from("Administradores")
-            .select("rango, nombre, _1r_apellido")
-            .eq("user_email", user.email)
-            .single(); // Obtiene un único registro
-
-        if (error) {
-            console.error("Error al obtener rango:", error.message);
-        } else if (adminData) {
-            // userWithRango.rango = adminData.rango || "Sin rango";
-          nombre_staff = adminData.nombre + " " + adminData._1r_apellido;
-        }
-    }
-} catch (err) {
-    console.error("Error al obtener datos del usuario:", err);
-}
-
 
 const getCurrentDateInCatalan = () => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -244,61 +216,9 @@ const getCurrentDateInCatalan = () => {
 
 const currentDate = getCurrentDateInCatalan();
 
-
-// Obtén las páginas a las que el usuario tiene acceso
-try {
-    const { data: pageAccess, error } = await supabaseAdmin
-        .from('AccesoUsuarios')
-        .select('pagina, acceso');
-
-    if (error) {
-        console.error("Error al obtener acceso:", error);
-    } else if (pageAccess) {
-        // Filtra las páginas a las que el usuario tiene acceso
-        accessibleBlocks = pageAccess
-            .filter(page => page.acceso === true) // Solo páginas con acceso true
-            .map(page => page.pagina); // Obtiene solo las páginas
-        // console.log(accessibleBlocks);
-    }
-} catch (err) {
-    console.error("Error al obtener acceso:", err);
-}
-// Verifica si el usuario tiene acceso a la página actual
-let userHasAccess = accessibleBlocks.includes(pathname);
-
-if(userHasAccess){
-    let RangoFechas;
-
-    const fechaActual = new Date();
-
-    // Compara la fecha actual con las fechas de inicio y fin
-    if (fechaActual < fechaInicio) {
-        const { data: pageAccess, error } = await supabaseAdmin
-        .from('AccesoUsuarios')
-        .update({acceso: 'false'})
-        .eq('pagina', '/usuario/inscripcion');
-
-        RangoFechas = 'Dentro del rango de fechas';
-        
-    } else if (fechaActual > fechaFin) {
-        const { data: pageAccess, error } = await supabaseAdmin
-        .from('AccesoUsuarios')
-        .update({acceso: 'false'})
-        .eq('pagina', '/usuario/inscripcion');
-
-        RangoFechas = 'Dentro del rango de fechas';
-        
-    } else {
-    RangoFechas = 'Dentro del rango de fechas';
-    }
-    
-    
-}
-
 ---
-<ControlAcces>
+<ControlAccesModificar>
 <LayoutUsuario title="Modificar Equip Torneig Setmana Santa | IES Calvià Voley Tournament" descripcion="" >
-    
 
   <!-- Preview IMG escudo -->
   <script>
@@ -375,7 +295,7 @@ if(userHasAccess){
           ):(<></>)}
       <!-- Capitan -->
       <div class="flex flex-row items-center ml-2">
-        <label for="input_capitan" class="block text-amarillo text-2xl font-medium">Capità</label>
+        <label for="input_capitan" class=" text-amarillo text-2xl font-medium">Capità</label>
         <input
           type="text"
           id="input_capitan"
@@ -608,7 +528,7 @@ if(userHasAccess){
   
       <!--Jugadores -->
   {jugadores.map((jugador, index) => (
-        <div class="w-[100%] h-[2px] my-0 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+        <div class="w-[100%] h-[2px] my-0 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
         <div class="flex flex-row gap-2 items-end">
           <p class={`text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ${jugador.observaciones !== "" ? "bg-rojo": "bg-verde"}`}>{index + 1}. Jugador</p>
           <p class="text-blanco  bg-cancelar bg-opacity-55 w-max h-max p-2 rounded-md text-base ">Obligatori</p>
@@ -812,7 +732,7 @@ if(userHasAccess){
       ))} 
   
    {jugadores_extra.map((jugador, index) => (
-    <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+    <div class="w-[95%] h-[2px] my-10 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
     <div class="flex flex-row gap-2 items-end">
           <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1 + jugadores.length}. Jugador</p>
           <span id={`extra_capitan_${index}`} class="p-2 bg-gris-claro bg-opacity-55 flex items-center place-content-center rounded-full">
@@ -1013,7 +933,7 @@ if(userHasAccess){
     <p class="text-gray-500 text-sm">(No poden jugar)</p>
   </div>
   {staff.map((jugador, index) => (
-    <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+    <div class="w-[95%] h-[2px] my-10 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
     <div class="flex flex-row gap-2 items-end">
           <p class={`text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ${jugador.observaciones !== "" ? "bg-rojo": "bg-verde"}`}>{index + 1}. Staff</p>
           
@@ -1212,7 +1132,7 @@ if(userHasAccess){
   ))} 
 
 {Staff_extra.map((jugador, index) => (
-  <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
+  <div class="w-[95%] h-[2px] my-10 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
   <div class="flex flex-row gap-2 items-end">
         <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1 + staff.length}. Staff</p>
         
@@ -1449,6 +1369,7 @@ if(userHasAccess){
       </div>
     </form>
   </div>
+  </div>
   <div id="cond_inscripcion" class="oculto max-w-xl w-auto max-h-[90svh] h-auto bg-gris-claro overflow-y-scroll no-scrollbar rounded-lg">
     <div id="btn_cerrar_inscri" class="w-10 h-10 bg-cancelar absolute flex items-center place-content-center cursor-pointer text-blanco font-bold rounded-full">
       X
@@ -1549,7 +1470,6 @@ if(userHasAccess){
       }
   })
   </script>
-  
 
   <!-- Ver avisos legales -->
   <script>
@@ -1744,6 +1664,16 @@ if(userHasAccess){
      .centrar {
           z-index: 10000;
           position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      .block {
+          z-index: 1000000000;
+          position: fixed;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
@@ -1951,4 +1881,4 @@ if(userHasAccess){
   </style>
 
 </LayoutUsuario>
-</ControlAcces>
+</ControlAccesModificar>
