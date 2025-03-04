@@ -1,0 +1,286 @@
+---
+
+import { supabaseAdmin } from '../../lib/supabase';
+interface Equipo {
+  id_equipo: string;
+  nombre_equipo: string;
+  capitan: string;
+  entrenador: string;
+  escudo: string | null; // o string dependiendo de si puede ser nulo
+  inscrito: number;
+  estado: string | null;
+  aceptado: string | null;
+}
+// Obtener los equipos de la base de datos
+const { data: voluntarios, error } = await supabaseAdmin
+  .from('Voluntarios')
+  .select('nombre, _1r_apellido, _2n_apellido, curso, tipo, email, estado, fecha_inscripcion, img, descripcion, id, observacion, validar_img ')
+  .order('id', { ascending: true });
+
+
+if (error) {
+  console.error('Error al obtener los voluntarios:', error);
+} else if (!voluntarios || voluntarios.length === 0) {
+  console.log('No se encontraron voluntarios');
+} else {
+  console.log(`Se encontraron ${voluntarios.length} voluntarios`);
+}
+
+---
+{!voluntarios || voluntarios.length === 0  && (
+  <>
+  <div class="w-full h-auto mt-10 flex items-center place-content-center">
+  <section class="max-w-2xl w-full h-max p-0 mx-auto my-auto">
+      <h2 class=" w-full text-center text-amarillo uppercase font-bold text-4xl">No se encontraron voluntarios</h2>
+      
+      <p class="text-blanco text-xl text-center my-2">
+      Aun no hay voluntarios introducidos en la base de datos.
+      </p>
+      
+          
+  
+      </section>
+  </div>
+  </>
+  )}
+<div class="max-w-7xl my-10 w-auto mx-auto flex flex-wrap gap-4 items-center relative place-content-center">
+    <form id="equipo-form" class="w-full h-auto mx-auto flex flex-col items-center gap-y-4" method="POST" action="/api/usuario/evaluar-voluntario">
+        <div id="errorbox" class="text-red-500 bg-gris rounded-lg px-3 py-2 text-center error-box"></div>
+    {voluntarios && voluntarios.map((voluntario, index) => (
+    <div class="w-[80%] h-auto  gap-2 p-4 relative rounded-lg bg-gris-claro">
+      <div class="w-full h-auto  gap-2 p-4 relative rounded-lg  group transition-all duration-300">
+        <div class="w-full h-full gap-4 flex flex-wrap">
+            <div class="w-20 h-20">
+                {voluntario.img ? (
+                    <img 
+                        src={voluntario.img} 
+                        alt={`Imagen voluntario`} 
+                        class="h-full w-auto object-cover" 
+                      />
+                
+              ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="#e8eaed" viewBox="0 -960 960 960">
+                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                  </svg>
+                  )}
+            </div>
+            <div>
+                <p class="text-blanco text-lg font-semibold" translate="no">{voluntario.nombre} {voluntario._1r_apellido} {voluntario._2n_apellido}</p>
+                <p class="text-blanco text-base"><span class="font-semibold">Email:</span> {voluntario.email}</p>
+                <p class="text-blanco text-base"><span class="font-semibold">Curso:</span> {voluntario.curso}</p>
+            </div>
+            <div class="w-auto h-auto ml-2">
+                <h3 class="text-2xl text-amarillo font-semibold">{voluntario.tipo}</h3>
+                <p class="w-full bg-gris px-3 py-2 rounded-md text-blanco">{voluntario.descripcion}</p>
+            </div>
+          
+        </div>
+        <div class="flex flex-row items-center place-content-around">
+            <p class="text-blanco bg-gris px-3 py-2 rounded-lg">Data inscripció: {voluntario.fecha_inscripcion}</p>
+            <p class={`w-max h-max px-2 py-1 rounded-lg ${voluntario.estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${voluntario.estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${voluntario.estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{voluntario.estado}</p>
+          </div>
+        <div id={`btn_evaluar_${index}`} class="group-hover:opacity-100 opacity-1 absolute -bottom-1 right-4 flex items-center place-content-center rounded-lg w-16 h-16 bg-azul-suave bg-opacity-60 transition-all cursor-pointer duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="#e8eaed" viewBox="0 -960 960 960">
+                <path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56-23t-24-57v-640q0-33 24-56t56-24h320l240 240v480q0 33-23 57t-57 23H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/>
+            </svg>
+        </div>
+        </div>
+
+        <div id={`evaluar_${index}`} class="w-full ocultar h-auto  rounded-md mt-5 p-2 bg-gris">
+            <input type="hidden" name={`voluntario_id_${index}`} value={voluntario.id}/>
+            <input type="hidden" name={`voluntario_email_${index}`} value={voluntario.email}/>
+            <input type="hidden" name={`voluntario_nuevo_estado_${index}`} id={`voluntario_nuevo_estado_${index}`} />
+            <input type="hidden" name={`img-voluntario_${index}`} class="w-14" id={`img-voluntario_${index}`} value={voluntario.validar_img} value={`${voluntario.img ? (""): ("foto-denegada")}`}/>
+            {/* Evaluar img */}
+            <div class="w-full flex flex-wrap gap-2">
+                <div class="flex flex-col items-center place-content-center">
+                    <p class="text-blanco">¿Imagen Valida?</p>
+                    <div title={`${voluntario.img ? (""): ("IMG no valida")}`} class={`flex flex-row items-center gap-x-1 place-content-center ${voluntario.img ? ("cursor-pointer"): ("cursor-not-allowed  ")}`}>
+                        
+                        <span id={`img-voluntario-si-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${voluntario.validar_img === "foto-aceptada" ? "si_foto" : ""} ${voluntario.img ? (""): ("pointer-events-none")}`}>Si</span>
+                        <span id={`img-voluntario-no-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${voluntario.validar_img === "foto-denegada" ? "no_foto" : ""} ${voluntario.img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
+                </div>
+                </div>
+                <div class="w-auto gap-4 flex flex-wrap px-4 text-xl items-center place-content-around mt-4">
+                    <span id={`aceptar_${index}`} class="w-max h-max px-2 py-1 rounded-xl bg-verde-claro text-verde text-base uppercase font-semibold cursor-pointer">Acceptar</span>
+                    <span id={`denegar_${index}`} class="w-max h-max px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-base uppercase font-semibold cursor-pointer">Denegar</span>
+                </div>
+                {voluntario.observacion !== "" || voluntario.observacion === null  ? (<>
+          <textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{voluntario.observacion}</textarea>
+          </>):(<></>)}
+                <div id={`probl-voluntario_${index}`} class="max-w-full w-full">
+                    <h3 class="text-2xl text-naranja font-semibold">¿Problemas en el Voluntario?</h3>
+                    <textarea name={`probl_voluntario_${index}`} class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
+                </div>
+                
+                <div id={`boton_enviar_${index}`}  class="mx-auto ocultar">
+                    <button class="px-3 my-auto py-2 flex flex-row items-center place-content-center font-semibold w-max h-auto fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-lg hover:scale-110  duration-300 transition-all transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
+                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                    </svg>
+                    Evaluar Voluntario
+                    </button>
+                </div>
+            </div>
+
+            {voluntario.estado !== "Revisant"?(<>
+    <div id={`advertencia_${index}`} class="w-full h-full bg-gris-claro absolute top-0 left-0 rounded-md">
+      <h2 class="text-4xl text-amarillo font-bold text-center mt-4">⚠️ ADVERTENCIA ⚠️</h2>
+      <p class="w-[80%] mx-auto mt-10 text-lg text-blanco text-center">El voluntario <span class="text-accent">{voluntario.email}</span> no ha realizado ningun cambio desde la ultima revision.</p>
+      <p class="w-[80%] mx-auto mt-10 text-xl text-blanco text-center">¿Estas seguro que quieres continuar con una nueva revision?</p>
+      <div class="w-[50%] mx-auto flex flex-wrap px-4 text-xl items-center place-content-around mt-4">
+        <span id={`advertencia-si_${index}`} class="w-14 h-14 px-2 py-1 rounded-xl bg-verde-claro text-verde text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">Si</span>
+        <span id={`advertencia-no_${index}`} class="w-14 h-14 px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">No</span>
+    </div>
+    </div>
+    </>):(
+      <>
+      
+      </>)}
+        </div>
+      </div>
+    ))}
+
+
+</form>
+  </div>
+<!-- Errores -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Script Errores cargado');
+    document.getElementById('equipo-form')?.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita el envío del formulario por defecto
+  
+        const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+        const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+  
+  
+        // const espera = document.getElementById('espera');
+        // espera?.classList.add("centrar");
+        // espera?.classList.remove("oculto");
+  
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        });
+  
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("text/html")) {
+            const html = await response.text();
+            document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+            // Desplazarse hacia el div de error
+          //   espera?.classList.remove("centrar");
+          // espera?.classList.add("oculto");
+            document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+        } else if (contentType && contentType.includes("application/json")) {
+            const jsonResponse = await response.json();
+            if (jsonResponse.success) {
+                // Redirigir a la página principal
+                window.location.href = '/admin/voluntarios'; // Redirige al usuario
+            } else {
+                // Manejo de errores si es necesario
+                document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
+            }
+        }
+    });
+  });
+  </script>
+
+<script>
+    let index = 0;
+  while (document.querySelectorAll("[id^='btn_evaluar_']")) {
+    const btn_evaluar = document.getElementById(`btn_evaluar_${index}`)!;
+    const evaluar = document.getElementById(`evaluar_${index}`)!;
+    const si = document.getElementById(`img-voluntario-si-${index}`)!;
+    const no = document.getElementById(`img-voluntario-no-${index}`)!;
+    const aceptar = document.getElementById(`aceptar_${index}`)!;
+    const denegar = document.getElementById(`denegar_${index}`)!;
+    const estado = document.getElementById(`voluntario_nuevo_estado_${index}`)! as HTMLInputElement;
+    const boton_enviar = document.getElementById(`boton_enviar_${index}`)!;
+    const advertencia_no = document.getElementById(`advertencia-no_${index}`);
+    const advertencia_si = document.getElementById(`advertencia-si_${index}`);
+    const advertencia = document.getElementById(`advertencia_${index}`);
+
+    const foto = document.getElementById(`img-voluntario_${index}`)! as HTMLInputElement;
+
+    btn_evaluar?.addEventListener('click', function(){
+        // if(boton_enviar.classList.contains('ocultar')){
+        //     evaluar?.classList.remove("ocultar");
+        // }
+        // if(boton_enviar.classList.toggle('ocultar')){
+        //     evaluar?.classList.remove("ocultar");
+        // }
+        evaluar?.classList.toggle("ocultar");
+    })
+
+    
+
+    advertencia_no?.addEventListener('click', function(){
+    evaluar?.classList.add("ocultar");
+  })
+  advertencia_si?.addEventListener('click', function(){
+    advertencia?.classList.add("ocultar");
+  })
+    aceptar.addEventListener('click', function(){
+        estado.value = "Acceptat";
+        denegar.classList.add('desactivado');
+        aceptar.classList.remove('desactivado');
+        if(boton_enviar.classList.contains('ocultar')){
+            boton_enviar.classList.remove('ocultar');
+        }
+
+    })
+
+    denegar.addEventListener('click', function(){
+        estado.value = "Denegat";
+        aceptar.classList.add('desactivado');
+        denegar.classList.remove('desactivado');
+        if(boton_enviar.classList.contains('ocultar')){
+            boton_enviar.classList.remove('ocultar');
+        }
+    })
+
+    si.addEventListener('click',  function(){
+        
+            foto.value = "foto-aceptada";
+            si.classList.add("si_foto");
+            si.classList.remove("desactivado");
+            no.classList.remove("no_foto");
+            no.classList.add("desactivado");
+    });
+    no.addEventListener('click',  function(){
+        
+        foto.value = "foto-denegada";
+        no.classList.add("no_foto");
+        no.classList.remove("desactivado");
+        si.classList.remove("si_foto");
+        si.classList.add("desactivado");
+});
+    index++;
+}
+</script>
+
+<style>
+      .ocultar{
+    display: none;
+  }
+
+  .equipo-denegado{
+    display: block;
+  }
+    .si_foto {
+    background: rgba(20, 156, 2, 0.75);
+    /* background: rgb(255, 199, 0.75); */
+     /* Color para hombre */
+}
+
+.no_foto {
+    background-color: rgba(150, 1, 1, 0.75);
+    /* background: rgb(255, 199, 0.75); */
+    
+}
+
+.desactivado{
+    background-color: rgba(39, 39, 39, 0.75);
+}
+</style>
