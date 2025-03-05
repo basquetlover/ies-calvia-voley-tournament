@@ -12,6 +12,7 @@ const fechaFin = new Date('2025-3-21'); // Cambia esta fecha según tus necesida
 
 let RangoFechas = false;
 let YaInscrito = false;
+let Revisando = false;
 // Obtén las páginas a las que el usuario tiene acceso
 // Obtén las páginas a las que el usuario tiene acceso
 try {
@@ -97,6 +98,9 @@ if(Jugador){
                 YaInscrito = true;
             }
         }
+        if(Equipos.estado === "Revisant"){
+            Revisando = true;
+        }
 }
 
 }
@@ -125,7 +129,8 @@ if(usuario){
         if(adminData?.rango === "Owner" || adminData?.rango === "Co-Owner" || adminData?.rango === "Staff"){
         RangoFechas = true;
         YaInscrito = true;
-}
+        Revisando = false;
+}       
         }
         
     }
@@ -135,6 +140,7 @@ if(usuario){
     if(usuario.email === "alemanytomaspere@gmail.com"){
         RangoFechas = true;
         YaInscrito = true;
+        Revisando = false;
 }
 
 }
@@ -145,7 +151,35 @@ if(usuario){
 {YaInscrito === true ? (
     <>
     {RangoFechas === true ? (
-        <slot />
+        <>
+        {Revisando === false ? (<>
+            <slot />
+        </>): (<>
+            <LayoutMenu title="No Disnponible | IES Calvià Voley Tournament" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
+                
+                <div class="w-full h-auto flex items-center place-content-center">
+              <section class="max-w-2xl w-full h-max p-10 mx-auto my-auto">
+                  <h2 class=" w-full text-center text-accent font-bold text-5xl">Equip en Revisio</h2>
+                  
+                  <p class="text-blanco text-xl text-center my-2">
+                    Actualment, l'equip està en revisió per part del staff. Durant aquest procés, no es podrà modificar cap dada de l'equip. Rebreu un correu electrònic quan la revisió hagi finalitzat. Si creus que es tracta d'un error, posa't en <a href="/contacto" class="hover:text-amarillo transition-all duration-300">contacte amb el Staff</a>.
+                  </p>
+                  <p class="text-amarillo text-xl text-center my-2">
+                    Aquest procés pot trigar fins a 3 dies.
+                  </p>
+                  
+                      <a href="/" class="px-3 py-2 w-max mx-auto my-5 text-azul font-semibold bg-amarillo rounded-full text-xl hover:scale-110 duration-300 transition-all transform flex flex-row items-center place-content-center gap-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 -960 960 960" class="fill-current">
+                              <path d="M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+                          </svg>
+                          Tornar enrere
+                      </a>
+                  </section>
+          </div> 
+            </LayoutMenu>
+        </>)}
+        </>
+        
         ) : (
             <LayoutMenu title="No Disnponible | IES Calvià Voley Tournament" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
                 
