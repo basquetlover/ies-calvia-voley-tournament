@@ -1627,7 +1627,7 @@ const currentDate = getCurrentDateInCatalan();
   
   
           const espera = document.getElementById('espera');
-          espera?.classList.add("centrar");
+          espera?.classList.add("block");
           espera?.classList.remove("oculto");
   
           const response = await fetch(form.action, {
@@ -1640,7 +1640,7 @@ const currentDate = getCurrentDateInCatalan();
               const html = await response.text();
               document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
               // Desplazarse hacia el div de error
-              espera?.classList.remove("centrar");
+              espera?.classList.remove("block");
               espera?.classList.add("oculto");
               document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
           } else if (contentType && contentType.includes("application/json")) {
