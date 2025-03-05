@@ -483,26 +483,28 @@ let equipo_inscrito_id = "0";
   .single();
 if(existingEquipo){
   equipo_inscrito_id = existingEquipo.id;
+
+  if (existingEquipo.id != number_id_equipo) {
+    console.log("son distintos")
 }
-if (checkError) {
-  console.error("Error al verificar la existencia:", checkError.message);
-  return new Response(
-    `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Error: Torna-ho a intentar més tard.</div>`, 
-    { status: 401, headers: { "Content-Type": "text/html" } }
-);
+if(existingEquipo.id != number_id_equipo){
+    return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Ja existeix un equip amb aquest nom</div>`, 
+        { status: 401, headers: { "Content-Type": "text/html" } }
+    );
 }
+}
+// if (checkError) {
+//   console.error("Error al verificar la existencia:", checkError.message);
+//   return new Response(
+//     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Error: Torna-ho a intentar més tard.</div>`, 
+//     { status: 401, headers: { "Content-Type": "text/html" } }
+// );
+// }
 
 
 
-        if (existingEquipo.id != number_id_equipo) {
-            console.log("son distintos")
-        }
-        if(existingEquipo.id != number_id_equipo){
-            return new Response(
-                `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Ja existeix un equip amb aquest nom</div>`, 
-                { status: 401, headers: { "Content-Type": "text/html" } }
-            );
-        }
+        
 
 if(escudo.size > 0){
 async function uploadFile(file: File, id_equipo: string) {
