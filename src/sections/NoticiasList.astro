@@ -13,7 +13,7 @@ interface Noticia {
 const { data: equipos, error } = await supabaseAdmin
   .from('Noticias')
   .select('titulo, category, fecha, id_noticia, id, imagen_noticia ')
-  .order('id', { ascending: true });
+  .order('id', { ascending: false });
 
 
 if (error) {
