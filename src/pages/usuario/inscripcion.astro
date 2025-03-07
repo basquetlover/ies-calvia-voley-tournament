@@ -63,16 +63,6 @@ if(userHasAccess){
     RangoFechas = true;
     }
     
-    const { data: adminAccess } = await supabaseAdmin
-        .from('AccesoUsuarios')
-        .select('acceso')
-        .eq('pagina', 'AdminMode')
-        .single();
-        if(adminAccess){
-            if(adminAccess.acceso === true)
-            RangoFechas = true;
-        }
-    
 }
 const usuario = await verificarSesion(Astro.request);
 let { data: Usuarios, error } = await supabaseAdmin
@@ -95,6 +85,16 @@ if(error){
 // adminData?.rango === "Owner" || 
 if(adminData?.rango === "Owner" || adminData?.rango === "Co-Owner" || adminData?.rango === "Staff"){
     RangoFechas = true;
+
+    const { data: adminAccess } = await supabaseAdmin
+        .from('AccesoUsuarios')
+        .select('acceso')
+        .eq('pagina', 'AdminMode')
+        .single();
+        if(adminAccess){
+            if(adminAccess.acceso === true)
+            RangoFechas = true;
+        }
 }
 }
     
