@@ -1599,6 +1599,32 @@ a[x-apple-data-detectors],
 //Realizador Inscripcion
 console.log(usuario_email);
 console.log(capitan_email);
+//email torneo
+const organizadores = "voley_tournament@iescalvia.com";
+try {
+  const { data, error } = await resend.emails.send({
+    from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+    to: [organizadores], // Asegúrate de que esta variable tenga el valor correcto
+    subject: `Modificació Realitzada de l'equip ${nombre_equipo} | Versió Inscriptor`,
+    html: emailBody,
+  });
+
+  if (error) {
+    throw new Error(error.message); // Lanza un error si hay un problema
+  }
+
+  console.log("Correo enviado correctamente", data);
+  let asunto = `Modificació Realitzada de l'equip ${nombre_equipo}  | Versió Inscriptor`
+  const { data: Emails, error: EmailsError } = await supabaseAdmin
+  .from('Emails')
+  .insert([
+    { destinatario: organizadores, asunto: asunto, contenido: emailBody, id_resend: data?.id },
+  ])
+  .select()
+} catch (error) {
+  console.error("Error al enviar el correo:", error);
+}
+
 try {
   const { data, error } = await resend.emails.send({
     from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
