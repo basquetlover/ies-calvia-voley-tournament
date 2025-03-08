@@ -41,7 +41,7 @@ let aceptado = "";
 let fecha_inscripcion = "";
 let capitan_email = "";
 let capitan_edit= "";
-let probl_tit_logo= "";
+let probl_tit_logo = "";
 
 let id = "";
 let inscrito = "";
@@ -279,9 +279,11 @@ const currentDate = getCurrentDateInCatalan();
             
             
           </div>
-          {probl_tit_logo !== "" || probl_tit_logo === null  ? (<>
+          {probl_tit_logo === "" || probl_tit_logo === null  ? (<>
+            
+          </>):(<>
           <textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{probl_tit_logo}</textarea>
-          </>):(<></>)}
+          </>)}
           
           <div id="probl-tit_logo" class="ocultar">
             <h3 class="text-2xl text-naranja font-semibold">¿Problemas en Nombre de Equipo o Logo?</h3>
@@ -397,9 +399,11 @@ const currentDate = getCurrentDateInCatalan();
 
             
           </div>
-          {entrenador_observaciones !== "" || entrenador_observaciones === null  ? (<>
+          {entrenador_observaciones === "" || entrenador_observaciones === null  ? (<>
+         
+          </>):(<>
           <textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{entrenador_observaciones}</textarea>
-          </>):(<></>)}
+          </>)}
           <div id="probl-entrenador" class="ocultar">
             <h3 class="text-2xl text-naranja font-semibold">¿Problemas con el entrenador?</h3>
             <textarea name="probl-entrenador" class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
@@ -499,9 +503,9 @@ const currentDate = getCurrentDateInCatalan();
                   <p class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro flex flex-row items-center rounded-full text-base text-blanco border-none">{jugador.email}</p>
               
               </div>
-              {jugador.observaciones !== "" ? (
-              <><textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>): 
-              (<></>) }
+              {jugador.observaciones === "" || jugador.observaciones === null ? (
+              <></>): 
+              (<><textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>) }
               
              </div>
             
@@ -610,9 +614,9 @@ const currentDate = getCurrentDateInCatalan();
         <p class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro flex flex-row items-center rounded-full text-base text-blanco border-none">{jugador.email}</p>
     
     </div>
-    {jugador.observaciones !== "" ? (
-              <><textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>): 
-              (<></>) }
+    {jugador.observaciones === "" || jugador.observaciones === null ? (
+              <></>): 
+              (<><textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>) }
    </div>
   </div>
 
