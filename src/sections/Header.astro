@@ -94,7 +94,8 @@ window.addEventListener('load', function(){
 const boton_subemnu_desktop = document.getElementById('bot-noimp-desk')!;
 const boton_subemnu_desktop_icon = document.getElementById('bot-noimp-desk-icon')!;
 const submenu_desktop = document.getElementById('noimp-desk')!;
-
+submenu_desktop.classList.add('active');
+boton_subemnu_desktop_icon.classList.add('rotate');
 boton_subemnu_desktop.addEventListener('click', function() {
     if (submenu_desktop.classList.contains('active')) {
         submenu_desktop.classList.remove('active');

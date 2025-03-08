@@ -32,15 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
         const img_entrenador = formData.get("img-entrenador")?.toString().trim();
         const probl_entrenador = formData.get("probl-entrenador")?.toString().trim();
 
-        const { data: Aceotado, error: Aceptado } = await supabaseAdmin
-        .from('EquiposSS')
-        .update({ 
-            fecha_revision: currentDate,
-            estado: nuevo_estado,
-            aceptado: 'Inscrit',
-         })
-        .eq('id', equipo_id)
-        .select()
+        
 
         const jugadores = [];
         let index = 0;
@@ -95,16 +87,26 @@ export const POST: APIRoute = async ({ request }) => {
         index++;
       }
 
-        const { data, error } = await supabaseAdmin
+        // const { data, error } = await supabaseAdmin
+        // .from('EquiposSS')
+        // .update({ 
+        //     fecha_revision: currentDate,
+        //     estado: nuevo_estado,
+        //     aceptado: 'Pendent',
+        //     probl_tit_logo: '',
+        //  })
+        // .eq('id', equipo_id)
+        // .select();
+
+        const { data: Aceotado, error: Aceptado } = await supabaseAdmin
         .from('EquiposSS')
         .update({ 
             fecha_revision: currentDate,
             estado: nuevo_estado,
-            aceptado: 'Pendent',
-            probl_tit_logo: '',
+            aceptado: 'Inscrit',
          })
         .eq('id', equipo_id)
-        .select();
+        .select()
 
         const { error: jugadorError } = await supabaseAdmin
               .from('JugadoresSS')
