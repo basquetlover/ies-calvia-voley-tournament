@@ -24,10 +24,11 @@ let estado = "";
 let tipo_voluntario = "";
 let estado_voluntario = "";
 
+const usuario_email = usuario.email;
 
 if(usuario){
     const usuario_nombre = usuario.nombre;
-    const usuario_email = usuario.email;
+    
     let acceso_inscripcion = false;
     let acceso_modificacion = false;
     let { data: AccesoInscripcion, error } = await supabaseAdmin
@@ -106,8 +107,8 @@ if(usuario){
             // console.error("Este usuario no es Staff");
         } else{
             admin = true;
-            equipo = "IES Calvià Voley Team";
-            escudo = "/web-app-manifest-192x192.png";
+            // equipo = "IES Calvià Voley Team";
+            // escudo = "/web-app-manifest-192x192.png";
         }
     } else {
     let { data: Equipos, error: errorE } = await supabaseAdmin
@@ -290,18 +291,18 @@ if(usuario){
                 </>)}
     <!-- Voluntario -->
                 {voluntario === true ? (<>
-                <div class="w-44 h-44 bg-azul rounded-lg p-2  grid grid-cols-1 grid-rows-[auto_1fr_auto_auto]">
+                <a href={`/usuario/modificar/${usuario_email}`} class="w-44 h-44 bg-azul rounded-lg p-2  grid grid-cols-1 grid-rows-[auto_1fr_auto_auto] place-items-center">
                     <p class="text-blanco text-base font-semibold" translate="no">{tipo_voluntario}</p>
-                    <div class="flex items-center justify-center w-full h-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
-                            <path class={` ${accesoModificar === false ? "fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all" : " fill-gray-500 "}`} d="M360-80v-529q-91-24-145-100t-55-171h80q0 83 54 142t136 58h100q30 0 56 11t47 32l181 181-56 56-158-158v478h-80v-240h-80v240h-80Zm120-640q-33 0-56-23t-24-57q0-33 24-56t56-24q33 0 57 24t23 56q0 33-23 57t-57 23Z"/>
-                        </svg>
-                    </div>
+                    <span class="w-20 h-20">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
+                                <path  class={` ${inscripcion === true ? "fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all" : " fill-gray-500 "}`} d="M360-80v-529q-91-24-145-100t-55-171h80q0 83 54 142t136 58h100q30 0 56 11t47 32l181 181-56 56-158-158v478h-80v-240h-80v240h-80Zm120-640q-33 0-56-23t-24-57q0-33 24-56t56-24q33 0 57 24t23 56q0 33-23 57t-57 23Z"/>
+                            </svg>
+                        </span>
                     
                     <div class="flex flex-row items-center place-content-around">
                         <p class={`w-max h-max px-1 py-1 text-sm rounded-lg ${estado_voluntario ===  "Revisant" ? "bg-naranja-claro text-naranja  uppercase font-semibold" : ""} ${estado_voluntario ===  "Acceptat" ? "bg-verde-claro text-verde  uppercase font-semibold" : ""} ${estado_voluntario ===  "Denegat" ? "bg-rojo-claro text-rojo  uppercase font-semibold" : ""}`}>{estado_voluntario}</p>
                     </div>
-                </div>
+                </a>
                 </>) : (<>
                     <a href="/usuario/solicitud-voluntario" class={`px-1 h-44 w-44 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center ${inscripcion === true ? " text-white hover:text-amarillo group duration-300 transition-all" : " text-gray-500 cursor-not-allowed pointer-events-none "} `}>
                         <span class="w-20 h-20">

@@ -1,0 +1,715 @@
+---
+import ControlAcces from "@components/ControlAcces.astro";
+import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+import LayoutUsuario from "@layouts/LayoutUsuario.astro";
+import LayoutUsuarioMenu from "@layouts/LayoutUsuarioMenu.astro";
+import CrearEquipoUser from "@sections/usuarios/CrearEquipoUser.astro";
+import {CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
+// export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "" }));
+
+//export const staff = Array.from({ length: 5 }, () => ({ nombre: "", curso: "" }));
+import FormSend from "@components/FormSend.astro";
+
+
+
+import { supabaseAdmin } from "src/lib/supabase";
+import { verificarSesion } from "src/lib/session";
+import ControlAccesModificar from "@components/ControlAccesModificar.astro";
+import __AstroComponent_ from "src/pages/404.astro";
+import ControlAccesVoluntarios from "@components/ControlAccesVoluntarios.astro";
+const pathname = "/usuario/modificar";
+let accessibleBlocks = [];
+
+type AdministradorProps = {
+    id_equipo: string;
+    nombre_equipo: string;
+};
+
+// Genera rutas dinámicas
+export async function getStaticPaths() {
+  // Consulta a la base de datos para obtener user_email y rango
+  const { data, error } = await supabaseAdmin
+    .from('Voluntarios')
+    .select('email, nombre');
+
+  if (error) {
+    console.error('Error fetching administradores:', error.message);
+    return { paths: [] };
+  }
+
+  // Genera las rutas dinámicas con datos adicionales
+  const paths = data.map((equipo) => ({
+    params: { email: equipo.email },
+    props: { nombre_equipo: equipo.nombre }, // Pasamos rango como parte de los props
+  }));
+
+  return { paths };
+}
+const email = Astro.url.pathname.split('/').pop();
+
+let nombre = "";
+let _1r_apellido = "";
+let _2n_apellido = "";
+let curso = "";
+let genero = "";
+let tipo = "";
+let descripcion = "";
+let estado = "";
+let fecha_inscripcion = "";
+let observacion = "";
+let voluntario_id = "";
+
+
+const { data, error } = await supabaseAdmin
+    .from('Voluntarios')
+    .select('id, email, nombre, _1r_apellido,genero,  _2n_apellido, curso, tipo, descripcion, estado, fecha_inscripcion, observacion ')
+    .eq('email', email)
+    .single();
+
+    if(data){
+         nombre = data.nombre;
+         _1r_apellido = data._1r_apellido;
+         _2n_apellido = data._2n_apellido;
+         curso = data.curso;
+         genero = data.genero;
+         tipo = data.tipo;
+         descripcion = data.descripcion;
+         estado = data.estado;
+         fecha_inscripcion = data.fecha_inscripcion;
+         observacion = data.observacion;
+         voluntario_id = data.id;
+    }
+
+const getCurrentDateInCatalan = () => {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = new Date();
+  return new Intl.DateTimeFormat('ca-ES', options).format(date);
+};
+
+const currentDate = getCurrentDateInCatalan();
+
+---
+<ControlAccesVoluntarios>
+<LayoutUsuario title="Modificar Voluntari Torneig Setmana Santa | IES Calvià Voley Tournament" descripcion="" >
+    <div id="espera" class=" oculto w-full h-full bg-gris bg-opacity-60 overflow-hidden">
+        <div class="bg-gris-claro rounded-xl relative max-w-2xl w-full h-96 flex flex-col items-center place-content-center">
+          <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-5">Enviant Dades</h2>
+          <FormSend />
+          <p class="text-blanco text-center absolute bottom-5">Estem treballant per enviar-te tota la informació necessària sobre la inscripció. Actualment, estem processant les dades i t'agraïm la teva paciència.
+            </p>
+        </div>
+        </div>
+        <!-- action="/api/usuario/anadir-equipo" -->
+        <div class="max-w-5xl w-full h-max py-2  overflow-hidden mx-auto my-10 ">
+            <div class="flex flex-wrap items-center place-content-around gap-2">
+                <p class={`w-max h-max px-2 py-1 rounded-xl ${estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{estado}</p>
+                <p class="text-blanco bg-gris-claro px-3 py-2 rounded-lg">Data inscripció: {fecha_inscripcion}</p>
+              </div>
+          <form id="equipo-form" method="POST" class="space-y-4" action="/api/usuario/modificar-voluntario"  enctype="multipart/form-data">
+            <div id="errorbox" class="text-red-500 bg-gris rounded-lg px-3 py-2 text-center error-box"></div>
+            <!-- Datos usuario -->
+            <!-- <div class="w-full hidden">
+              <input type="text" name="usuario_id" class="bg-transparent w-auto h-max text-blanco" value={usuario.id}/>
+              <input type="text" name="usuario_nombre" class="bg-transparent w-auto h-max text-blanco" value={usuario.nombre}/>
+              <input type="text" name="usuario_email" class="bg-transparent w-auto h-max text-blanco" value={usuario.email}/>
+              <input type="text" name="usuario_curso" class="bg-transparent w-auto h-max text-blanco" value={usuario.curso}/>
+            </div> -->
+            <input type="hidden" name="voluntario_id" class="bg-transparent w-auto h-max text-blanco" value={voluntario_id}/>
+            <h1 class="text-5xl text-accent text-center font-bold">Modificar Voluntari Torneig Setmana Santa</h1>
+        
+            <div class="w-full h-auto flex flex-wrap items-center place-content-center text-lg text-blanco gap-14">
+              <input type="hidden" required id="input-tipo" class="text-gris" name="tipo" />
+              <div id="arb" class="w-max h-max cursor-pointer flex flex-row items-center gap-2">
+                <span id="arb-icon" class={`w-5 h-5 border-gris-claro border-solid rounded-full border-2 ${tipo ===  "Arbitro" ? "seleccionado" : ""}`}></span>
+                <p>Àrbitre</p>
+              </div>
+              <div id="odm" class="w-max h-max cursor-pointer flex flex-row items-center gap-2">
+                <span id="odm-icon" class={`w-5 h-5 border-gris-claro border-solid rounded-full border-2 ${tipo ===  "Oficial de Mesa" ? "seleccionado" : ""}`}></span>
+                <p>Oficial de Mesa</p>
+              </div>
+              <div id="arb-odm" class="w-max h-max cursor-pointer flex flex-row items-center gap-2">
+                <span id="arb-odm-icon" class={`w-5 h-5 border-gris-claro border-solid rounded-full border-2 ${tipo ===  "Arbitro o Oficial de Mesa" ? "seleccionado" : ""}`}></span>
+                <p>Àrbitre o Oficial de Taula</p>
+              </div>
+            </div>
+            
+        
+            <!-- voluntari -->
+            <div class="w-max flex flex-row gap-2 ">
+              <div class="px-3 py-2 w-[400px] h-12 mt-10 flex flex-row text-4xl text-amarillo border-none">
+                <h4>Dades Personals</h4>
+               {/* Genero */}
+               <div class="flex flex-col relative">
+                <label class="genero relative">
+                    <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                    
+                    <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                            <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                        </svg> 
+                    </span>
+                </label>
+                    <input 
+                        id={`genero_voluntario`}
+                        type="hidden"
+                        name={`genero_voluntario`}
+                         required
+                        value={genero}
+                        class="w-10" 
+                    />
+                    <span id={`hombre_voluntario`} class={`desactivado ${genero === "hombre" ? "hombre": ""}`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                            <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                        </svg>
+                    </span>
+                    <span id={`mujer_voluntario`} class={`desactivado ${genero === "mujer" ? "mujer": ""}`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                            <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                        </svg>
+                    </span>
+                </label>
+            </div>
+              </div>
+            </div>
+            <div class="flex flex-col items-center ml-2">
+            
+              <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
+                
+                {/* Nombre */}
+                <div class="flex flex-col relative">
+                    <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                        Nom
+                        <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                                <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                            </svg> 
+                        </span>
+                    </label>
+                    <input
+                    type="text"
+                    id={`voluntari_name`}
+                    name={`voluntario_name`}
+                    placeholder="Nom de l'voluntari"
+                    class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                    required
+                    value={nombre}
+                    
+                    
+                    />
+                </div>
+                {/* 1r Apellido */}
+                <div class="flex flex-col relative">
+                    <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                        1r Cognom
+                        <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                                <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                            </svg> 
+                        </span>
+                    </label>
+                    
+                    <input
+                    type="text"
+                    name={`voluntario_1r_apellido`}
+                    id={`voluntari_1r_apellido`}
+                    placeholder="Cognom del voluntari"
+                    class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                    required
+                    value={_1r_apellido}
+                    
+                    />
+                </div>
+        
+                {/* 2n Apellido */}
+                <div class="flex flex-col relative">
+                    <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+                    <input
+                    type="text"
+                    name={`voluntario_2n_apellido`}
+                    placeholder="Segon Cognom del voluntari"
+                    class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                    value={_2n_apellido}
+                    />
+                </div>
+        
+                 {/* Curso */}
+                <div class="flex flex-col relative">
+                    <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                        Curs
+                        <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                                <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                            </svg> 
+                        </span>
+                    </label>
+                    
+                <select
+                  name={`voluntario_curso`}
+                  class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                  required
+                  
+                  
+                >
+                  <option value={curso} class="bg-accent" selected>{curso}</option>
+                  <hr class="border-accent" />
+                  {CURSO_3E.map(({ label }) => (
+                    <option value={label}>
+                      {label}
+                    </option>
+                  ))}
+                  <hr class="border-accent" />
+                  {CURSO_4E.map(({ label }) => (
+                    <option value={label}>
+                      {label}
+                    </option>
+                  ))}
+                  <hr class="border-accent" />
+                  {CURSO_1B.map(({ label }) => (
+                    <option value={label}>
+                      {label}
+                    </option>
+                  ))}
+                  <hr class="border-accent" />
+                  {CURSO_2B.map(({ label }) => (
+                    <option value={label}>
+                      {label}
+                    </option>
+                  ))}
+                  <hr class="border-accent" />
+                  {CURSO_FP.map(({ label }) => (
+                    <option value={label}>
+                      {label}
+                    </option>
+                  ))}
+                  <hr class="border-accent" />
+                  {CURSO_P.map(({ label }) => (
+                    <option value={label}>
+                      {label}
+                    </option>
+                  ))}
+                  
+                </select>
+                </div>
+                {/* Email */}
+                <div class="flex flex-col relative">
+                    <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                        Email
+                        <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                                <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                            </svg> 
+                        </span>
+                    </label>
+                    <input
+                    type="email"
+                    name={`voluntario_email`}
+                    placeholder="Email del voluntari"
+                    class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                    required
+                    value={email}
+                    />
+                
+                </div>
+                 {/* Imagen cara */}
+                 <div class="flex flex-col relative">
+                  <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                      Imatge Cara
+                      <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                              <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                          </svg> 
+                      </span>
+                  </label>
+                  <input
+                  type="file"
+                  id={`voluntario_img`}
+                  name={`voluntario_img`}
+                  placeholder="Email del jugador"
+                  class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+                  accept=".png, .jpg, .jpeg, .webp"
+                  />
+              
+              </div>
+              </div>
+        
+              <div class="w-full h-auto mt-10">
+                <h4 class="text-4xl text-amarillo border-none">Per què vols ser voluntari?</h4>
+                <textarea required name="descripcion" class="w-full mt-5 text-base text-blanco h-auto px-2 py-2 bg-gris-claro rounded-md" placeholder="Vull ser voluntari perquè">{descripcion}</textarea>
+              </div>
+
+              {observacion !== "" || observacion === null  ? (<>
+                <textarea disabled class="w-full bg-naranja-claro rounded-md px-3 py-2 text-gris">{observacion}</textarea>
+                </>
+                ):(<></>)}
+              
+            </div>
+            
+        
+          
+        
+        
+
+        
+            
+        
+           
+            <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
+              <a href="/" rel="noreferrer" class="px-3 py-2 flex flex-row items-center select-none place-content-center font-medium w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-lg hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
+              <button class="px-3 py-2 flex flex-row items-center place-content-center font-medium w-52 h-12 fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-lg hover:scale-110  duration-300 transition-all transform">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10" viewBox="0 0 512 512" >
+                      <path d="M253 148c-149 54-233 85-235 87s-3 7-1 10l56 21 55 20 17 80c17 86 16 82 23 82 3 0 10-6 57-53l54-53a1798 1798 0 0 1 90 26l4-2c2-2 122-288 123-294 0-4-3-8-8-8l-235 84zm162 79-52 123-138-42 31-26 139-119 71-60-51 124zm4-121L136 270l-86-30 48-18a277117 277117 0 0 0 323-116zm-15 28a133849 133849 0 0 1-202 173l-14 41-15 50-3 10-13-62-11-62 55-33a159917 159917 0 0 0 203-117zM237 329l24 7a1500 1500 0 0 1-75 74 1113 1113 0 0 1 27-88l24 7z"/>
+                  </svg>
+                  <!-- <svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 512 512">
+                    <path />
+                  </svg> -->
+                  Envia Sol·licitud
+                </button>
+          </div>
+          </form>
+        </div>
+
+        
+        
+        
+        <!-- Ver avisos legales -->
+        <script>
+          console.log("Script Documentos Legales cargado")
+            const btn_cond_inscripcion = document.getElementById(`btn_cond_inscripcion`)!;
+            const cond_inscripcion = document.getElementById(`cond_inscripcion`)!;
+            const btn_cerrar_inscri = document.getElementById(`btn_cerrar_inscri`)!;
+        
+            btn_cond_inscripcion.addEventListener('click',  function(){
+        
+                cond_inscripcion.classList.add("fijado");
+                cond_inscripcion.classList.remove("oculto");   
+            });
+            
+            btn_cerrar_inscri.addEventListener('click',  function(){
+        
+              cond_inscripcion.classList.remove("fijado");
+              cond_inscripcion.classList.add("oculto");
+        });
+        </script>
+        
+        <!-- Seleccionar genero -->
+        <script>
+        window.addEventListener('load', function(){
+            console.log("Script Selec Genero cargado")
+            const hombre = document.getElementById(`hombre_voluntario`)!;
+            const mujer = document.getElementById(`mujer_voluntario`)!;
+            
+            const genero = document.getElementById(`genero_voluntario`)! as HTMLInputElement;
+            hombre.addEventListener('click',  function(){
+                
+                    genero.value = "hombre";
+                    hombre.classList.add("hombre");
+                    hombre.classList.remove("desactivado");
+                    mujer.classList.remove("mujer");
+                    mujer.classList.add("desactivado");
+            });
+            mujer.addEventListener('click',  function(){
+                
+                genero.value = "mujer";
+                mujer.classList.add("mujer");
+                mujer.classList.remove("desactivado");
+                hombre.classList.remove("hombre");
+                hombre.classList.add("desactivado");
+        });
+        })
+        </script>
+        
+        <!--Seleccionar tipo de voluntario -->
+        <script>
+          window.addEventListener('load', function(){
+              console.log("Script Selec Tipo voluntario cargado")
+              const arb = document.getElementById(`arb`)!;
+              const odm = document.getElementById(`odm`)!;
+              const arb_odm = document.getElementById(`arb-odm`)!;
+        
+              const arb_icon = document.getElementById(`arb-icon`)!;
+              const odm_icon = document.getElementById(`odm-icon`)!;
+              const arb_odm_icon = document.getElementById(`arb-odm-icon`)!;
+              
+              const tipo = document.getElementById(`input-tipo`)! as HTMLInputElement;
+              arb.addEventListener('click',  function(){
+                  
+                      tipo.value = "Arbitro";
+                      arb_icon.classList.add("seleccionado");
+                      odm_icon.classList.remove("seleccionado");
+                      arb_odm_icon.classList.remove("seleccionado");
+                      
+              });
+              odm.addEventListener('click',  function(){
+                  
+                  tipo.value = "Oficial de Mesa";
+                  odm_icon.classList.add("seleccionado");
+                  arb_icon.classList.remove("seleccionado");
+                  arb_odm_icon.classList.remove("seleccionado");
+                  
+          });
+        
+              arb_odm.addEventListener('click',  function(){
+                  tipo.value = "Arbitro o Oficial de Mesa";
+                  arb_odm_icon.classList.add("seleccionado");
+                  arb_icon.classList.remove("seleccionado");
+                  odm_icon.classList.remove("seleccionado");
+                  
+          });
+          })
+          </script>
+        <!-- Errores -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('Script Errores cargado');
+            document.getElementById('equipo-form')?.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Evita el envío del formulario por defecto
+        
+                const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+                const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+        
+                const espera = document.getElementById('espera');
+                espera?.classList.add("block");
+                espera?.classList.remove("oculto");
+        
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                });
+        
+                const contentType = response.headers.get("Content-Type");
+                if (contentType && contentType.includes("text/html")) {
+                    const html = await response.text();
+                    document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+                    // Desplazarse hacia el div de error
+                    espera?.classList.remove("block");
+                  espera?.classList.add("oculto");
+                    document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+                } else if (contentType && contentType.includes("application/json")) {
+                    const jsonResponse = await response.json();
+                    if (jsonResponse.success) {
+                        // Redirigir a la página principal
+                        window.location.href = '/usuario'; // Redirige al usuario
+                    } else {
+                        // Manejo de errores si es necesario
+                        document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
+                    }
+                }
+            });
+        });
+        </script>
+        
+        <style>
+          input[type="file"]::file-selector-button {
+          display: none;
+        }
+           .centrar {
+                z-index: 100000;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .block {
+                z-index: 100000;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .oculto{
+              display: none;
+            }
+            .activado{
+              display: block;
+            }
+            .fijado {
+                z-index: 1000;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .formulario{
+                z-index: 10000;
+            }
+            .form{
+                
+                position: absolute;
+                top: -20px;
+                left: 20px;
+            }
+        
+            .seleccionado{
+              background-color: #1666FF;
+            }
+        
+            .genero {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: 90px;
+            height: 25px;
+        }
+        
+        .genero span {
+            border-radius: 10px;
+            fill: white;
+            transition: background-color 0.3s;
+        }
+        .desactivado{
+            background-color: rgba(39, 39, 39, 0.75);
+        }
+        
+        .hombre {
+            background: rgba(0, 89, 255, 0.75);
+            /* background: rgb(255, 199, 0.75); */
+             /* Color para hombre */
+        }
+        
+        .mujer {
+            background-color: rgba(255, 0, 200, 0.75);
+            /* background: rgb(255, 199, 0.75); */
+            
+        }
+        
+        .error-box{
+          position: fixed;
+          right: 20px;
+          bottom: 20px;
+          z-index: 100000000;
+        }
+        
+        
+        
+        </style>
+        <!-- estilos checkbox terminos -->
+        <style>
+          .checkbox-wrapper-12 {
+            position: relative;
+            z-index: 1000;
+          }
+          .checkbox-wrapper-12 > svg {
+            position: absolute;
+            top: -130%;
+            left: -170%;
+            width: 110px;
+            pointer-events: none;
+          }
+          .checkbox-wrapper-12 * {
+            box-sizing: border-box;
+          }
+          .checkbox-wrapper-12 input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
+            margin: 0;
+          }
+          .checkbox-wrapper-12 input[type="checkbox"]:focus {
+            outline: 0;
+          }
+          .checkbox-wrapper-12 .cbx {
+            width: 24px;
+            height: 24px;
+            top: calc(50vh - 12px);
+            left: calc(50vw - 12px);
+          }
+          .checkbox-wrapper-12 .cbx input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #bfbfc0;
+            border-radius: 50%;
+          }
+          .checkbox-wrapper-12 .cbx label {
+            width: 24px;
+            height: 24px;
+            background: none;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-filter: url("#goo-12");
+            filter: url("#goo-12");
+            transform: trasnlate3d(0, 0, 0);
+            pointer-events: none;
+          }
+          .checkbox-wrapper-12 .cbx svg {
+            position: absolute;
+            top: 5px;
+            left: 4px;
+            z-index: 1;
+            pointer-events: none;
+          }
+          .checkbox-wrapper-12 .cbx svg path {
+            stroke: #fff;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 19;
+            stroke-dashoffset: 19;
+            transition: stroke-dashoffset 0.3s ease;
+            transition-delay: 0.2s;
+          }
+          .checkbox-wrapper-12 .cbx input:checked + label {
+            animation: splash-12 0.6s ease forwards;
+          }
+          .checkbox-wrapper-12 .cbx input:checked + label + svg path {
+            stroke-dashoffset: 0;
+          }
+          @-moz-keyframes splash-12 {
+            40% {
+              background: #1666FF;
+              box-shadow: 0 -18px 0 -8px #1666FF, 16px -8px 0 -8px #1666FF, 16px 8px 0 -8px #1666FF, 0 18px 0 -8px #1666FF, -16px 8px 0 -8px #1666FF, -16px -8px 0 -8px #1666FF;
+            }
+            100% {
+              background: #1666FF;
+              box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+            }
+          }
+          @-webkit-keyframes splash-12 {
+            40% {
+              background: #1666FF;
+              box-shadow: 0 -18px 0 -8px #1666FF, 16px -8px 0 -8px #1666FF, 16px 8px 0 -8px #1666FF, 0 18px 0 -8px #1666FF, -16px 8px 0 -8px #1666FF, -16px -8px 0 -8px #1666FF;
+            }
+            100% {
+              background: #1666FF;
+              box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+            }
+          }
+          @-o-keyframes splash-12 {
+            40% {
+              background: #1666FF;
+              box-shadow: 0 -18px 0 -8px #1666FF, 16px -8px 0 -8px #1666FF, 16px 8px 0 -8px #1666FF, 0 18px 0 -8px #1666FF, -16px 8px 0 -8px #1666FF, -16px -8px 0 -8px #1666FF;
+            }
+            100% {
+              background: #1666FF;
+              box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+            }
+          }
+          @keyframes splash-12 {
+            40% {
+              background: #1666FF;
+              box-shadow: 0 -18px 0 -8px #1666FF, 16px -8px 0 -8px #1666FF, 16px 8px 0 -8px #1666FF, 0 18px 0 -8px #1666FF, -16px 8px 0 -8px #1666FF, -16px -8px 0 -8px #1666FF;
+            }
+            100% {
+              background: #1666FF;
+              box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+            }
+          }
+        </style>
+</LayoutUsuario>
+</ControlAccesVoluntarios>

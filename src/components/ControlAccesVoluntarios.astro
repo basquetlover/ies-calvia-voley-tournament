@@ -71,38 +71,17 @@ if (fechaActual < fechaInicio) {
 
 
 
-    let { data: Jugador, error: errorJ } = await supabaseAdmin
-    .from('JugadoresSS')
-    .select('pertenece_equipo')
-    .eq('email', usuario.email)
-    .single(); // Use .single() to get a single record
-
-    if (errorJ) {
-    // console.error('Jugador sin equipo', errorJ.message);
-    // Handle the error appropriately
-    }
-if(Jugador){
   let { data: Equipos, error: errorE } = await supabaseAdmin
-        .from('EquiposSS')
-        .select('nombre_equipo, escudo, id_equipo, inscrito, estado, email_capitan, capitan_edit')
-        .eq('id', Jugador.pertenece_equipo)
+        .from('Voluntarios')
+        .select('estado')
+        .eq('email', usuario.email)
         .single(); // Use .single() to get a single record
 
         if (Equipos) {
-        if (Equipos.inscrito === usuario.id) {
             YaInscrito = true;
-        }
-
-        if (Equipos.capitan_edit === "si_edit") {
-            if (Equipos.email_capitan === usuario.email) {
-                YaInscrito = true;
-            }
-        }
         if(Equipos.estado === "Revisant"){
             Revisando = true;
         }
-}
-
 }
 
 
@@ -127,21 +106,21 @@ if(usuario){
         }
         // adminData?.rango === "Owner" || 
         if(adminData?.rango === "Owner" || adminData?.user_email === "s_bonavera@a.iescalvia.com" || adminData?.rango === "Staff"){
-        RangoFechas = true;
-        YaInscrito = true;
-        Revisando = false;
+            // RangoFechas = true;
+            // YaInscrito = true;
+            // Revisando = false;
 }       
         }
         
     }
 
     
-    //Ultra admin
-    if(usuario.email === "alemanytomaspere@gmail.com"){
-        RangoFechas = true;
-        YaInscrito = true;
-        Revisando = false;
-}
+//     //Ultra admin
+//     if(usuario.email === "alemanytomaspere@gmail.com"){
+//         RangoFechas = true;
+//         YaInscrito = true;
+//         Revisando = false;
+// }
 
 }
 
@@ -210,10 +189,10 @@ if(usuario){
         
         <div class="w-full h-auto flex items-center place-content-center">
         <section class="max-w-2xl w-full h-max p-10 mx-auto my-auto">
-            <h2 class=" w-full text-center text-accent font-bold text-5xl uppercase">No pots modificar l'equip</h2>
+            <h2 class=" w-full text-center text-accent font-bold text-5xl uppercase">No pots modificar el voluntari</h2>
             
             <p class="text-blanco text-xl text-center my-2">
-               No tens permisos per modificar aquest equip. Si creus que es tracta d'un error, posa't en <a href="/contacto" class="hover:text-amarillo transition-all duration-300">contacte amb el Staff</a>.
+               No tens permisos per modificar aquest voluntari. Si creus que es tracta d'un error, posa't en <a href="/contacto" class="hover:text-amarillo transition-all duration-300">contacte amb el Staff</a>.
             </p>
 
             

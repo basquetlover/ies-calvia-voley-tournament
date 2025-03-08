@@ -9,30 +9,30 @@ import { Resend } from 'resend';
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
   const tipo = formData.get("tipo")?.toString().trim() || "";
-  const usuario_nombre = formData.get("usuario_nombre")?.toString().trim() || "";
-  const usuario_email = formData.get("usuario_email")?.toString().trim() || "";
-  const usuario_curso = formData.get("usuario_curso")?.toString().trim() || "";
-  const usuario_id = formData.get("usuario_id")?.toString().trim() || "";
+//   const usuario_nombre = formData.get("usuario_nombre")?.toString().trim() || "";
+//  const usuario_email = formData.get("usuario_email")?.toString().trim() || "";
+//   const usuario_curso = formData.get("usuario_curso")?.toString().trim() || "";
+//   const usuario_id = formData.get("usuario_id")?.toString().trim() || "";
   const descripcion = formData.get("descripcion")?.toString().trim() || "";
-  const condiciones = formData.get("condiciones")?.toString().trim();
+//   const condiciones = formData.get("condiciones")?.toString().trim();
 
 
-  if(!condiciones){
-    console.log(condiciones)
-    return new Response(
-      `
-      <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
-        <span>
-      <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
-        <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
-      </svg>
-        </span>
-        <p>És necessari acceptar les condicions d'inscripció, l'avís legal i la política de privacitat per continuar amb el procés</p>
-        </div>
-      `, 
-      { status: 401, headers: { "Content-Type": "text/html" } }
-  );
-  }
+//   if(!condiciones){
+//     console.log(condiciones)
+//     return new Response(
+//       `
+//       <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
+//         <span>
+//       <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
+//         <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
+//       </svg>
+//         </span>
+//         <p>És necessari acceptar les condicions d'inscripció, l'avís legal i la política de privacitat per continuar amb el procés</p>
+//         </div>
+//       `, 
+//       { status: 401, headers: { "Content-Type": "text/html" } }
+//   );
+//   }
 
   let publicUrl = "https://iescalvia-voley.com/img/escudos/sin-escudo.png";
   let voluntario_nombre = "";
@@ -41,6 +41,7 @@ export const POST: APIRoute = async ({ request }) => {
   let voluntario_2n_apellido = "";
   let voluntario_genero = "";
   let voluntario_email = "";
+  let voluntario_id = "";
 
   let voluntario = "";
 
@@ -50,7 +51,8 @@ export const POST: APIRoute = async ({ request }) => {
    voluntario_2n_apellido = formData.get(`voluntario_2n_apellido`)?.toString().trim() || "";
    voluntario_genero = formData.get(`genero_voluntario`)?.toString().trim() || "";
    voluntario_email = formData.get(`voluntario_email`)?.toString().trim() || "";
-
+   voluntario_id = formData.get(`voluntario_id`)?.toString().trim() || "";
+   const voluntario_id_number = Number(voluntario_id);
    voluntario = voluntario_nombre + " " + voluntario_1r_apellido;
   if (voluntario_email) { 
     const dominio = voluntario_email.split('@')[1]; // Esto te dará 'gmail.com'
@@ -76,23 +78,45 @@ let { data: Usuarios, error } = await supabaseAdmin
     
       // Verificar si ya existe un usuario con el mismo email
       const userExistsByEmail = Usuarios.some(usuario => usuario.email === voluntario_email);
-      
+      console.log(userExistsByEmail);
       if (userExistsByEmail) {
-        return new Response(
-          `
-          <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
-        <span>
-      <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
-        <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
-      </svg>
-        </span>
-        <p>El voluntari ja es troba inscrit.</p>
-        </div>
-          `, 
-          { status: 400, headers: { "Content-Type": "text/html" } }
-        );
+        let { data: UsuariosID, error } = await supabaseAdmin
+        .from('Voluntarios')
+        .select('id')
+        .eq('email', voluntario_email)
+        .single();
+
+        let entrenador_equipo = 0;
+        if(UsuariosID)
+        {
+            entrenador_equipo = UsuariosID.id;
+            
+        }
+        if (entrenador_equipo != voluntario_id_number) {
+            console.log("son distintos")
+        }
+        if(entrenador_equipo != voluntario_id_number){
+            return new Response(
+                `
+                <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
+                <span>
+            <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
+                <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
+            </svg>
+                </span>
+                <p>El voluntari ja es troba inscrit.</p>
+                </div>
+                `, 
+                { status: 400, headers: { "Content-Type": "text/html" } }
+                );
+        }
+        
+                
+            
+        }
+
       }
-    }
+    
 
   if (!voluntario_genero) {
     return new Response(
@@ -206,36 +230,11 @@ const getCurrentDateInCatalan = () => {
 const currentDate = getCurrentDateInCatalan();
 console.log(currentDate);
 
-  if(escudo.size <= 0){
-    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-    .from('Voluntarios')
-    .insert([
-        { nombre: voluntario_nombre ,
-          _1r_apellido: voluntario_1r_apellido ,
-          _2n_apellido: voluntario_2n_apellido,
-          curso: voluntario_curso,
-          genero: voluntario_genero,
-          email: voluntario_email,
-          tipo: tipo,
-          descripcion: descripcion,
-          estado: `Revisant`,
-          fecha_inscripcion: currentDate,
-        },
-    ])
-    .select()
- 
-  if (equipoError) {
-    console.error("Error insertando en equipos:", equipoError.message);
-    return new Response(
-      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en afegir l'equip.. Torna-ho a intentar més tard.</div>`, 
-      { status: 401, headers: { "Content-Type": "text/html" } }
-  );
-  }
-  } else{
-    // Insertar los datos en la tabla 'administradores'
+    if(escudo.size <= 0){
+          // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
    .from('Voluntarios')
-   .insert([
+   .update([
        { nombre: voluntario_nombre ,
          _1r_apellido: voluntario_1r_apellido ,
          _2n_apellido: voluntario_2n_apellido,
@@ -245,21 +244,53 @@ console.log(currentDate);
          tipo: tipo,
          descripcion: descripcion,
          estado: `Revisant`,
-         img: publicUrl,
+       //   img: publicUrl,
          fecha_inscripcion: currentDate,
        },
    ])
+   .eq('id', voluntario_id)
+   .select();
+
+   if (equipoError) {
+    console.error("Error insertando en equipos:", equipoError.message);
+    return new Response(
+      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en afegir l'equip.. Torna-ho a intentar més tard.</div>`, 
+      { status: 401, headers: { "Content-Type": "text/html" } }
+  );
+  }
+
+    }else{
+          // Insertar los datos en la tabla 'administradores'
+   const { data: datosEquipos, error: equipoError } = await supabaseAdmin
+   .from('Voluntarios')
+   .update([
+       { nombre: voluntario_nombre ,
+         _1r_apellido: voluntario_1r_apellido ,
+         _2n_apellido: voluntario_2n_apellido,
+         curso: voluntario_curso,
+         genero: voluntario_genero,
+         email: voluntario_email,
+         tipo: tipo,
+         descripcion: descripcion,
+         estado: `Revisant`,
+        img: publicUrl,
+         fecha_inscripcion: currentDate,
+       },
+   ])
+   .eq('id', voluntario_id)
    .select()
 
- if (equipoError) {
-   console.error("Error insertando en equipos:", equipoError.message);
-   return new Response(
-     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en afegir l'equip.. Torna-ho a intentar més tard.</div>`, 
-     { status: 401, headers: { "Content-Type": "text/html" } }
- );
- }
+   if (equipoError) {
+    console.error("Error insertando en equipos:", equipoError.message);
+    return new Response(
+      `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error error en afegir l'equip.. Torna-ho a intentar més tard.</div>`, 
+      { status: 401, headers: { "Content-Type": "text/html" } }
+  );
   }
-  
+
+    }
+
+
 
 
 
@@ -688,7 +719,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:560px">
                    <table cellspacing="0" role="presentation" width="100%" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>iescalvia-voley.com</strong></a> <span style="color:#ffffff">utilitzant el compte de correu</span> <strong style="color:#FFC700"><a style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px" target="_blank" href="">${usuario_email}</a></strong>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://iescalvia-voley.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>iescalvia-voley.com</strong></a> <span style="color:#ffffff">utilitzant el compte de correu</span> <strong style="color:#FFC700"><a style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px" target="_blank" href="">${voluntario_email}</a></strong>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://iescalvia-voley.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -710,7 +741,7 @@ try {
   const { data, error } = await resend.emails.send({
     from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
     to: [organizadores], // Asegúrate de que esta variable tenga el valor correcto
-    subject: `Nova Sol·licitud voluntari ${voluntario_nombre}`,
+    subject: `Modificació Sol·licitud voluntari ${voluntario_nombre}`,
     html: emailBody,
   });
 
@@ -719,7 +750,7 @@ try {
   }
 
   console.log("Correo enviado correctamente", data);
-  let asunto = `Nova Sol·licitud voluntari ${voluntario_nombre}`
+  let asunto = `Modificació Sol·licitud voluntari ${voluntario_nombre}`
   const { data: Emails, error: EmailsError } = await supabaseAdmin
   .from('Emails')
   .insert([
@@ -735,7 +766,7 @@ try {
   const { data, error } = await resend.emails.send({
     from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
     to: [voluntario_email], // Asegúrate de que esta variable tenga el valor correcto
-    subject: `Sol·licitud voluntari ${voluntario_nombre}`,
+    subject: `Modificació Sol·licitud voluntari ${voluntario_nombre}`,
     html: emailBody,
   });
 
@@ -744,7 +775,7 @@ try {
   }
 
   console.log("Correo enviado correctamente", data);
-  let asunto = `Sol·licitud voluntari ${voluntario_nombre}`
+  let asunto = `Modificació Sol·licitud voluntari ${voluntario_nombre}`
   const { data: Emails, error: EmailsError } = await supabaseAdmin
   .from('Emails')
   .insert([

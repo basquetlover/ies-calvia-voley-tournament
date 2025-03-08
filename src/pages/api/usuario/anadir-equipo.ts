@@ -36,7 +36,7 @@ export const POST: APIRoute = async ({ request }) => {
   let acompañante_email = "";
 
   let acompañante = "";
-
+  const acompañante_foto = formData.get('entrenador_img')  as File;
   acompañante_nombre = formData.get("entrenador_name")?.toString().trim() || "";
   if(acompañante_nombre !== "") {
    acompañante_curso = formData.get(`entrenador_curso`)?.toString().trim() || "";
@@ -44,7 +44,7 @@ export const POST: APIRoute = async ({ request }) => {
    acompañante_2n_apellido = formData.get(`entrenador_2n_apellido`)?.toString().trim() || "";
    acompañante_genero = formData.get(`genero_entrenador`)?.toString().trim() || "";
    acompañante_email = formData.get(`entrenador_email`)?.toString().trim() || "";
-   const acompañante_foto = formData.get('entrenador_img')  as File;
+   
 
    acompañante = acompañante_nombre + " " + acompañante_1r_apellido;
   if (acompañante_email) { 
@@ -506,28 +506,137 @@ console.log(currentDate);
   }
   
   for (const jugador of jugadores) {
-
-    let publicIMGurl = "";
-    // Llama a la función para subir el escudo
-  const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
+    if(jugador.img.size <= 0){
+      const { error: jugadorError } = await supabaseAdmin
+        .from('JugadoresSS')
+        .insert([
+          {   nombre: jugador.nombre, 
+              _1r_apellido: jugador._1r_apellido,
+              _2n_apellido: jugador._2n_apellido,
+              curso: jugador.curso,
+              genero: jugador.genero,
+              pertenece_equipo: equipoId,
+              email: jugador.email,
+              ficha: 'jugador',
+              
+            },
+        ]).select()
   
-  //Obtener la URL pública del escudo subido
-  const { data: urlIMGData } = supabaseAdmin.storage
-      .from('JugadoresIMG')
-      .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
+      if (jugadorError) {
+        console.error("Error insertando jugador principal:", jugadorError.message);
+        // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+      }
+    } else {
+      let publicIMGurl = "";
+      // Llama a la función para subir el escudo
+    const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
+    
+    //Obtener la URL pública del escudo subido
+    const { data: urlIMGData } = supabaseAdmin.storage
+        .from('JugadoresIMG')
+        .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
+    
+    // Verifica si urlData contiene la propiedad publicUrl
+    if (!urlIMGData || !urlIMGData.publicUrl) {
+      //   console.error("No se pudo obtener la URL pública del escudo.");
+      //   return new Response(
+      //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+      //     { status: 401, headers: { "Content-Type": "text/html" } }
+      // );
+    }
+    if (urlIMGData) {
+      publicIMGurl = urlIMGData.publicUrl;
+    }
   
-  // Verifica si urlData contiene la propiedad publicUrl
-  if (!urlIMGData || !urlIMGData.publicUrl) {
-    //   console.error("No se pudo obtener la URL pública del escudo.");
-    //   return new Response(
-    //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
-    //     { status: 401, headers: { "Content-Type": "text/html" } }
-    // );
-  }
-  if (urlIMGData) {
-    publicIMGurl = urlIMGData.publicUrl;
+      const { error: jugadorError } = await supabaseAdmin
+        .from('JugadoresSS')
+        .insert([
+          {   nombre: jugador.nombre, 
+              _1r_apellido: jugador._1r_apellido,
+              _2n_apellido: jugador._2n_apellido,
+              curso: jugador.curso,
+              genero: jugador.genero,
+              pertenece_equipo: equipoId,
+              email: jugador.email,
+              ficha: 'jugador',
+              img: publicIMGurl,
+            },
+        ]).select()
+  
+      if (jugadorError) {
+        console.error("Error insertando jugador principal:", jugadorError.message);
+        // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+      }
+    }
   }
 
+  for (const jugador of jugadores_extra) {
+    if(jugador.img.size <= 0){
+      const { error: jugadorError } = await supabaseAdmin
+        .from('JugadoresSS')
+        .insert([
+          {   nombre: jugador.nombre, 
+              _1r_apellido: jugador._1r_apellido,
+              _2n_apellido: jugador._2n_apellido,
+              curso: jugador.curso,
+              genero: jugador.genero_extra,
+              pertenece_equipo: equipoId,
+              email: jugador.email,
+              ficha: 'jugador',
+              
+            },
+        ]).select()
+  
+      if (jugadorError) {
+        console.error("Error insertando jugador principal:", jugadorError.message);
+        // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+      }
+    } else {
+      let publicIMGurl = "";
+      // Llama a la función para subir el escudo
+    const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
+    
+    //Obtener la URL pública del escudo subido
+    const { data: urlIMGData } = supabaseAdmin.storage
+        .from('JugadoresIMG')
+        .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
+    
+    // Verifica si urlData contiene la propiedad publicUrl
+    if (!urlIMGData || !urlIMGData.publicUrl) {
+      //   console.error("No se pudo obtener la URL pública del escudo.");
+      //   return new Response(
+      //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+      //     { status: 401, headers: { "Content-Type": "text/html" } }
+      // );
+    }
+    if (urlIMGData) {
+      publicIMGurl = urlIMGData.publicUrl;
+    }
+  
+      const { error: jugadorError } = await supabaseAdmin
+        .from('JugadoresSS')
+        .insert([
+          {   nombre: jugador.nombre, 
+              _1r_apellido: jugador._1r_apellido,
+              _2n_apellido: jugador._2n_apellido,
+              curso: jugador.curso,
+              genero: jugador.genero_extra,
+              pertenece_equipo: equipoId,
+              email: jugador.email,
+              ficha: 'jugador',
+              img: publicIMGurl,
+            },
+        ]).select()
+  
+      if (jugadorError) {
+        console.error("Error insertando jugador principal:", jugadorError.message);
+        // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+      }
+    }
+  }
+
+  for (const jugador of staff) {
+    if(jugador.img.size <= 0){
     const { error: jugadorError } = await supabaseAdmin
       .from('JugadoresSS')
       .insert([
@@ -535,11 +644,11 @@ console.log(currentDate);
             _1r_apellido: jugador._1r_apellido,
             _2n_apellido: jugador._2n_apellido,
             curso: jugador.curso,
-            genero: jugador.genero,
+            genero: jugador.genero_staff,
             pertenece_equipo: equipoId,
             email: jugador.email,
-            ficha: 'jugador',
-            img: publicIMGurl,
+            ficha: 'cuerpo_tecnico',
+            
           },
       ]).select()
 
@@ -547,54 +656,7 @@ console.log(currentDate);
       console.error("Error insertando jugador principal:", jugadorError.message);
       // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
     }
-  }
-
-  for (const jugador of jugadores_extra) {
-
-    let publicIMGurl = "";
-    // Llama a la función para subir el escudo
-  const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
-  
-  //Obtener la URL pública del escudo subido
-  const { data: urlIMGData } = supabaseAdmin.storage
-      .from('JugadoresIMG')
-      .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
-  
-  // Verifica si urlData contiene la propiedad publicUrl
-  if (!urlIMGData || !urlIMGData.publicUrl) {
-    //   console.error("No se pudo obtener la URL pública del escudo.");
-    //   return new Response(
-    //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
-    //     { status: 401, headers: { "Content-Type": "text/html" } }
-    // );
-  }
-  if (urlIMGData) {
-    publicIMGurl = urlIMGData.publicUrl;
-  }
-
-    const { error: jugadorExtraError } = await supabaseAdmin
-      .from('JugadoresSS')
-      .insert([
-        { nombre: jugador.nombre, 
-          _1r_apellido: jugador._1r_apellido,
-          _2n_apellido: jugador._2n_apellido,
-          curso: jugador.curso,
-          genero: jugador.genero_extra,
-          pertenece_equipo: equipoId,
-          email: jugador.email,
-          ficha: 'jugador',
-          img: publicIMGurl,
-        },
-    ]).select()
-
-    if (jugadorExtraError) {
-      console.error("Error insertando jugador extra:", jugadorExtraError.message);
-      // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-    }
-  }
-
-  for (const jugador of staff) {
-
+  } else {
     let publicIMGurl = "";
     // Llama a la función para subir el escudo
   const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
@@ -636,7 +698,29 @@ console.log(currentDate);
       // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
     }
   }
-  const { error: jugadorExtraError } = await supabaseAdmin
+    
+  }
+  if(acompañante_foto.size <= 0){
+    const { error: jugadorExtraError } = await supabaseAdmin
+      .from('JugadoresSS')
+      .insert([
+        { nombre: acompañante_nombre, 
+          _1r_apellido: acompañante_1r_apellido,
+          _2n_apellido: acompañante_2n_apellido,
+          curso: acompañante_curso,
+          genero: acompañante_genero,
+          email: acompañante_email,
+          pertenece_equipo: equipoId,
+          ficha: 'entrenador',
+        },
+    ]).select()
+
+    if (jugadorExtraError) {
+      console.error("Error insertando jugador extra:", jugadorExtraError.message);
+      // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+    }
+  } else {
+    const { error: jugadorExtraError } = await supabaseAdmin
       .from('JugadoresSS')
       .insert([
         { nombre: acompañante_nombre, 
@@ -655,6 +739,8 @@ console.log(currentDate);
       console.error("Error insertando jugador extra:", jugadorExtraError.message);
       // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
     }
+  }
+  
 
 
   console.log("Equipo añadido correctamente");

@@ -17,7 +17,7 @@ interface Jugador {
 
 ---
 <!-- Preview IMG escudo -->
-<script>
+<!-- <script>
 const file = document.getElementById('foto') as HTMLInputElement;
 const img = document.getElementById('img') as HTMLImageElement;
 const defaultFile = 'Vector.png'; // Asegúrate de definir defaultFile
@@ -40,7 +40,7 @@ file.addEventListener('change', (e: Event) => {
     }
   }
 });
-</script>
+</script> -->
 <div id="espera" class=" oculto w-full h-full bg-gris bg-opacity-60 overflow-hidden">
 <div class="bg-gris-claro rounded-xl relative max-w-2xl w-full h-96 flex flex-col items-center place-content-center">
   <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-5">Enviant Dades</h2>
@@ -434,7 +434,7 @@ window.addEventListener('load', function(){
         const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
 
         const espera = document.getElementById('espera');
-        espera?.classList.add("centrar");
+        espera?.classList.add("block");
         espera?.classList.remove("oculto");
 
         const response = await fetch(form.action, {
@@ -447,7 +447,7 @@ window.addEventListener('load', function(){
             const html = await response.text();
             document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
             // Desplazarse hacia el div de error
-            espera?.classList.remove("centrar");
+            espera?.classList.remove("block");
           espera?.classList.add("oculto");
             document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
         } else if (contentType && contentType.includes("application/json")) {
@@ -471,6 +471,16 @@ window.addEventListener('load', function(){
    .centrar {
         z-index: 100000;
         position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .block {
+        z-index: 100000;
+        position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
