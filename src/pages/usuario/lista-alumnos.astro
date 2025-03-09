@@ -176,7 +176,7 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                         )}
                     {Jugador1BatData ? (
                         Jugador1BatData.map((user, index) => (
-                        <tr class={index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300'}>
+                        <tr>
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
