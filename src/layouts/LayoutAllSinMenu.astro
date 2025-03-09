@@ -1,0 +1,119 @@
+---
+import Signin from '@components/admin/signin.astro';
+import Loading from '@components/Loading.astro';
+import AdminHeader from '@sections/administracion/AdminHeader.astro';
+import Footer from '@sections/Footer.astro';
+import { verificarSesion } from "src/lib/session";
+import { supabase, supabaseAdmin } from "src/lib/supabase";
+import CryptoJS from 'crypto-js';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+
+
+const user = Astro.locals.StaffUser
+import Analytics from '@vercel/analytics/astro'
+---
+
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Panel de Administración de IES Calvià Voley Tournament." />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="keywords" content="torneo, tournament, volleyball, galatzo, santa ponsa, santa, ponsa, voleibol, voley, navidad, ies, calvia, TEAM Teto, deportes, Calvià" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | IES Calvià Voley Tournament</title>
+
+
+		<link rel="icon" type="image/png" href="/logo_32x32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="/logo_16x16.png" sizes="16x16" />
+		<link rel="icon" type="image/svg+xml" sizes="any" href="/Group-110.svg" /> 
+ 		<link rel="shortcut icon" href="/Group-110-_2_.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" /> 
+
+			 <!-- Google tag (gtag.js) -->
+			 <script type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-W6R732RQ9Q"></script>
+			 <script type="text/partytown">
+				 window.dataLayer = window.dataLayer || [];
+				 function gtag(){dataLayer.push(arguments);}
+				 gtag('js', new Date());
+		
+				 gtag('config', 'G-W6R732RQ9Q');
+			 </script>
+	</head>
+
+	<body class="bg-gris ">
+		<Analytics />
+		{user && (
+		<div class="">
+		
+		
+			{/* <AdminHeader /> */}
+		
+
+		<main class=" h-screen p-0  flex items-center place-content-center">
+			        <slot />
+
+		</main>
+	</div>
+		
+			//<!-- <Footer /> -->
+		
+		)} 
+
+		<Signin />
+    
+	
+		
+
+	
+		
+	</body>
+
+</html>
+<style>
+*{
+	font-family: "Inter", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: <weight>;
+	font-style: normal;
+  }
+  
+  /* body::-webkit-scrollbar-track {
+	background: #0E347D;        
+  }
+  
+  body::-webkit-scrollbar-thumb {
+	background-color: #313131;    
+	border-radius: 20px;       
+  } */
+  /* Works on Firefox */
+  * {
+	scrollbar-width: thin;
+	scrollbar-color: #1666FF #313131;
+	
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+	width: 12px;
+  }
+  
+  *::-webkit-scrollbar-track {
+	background: #1666FF;
+	border-radius: 20px;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+	background-color: #313131;
+	
+	border: 3px solid #313131;
+  }
+  </style>

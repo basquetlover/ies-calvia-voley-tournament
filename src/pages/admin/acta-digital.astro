@@ -1,0 +1,153 @@
+---
+import LayoutOwner from '@layouts/LayoutOwner.astro';
+import LayoutAll from "@layouts/LayoutAll.astro";
+
+import { supabaseAdmin } from "../../lib/supabase";
+import SinPermisos from '@components/admin/SinPermisos.astro';
+import ControlUsuarios from '@sections/administracion/control-usuarios.astro';
+import AñadirPagina from '@sections/administracion/AñadirPagina.astro';
+import ListaUsuarios from '@sections/administracion/ListaUsuarios.astro';
+import LayoutAllSinMenu from '@layouts/LayoutAllSinMenu.astro';
+
+// Verifica si hay un usuario autenticado
+const user = Astro.locals.StaffUser;
+const pathname = Astro.url.pathname;
+let userWithRango = {
+    email: user?.email || "Desconocido",
+    rango: "Sin rango"
+};
+
+try {
+    // Obtén el rango del usuario autenticado
+    if (user?.email) {
+        const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango")
+            .eq("user_email", user.email)
+            .single(); // Obtiene un único registro
+
+        if (error) {
+            console.error("Error al obtener rango:", error.message);
+        } else if (adminData) {
+            userWithRango.rango = adminData.rango || "Sin rango";
+        }
+    }
+} catch (err) {
+    console.error("Error al obtener datos del usuario:", err);
+}
+
+let accessibleBlocks = [];
+
+try {
+    const { data: pageAccess, error } = await supabaseAdmin
+        .from('Whitlist')
+        .select('*')
+        .or(`nombre.eq.${userWithRango.email},role.eq.${userWithRango.rango}`); // Verifica acceso por email o rol
+
+    if (pageAccess) {
+        accessibleBlocks = pageAccess.map(item => item.pagina); // Extrae las páginas a las que tiene acceso
+    }
+} catch (err) {
+    console.error("Error al obtener acceso:", err);
+}
+const userHasAccess = accessibleBlocks.includes(pathname);
+
+
+export const jugadoresLocal = Array.from({ length: 9 }, () => ({ nombre: "", img: "" }));
+export const jugadoresVisitante = Array.from({ length: 9 }, () => ({ nombre: "", img: "" }));
+---
+<LayoutAllSinMenu title='Usuarios'>
+{userHasAccess ? (
+    <>
+
+        <div class="h-[750px] w-[1100px] my-auto bg-red-400 overflow-auto mx-auto no-scrollbar border-2 border-accent grid grid-rows-1 grid-cols-3">
+
+            {/* Datos equipo 1 */}
+            <div class="w-full h-full bg-gris">
+                {/* Nombre e Imagen Equipo */}
+                <div class="w-full h-auto grid grid-cols-[max-content_1fr] grid-rows-1 p-2">
+                    <div class="w-max h-max">
+                        <img src="/img/escudos/sin-escudo.png" class="w-16 h-16" />
+                    </div>
+                    <div class="flex items-center place-content-center">
+                        <p class="text-2xl text-accent font-semibold">Nombre Equipo 1</p>
+                    </div>
+                </div>
+
+                {/* Lista jugadores */}
+                <div class="w-full mt-4 h-auto flex flex-wrap gap-2 items-center place-content-center">
+                    {
+                        jugadoresLocal.map((jugador, index) => (
+                            <div class="w-[105px] h-[105px] rounded-md bg-gris-claro flex flex-col items-center place-content-center">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-center text-blanco">Jugador {index + 1}</p>
+                            </div>
+                        )
+                    )}
+                    <div class="w-full h-auto rounded-md mx-3 bg-gris-claro grid grid-cols-[max-content_1fr] grid-rows-1">
+                        <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg>
+                                </div>
+                                <p class="my-auto text-blanco">Entrenador</p>
+                    </div>
+                </div>
+            </div>
+
+             {/* Datos equipo Generales */}
+             <div class="w-full h-full bg-gris-claro flex items-center place-content-center">
+
+                <a href="/admin" class="w-max h-max px-3 py-2 bg-rojo-claro text-rojo rounded-full font-semibold text-xl">Volver Atras</a>
+             </div>
+
+             {/* Datos equipo 2 */}
+             <div class="w-full h-full bg-gris">
+                {/* Nombre e Imagen Equipo */}
+                <div class="w-full h-auto grid grid-cols-[1fr_max-content] grid-rows-1 p-2">
+                    
+                    <div class="flex items-center place-content-center">
+                        <p class="text-2xl text-accent font-semibold">Nombre Equipo 2</p>
+                    </div>
+                    <div class="w-max h-max">
+                        <img src="/img/escudos/sin-escudo.png" class="w-16 h-16" />
+                    </div>
+                </div>
+
+                {/* Lista jugadores */}
+                <div class="w-full mt-4 h-auto flex flex-wrap gap-2 items-center place-content-center">
+                    {
+                        jugadoresVisitante.map((jugador, index) => (
+                            <div class="w-[105px] h-[105px] rounded-md bg-gris-claro flex flex-col items-center place-content-center">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-center text-blanco">Jugador {index + 1}</p>
+                            </div>
+                        )
+                    )}
+                    <div class="w-full h-auto rounded-md mx-3 bg-gris-claro grid grid-cols-[max-content_1fr] grid-rows-1">
+                        <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg>
+                                </div>
+                                <p class="my-auto text-blanco">Entrenador</p>
+                    </div>
+                </div>
+             </div>
+        </div>
+    
+    </>
+   
+) : (
+    <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
+)}
+    
+</LayoutAllSinMenu>
