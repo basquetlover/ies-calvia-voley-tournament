@@ -1225,7 +1225,7 @@ while (document.getElementById(`staff_genero_${index}`)) {
             const jsonResponse = await response.json();
             if (jsonResponse.success) {
                 // Redirigir a la página principal
-                window.location.href = '/usuario/inscripcion'; // Redirige al usuario
+                window.location.href = '/usuario'; // Redirige al usuario
             } else {
                 // Manejo de errores si es necesario
                 document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
