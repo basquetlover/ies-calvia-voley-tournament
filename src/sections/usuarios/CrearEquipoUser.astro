@@ -49,6 +49,7 @@ file.addEventListener('change', (e: Event) => {
       </p>
   </div>
   </div>
+
 <!-- action="/api/usuario/anadir-equipo" -->
 <div class="max-w-5xl w-full h-max py-2  overflow-hidden mx-auto my-10 ">
   <form id="equipo-form" method="POST" class="space-y-4" action="/api/usuario/anadir-equipo"  enctype="multipart/form-data">
@@ -952,7 +953,7 @@ file.addEventListener('change', (e: Event) => {
     
 
    
-    <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
+  <div class="w-full h-auto flex flex-wrap items-stretch gap-6 place-content-around">
       <a href="/" rel="noreferrer" class="px-3 py-2 flex flex-row items-center select-none place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform"> Cancelar </a>
       <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-52 h-12 fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-xl hover:scale-110  duration-300 transition-all transform">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
@@ -963,6 +964,7 @@ file.addEventListener('change', (e: Event) => {
   </div>
   </form>
 </div>
+
 <div id="cond_inscripcion" class="oculto max-w-xl w-auto max-h-[90svh] h-auto bg-gris-claro overflow-y-scroll no-scrollbar rounded-lg">
   <div id="btn_cerrar_inscri" class="w-10 h-10 bg-cancelar absolute flex items-center place-content-center cursor-pointer text-blanco font-bold rounded-full">
     X
@@ -1203,7 +1205,7 @@ while (document.getElementById(`staff_genero_${index}`)) {
 
 
         const espera = document.getElementById('espera');
-        espera?.classList.add("centrar");
+        espera?.classList.add("fijo");
         espera?.classList.remove("oculto");
 
         const response = await fetch(form.action, {
@@ -1216,7 +1218,7 @@ while (document.getElementById(`staff_genero_${index}`)) {
             const html = await response.text();
             document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
             // Desplazarse hacia el div de error
-            espera?.classList.remove("centrar");
+            espera?.classList.remove("fijo");
           espera?.classList.add("oculto");
             document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
         } else if (contentType && contentType.includes("application/json")) {
@@ -1240,6 +1242,16 @@ while (document.getElementById(`staff_genero_${index}`)) {
    .centrar {
         z-index: 0;
         position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .fijo {
+        z-index: 10000;
+        position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
