@@ -72,6 +72,7 @@ if (Usuarios) {
   
 
 if(usuario){
+    console.log("Usuario de inscripcion: ", usuario.email, usuario.curso, usuario.nombre)
     const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
             .select("rango, user_email")

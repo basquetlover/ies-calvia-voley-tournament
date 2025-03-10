@@ -18,7 +18,7 @@ const fechaActual = new Date();
 
 const usuario = await verificarSesion(Astro.request);
 if(usuario){
-    console.log("Usuario de inscripcion: ", usuario.email, usuario.curso, usuario.nombre)
+    console.log("Usuario de inscripcion: ", usuario.email, usuario.curso, usuario.nombre);
 }
 
 // Compara la fecha actual con las fechas de inicio y fin
