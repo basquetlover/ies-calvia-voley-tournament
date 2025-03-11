@@ -389,10 +389,10 @@ if (urlData) {
 }
 
 //Subir img entrenador
-async function uploadFileCoach(file: File, id_equipo: string) {
+async function uploadFileCoach(file: File, email: string | undefined) {
   // Extraer la extensión del archivo
   const extension = file.name.split('.').pop(); // Obtiene la extensión
-  const uniqueFileName = `${id_equipo}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
+  const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
   const filePath = `${uniqueFileName}`; // Define la ruta del archivo
 
   const { data, error } = await supabaseAdmin.storage
@@ -409,7 +409,7 @@ async function uploadFileCoach(file: File, id_equipo: string) {
 }
 
 // Llama a la función para subir el escudo
-const CoachPath = await uploadFileCoach(escudo, id_equipo);
+const CoachPath = await uploadFileCoach(acompañante_foto, email);
 let publicCoachUrl ="";
 //Obtener la URL pública del escudo subido
 const { data: urlDataCoach } = supabaseAdmin.storage
