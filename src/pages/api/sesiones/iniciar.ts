@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     }
 
     // Consultar el usuario en la base de datos
-    const { data: Usuarios, error } = await supabaseAdmin
+    let { data: Usuarios, error } = await supabaseAdmin
         .from('Usuarios') // Especifica el tipo aquí
         .select('*')
         .eq('nombre', nombre)
@@ -38,10 +38,20 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
 
     // Manejar el error si el usuario no se encuentra
     if (error || !Usuarios) {
-        return new Response(
-            `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Usuario no encontrado</div>`, 
-            { status: 401, headers: { "Content-Type": "text/html" } }
-        );
+        const { data: UsuariosPorEmail, error: errorEmail } = await supabaseAdmin
+                .from('Usuarios')
+                .select('*')
+                .eq('email', nombre) // Usamos el nombre como email
+                .single();
+
+            if (errorEmail || !UsuariosPorEmail) {
+                return new Response(
+                    `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Usuario no encontrado</div>`,
+                    { status: 401, headers: { "Content-Type": "text/html" } }
+                );
+            }
+
+            Usuarios = UsuariosPorEmail;
     }
 
     // Validar la contraseña
@@ -177,44 +187,3 @@ const encrypted = encrypt(password);
     );
     
 };
-
-// import type { APIRoute } from "astro";
-// import bcrypt from 'bcrypt';
-
-// import {  supabaseAdmin } from "../../../lib/supabase"; // Asegúrate de que esto apunte a tu configuración de Supabase
-// interface Usuario {
-//     id: string;
-//     nombre: string;
-//     email: string;
-//     contraseña: string; // Asegúrate de que este campo sea el correcto
-//   }
-// export const POST: APIRoute = async ({ request, cookies, redirect }) => {
-//   const formData = await request.formData();
-//   const nombre = formData.get("nombre")?.toString();
-//   const password = formData.get("password")?.toString();
-
-//   if (!nombre || !password) {
-//     return new Response("Correo electrónico y contraseña obligatorios", { status: 400 });
-//   }
-
-//   const { data: Usuarios, error } = await supabaseAdmin
-//     .from('Usuarios') // Especifica el tipo aquí
-//     .select('*')
-//     .eq('nombre', nombre)
-//     .single();
-
-//   if (error || !Usuarios) {
-//     return new Response("Usuario no encontrado", { status: 401 });
-//   }
-//  if(Usuarios){
-//   const isPasswordValid = await bcrypt.compare(password, Usuarios.contraseña);
-
-//     if (isPasswordValid) {
-//   cookies.set('session', Usuarios.id, { httpOnly: true, path: '/' });
-// }else{
-  
-//   return new Response("Usuario o contraseña invalido", { status: 400 });
-// }
-// }
-//   return redirect("/");
-// };
