@@ -782,6 +782,26 @@ const currentDate = getCurrentDateInCatalan();
 
 
 //jugadores
+const si_coach = document.getElementById(`img-entrenador-si`)!;
+    const no_coach = document.getElementById(`img-entrenador-no`)!;
+    
+    const foto_coach = document.getElementById(`img-entrenador`)! as HTMLInputElement;
+    si_coach.addEventListener('click',  function(){
+        
+        foto_coach.value = "foto-aceptada";
+        si_coach.classList.add("si_foto");
+        si_coach.classList.remove("desactivado");
+        no_coach.classList.remove("no_foto");
+        no_coach.classList.add("desactivado");
+});
+no_coach.addEventListener('click',  function(){
+    
+    foto_coach.value = "foto-denegada";
+    no_coach.classList.add("no_foto");
+    no_coach.classList.remove("desactivado");
+    si_coach.classList.remove("si_foto");
+    si_coach.classList.add("desactivado");
+});
   let index = 0;
   while (document.querySelectorAll("[id^='img-jugador_']")) {
     const si = document.getElementById(`img-jugador-si-${index}`)!;
