@@ -97,14 +97,16 @@ if(adminData?.rango === "Owner" || adminData?.rango === "Co-Owner" || adminData?
             RangoFechas = true;
         }
 }
-}
-    
+
   // Verificar si ya existe un usuario con el mismo email
   const userExistsByEmail = Usuarios.some(jugador => jugador.email === usuario.email);
   
   if (userExistsByEmail) {
     YaInscrito = true;
   }
+}
+    
+
 }
 ---
 <ControlAcces>
