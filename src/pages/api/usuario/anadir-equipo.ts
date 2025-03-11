@@ -409,7 +409,7 @@ async function uploadFileCoach(file: File, email: string | undefined) {
 }
 
 // Llama a la función para subir el escudo
-const CoachPath = await uploadFileCoach(acompañante_foto, email);
+const CoachPath = await uploadFileCoach(acompañante_foto, acompañante_email);
 let publicCoachUrl ="";
 //Obtener la URL pública del escudo subido
 const { data: urlDataCoach } = supabaseAdmin.storage
