@@ -5,6 +5,7 @@ import Footer from '@sections/Footer.astro';
 import SchemaMarkup from '@components/SchemaMarkup.astro';
 import Loading from '@components/Loading.astro';
 import CookiesAlert from '@components/CookiesAlert.astro';
+import { verificarSesion } from 'src/lib/session';
 
 interface Props {
 	title: string;
@@ -23,7 +24,10 @@ const images = [
 ];
 
 const randomImage = images[Math.floor(Math.random() * images.length)];
-
+const usuario = await verificarSesion(Astro.request);
+if(usuario){
+	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
+}
 
 ---
 

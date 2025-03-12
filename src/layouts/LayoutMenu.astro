@@ -22,10 +22,14 @@ const images = [
 ];
 
 const randomImage = images[Math.floor(Math.random() * images.length)];
-
+const usuario = await verificarSesion(Astro.request);
+if(usuario){
+	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
+}
 
 import Analytics from '@vercel/analytics/astro'
 import CookiesAlert from '@components/CookiesAlert.astro';
+import { verificarSesion } from 'src/lib/session';
 
 ---
 
