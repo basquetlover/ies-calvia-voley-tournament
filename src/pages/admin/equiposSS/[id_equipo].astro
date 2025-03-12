@@ -802,6 +802,7 @@ no_coach.addEventListener('click',  function(){
     si_coach.classList.remove("si_foto");
     si_coach.classList.add("desactivado");
 });
+
   let index = 0;
   while (document.querySelectorAll("[id^='img-jugador_']")) {
     const si = document.getElementById(`img-jugador-si-${index}`)!;
@@ -827,8 +828,11 @@ no_coach.addEventListener('click',  function(){
     index++;
 }
 
-//Cuerpo tecnico
-index = 0;
+
+</script>
+ <script>
+  //Cuerpo tecnico
+let index = 0;
   while (document.querySelectorAll("[id^='img-staff_']")) {
     const si = document.getElementById(`img-staff-si-${index}`)!;
     const no = document.getElementById(`img-staff-no-${index}`)!;
@@ -852,8 +856,7 @@ index = 0;
 });
     index++;
 }
-</script>
- 
+ </script>
 <!-- Errores -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
