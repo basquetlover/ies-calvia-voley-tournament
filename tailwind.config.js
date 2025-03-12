@@ -42,6 +42,14 @@ export default {
 			'.no-scrollbar::-webkit-scrollbar': {
 			  display: 'none', // Para Chrome, Safari y Opera
 			},
+
+			'.scrollbar-fina': {
+			  /* Ocultar scrollbar en navegadores modernos */
+			  '-ms-overflow-style': 'none', // Para Internet Explorer y Edge
+			  'scrollbar-width': 'none', // Para Firefox
+			},	
+
+			
 		  });
 		},
 	  ],
