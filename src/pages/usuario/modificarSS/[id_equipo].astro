@@ -74,6 +74,7 @@ interface Jugador {
   img: string;
   id: number;
   observaciones: string;
+  checkboxChecked?: boolean;
 };
 interface Staff {
   nombre: string;
@@ -85,6 +86,7 @@ interface Staff {
   img: string;
   id: number;
   observaciones: string;
+  checkboxCheckedStaff?: boolean;
 };
 
 let entrenador_nombre = "";
@@ -215,6 +217,19 @@ const getCurrentDateInCatalan = () => {
 };
 
 const currentDate = getCurrentDateInCatalan();
+
+const handleCheckboxChange = (index: number) => {
+    jugadores = jugadores.map((jugador, i) => {
+        if (i === index) {
+            return {
+                ...jugador,
+                checkboxChecked: !jugador.checkboxChecked, // Cambia el estado del checkbox
+            };
+        }
+        return jugador;
+    });
+};
+
 
 ---
 <ControlAccesModificar>
@@ -568,6 +583,29 @@ const currentDate = getCurrentDateInCatalan();
                       </svg>
                   </span>
               </label>
+          </div>
+
+          {/* Boton Eliminar */}
+          <div class="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        id={`checkbox-${index}`}
+                        class="peer hidden"
+                        name={`player_${index + 1}_opcion`}
+                        value={jugador.checkboxChecked ? 'update' : 'delete'}
+                        checked={jugador.checkboxChecked}
+                    />
+
+                    <label
+                        for={`checkbox-${index}`}
+                        class="w-8 h-8 border-2 p-1 border-gray-400 rounded-full cursor-pointer group peer-checked:bg-red-500 peer-checked:border-red-700 flex items-center place-content-center"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" viewBox="0 -960 960 960">
+  <path d="M280-120q-33 0-56-23t-24-57v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23 57t-57 23H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+</svg>
+                    </label>
+                    
+                    
           </div>
         </div>
         <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
@@ -970,6 +1008,31 @@ const currentDate = getCurrentDateInCatalan();
                   </span>
               </label>
           </div>
+
+          {/* Boton Eliminar
+          <div class="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        id={`checkbox-${index}`}
+                        class="group hidden"
+                        name={`staff_${index + 1}_opcion`}
+                        value={jugador.checkboxCheckedStaff ? 'update' : 'delete'}
+                        checked={jugador.checkboxCheckedStaff}
+                        
+
+                    />
+
+                    <label
+                        for={`checkbox-${index}`}
+                        class="w-8 h-8 border-2 p-1 border-gray-400 rounded-full cursor-pointer group group-checked:bg-red-500 group-checked:border-red-700 flex items-center place-content-center"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" viewBox="0 -960 960 960">
+                          <path d="M280-120q-33 0-56-23t-24-57v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23 57t-57 23H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                        </svg>
+                    </label>
+                    
+                    
+          </div> */}
         </div>
         <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
           

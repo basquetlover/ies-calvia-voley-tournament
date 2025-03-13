@@ -184,7 +184,7 @@ let { data: Usuarios, error } = await supabaseAdmin
   // Recoger la información de los jugadores
   let hombres = 0;
   let mujeres = 0;
-   const jugadores = [];
+   let jugadores = [];
    let index = 0;
   while (formData.has(`player_${index}_name`)) {
     const nombre = formData.get(`player_${index}_name`)?.toString().trim();
@@ -193,6 +193,7 @@ let { data: Usuarios, error } = await supabaseAdmin
     const _2n_apellido = formData.get(`player_${index}_2n_apellido`)?.toString().trim();
     const genero = formData.get(`genero_${index}`)?.toString().trim();
     const email = formData.get(`player_${index}_email`)?.toString().trim();
+    const opcion = formData.get(`player_${index + 1}_opcion`);
     const img = formData.get(`player_${index}_img`) as File;
     const id = formData.get(`player_id_${index}`)?.toString().trim();
     const numero = index + 1;
@@ -257,7 +258,7 @@ let { data: Usuarios, error } = await supabaseAdmin
         
       }
     }
-    jugadores.push({ nombre, img, curso, _1r_apellido, _2n_apellido, genero, email, numero, id });
+    jugadores.push({ nombre, img, curso, _1r_apellido, _2n_apellido, genero, email, numero, id, opcion });
     index++;
   }
 
@@ -326,7 +327,7 @@ let { data: Usuarios, error } = await supabaseAdmin
 
 
   //Recoger la informacion del staff del equipo
-  const staff = [];
+  let staff = [];
   index = 0;
   while (formData.has(`staff_player_${index}_name`)) {
     const nombre = formData.get(`staff_player_${index}_name`)?.toString().trim();
@@ -336,7 +337,9 @@ let { data: Usuarios, error } = await supabaseAdmin
       const genero_staff = formData.get(`staff_genero_${index}`)?.toString().trim();
       const curso = formData.get(`staff_player_${index}_curso`)?.toString().trim();
       const email = formData.get(`staff_player_${index}_email`)?.toString().trim();
+      // const opcion = formData.get(`staff${index + 1}_opcion`);
       const id = formData.get(`staff_player_${index}_id`)?.toString().trim();
+      
       const img = formData.get(`staff_player_${index}_img`) as File;
       const numero = index + 1;
       if (email) { 
@@ -395,7 +398,7 @@ let { data: Usuarios, error } = await supabaseAdmin
         
       }
     }
-    staff.push({ nombre, img, curso, _1r_apellido, _2n_apellido, genero_staff, email, numero, id });
+    staff.push({ nombre, img, curso, _1r_apellido, _2n_apellido, genero_staff, email, numero, id, });
     }
     index++;
   }
@@ -724,6 +727,14 @@ console.log(currentDate);
       .select();
     }
 
+        if(jugador.opcion === "delete"){
+          console.log("Jugador a eliminar", jugador.nombre, jugador.id)
+          const { error } = await supabaseAdmin
+          .from('Jugadores')
+          .delete()
+          .eq('id', jugador.id)
+      }
+
     const { error: jugadorError } = await supabaseAdmin
       .from('JugadoresSS')
       .update([
@@ -914,7 +925,9 @@ console.log(currentDate);
       // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
     }
 
-
+  jugadores = jugadores.filter(jugador => jugador.opcion !== 'delete');
+  
+  console.log(jugadores)
   console.log("Equipo añadido correctamente");
 
 
