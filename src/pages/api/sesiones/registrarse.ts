@@ -101,7 +101,10 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       return new Response(ERRenviar.message, { status: 500 });
     }
 
-    return redirect("/");
+    return new Response(
+      JSON.stringify({ success: true }), 
+      { status: 200, headers: { "Content-Type": "application/json" } }
+  );
   
   
 };
