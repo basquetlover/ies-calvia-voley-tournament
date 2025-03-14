@@ -3,22 +3,26 @@ import { verificarSesion } from 'src/lib/session';
 
 const usuario = await verificarSesion(Astro.request);
 let nombre = "";
+let img = "";
 let color =  "";
+let primeraLetra = ""
 if(usuario){
  nombre = usuario.nombre;
  color =  usuario.logo;
-}
-
-let img = "";
-img = usuario.admin_perfil;
-
-let primeraLetra = ""
-if (nombre) {
+ img = usuario.admin_perfil;
+ if (nombre) {
      primeraLetra = nombre.charAt(0); // O también puedes usar nombre[0]
     
 } else {
     console.log("El nombre está vacío");
 }
+}
+
+
+
+
+
+
 ---
 <div class={`w-full h-full flex items-center place-content-center relative uppercase p-2 text-xl text-blanco rounded-full ${img  ? `bg-[url(${img})]` : `${color}` } `}>
     {img ?

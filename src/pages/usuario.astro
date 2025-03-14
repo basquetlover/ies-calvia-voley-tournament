@@ -24,11 +24,11 @@ let estado = "";
 let tipo_voluntario = "";
 let estado_voluntario = "";
 let usuario_email = "";
-
+let usuario_nombre = "";
 
 if(usuario){
     usuario_email = usuario.email;
-    const usuario_nombre = usuario.nombre;
+     usuario_nombre = usuario.nombre;
     
     let acceso_inscripcion = false;
     let acceso_modificacion = false;
@@ -168,7 +168,7 @@ if(usuario){
                                 </svg> */}
                                 <UserLogo />
                             </span>
-                            <p>{usuario.nombre}</p>
+                            <p>{usuario_nombre}</p>
                         </div>
                     
         <div class="w-[95%] h-[2px] mb-4 bg-accent rounded-full mx-auto">&nbsp;</div>
