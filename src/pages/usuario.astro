@@ -25,10 +25,12 @@ let tipo_voluntario = "";
 let estado_voluntario = "";
 let usuario_email = "";
 let usuario_nombre = "";
+let usuario_curso = "";
 
 if(usuario){
     usuario_email = usuario.email;
      usuario_nombre = usuario.nombre;
+     usuario_curso = usuario.curso;
     
     let acceso_inscripcion = false;
     let acceso_modificacion = false;
@@ -179,7 +181,7 @@ if(usuario){
                     <path fill="#E8EAED" d="M160-160q-33 0-56-23t-24-57v-480q0-33 24-56t56-24h640q33 0 57 24t23 56v480q0 33-23 57t-57 23H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z"/>
                 </svg>
             </span>
-            <p>{usuario.email}</p>
+            <p>{usuario_email}</p>
     </div>
         {/* Contraseña */}
     <a href="/usuario/modificar-contrasena" class="w-full px-3 h-auto  flex flex-row gap-2 text-blanco items-center group cursor-pointer">
@@ -204,7 +206,7 @@ if(usuario){
                 </svg>
 
             </span>
-            <p>{usuario.curso}</p>
+            <p>{usuario_curso}</p>
     </div>
 
         {/* Equipo */}
