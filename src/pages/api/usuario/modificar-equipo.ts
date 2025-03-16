@@ -148,6 +148,99 @@ let { data: Usuarios, error } = await supabaseAdmin
   }
 }
 
+let profesor_nombre = "";
+let profesor_curso = "";
+let profesor_1r_apellido = "";
+let profesor_2n_apellido = "";
+let profesor_genero = "";
+let profesor_email = "";
+let profesor_id = "";
+
+let profesor = "";
+const profesor_foto = formData.get('entrenador_img')  as File;
+profesor_nombre = formData.get("entrenador_name")?.toString().trim() || "";
+if(profesor_nombre !== "") {
+ profesor_curso = formData.get(`entrenador_curso`)?.toString().trim() || "";
+ profesor_1r_apellido = formData.get(`entrenador_1r_apellido`)?.toString().trim() || "";
+ profesor_2n_apellido = formData.get(`entrenador_2n_apellido`)?.toString().trim() || "";
+ profesor_genero = formData.get(`genero_entrenador`)?.toString().trim() || "";
+ profesor_email = formData.get(`entrenador_email`)?.toString().trim() || "";
+ profesor_id = formData.get(`entrenador_id`)?.toString().trim() || "";
+ 
+
+ profesor = profesor_nombre + " " + profesor_1r_apellido;
+if (profesor_email) { 
+  const dominio = profesor_email.split('@')[1]; // Esto te dará 'gmail.com'
+  const dominioConArroba = '@' + dominio;
+  if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+    console.log(`El email del professor ha de ser del centre`)
+    return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email del professor ha de ser del centre</div>`, 
+          { status: 401, headers: { "Content-Type": "text/html" } }
+      );
+}
+} else {
+  // Manejo del caso en que email es undefined o vacío
+  console.error("El email no es válido.");
+}
+//const { data: existingCoach, error: checkError } = await supabaseAdmin
+//.from("JugadoresSS")
+//.select("id") // Seleccionar un campo mínimo
+//.eq("email", profesor_email);
+
+// if(existingCoach){
+ // return new Response(
+   // `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'entrenador ja està inscript en un altre Equip</div>`, 
+   // { status: 401, headers: { "Content-Type": "text/html" } }
+// );
+//}
+// if(checkError){
+//  console.log("Entrenador no inscrito en otro equipo")
+//}
+let { data: Usuarios, error } = await supabaseAdmin
+  .from('JugadoresSS')
+  .select('email')
+
+  if (Usuarios) {
+
+  
+    // Verificar si ya existe un usuario con el mismo email
+    const userExistsByEmail = Usuarios.some(usuario => usuario.email === profesor_email);
+    
+    if (userExistsByEmail) {
+      let { data: UsuariosID, error } = await supabaseAdmin
+      .from('JugadoresSS')
+      .select('pertenece_equipo')
+      .eq('email', profesor_email)
+      .single();
+
+      let profesor_equipo = 0;
+      if(UsuariosID)
+      {
+          profesor_equipo = UsuariosID.pertenece_equipo;
+          
+      }
+      if (profesor_equipo != number_id_equipo) {
+          console.log("son distintos")
+      }
+      if(profesor_equipo != number_id_equipo){
+          return new Response(
+              `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">LEl professor ja es troba inscrit en un altre equip.</div>`, 
+              { status: 400, headers: { "Content-Type": "text/html" } }
+            );
+      }
+      
+    }
+  }
+
+if (!profesor_genero) {
+  return new Response(
+    `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Seleccioni el gènere del professor</div>`, 
+    { status: 401, headers: { "Content-Type": "text/html" } }
+);
+}
+}
+
 
   function removeAccents(str: string): string  {
     const accents = [
@@ -561,6 +654,8 @@ if (urlData) {
 }
 
 }
+
+
 if(acompañante_foto.size > 0){
 //Subir img entrenador
 async function uploadFileCoach(file: File, email: string | undefined) {
@@ -606,13 +701,116 @@ async function uploadFileCoach(file: File, email: string | undefined) {
       .from('JugadoresSS')
       .update([
         {   
+          nombre: acompañante_nombre, 
+          _1r_apellido: acompañante_1r_apellido,
+          _2n_apellido: acompañante_2n_apellido,
+          curso: acompañante_curso,
+          genero: acompañante_genero,
+          email: acompañante_email,
+          pertenece_equipo: number_id_equipo,
+          
+          ficha: 'entrenador',
             imag: publicCoachUrl,
           },
       ])
       .eq('id', acompañante_id)
       .select()
 
+} else {
+  const { error: jugadorError } = await supabaseAdmin
+      .from('JugadoresSS')
+      .update([
+        {   nombre: acompañante_nombre, 
+            _1r_apellido: acompañante_1r_apellido,
+            _2n_apellido: acompañante_2n_apellido,
+            curso: acompañante_curso,
+            genero: acompañante_genero,
+            pertenece_equipo: number_id_equipo,
+            email: acompañante_email,
+            ficha: 'entrenador',
+            
+          },
+      ])
+      .eq('id', acompañante_id)
+      .select()
 }
+
+if(profesor_foto.size > 0){
+  //Subir img entrenador
+  async function uploadFileCoach(file: File, email: string | undefined) {
+      // Extraer la extensión del archivo
+      const extension = file.name.split('.').pop(); // Obtiene la extensión
+        const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
+        const filePath = `${uniqueFileName}`; // Define la ruta del archivo
+    
+      const { data, error } = await supabaseAdmin.storage
+          .from('EquiposIMG')
+          .upload(filePath, file); // Sube el archivo
+    
+      if (error) {
+          console.error("Error al subir imagen:", error.message);
+          throw new Error("Error al subir imagen.");
+      }
+    
+      console.log("Imagen subida correctamente:", data.path);
+      return filePath; // Devuelve la ruta del archivo
+    }
+    
+    // Llama a la función para subir el escudo
+    const CoachPath = await uploadFileCoach(profesor_foto, profesor_email);
+    let publicCoachUrl ="";
+    //Obtener la URL pública del escudo subido
+    const { data: urlDataCoach } = supabaseAdmin.storage
+        .from('EquiposIMG')
+        .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
+    
+    // Verifica si urlData contiene la propiedad publicUrl
+    if (!urlDataCoach || !urlDataCoach.publicUrl) {
+      //   console.error("No se pudo obtener la URL pública del escudo.");
+      //   return new Response(
+      //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+      //     { status: 401, headers: { "Content-Type": "text/html" } }
+      // );
+    }
+    if (urlDataCoach) {
+      publicCoachUrl = urlDataCoach.publicUrl;
+    }
+  
+    const { error: jugadorError } = await supabaseAdmin
+        .from('JugadoresSS')
+        .update([
+          {   nombre: profesor_nombre, 
+            _1r_apellido: profesor_1r_apellido,
+            _2n_apellido: profesor_2n_apellido,
+            curso: profesor_curso,
+            genero: profesor_genero,
+            pertenece_equipo: number_id_equipo,
+            email: profesor_email,
+            ficha: 'profesor',
+              imag: publicCoachUrl,
+            },
+        ])
+        .eq('id', profesor_id)
+        .select()
+  
+  } else {
+    const { error: jugadorError } = await supabaseAdmin
+        .from('JugadoresSS')
+        .update([
+          {   nombre: profesor_nombre, 
+              _1r_apellido: profesor_1r_apellido,
+              _2n_apellido: profesor_2n_apellido,
+              curso: profesor_curso,
+              genero: profesor_genero,
+              pertenece_equipo: number_id_equipo,
+              email: profesor_email,
+              ficha: 'profesor',
+              
+            },
+        ])
+        .eq('id', profesor_id)
+        .select()
+  }
 
 
 
@@ -904,26 +1102,6 @@ console.log(currentDate);
     }
   }
 
-
-  const { error: jugadorExtraError } = await supabaseAdmin
-      .from('JugadoresSS')
-      .update([
-        { nombre: acompañante_nombre, 
-          _1r_apellido: acompañante_1r_apellido,
-          _2n_apellido: acompañante_2n_apellido,
-          curso: acompañante_curso,
-          genero: acompañante_genero,
-          email: acompañante_email,
-          pertenece_equipo: equipoId,
-          
-          ficha: 'entrenador',
-        },
-    ]).select()
-
-    if (jugadorExtraError) {
-      console.error("Error insertando jugador extra:", jugadorExtraError.message);
-      // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-    }
 
   jugadores = jugadores.filter(jugador => jugador.opcion !== 'delete');
   
@@ -1472,6 +1650,32 @@ a[x-apple-data-detectors],
                  </table></td>
                </tr>
               `).join('')}
+                           <tr>
+              <td align="left" style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
+               <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" style="padding:0;Margin:0"><h4 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:28.8px;color:#FFC700">Professor Jugador</h4></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+             <tr>
+              <td align="left" class="es-m-p20l es-m-p20r es-m-p10t es-m-p10b" style="padding:0;Margin:0;padding-top:20px;padding-right:40px;padding-left:40px;border-radius:10px">
+               <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:520px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="left" bgcolor="#313131" style="border-radius:10px;padding:10px;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px"><strong>${profesor_nombre} ${profesor_1r_apellido} ${profesor_2n_apellido}</strong></p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Curs: ${profesor_curso}</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Email: ${profesor_email}</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
              <tr>
               <td align="left" bgcolor="#0E347D" style="Margin:0;padding-top:20px;padding-right:10px;padding-bottom:20px;padding-left:10px;background-color:#0E347D">
                <table width="100%" cellpadding="0" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
