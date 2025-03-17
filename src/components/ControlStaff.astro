@@ -8,6 +8,7 @@ import { supabaseAdmin } from "src/lib/supabase";
 let userHasAccess = false;
 const usuario = await verificarSesion(Astro.request);
 if(usuario){
+    console.log("usuario:", usuario.email, usuario.nombre, usuario.curso)
     const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
             .select("rango, user_email")
