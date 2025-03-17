@@ -14,6 +14,14 @@ let error = null;
 let usersWithRangos: UserWithRango[] = [];
 let Owners: UserWithRango[] = [];
 
+let TotalStaff = 0;
+let TotalVoluntarios2 = 0;
+let Total2Bat = 0;
+let TotalVoluntarios1 = 0;
+let Total1Bat = 0;
+let Total4Eso = 0;
+let Total3Eso = 0;
+let TotalFp = 0;
 const { data: Equipos, error: EquiposError } = await supabaseAdmin
     .from("EquiposSS")
     .select("id")
@@ -26,52 +34,68 @@ const { data: StaffData, error: fetchOwnerError } = await supabaseAdmin
         .in('rango', ['Owner', 'Co-Owner', 'Staff'])
         .eq('lista', 'si')
         .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E']);
-
+if(StaffData){
+    TotalStaff = StaffData.length;
+}
 const { data: VoluntarioData, error: fetchVoluntarioError } = await supabaseAdmin
         .from("Administradores")
         .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
         .in('rango', ['Arbitro', 'Oficial de Mesa', 'Voluntario'])
         .eq('lista', 'si')
         .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E']);
-
+if(VoluntarioData){
+    TotalVoluntarios2 = VoluntarioData.length;
+}
 const { data: Jugador2BatData, error: fetchJugador2BatError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E'])
         .in('pertenece_equipo', equipoIds);
-
+if(Jugador2BatData){
+    Total2Bat = Jugador2BatData.length;
+}
 const { data: Voluntario1Data, error: fetchVoluntario1Error } = await supabaseAdmin
         .from("Administradores")
         .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
         .in('rango', ['Arbitro', 'Oficial de Mesa', 'Voluntario'])
         .eq('lista', 'si')
         .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E']);
-
+if(Voluntario1Data){
+    TotalVoluntarios1 = Voluntario1Data.length;
+}
 const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E'])
         .in('pertenece_equipo', equipoIds);;
-
+if(Jugador1BatData){
+    Total1Bat = Jugador1BatData.length;
+}
 const { data: Jugador4ESOData, error: fetchJugador4ESOError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['4t ESO A', '4t ESO B', '4t ESO C', '4t ESO D', '4t ESO E', '4t ESO F', '4t ESO G', '4t ESO H'])
         .in('pertenece_equipo', equipoIds);;
-
+if(Jugador4ESOData){
+    Total4Eso = Jugador4ESOData.length;
+}
 const { data: Jugador3ESOData, error: fetchJugador3ESOError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['3r ESO A', '3r ESO B', '3r ESO C', '3r ESO D', '3r ESO E', '3r ESO F', '3r ESO G', '3r ESO H'])
         .in('pertenece_equipo', equipoIds);;
-
+if(Jugador3ESOData){
+    Total3Eso = Jugador3ESOData.length;
+}
 const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['1r FPB Cuina i restauració', '2n FPB Cuina i restauració', '1r GM Cuina i gastronomia', '2n GM Cuina i gastronomia', '1r GM Serveis en restauració', '2n GM Serveis en restauració', '1r GM Gestió administrativa', '2n GM Gestió administrativa'])
         .in('pertenece_equipo', equipoIds);;
-
-
+if(JugadorFPData){
+TotalFp = JugadorFPData.length;
+}
+let TotalAlumnos = TotalStaff + TotalVoluntarios2 + TotalVoluntarios1 + Total2Bat + Total1Bat + Total4Eso + Total3Eso + TotalFp;
 ---
 
 <ControlAcces>
@@ -80,13 +104,16 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
         <p class="text-blanco max-w-xl w-full mx-auto text-center text-sm my-4 px-3 py-2 bg-gris-claro rounded-lg">
             La llista s’actualitza automàticament a mesura que els alumnes són acceptats al torneig. Si un alumne no apareix a la llista, significa que no ha estat inscrit i no forma part del torneig.
         </p>
+
+        <h1 class="text-3xl text-accent font-bold text-center mt-10">Total d'alumnes: <span class="text-amarillo">{TotalAlumnos}</span></h1>
         <section class="place-content-center flex flex-wrap gap-2 w-full h-auto p-10 mx-auto mb-10">
             {error ? (
                 <p class="text-red-500 text-center text-2xl">Ocurrió un error al obtener los datos: {error}</p>
             ) : (
                 <>
                 {/* 3r ESO */}
-                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2">
+                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2 relative">
+                    <span class="text-xl text-blanco absolute top-1 left-1">Total Alumnes: {Total3Eso}</span>
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         3r ESO
                     </h2>
@@ -120,7 +147,8 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                 </div>
 
                 {/* 4t ESO */}
-                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2">
+                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2 relative">
+                    <span class="text-xl text-blanco absolute top-1 left-1">Total Alumnes: {Total4Eso}</span>
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         4t ESO
                     </h2>
@@ -153,7 +181,8 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                  
                 </div>
                 {/* 1r Batchiller */}
-                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2">
+                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2 relative">
+                    <span class="text-xl text-blanco absolute top-1 left-1">Total Alumnes: {Total1Bat + TotalVoluntarios1}</span>
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         1r BAT
                     </h2>
@@ -211,7 +240,8 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                 </div>
 
                 {/* 2n Batchiller */}
-                <div class="w-[400px] h-auto bg-gris-claro rounded-lg px-2">
+                <div class="w-[400px] h-auto bg-gris-claro rounded-lg px-2 relative">
+                    <span class="text-xl text-blanco absolute top-1 left-1">Total Alumnes: {Total2Bat + TotalVoluntarios2 + TotalStaff}</span>
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         2n BAT
                     </h2>
@@ -291,7 +321,8 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                 </div>
 
                  {/* FP */}
-                 <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2">
+                 <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2 relative">
+                    <span class="text-xl text-blanco absolute top-1 left-1">Total Alumnes: {TotalFp}</span>
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         FP
                     </h2>

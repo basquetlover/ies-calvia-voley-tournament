@@ -260,11 +260,24 @@ if(usuario){
             (<></>)
             }
         </nav>
-        
         {admin === true ? (
             <div class="w-[95%] h-[2px] my-4 bg-accent rounded-full mx-auto">&nbsp;</div>
             
-            <a href="/admin" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all`}>
+            <a href="/usuario/staff/equipos" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all`}>
+                    <span class="w-5 h-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 -960 960 960">
+                            <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all`} d="M40-160v-112q0-34 18-62t46-44q62-31 126-46t130-16q66 0 130 16t126 46q29 15 47 44t17 62v112H40Zm720 0v-120q0-44-24-84t-70-70q51 6 96 21t84 35q36 20 55 45t19 53v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47l-28-2q-17-2-28-6 27-32 42-71t14-81q0-42-14-81t-42-71q14-5 28-6t28-2q66 0 113 47t47 113ZM120-240h480v-32q0-11-5-20t-15-14q-54-27-109-40t-111-14q-56 0-111 14t-109 40q-9 5-14 14t-6 20v32Zm240-320q33 0 57-23t23-57q0-33-23-56t-57-24q-33 0-56 24t-24 56q0 33 24 57t56 23Zm0 320Zm0-400Z"/>
+                        </svg>
+                    </span>
+                    <p>Llista Equips</p>
+            </a>
+        ):
+        (<></>)
+        }
+        {admin === true ? (
+            
+            
+            <a href="/admin" class={`w-full px-1 h-auto mt-2 rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all`}>
                     <span class="w-5 h-5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 -960 960 960">
                             <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all`} d="M480-440q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0-80q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0 440q-139-35-229-159t-91-277v-244l320-120 320 120v244q0 152-90 277T480-80Zm0-400Zm0-315-240 90v189q0 54 15 105t41 96q42-21 88-33t96-12q50 0 96 12t88 33q26-45 41-96t15-105v-189l-240-90Zm0 515q-36 0-70 8t-65 22q29 30 63 52t72 34q38-12 72-34t63-52q-31-14-65-22t-70-8Z"/>
