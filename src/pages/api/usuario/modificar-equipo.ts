@@ -225,7 +225,7 @@ let { data: Usuarios, error } = await supabaseAdmin
       }
       if(profesor_equipo != number_id_equipo){
           return new Response(
-              `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">LEl professor ja es troba inscrit en un altre equip.</div>`, 
+              `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El professor ja es troba inscrit en un altre equip.</div>`, 
               { status: 400, headers: { "Content-Type": "text/html" } }
             );
       }
