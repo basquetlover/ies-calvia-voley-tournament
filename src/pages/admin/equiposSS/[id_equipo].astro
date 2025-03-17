@@ -3,6 +3,7 @@ import { supabaseAdmin } from "../../../lib/supabase";
 import LayoutOwner from '@layouts/LayoutOwner.astro';
 import { CURSOS } from "@const/rangos";
 import LayoutStaff from "@layouts/LayoutStaff.astro";
+import { verificarSesion } from "src/lib/session";
 // Tipo explícito para las propiedades esperadas en `Astro.props`
 
 // Tipo explícito para las propiedades esperadas en `Astro.props`
@@ -220,6 +221,12 @@ const getCurrentDateInCatalan = () => {
 };
 
 const currentDate = getCurrentDateInCatalan();
+
+const usuario = await verificarSesion(Astro.request);
+if(usuario){
+  console.log("usuario:", usuario.email, usuario.nombre, usuario.curso)
+}
+
 ---
 <LayoutStaff title=`Equip ${nombre_equipo}`>
     <div class="max-w-4xl mx-auto my-10">
