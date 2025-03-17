@@ -104,6 +104,7 @@ if(usuario){
         .from('Administradores')
         .select('rango')
         .eq('user_email', usuario_email)
+        .in('rango', ['Owner', 'Co-Owner', 'Oficial de Mesa', 'Arbitros', 'Profesor'])
         .single();
 
     if(!Administradores){
@@ -329,6 +330,20 @@ if(usuario){
                         
                     </span>
                     <p>Llista Alumnes</p>
+            </a>
+        ):
+        (<></>)
+        }
+        {admin === true ? (
+            
+            
+            <a href="/usuario/staff/equipos" class={`px-1 h-44 w-44 rounded-lg text-base grid grid-cols-1 grid-rows-[1fr_40px] bg-azul place-items-center text-center  text-white hover:text-amarillo group duration-300 transition-all`}>
+                    <span class="w-20 h-20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="none" viewBox="0 -960 960 960">
+                            <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all`} d="M40-160v-112q0-34 18-62t46-44q62-31 126-46t130-16q66 0 130 16t126 46q29 15 47 44t17 62v112H40Zm720 0v-120q0-44-24-84t-70-70q51 6 96 21t84 35q36 20 55 45t19 53v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47l-28-2q-17-2-28-6 27-32 42-71t14-81q0-42-14-81t-42-71q14-5 28-6t28-2q66 0 113 47t47 113ZM120-240h480v-32q0-11-5-20t-15-14q-54-27-109-40t-111-14q-56 0-111 14t-109 40q-9 5-14 14t-6 20v32Zm240-320q33 0 57-23t23-57q0-33-23-56t-57-24q-33 0-56 24t-24 56q0 33 24 57t56 23Zm0 320Zm0-400Z"/>
+                        </svg>
+                    </span>
+                    <p>Llista Equips</p>
             </a>
         ):
         (<></>)

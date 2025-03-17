@@ -19,7 +19,10 @@ export const RANGOS = [
     },
     {
         label: "La Chupa Gratis",
-    }
+    },
+    {
+        label: "Professor",
+    },
 ]
 
 export const CURSOS = [

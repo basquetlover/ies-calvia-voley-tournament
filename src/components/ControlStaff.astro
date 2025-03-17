@@ -1,0 +1,43 @@
+---
+import { verificarSesion } from '../lib/session';
+
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+import SinAcceso from "@sections/errores/SinAcceso.astro";
+import SinSession from '@sections/errores/SinSession.astro';
+import { supabaseAdmin } from "src/lib/supabase";
+let userHasAccess = false;
+const usuario = await verificarSesion(Astro.request);
+if(usuario){
+    const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango, user_email")
+            .eq("user_email", usuario.email)
+            .in('rango', ['Owner', 'Co-Owner', 'Oficial de Mesa', 'Arbitros', 'Profesor'])
+            .single();
+if(error){
+    console.log(
+        "Usuario sin cuenta de admin"
+    )
+}
+// adminData?.rango === "Owner" || 
+if(adminData){
+    userHasAccess = true;
+}
+}
+
+
+
+
+
+
+---
+
+    <>
+    {userHasAccess ? (
+        <slot />
+        ) : (
+            <LayoutMenu title="No Disnponible | IES Calvià Voley Tournament" descripcion="Registret per poder aprofitar de totes les ventatges de formar part de la familia IES Calvià Voley Tournament">
+                <SinAcceso />
+            </LayoutMenu>
+    )}
+    </>

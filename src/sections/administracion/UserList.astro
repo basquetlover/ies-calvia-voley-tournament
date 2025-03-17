@@ -33,6 +33,10 @@ const { data: ArbitrosData, error: fetchArbitrosError } = await supabaseAdmin
         .from("Administradores")
         .select("rango, user_email")
         .eq('rango', 'Arbitro');
+        const { data: ProfesorData, error: fetchProfesorError } = await supabaseAdmin
+        .from("Administradores")
+        .select("rango, user_email")
+        .eq('rango', 'Professor');
 const { data: SinRangoData, error: fetchSinRangoError } = await supabaseAdmin
         .from("Administradores")
         .select("rango, user_email")
@@ -197,6 +201,41 @@ const { data: SinRangoData, error: fetchSinRangoError } = await supabaseAdmin
             <tr><td><h4 class="text-accent font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Rango</h4></td> <td></td></tr>
             {ArbitrosData ? (
                    ArbitrosData.map((user) => (
+                <tr >
+                    <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
+                        {user.user_email}
+                    </td>
+                    
+                    <td class="text-center">
+                        {user.rango}
+                    </td>
+
+                    <td>
+                        <a href={`/admin/lista-administradores/${user.user_email}`} class="group">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 group-hover:fill-amarillo" fill="none" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
+                                <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                 
+            ))
+                ) : (
+                    <tr>
+                        <td class="text-center">No hay usuarios con rango <span class="text-accent">Owner</span></td>
+                    </tr>
+                    
+                )}
+            </table>
+
+            <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                Profesor
+            </h2>
+            <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+            <tr><td><h4 class="text-accent font-bold text-3xl my-2">Email</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Rango</h4></td> <td></td></tr>
+            {ProfesorData ? (
+                   ProfesorData.map((user) => (
                 <tr >
                     <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
                         {user.user_email}

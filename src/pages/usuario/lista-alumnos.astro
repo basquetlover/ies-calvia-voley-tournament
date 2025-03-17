@@ -14,8 +14,12 @@ let error = null;
 let usersWithRangos: UserWithRango[] = [];
 let Owners: UserWithRango[] = [];
 
-
-
+const { data: Equipos, error: EquiposError } = await supabaseAdmin
+    .from("EquiposSS")
+    .select("id")
+    .eq('estado', 'Acceptat');
+    
+    const equipoIds = Equipos?.map(equipo => equipo.id) || [];
 const { data: StaffData, error: fetchOwnerError } = await supabaseAdmin
         .from("Administradores")
         .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
@@ -33,7 +37,8 @@ const { data: VoluntarioData, error: fetchVoluntarioError } = await supabaseAdmi
 const { data: Jugador2BatData, error: fetchJugador2BatError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
-        .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E']);
+        .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E'])
+        .in('pertenece_equipo', equipoIds);
 
 const { data: Voluntario1Data, error: fetchVoluntario1Error } = await supabaseAdmin
         .from("Administradores")
@@ -45,22 +50,26 @@ const { data: Voluntario1Data, error: fetchVoluntario1Error } = await supabaseAd
 const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
-        .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E']);
+        .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E'])
+        .in('pertenece_equipo', equipoIds);;
 
 const { data: Jugador4ESOData, error: fetchJugador4ESOError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
-        .in('curso', ['4t ESO A', '4t ESO B', '4t ESO C', '4t ESO D', '4t ESO E', '4t ESO F', '4t ESO G', '4t ESO H']);
+        .in('curso', ['4t ESO A', '4t ESO B', '4t ESO C', '4t ESO D', '4t ESO E', '4t ESO F', '4t ESO G', '4t ESO H'])
+        .in('pertenece_equipo', equipoIds);;
 
 const { data: Jugador3ESOData, error: fetchJugador3ESOError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
-        .in('curso', ['3r ESO A', '3r ESO B', '3r ESO C', '3r ESO D', '3r ESO E', '3r ESO F', '3r ESO G', '3r ESO H']);
+        .in('curso', ['3r ESO A', '3r ESO B', '3r ESO C', '3r ESO D', '3r ESO E', '3r ESO F', '3r ESO G', '3r ESO H'])
+        .in('pertenece_equipo', equipoIds);;
 
 const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
         .from("JugadoresSS")
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
-        .in('curso', ['1r FPB Cuina i restauració', '2n FPB Cuina i restauració', '1r GM Cuina i gastronomia', '2n GM Cuina i gastronomia', '1r GM Serveis en restauració', '2n GM Serveis en restauració', '1r GM Gestió administrativa', '2n GM Gestió administrativa']);
+        .in('curso', ['1r FPB Cuina i restauració', '2n FPB Cuina i restauració', '1r GM Cuina i gastronomia', '2n GM Cuina i gastronomia', '1r GM Serveis en restauració', '2n GM Serveis en restauració', '1r GM Gestió administrativa', '2n GM Gestió administrativa'])
+        .in('pertenece_equipo', equipoIds);;
 
 
 ---
@@ -81,12 +90,12 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         3r ESO
                     </h2>
-                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <table class="text-base text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
                     <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
                     
                     {Jugador3ESOData ? (
                         Jugador3ESOData.map((user, index) => (
-                        <tr >
+                        <tr class="border-b-2 border-accent">
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -115,12 +124,12 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         4t ESO
                     </h2>
-                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <table class="text-base text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
                     <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
                     
                     {Jugador4ESOData ? (
                         Jugador4ESOData.map((user, index) => (
-                        <tr >
+                        <tr class="border-b-2 border-accent">
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -136,7 +145,7 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                         
                     ))
                         ) : (
-                        <p class="text-center text-blanco text-xl">No hi ha alumnes</p>
+                        <p class="text-center text-blanco text-base">No hi ha alumnes</p>
                             
                         )}
                     </table>
@@ -148,12 +157,12 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         1r BAT
                     </h2>
-                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <table class="text-base text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
                     <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
                     
                     {Voluntario1Data ? (
                         Voluntario1Data.map((user, index) => (
-                        <tr >
+                        <tr class="border-b-2 border-accent">
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -176,7 +185,7 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                         )}
                     {Jugador1BatData ? (
                         Jugador1BatData.map((user, index) => (
-                        <tr>
+                        <tr class="border-b-2 border-accent">
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -206,11 +215,11 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         2n BAT
                     </h2>
-                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <table class="text-base text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
                     <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
                     {StaffData ? (
                         StaffData.map((user) => (
-                        <tr >
+                        <tr class="border-b-2 border-accent">
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -233,7 +242,7 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                         )}
                     {VoluntarioData ? (
                         VoluntarioData.map((user, index) => (
-                        <tr>
+                        <tr class="border-b-2 border-accent">
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -256,7 +265,7 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                         )}
                     {Jugador2BatData ? (
                         Jugador2BatData.map((user, index) => (
-                        <tr class={index % 2 === 0 ? '' : ''}>
+                        <tr class="border-b-2 border-accent">
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -286,12 +295,12 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                     <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
                         FP
                     </h2>
-                    <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <table class="text-base text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
                     <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
                     
                     {JugadorFPData ? (
                         JugadorFPData.map((user, index) => (
-                        <tr >
+                        <tr class="border-b-2 border-accent">
                             <td class="w-max" translate="no">
                                 {user.nombre}
                             </td>
@@ -307,7 +316,7 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
                         
                     ))
                         ) : (
-                        <p class="text-center text-blanco text-xl">No hi ha alumnes</p>
+                        <p class="text-center text-blanco text-base">No hi ha alumnes</p>
                             
                         )}
                     </table>
