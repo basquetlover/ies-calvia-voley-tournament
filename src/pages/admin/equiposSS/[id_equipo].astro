@@ -83,6 +83,16 @@ let entrenador_img = "";
 let entrenador_id = "";
 let entrenador_observaciones = "";
 
+let profesor_nombre = "";
+let profesor_1r_apellido = "";
+let profesor_2n_apellido = "";
+let profesor_curso = "";
+let profesor_genero = "";
+let profesor_email = "";
+let profesor_img = "";
+let profesor_id = "";
+let profesor_observaciones = "";
+
 let jugadores: Jugador[] = [];
 
 let Staff: Staff[] = [];
@@ -173,6 +183,31 @@ try {
     //console.log(entrenador_nombre, entrenador_1r_apellido, entrenador_2n_apellido, entrenador_curso, entrenador_email, entrenador_genero);
 } else {
     console.log("No se encontró ningún entrenador.");
+}
+
+const {data: ProfesorData, error: ProfesorError} = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
+    .eq('pertenece_equipo', id)
+    .eq('ficha', 'profesor')
+    .limit(1);
+
+    if (ProfesorError) {
+    console.error(`Error al buscar entrenador`,ProfesorError?.message); // Cambiado a EntrenadorError
+} else if (ProfesorData && ProfesorData.length > 0) { // Verifica que haya datos
+    const profesorData = ProfesorData[0]; // Toma el primer entrenador
+    profesor_nombre = profesorData.nombre;
+    profesor_1r_apellido = profesorData._1r_apellido;
+    profesor_2n_apellido = profesorData._2n_apellido;
+    profesor_curso = profesorData.curso;
+    profesor_genero = profesorData.genero;
+    profesor_email = profesorData.email;
+    profesor_img = profesorData.img;
+    profesor_id = profesorData.id;
+    profesor_observaciones = profesorData.observaciones;
+    //console.log(entrenador_nombre, entrenador_1r_apellido, entrenador_2n_apellido, entrenador_curso, entrenador_email, entrenador_genero);
+} else {
+    console.log("No se encontró ningún profesor.");
 }
 
   
@@ -527,7 +562,116 @@ if(usuario){
           </div>
     ))}
 
+          <!--Profesor Jugador -->
+          
+          <div class="w-max flex flex-row gap-2">
+            <div class="px-3 py-2 w-96 h-12 flex flex-row text-4xl text-amarillo border-none">
+              <h4>Profesor Jugador</h4>
+             {/* Genero */}
+             <div class="flex flex-col relative">
+              <label class="genero relative">
+                  <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+              </label>
+                  
+                  <span id={`hombre_profesor`} class={`desactivado ${profesor_genero === "hombre" ? 'hombre' : ''}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                          <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+                      </svg>
+                  </span>
+                  <span id={`mujer_profesor`} class={`desactivado ${profesor_genero === "mujer" ? 'mujer' : ''}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                          <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                      </svg>
+                  </span>
+             </div>
+            </div>
 
+            
+            
+          </div>
+          <div class="flex flex-col items-center ml-2">
+    
+            <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
+              
+              <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
+                <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
+                  {profesor_img ? (
+                    <img 
+                        src={profesor_img} 
+                        alt={`Imagen profesor`} 
+                        class="h-full max-h-24 w-auto object-cover" 
+                      />
+                
+              ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="#e8eaed" viewBox="0 -960 960 960">
+                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                  </svg>
+                  )}
+                  <input type="hidden" name="profesor_id" value={profesor_id}/>
+                  <input type="hidden" name="img-profesor" class="w-14" id="img-profesor" value={`${profesor_img ? (""): ("foto-denegada")}`} required/>
+                                  <div title={`${profesor_img ? (""): ("IMG no valida")}`} class={`flex flex-row items-center gap-x-1 place-content-center ${profesor_img ? ("cursor-pointer"): ("cursor-not-allowed  ")}`}>
+                                        <span id="img-profesor-si" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${profesor_img ? (""): ("pointer-events-none")}`}>Si</span>
+                                        <span id="img-profesor-no" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${profesor_img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
+                                  </div>
+                  </div>
+                
+                  <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
+              {/* Nombre */}
+              <div class="flex flex-col relative">
+                  <p class="form bg-gris-claro flex flex-row items-center place-content-center rounded-full px-3 py-1 text-blanco text-xl">
+                      Nom
+                  </p>
+                  <p class="px-4 py-1 w-40 flex flex-row items-center h-12 bg-gris-claro rounded-full text-base text-blanco border-none">{profesor_nombre}</p>
+                  
+              </div>
+              {/* 1r Apellido */}
+              <div class="flex flex-col relative">
+                  <p class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                      1r Cognom
+                  </p>
+                  
+                  <p class="px-4 py-1 w-40 flex flex-row items-center h-12 bg-gris-claro rounded-full text-base text-blanco border-none">{profesor_1r_apellido}</p>
+              </div>
+      
+              {/* 2n Apellido */}
+              <div class="flex flex-col relative">
+                  <p class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</p>
+                  <p class="px-4 py-1 w-40 flex flex-row items-center h-12 bg-gris-claro rounded-full text-base text-blanco border-none">{profesor_2n_apellido}</p>
+              </div>
+      
+               {/* Curso */}
+              <div class="flex flex-col relative">
+                  <p  class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                      Curs
+                      
+                  </p>
+                  
+                  <p class="px-4 py-1 w-40 flex flex-row items-center h-12 bg-gris-claro rounded-full text-base text-blanco border-none">{profesor_curso}</p>
+              </div>
+              {/* Email */}
+              <div class="flex flex-col relative">
+                  <p class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                      Email
+                  </p>
+                  <p class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro flex flex-row items-center rounded-full text-base text-blanco border-none">{profesor_email}</p>
+              
+              </div>
+            </div>
+            </div>
+            </div>
+  
+
+            
+          </div>
+          {profesor_observaciones === "" || profesor_observaciones === null  ? (<>
+         
+          </>):(<>
+          <textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{profesor_observaciones}</textarea>
+          </>)}
+          <div id="probl-profesor" class="ocultar">
+            <h3 class="text-2xl text-naranja font-semibold">¿Problemas con el profesor?</h3>
+            <textarea name="probl-profesor" class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
+          </div>
 <div class="w-max flex flex-row gap-2">
   <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Tècnics d'equip</h4></div>
 </div>
@@ -716,6 +860,28 @@ if(usuario){
         si_entrenador?.classList.remove("si_foto");
         si_entrenador?.classList.add("desactivado");
     });
+
+    //Profesor
+    const si_profesor = document.getElementById("img-profesor-si");
+    const no_profesor = document.getElementById("img-profesor-no");
+    const foto_profesor = document.getElementById("img-profesor") as HTMLInputElement;
+
+    si_profesor?.addEventListener('click', function() {
+       
+        foto_profesor.value = "foto-aceptada";
+        si_profesor.classList.add("si_foto");
+        si_profesor.classList.remove("desactivado");
+        no_profesor?.classList.remove("no_foto");
+        no_profesor?.classList.add("desactivado");
+    });
+
+    no_profesor?.addEventListener('click', function() {
+        foto_profesor.value = "foto-denegada";
+        no_profesor.classList.add("no_foto");
+        no_profesor.classList.remove("desactivado");
+        si_profesor?.classList.remove("si_foto");
+        si_profesor?.classList.add("desactivado");
+    });
 });
 </script>
 <script>
@@ -764,6 +930,7 @@ if(usuario){
   const encabezado = document.getElementById("encabezado");
   const probl_tit_logo = document.getElementById("probl-tit_logo");
   const probl_entrenador = document.getElementById("probl-entrenador");
+  const probl_profesor = document.getElementById("probl-profesor");
   denegar?.addEventListener('click', function(){
     evaluar?.classList.remove("centrar");
     evaluar?.classList.add("ocultar");
@@ -771,6 +938,7 @@ if(usuario){
     encabezado?.classList.add("equipo-denegado");
     probl_tit_logo?.classList.add("equipo-denegado");
     probl_entrenador?.classList.add("equipo-denegado");
+    probl_profesor?.classList.add("equipo-denegado");
     botones_send?.classList.add("equipo-denegado");
 
     nuevo_estado.value = "Denegat";
