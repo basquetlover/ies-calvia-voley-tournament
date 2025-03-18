@@ -165,7 +165,7 @@ export const POST: APIRoute = async ({ request }) => {
               ]).eq('id', profesor_id)
                .select();
         if (jugador2Error) {
-                console.error("Error insertando jugador principal:", jugadorError.message);
+                console.error("Error insertando jugador principal:", jugador2Error.message);
                 // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
               }
 
@@ -336,7 +336,7 @@ export const POST: APIRoute = async ({ request }) => {
               ]).eq('id', profesor_id)
                .select();
                if (jugador2Error) {
-                console.error("Error insertando jugador principal:", jugadorError.message);
+                console.error("Error insertando jugador principal:", jugador2Error.message);
                 // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
               }
         for (const jugador of jugadores) {
