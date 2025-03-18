@@ -314,7 +314,7 @@ const PUNTOS = [
                             <path fill="#E8EAED" d="M32 66V33l40 17-40 16Zm4-6 25-10-25-11v8l13 3-13 3v7Z"/>
                         </svg>
                     </div>
-                    <div class="w-14 h-14 bg-gris rounded-md">
+                    <div id="informe" class="w-14 h-14 bg-gris rounded-md">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
                         
                         <g clip-path="url(#a)">
@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let paso_tipo = 0;
   let paso_jugador = 0;
-
+  const informe = document.getElementById('informe')!;
   function guardarJugada(nombreArray: string) {
     const nombre_jugador = document.getElementById('nombre-jugador') as HTMLInputElement;
     const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
@@ -489,6 +489,15 @@ document.addEventListener('DOMContentLoaded', () => {
     orden.value = '';
 }
 
+//limpiar storage
+function eliminarJugada(nombreArray: string) {
+    // Eliminar el array del localStorage
+    localStorage.removeItem(nombreArray);
+}
+
+informe.addEventListener('click', () => {
+    eliminarJugada('partido_ejemplo');
+});
 //enviar informacion
   function enviar() {
         // Aquí puedes realizar la acción que desees
@@ -652,7 +661,94 @@ while (document.querySelectorAll("[id^='visitante_play_']").length > 0) {
 })
 </script>
 
+<script>
+function cargarHistorial(nombreArray: string) {
+    const historialDiv = document.getElementById('historial'); // Asegúrate de que este ID coincida con tu contenedor de historial
 
+    // Recuperar el array de jugadas del localStorage
+    const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+
+    // Verificar si hay jugadas existentes
+    if (jugadasExistentes.length > 0) {
+        // Extraer el tiempo de la última jugada
+        const tiempoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tiempo;
+
+        jugadasExistentes.forEach((jugada: { idEquipo: string; nombre: any; tipoPunto: any; tiempo: any; orden: any; }) => {
+            const nuevoDiv = document.createElement('div');
+
+            // Asignar las clases y contenido según el equipo
+            if (jugada.idEquipo === 'equipo-local') {
+                nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+                nuevoDiv.innerHTML = `
+                    <div>
+                        <div class="flex flex-row items-center">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                </svg>
+                            </div>
+                            <p class="text-lg font-semibold">${jugada.nombre}</p>
+                        </div>
+                        <div class="flex flex-row items-center px-2 gap-x-1">
+                            <p>${jugada.tipoPunto}</p>
+                            <span>|</span>
+                            <span>${jugada.tiempo}</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                        <p>0</p>
+                        <span>-</span>
+                        <p>0</p>
+                    </div>
+                    <div class="w-2 h-full border-blanco border-[1px]"></div>
+                `;
+            } else {
+                nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+                nuevoDiv.innerHTML = `
+                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                        <p>0</p>
+                        <span>-</span>
+                        <p>0</p>
+                    </div>
+                    <div>
+                        <div class="flex flex-row items-center">
+                            <p class="text-lg font-semibold">${jugada.nombre}</p>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex flex-row items-center px-2 gap-x-1">
+                            <p>${jugada.tipoPunto}</p>
+                            <span>|</span>
+                            <span>${jugada.tiempo}</span>
+                        </div>
+                    </div>
+                    <div class="w-2 h-full border-blanco border-[1px]"></div>
+                `;
+            }
+
+            // Agregar el nuevo div al contenedor de historial
+            if (historialDiv) {
+                historialDiv.appendChild(nuevoDiv);
+            }
+        });
+
+        // Establecer el tiempo de la última jugada en algún lugar específico, si es necesario
+        const tiempoUltimaJugadaDiv = document.getElementById('tiempo') as HTMLInputElement; // Asegúrate de que este ID coincida con tu contenedor para mostrar el tiempo
+        if (tiempoUltimaJugadaDiv) {
+            tiempoUltimaJugadaDiv.value = tiempoUltimaJugada;
+        }
+    }
+}
+
+// Llamar a la función al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Script Historial Cargado')
+    cargarHistorial('partido_ejemplo'); // Reemplaza 'nombreDelArray' con el nombre real del array en localStorage
+});
+</script>
 <style>
     .selected{
         background-color: #1666ff;
