@@ -320,7 +320,7 @@ export const POST: APIRoute = async ({ request }) => {
                     observaciones: probl_entrenador,
                     validar_img: img_entrenador,
                   },
-              ]).eq('id', entrenador_id)
+              ]).eq('i1d', entrenador_id)
                .select();
         if (jugadorError) {
                 console.error("Error insertando jugador principal:", jugadorError.message);
@@ -335,7 +335,10 @@ export const POST: APIRoute = async ({ request }) => {
                   },
               ]).eq('id', profesor_id)
                .select();
-
+               if (jugador2Error) {
+                console.error("Error insertando jugador principal:", jugadorError.message);
+                // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+              }
         for (const jugador of jugadores) {
             const { error: jugadorError } = await supabaseAdmin
               .from('JugadoresSS')
