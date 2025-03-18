@@ -775,7 +775,23 @@ if(profesor_foto.size > 0){
     if (urlDataCoach) {
       publicCoachUrl = urlDataCoach.publicUrl;
     }
-  
+  if(profesor_id === "" || !profesor_id){
+    const { error: jugadorError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .insert([
+      {   nombre: profesor_nombre, 
+        _1r_apellido: profesor_1r_apellido,
+        _2n_apellido: profesor_2n_apellido,
+        curso: profesor_curso,
+        genero: profesor_genero,
+        pertenece_equipo: number_id_equipo,
+        email: profesor_email,
+        ficha: 'profesor',
+          imag: publicCoachUrl,
+        },
+    ])
+    .select()
+  }else{
     const { error: jugadorError } = await supabaseAdmin
         .from('JugadoresSS')
         .update([
@@ -792,9 +808,26 @@ if(profesor_foto.size > 0){
         ])
         .eq('id', profesor_id)
         .select()
-  
+      }
   } else {
-    const { error: jugadorError } = await supabaseAdmin
+    if(profesor_id === "" || !profesor_id){
+      const { error: jugadorError } = await supabaseAdmin
+        .from('JugadoresSS')
+        .update([
+          {   nombre: profesor_nombre, 
+              _1r_apellido: profesor_1r_apellido,
+              _2n_apellido: profesor_2n_apellido,
+              curso: profesor_curso,
+              genero: profesor_genero,
+              pertenece_equipo: number_id_equipo,
+              email: profesor_email,
+              ficha: 'profesor',
+              
+            },
+        ])
+        .select()
+    }else{
+      const { error: jugadorError } = await supabaseAdmin
         .from('JugadoresSS')
         .update([
           {   nombre: profesor_nombre, 
@@ -810,6 +843,9 @@ if(profesor_foto.size > 0){
         ])
         .eq('id', profesor_id)
         .select()
+    }
+
+    
   }
 
 
