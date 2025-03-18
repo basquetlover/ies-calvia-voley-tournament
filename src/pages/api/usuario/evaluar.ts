@@ -46,6 +46,26 @@ export const POST: APIRoute = async ({ request }) => {
               { status: 401, headers: { "Content-Type": "text/html" } }
           );
        }
+
+       const profesor_id = formData.get("profesor_id")?.toString().trim();
+        const img_profesor = formData.get("img-profesor")?.toString().trim();
+        const probl_profesor = formData.get("probl-profesor")?.toString().trim();
+        if(img_profesor === ''){
+          return new Response(
+              `
+              <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
+                <span>
+              <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
+                <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
+              </svg>
+                </span>
+                <p>Es necesario indicar si la foto es valida del profesor</p>
+                </div>
+              `, 
+              { status: 401, headers: { "Content-Type": "text/html" } }
+          );
+       }
+        
         
 
         const jugadores = [];
@@ -135,6 +155,19 @@ export const POST: APIRoute = async ({ request }) => {
                 console.error("Error insertando jugador principal:", jugadorError.message);
                 // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
               }
+              const { error: jugador2Error } = await supabaseAdmin
+              .from('JugadoresSS')
+              .update([
+                {   
+                    observaciones: probl_profesor,
+                    validar_img: img_profesor,
+                  },
+              ]).eq('id', profesor_id)
+               .select();
+        if (jugador2Error) {
+                console.error("Error insertando jugador principal:", jugadorError.message);
+                // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+              }
 
         for (const jugador of jugadores) {
             const { error: jugadorError } = await supabaseAdmin
@@ -196,6 +229,25 @@ export const POST: APIRoute = async ({ request }) => {
                 { status: 401, headers: { "Content-Type": "text/html" } }
             );
          }
+
+         const profesor_id = formData.get("profesor_id")?.toString().trim();
+         const img_profesor = formData.get("img-profesor")?.toString().trim();
+         const probl_profesor = formData.get("probl-profesor")?.toString().trim();
+         if(img_profesor === ''){
+             return new Response(
+                 `
+                 <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
+                   <span>
+                 <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
+                   <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
+                 </svg>
+                   </span>
+                   <p>Es necesario indicar si la foto es valida del profesor</p>
+                   </div>
+                 `, 
+                 { status: 401, headers: { "Content-Type": "text/html" } }
+             );
+          }
 
         const jugadores = [];
         let index = 0;
@@ -274,6 +326,15 @@ export const POST: APIRoute = async ({ request }) => {
                 console.error("Error insertando jugador principal:", jugadorError.message);
                 // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
               }
+              const { error: jugador2Error } = await supabaseAdmin
+              .from('JugadoresSS')
+              .update([
+                {   
+                    observaciones: probl_profesor,
+                    validar_img: img_profesor,
+                  },
+              ]).eq('id', profesor_id)
+               .select();
 
         for (const jugador of jugadores) {
             const { error: jugadorError } = await supabaseAdmin
