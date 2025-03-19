@@ -79,8 +79,8 @@ const PUNTOS = [
 <LayoutAllSinMenu title='Usuarios'>
 {userHasAccess ? (
     <>
-
-        <div class="h-[700px] w-[1100px] my-auto bg-red-400 overflow-auto mx-auto no-scrollbar border-2 border-accent grid grid-rows-1 grid-cols-3">
+    <section class="h-[700px] w-[1100px] my-auto bg-red-400 overflow-auto mx-auto no-scrollbar relative">
+        <div class="w-full h-full border-2 border-accent grid grid-rows-1 grid-cols-3">
 
             {/* Datos equipo 1 */}
             <div class="w-full h-full bg-gris">
@@ -91,6 +91,7 @@ const PUNTOS = [
                     </div>
                     <div class="flex items-center place-content-center">
                         <input type="hidden" id="id_equipo_local" disabled value={`equipo-local`}/>
+                        <input type="hidden" id="local_total_play" disabled value={jugadoresLocal.length} />
                         <p class="text-2xl text-accent font-semibold">Nombre Equipo 1</p>
                     </div>
                 </div>
@@ -123,24 +124,26 @@ const PUNTOS = [
              {/* Datos equipo Generales */}
              <div class="w-full h-full bg-gris-claro flex flex-col items-center pt-4 gap-y-2">
                 {/* Datos generales */}
-                <div class="w-full flex flex-wrap gap-1">
+                <div class="w-full flex flex-wrap gap-1 ocultar">
                 <input class="w-24" id="nombre-jugador" type="text" disabled/>
                 <input class="w-24" id="id-equipo" type="text" disabled/>
                 <input class="w-24" id="tipo-punto" type="text" disabled/>
                 <input class="w-24" id="tiempo" type="text" disabled/>
                 <input class="w-24" id="orden" type="text" disabled/>
                 </div>
-                <div class="w-[90%] h-auto grid grid-rows-1 grid-cols-[max-content_max-content_1fr_max-content_max-content]  gap-x-1">
+
+                {/* Marcador */}
+                <div id="marcador" class="w-[90%] h-auto grid grid-rows-1 grid-cols-[max-content_max-content_1fr_max-content_max-content]  gap-x-1">
                     {/* Puntos */}
-                    <span class="text-blanco text-7xl font-semibold">0</span>
+                    <span data-LocPuntos class="text-blanco text-7xl font-semibold">0</span>
                     {/* Sets */}
-                    <span class="text-blanco text-4xl font-semibold flex flex-col place-content-end">0</span>
+                    <span data-LocSets class="text-blanco text-4xl font-semibold flex flex-col place-content-end">0</span>
                     {/* Pista */}
                     <span class="text-blanco text-2xl flex flex-col place-content-center items-center">Pista 1</span>
                     {/* Sets */}
-                    <span class="text-blanco text-4xl font-semibold flex flex-col place-content-end">0</span>
+                    <span data-VisSets class="text-blanco text-4xl font-semibold flex flex-col place-content-end">0</span>
                     {/* Puntos */}
-                    <span class="text-blanco text-7xl font-semibold">0</span>
+                    <span data-VisPuntos class="text-blanco text-7xl font-semibold">0</span>
                 </div>
 
                 {/* Reloj */}
@@ -192,117 +195,7 @@ const PUNTOS = [
                 <div class="w-64 h-48 rounded-md bg-gris overflow-y-scroll scrollbar-fina flex flex-col gap-y-2 border-2 border-gris">
                     <div id="historial" class="w-full h-auto rounded-md bg-gris flex flex-col-reverse gap-y-2 border-2 border-gris">
                         
-                        {/* Jugada 1 Local
-                        <div class="w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center">
-                            <div>
-                                <div class="flex flex-row items-center">
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
-                                            <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
-                                        </svg>
-                                    </div>
-                                    <p class=" text-lg font-semibold">Jugador 1</p>
-                                </div>
-                                <div class="flex flex-row items-center px-2 gap-x-1">
-                                <p>Bloqueo</p>
-                                <span>|</span>
-                                <span>00:40</span>
-                                </div>
-                            </div>
-                            <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                                <p>1</p>
-                                <span>-</span>
-                                <p>0</p>
-                            </div>
-                            <div class="w-2 h-full border-blanco border-[1px]">
-
-                            </div>
-                        </div>
-
-                         Jugada 2 Visitante
-                        <div class="w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center">
-                            
-                            <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                                <p>1</p>
-                                <span>-</span>
-                                <p>1</p>
-                            </div>
-                            <div>
-                                <div class="flex flex-row items-center">
-                                    <p class=" text-lg font-semibold">Jugador 1</p>
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
-                                            <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="flex flex-row items-center px-2 gap-x-1">
-                                <span>02:48</span>
-                                <span>|</span>
-                                <p>Remate</p>
-                                </div>
-                            </div>
-                            <div class="w-2 h-full border-blanco border-[1px]">
-
-    </div>
-                            
-                        </div>
-
-                        Jugada 3 Visitante
-                        <div class="w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center">
-                            
-                            <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                                <p>1</p>
-                                <span>-</span>
-                                <p>2</p>
-                            </div>
-                            <div>
-                                <div class="flex flex-row items-center">
-                                    <p class=" text-lg font-semibold">Jugador 2</p>
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
-                                            <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="flex flex-row items-center px-2 gap-x-1">
-                                <span>03:33</span>
-                                <span>|</span>
-                                <p>Remate</p>
-                                </div>
-                            </div>
-                            <div class="w-2 h-full border-blanco border-[1px]">
-
-                            </div>
-                            
-                        </div>
-
-                        Jugada 4 Local
-                        <div class="w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center">
-                            <div>
-                                <div class="flex flex-row items-center">
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
-                                            <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
-                                        </svg>
-                                    </div>
-                                    <p class=" text-lg font-semibold">Jugador 5</p>
-                                </div>
-                                <div class="flex flex-row items-center px-2 gap-x-1">
-                                <p>Directo</p>
-                                <span>|</span>
-                                <span>04:00</span>
-                                </div>
-                            </div>
-                            <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                                <p>2</p>
-                                <span>-</span>
-                                <p>2</p>
-                            </div>
-                            <div class="w-2 h-full border-blanco border-[1px]">
-
-                            </div>
-                        </div> */}
+                        
                     </div>
                 </div>
 
@@ -312,6 +205,11 @@ const PUNTOS = [
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
                             
                             <path fill="#E8EAED" d="M32 66V33l40 17-40 16Zm4-6 25-10-25-11v8l13 3-13 3v7Z"/>
+                        </svg>
+                    </div>
+                    <div id="conf_partido" class="w-14 h-14 bg-gris rounded-md flex items-center place-content-center cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="#e8eaed" viewBox="0 -960 960 960">
+                            <path d="m370-80-16-128q-13-5-24-12t-23-15l-119 50L78-375l103-78-1-13v-27l1-14-103-78 110-190 119 50 23-15 24-12 16-128h220l16 128q13 5 25 12t22 15l119-50 110 190-103 78 1 14v27l-2 13 103 78-110 190-118-50-23 15-24 12-16 128H370Zm70-80h79l14-106q31-8 58-23t48-38l99 41 39-68-86-65q5-14 7-29t2-32q0-16-2-31t-7-30l86-65-39-68-99 42q-22-23-48-38t-58-24l-13-106h-79l-14 106q-31 8-57 24t-49 37l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 49 39t57 23l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99 41t-41 99q0 58 41 99t99 41Zm-2-140Z"/>
                         </svg>
                     </div>
                     <div id="informe" class="w-14 h-14 bg-gris rounded-md">
@@ -343,6 +241,8 @@ const PUNTOS = [
                 <div class="w-full h-auto grid grid-cols-[1fr_max-content] grid-rows-1 p-2">
                     
                     <div class="flex items-center place-content-center">
+                        <input type="hidden" id="id_equipo_visitante" disabled value={`equipo-visitante`}/>
+                        <input type="hidden" id="visitante_total_play" disabled value={jugadoresVisitante.length} />
                         <p class="text-2xl text-accent font-semibold">Nombre Equipo 2</p>
                     </div>
                     <div class="w-max h-max">
@@ -375,6 +275,40 @@ const PUNTOS = [
                 </div>
              </div>
         </div>
+
+        <div id="panel_conf" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
+            <div class="bg-gris w-[450px] h-96 rounded-md p-2">
+                <h2 class="text-3xl text-amarillo font-semibold text-center">Configuración Partido</h2>
+                <div class="flex flex-row items-center text-lg gap-x-2 mt-5">
+                    <p class="text-accent">Puntos de Set</p>
+                    <input name="conf-puntos" id="conf-puntos" type="number" min="10" max="21" class=" text-blanco bg-gris-claro px-2 py-1 rounded-md w-20" value="10"/>
+                </div>
+                <div class="flex flex-row items-center text-lg gap-x-2 mt-5">
+                    <p class="text-accent">Diferencia de Puntos Set</p>
+                    <input name="conf-dif-puntos" id="conf-dif-puntos" type="number" min="0" max="2" class=" text-blanco bg-gris-claro px-2 py-1 rounded-md w-20" value="0"/>
+                </div>
+                <hr class="w-[90%] mt-5 mx-auto border-amarillo" />
+                <div class="flex flex-row items-center text-lg gap-x-2 mt-5">
+                    <p class="text-accent">Puntos ExtraSet</p>
+                    <input name="conf-puntos-extra" id="conf-puntos-extra" type="number" min="7" class=" text-blanco bg-gris-claro px-2 py-1 rounded-md w-20" value="7"/>
+                </div>
+                <div class="flex flex-row items-center text-lg gap-x-2 mt-5">
+                    <p class="text-accent">Diferencia de Puntos ExtraSet</p>
+                    <input name="conf-dif-puntos-extra" id="conf-dif-puntos-extra" type="number" min="0" max="2" class=" text-blanco bg-gris-claro px-2 py-1 rounded-md w-20" value="0"/>
+                </div>
+
+                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5">
+                    <div id="cerrar_conf" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
+                        <p>Cancelar</p>
+                    </div>
+
+                    <div id="guardar_conf" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
+                        <p>Guardar</p>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </section>
     
     </>
    
@@ -393,6 +327,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const tiempo = document.getElementById('tiempo') as HTMLInputElement;
   const orden = document.getElementById('orden') as HTMLInputElement;
 
+  let tiempoUltimaJugada = "00:00";
+  let LocPuntosUltimaJugada = "0";
+  let VisPuntosUltimaJugada = "0";
+
+ 
+  //Marcador Variables
+  let LocPuntos = 0;
+  let LocSets = 0;
+  let VisPuntos = 0;
+  let VisSets = 0;
+
+  let conf_puntos = 10;
+  let conf_dif_puntos = 0;
+  let conf_puntos_extra = 7;
+  let conf_dif_puntos_extra = 0;
+
+  cargarHistorial('partido_ejemplo');
+
   let paso_tipo = 0;
   let paso_jugador = 0;
   const informe = document.getElementById('informe')!;
@@ -409,6 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
         idEquipo: id_equipo.value,
         tipoPunto: tipo_punto.value,
         tiempo: tiempo.value,
+        locPuntos: LocPuntos,
+        visPuntos: VisPuntos,
         orden: orden.value
     };
 
@@ -445,9 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
             <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                <p>0</p>
+                <p>${LocPuntos}</p>
                 <span>-</span>
-                <p>0</p>
+                <p>${VisPuntos}</p>
             </div>
             <div class="w-2 h-full border-blanco border-[1px]"></div>
         `;
@@ -455,9 +409,9 @@ document.addEventListener('DOMContentLoaded', () => {
         nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
         nuevoDiv.innerHTML = `
             <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                <p>0</p>
+                <p>${LocPuntos}</p>
                 <span>-</span>
-                <p>0</p>
+                <p>${VisPuntos}</p>
             </div>
             <div>
                 <div class="flex flex-row items-center">
@@ -498,6 +452,7 @@ function eliminarJugada(nombreArray: string) {
 informe.addEventListener('click', () => {
     eliminarJugada('partido_ejemplo');
 });
+
 //enviar informacion
   function enviar() {
         // Aquí puedes realizar la acción que desees
@@ -522,9 +477,54 @@ informe.addEventListener('click', () => {
     // Iniciar la verificación de pasos
     setInterval(() => {
         if (paso_tipo === 1 && paso_jugador === 1) {
+            const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+            const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+
+            const marcador = document.getElementById('marcador')!;
+            const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+            const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+            const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+            const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
+            
+            if(id_equipo.value === "equipo-local" && tipo_punto.value === "Error"){
+                VisPuntos ++;
+                Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
+            } else if(id_equipo.value === "equipo-local"){
+                LocPuntos ++;
+                Marcador_LocPuntos.textContent = String(LocPuntos).padStart(1, '0');
+            }
+
+            if(id_equipo.value === "equipo-visitante" && tipo_punto.value === "Error"){
+                LocPuntos ++;
+                Marcador_LocPuntos.textContent = String(LocPuntos).padStart(1, '0');
+            } else if(id_equipo.value === "equipo-visitante"){
+                VisPuntos ++;
+                Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
+            }
+            if(LocSets + VisSets < 2){
+                if(LocPuntos >= conf_puntos){
+                    LocSets++;
+                    Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                    Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                    Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                    LocPuntos = 0;
+                    VisPuntos = 0;
+                }
+                if(VisPuntos >= conf_puntos){
+                    VisSets++;
+                    Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                    Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                    Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                    LocPuntos = 0;
+                    VisPuntos = 0;
+                }
+            }
+            
+
             enviar();
         }
-    }, 1000);
+    }, 250);
+
   //tipos de puntos
   const directo = document.getElementById('directo')!;
   const bloqueo = document.getElementById('bloqueo')!;
@@ -571,51 +571,74 @@ informe.addEventListener('click', () => {
         paso_tipo = 1;
     });
 
-    //tiempo
-    const reloj = document.getElementById('reloj')!;
-    const minutosElement = reloj.querySelector('[data-minutos]')!;
-    const segundosElement = reloj.querySelector('[data-segundos]')!;
-    let totalMilisegundos = 0;
-    let minutos = 0;
-    let segundos = 0;
-    let intervalo: ReturnType<typeof setInterval> | null = null;
-    let corriendo = false;
+// Tiempo
+const reloj = document.getElementById('reloj')!;
+const minutosElement = reloj.querySelector('[data-minutos]')!;
+const segundosElement = reloj.querySelector('[data-segundos]')!;
+let totalMilisegundos = 0;
+let minutos = 0;
+let segundos = 0;
+let intervalo: ReturnType<typeof setInterval> | null = null;
+let corriendo = false;
 
-    reloj.addEventListener('click', () => {
-        reloj.classList.toggle('reloj-activo');
-        if (!corriendo) {
-            // Iniciar el cronómetro
-            corriendo = true;
-            intervalo = setInterval(() => {
-                segundos++;
-                if (segundos >= 60) {
-                    minutos++;
-                    segundos = 0;
-                }
-                // Actualizar el DOM
-                minutosElement.textContent = String(minutos).padStart(2, '0');
-                segundosElement.textContent = String(segundos).padStart(2, '0');
+// Función para separar minutos y segundos
+function separarMinutosSegundos(tiempo: string) {
+    const [minutos, segundos] = tiempo.split(':');
+    const minutosNumericos = parseInt(minutos, 10);
+    const segundosNumericos = parseInt(segundos, 10);
 
-                 totalMilisegundos = (minutos * 60 + segundos) * 1000;
+    return {
+        minutos: minutosNumericos,
+        segundos: segundosNumericos
+    };
+}
 
-                // Formatear el tiempo a una cadena de 10 dígitos
-                const tiempoFormateado = String(totalMilisegundos).padStart(10, '0');
-                
-            }, 1000);
-        } else {
-            // Pausar el cronómetro
-            corriendo = false;
-            if (intervalo) {
-                clearInterval(intervalo);
-                intervalo = null; // Reiniciar intervalo a null después de pausar
+// Suponiendo que tienes el tiempo de la última jugada en formato "MM:SS"
+const tiempoUltimaJugadaFormateado = separarMinutosSegundos(tiempoUltimaJugada);
+
+// Establecer los minutos y segundos del cronómetro con el tiempo de la última jugada
+minutos = tiempoUltimaJugadaFormateado.minutos;
+segundos = tiempoUltimaJugadaFormateado.segundos;
+
+// Actualizar el DOM con el tiempo inicial
+minutosElement.textContent = String(minutos).padStart(2, '0');
+segundosElement.textContent = String(segundos).padStart(2, '0');
+
+reloj.addEventListener('click', () => {
+    reloj.classList.toggle('reloj-activo');
+    if (!corriendo) {
+        // Iniciar el cronómetro
+        corriendo = true;
+        intervalo = setInterval(() => {
+            segundos++;
+            if (segundos >= 60) {
+                minutos++;
+                segundos = 0;
             }
+            // Actualizar el DOM
+            minutosElement.textContent = String(minutos).padStart(2, '0');
+            segundosElement.textContent = String(segundos).padStart(2, '0');
+
+            totalMilisegundos = (minutos * 60 + segundos) * 1000;
+
+            // Formatear el tiempo a una cadena de 10 dígitos (si es necesario)
+            const tiempoFormateado = String(totalMilisegundos).padStart(10, '0');
+        }, 1000);
+    } else {
+        // Pausar el cronómetro
+        corriendo = false;
+        if (intervalo) {
+            clearInterval(intervalo);
+            intervalo = null; // Reiniciar intervalo a null después de pausar
         }
-    });
+    }
+});
 
   //jugadores
   const id_equipo_local = document.getElementById('id_equipo_local') as HTMLInputElement;
+
   let index = 0;
-  while (document.querySelectorAll("[id^='local_play_']").length > 0) {
+  while (document.getElementById(`local_play_${index}`)) {
     const local_play = document.getElementById(`local_play_${index}`)!;
     const local_nombre = document.getElementById(`local_nombre_${index}`) as HTMLInputElement;
     local_play.addEventListener('click', function() {
@@ -634,9 +657,9 @@ informe.addEventListener('click', () => {
 
     index++;
 }
-
+const id_equipo_visitante = document.getElementById('id_equipo_visitante') as HTMLInputElement;
 index = 0;
-while (document.querySelectorAll("[id^='visitante_play_']").length > 0) {
+while (document.getElementById(`visitante_play_${index}`)) {
     const visitante_play = document.getElementById(`visitante_play_${index}`)!;
     const visitante_nombre = document.getElementById(`visitante_nombre_${index}`) as HTMLInputElement;
     visitante_play.addEventListener('click', function() {
@@ -649,19 +672,43 @@ while (document.querySelectorAll("[id^='visitante_play_']").length > 0) {
         // Agregar la clase 'selected' al elemento actual
         visitante_play.classList.add('selected');
         nombre_jugador.value = visitante_nombre.value;
+        id_equipo.value = id_equipo_visitante.value;
+        paso_jugador = 1;
         
     });
 
     index++;
 }
 
+//Configuracion partido
+    const conf_partido = document.getElementById('conf_partido')!;
+    const panel_conf = document.getElementById('panel_conf')!;
+    const cerrar_conf = document.getElementById('cerrar_conf')!;
+    const guardar_conf = document.getElementById('guardar_conf')!;
+
+    conf_partido.addEventListener('click', function(){
+        panel_conf.classList.remove('ocultar');
+    })
+
+    cerrar_conf.addEventListener('click', function(){
+        panel_conf.classList.add('ocultar');
+    })
+    guardar_conf.addEventListener('click', function(){
+        const conf_puntos_form = document.getElementById('conf-puntos') as HTMLInputElement;
+        const conf_dif_puntos_form = document.getElementById('conf-dif-puntos') as HTMLInputElement;
+        const conf_puntos_extra_form = document.getElementById('conf-puntos-extra') as HTMLInputElement;
+        const conf_dif_puntos_extra_form = document.getElementById('conf-dif-puntos-extra') as HTMLInputElement;
+
+         conf_puntos = Number(conf_puntos_form.value);
+         conf_dif_puntos = Number(conf_dif_puntos_form.value);
+         conf_puntos_extra = Number(conf_puntos_extra_form.value);
+         conf_dif_puntos_extra = Number(conf_dif_puntos_extra_form.value);
+
+       
+        panel_conf.classList.add('ocultar');
+    })
 
 
-
-})
-</script>
-
-<script>
 function cargarHistorial(nombreArray: string) {
     const historialDiv = document.getElementById('historial'); // Asegúrate de que este ID coincida con tu contenedor de historial
 
@@ -671,9 +718,10 @@ function cargarHistorial(nombreArray: string) {
     // Verificar si hay jugadas existentes
     if (jugadasExistentes.length > 0) {
         // Extraer el tiempo de la última jugada
-        const tiempoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tiempo;
-
-        jugadasExistentes.forEach((jugada: { idEquipo: string; nombre: any; tipoPunto: any; tiempo: any; orden: any; }) => {
+         tiempoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tiempo;
+         LocPuntosUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].locPuntos;
+         VisPuntosUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].visPuntos;
+        jugadasExistentes.forEach((jugada: { idEquipo: string; nombre: any; tipoPunto: any; tiempo: any; orden: any; locPuntos: string; visPuntos: string; }) => {
             const nuevoDiv = document.createElement('div');
 
             // Asignar las clases y contenido según el equipo
@@ -696,9 +744,9 @@ function cargarHistorial(nombreArray: string) {
                         </div>
                     </div>
                     <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                        <p>0</p>
+                        <p>${jugada.locPuntos}</p>
                         <span>-</span>
-                        <p>0</p>
+                        <p>${jugada.visPuntos}</p>
                     </div>
                     <div class="w-2 h-full border-blanco border-[1px]"></div>
                 `;
@@ -706,9 +754,9 @@ function cargarHistorial(nombreArray: string) {
                 nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
                 nuevoDiv.innerHTML = `
                     <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                        <p>0</p>
+                        <p>${jugada.locPuntos}</p>
                         <span>-</span>
-                        <p>0</p>
+                        <p>${jugada.visPuntos}</p>
                     </div>
                     <div>
                         <div class="flex flex-row items-center">
@@ -740,15 +788,24 @@ function cargarHistorial(nombreArray: string) {
         if (tiempoUltimaJugadaDiv) {
             tiempoUltimaJugadaDiv.value = tiempoUltimaJugada;
         }
+        const marcador = document.getElementById('marcador')!;
+        const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+        const Marcador_LocStes = marcador.querySelector('[data-LocSets]')!;
+        const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+        const Marcador_VisStes = marcador.querySelector('[data-VisSets]')!;
+        Marcador_LocPuntos.textContent = LocPuntosUltimaJugada;
+        Marcador_VisPuntos.textContent = VisPuntosUltimaJugada;
+         LocPuntos = Number(LocPuntosUltimaJugada);
+        //  LocSets = 0;
+         VisPuntos = Number(VisPuntosUltimaJugada);
+        //  VisSets = 0;
     }
 }
 
-// Llamar a la función al cargar la página
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Script Historial Cargado')
-    cargarHistorial('partido_ejemplo'); // Reemplaza 'nombreDelArray' con el nombre real del array en localStorage
-});
+})
 </script>
+
+
 <style>
     .selected{
         background-color: #1666ff;
@@ -760,7 +817,9 @@ document.addEventListener('DOMContentLoaded', () => {
         color: #FFC700;
     }
 
-
+    .ocultar{
+        display: none;
+    }
     .scrollbar-fina::-webkit-scrollbar {
     width: 8px; /* Ancho de la barra de desplazamiento vertical */
     height: 8px; /* Altura de la barra de desplazamiento horizontal */
