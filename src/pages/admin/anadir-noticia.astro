@@ -1,12 +1,12 @@
 ---
-import LayoutStaff from "@layouts/LayoutStaff.astro";
+
 
 import { CATEGORY } from "@const/category-noticias";
 import LayoutAll from "@layouts/LayoutAll.astro";
 
 import { supabaseAdmin } from "../../lib/supabase";
 import SinPermisos from "@components/admin/SinPermisos.astro";
-import CrearNoticia from "@sections/administracion/CrearNoticia.astro";
+
 
 // Verifica si hay un usuario autenticado
 const user = Astro.locals.StaffUser;

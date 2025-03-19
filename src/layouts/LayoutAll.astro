@@ -1,11 +1,11 @@
 ---
 import Signin from '@components/admin/signin.astro';
-import Loading from '@components/Loading.astro';
+
 import AdminHeader from '@sections/administracion/AdminHeader.astro';
 import Footer from '@sections/Footer.astro';
 import { verificarSesion } from "src/lib/session";
 import { supabase, supabaseAdmin } from "src/lib/supabase";
-import CryptoJS from 'crypto-js';
+
 
 interface Props {
 	title: string;

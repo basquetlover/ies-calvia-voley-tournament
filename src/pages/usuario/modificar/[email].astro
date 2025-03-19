@@ -1,10 +1,7 @@
 ---
-import ControlAcces from "@components/ControlAcces.astro";
-import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
-import LayoutMenu from "@layouts/LayoutMenu.astro";
+
 import LayoutUsuario from "@layouts/LayoutUsuario.astro";
-import LayoutUsuarioMenu from "@layouts/LayoutUsuarioMenu.astro";
-import CrearEquipoUser from "@sections/usuarios/CrearEquipoUser.astro";
+
 import {CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
 // export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "" }));
 
@@ -14,8 +11,7 @@ import FormSend from "@components/FormSend.astro";
 
 
 import { supabaseAdmin } from "src/lib/supabase";
-import { verificarSesion } from "src/lib/session";
-import ControlAccesModificar from "@components/ControlAccesModificar.astro";
+
 import __AstroComponent_ from "src/pages/404.astro";
 import ControlAccesVoluntarios from "@components/ControlAccesVoluntarios.astro";
 const pathname = "/usuario/modificar";

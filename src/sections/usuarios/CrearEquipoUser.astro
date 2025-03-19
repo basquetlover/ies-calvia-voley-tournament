@@ -4,8 +4,6 @@ export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "
 export const jugadores_extra = Array.from({ length: 3 }, () => ({ nombre: "", curso: "" }));
 export const staff = Array.from({ length: 5 }, () => ({ nombre: "", curso: "" }));
 import { verificarSesion } from "src/lib/session";
-import { supabaseAdmin } from "../../lib/supabase";
-import CondicionesInscripcion from "src/pages/condiciones-inscripcion.astro";
 import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
 import FormSend from "@components/FormSend.astro";
 

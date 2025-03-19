@@ -3,8 +3,7 @@ import {CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const
 export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "" }));
 export const jugadores_extra = Array.from({ length: 3 }, () => ({ nombre: "", curso: "" }));
 import { verificarSesion } from "src/lib/session";
-import { supabaseAdmin } from "../../lib/supabase";
-import CondicionesInscripcion from "src/pages/condiciones-inscripcion.astro";
+
 import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
 import FormSend from "@components/FormSend.astro";
 
