@@ -157,15 +157,15 @@ let profesor_email = "";
 let profesor_id = "";
 
 let profesor = "";
-const profesor_foto = formData.get('entrenador_img')  as File;
-profesor_nombre = formData.get("entrenador_name")?.toString().trim() || "";
+const profesor_foto = formData.get('profesor_img')  as File;
+profesor_nombre = formData.get("profesor_name")?.toString().trim() || "";
 if(profesor_nombre !== "") {
- profesor_curso = formData.get(`entrenador_curso`)?.toString().trim() || "";
- profesor_1r_apellido = formData.get(`entrenador_1r_apellido`)?.toString().trim() || "";
- profesor_2n_apellido = formData.get(`entrenador_2n_apellido`)?.toString().trim() || "";
- profesor_genero = formData.get(`genero_entrenador`)?.toString().trim() || "";
- profesor_email = formData.get(`entrenador_email`)?.toString().trim() || "";
- profesor_id = formData.get(`entrenador_id`)?.toString().trim() || "";
+ profesor_curso = formData.get(`profesor_curso`)?.toString().trim() || "";
+ profesor_1r_apellido = formData.get(`profesor_1r_apellido`)?.toString().trim() || "";
+ profesor_2n_apellido = formData.get(`profesor_2n_apellido`)?.toString().trim() || "";
+ profesor_genero = formData.get(`genero_profesor`)?.toString().trim() || "";
+ profesor_email = formData.get(`profesor_email`)?.toString().trim() || "";
+ profesor_id = formData.get(`profesor_id`)?.toString().trim() || "";
  
 
  profesor = profesor_nombre + " " + profesor_1r_apellido;
