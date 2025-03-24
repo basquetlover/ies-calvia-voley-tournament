@@ -710,7 +710,7 @@ async function uploadFileCoach(file: File, email: string | undefined) {
           pertenece_equipo: number_id_equipo,
           
           ficha: 'entrenador',
-            imag: publicCoachUrl,
+            img: publicCoachUrl,
           },
       ])
       .eq('id', acompañante_id)
