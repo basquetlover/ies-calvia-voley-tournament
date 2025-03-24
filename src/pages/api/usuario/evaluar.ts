@@ -320,7 +320,7 @@ export const POST: APIRoute = async ({ request }) => {
                     observaciones: probl_entrenador,
                     validar_img: img_entrenador,
                   },
-              ]).eq('i1d', entrenador_id)
+              ]).eq('id', entrenador_id)
                .select();
         if (jugadorError) {
                 console.error("Error insertando jugador principal:", jugadorError.message);
