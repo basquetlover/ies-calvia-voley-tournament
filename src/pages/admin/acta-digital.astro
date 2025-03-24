@@ -149,11 +149,12 @@ const PUNTOS = [
                     <span data-segundos class="text-5xl font-semibold ">00</span>
                     
                 </div>
+
                 {/* Arbitros */}
-                <div class="w-52 h-20  flex flex-wrap gap-2 place-content-center items-center">
-                    <p class="text-blanco font-medium text-lg"><span class="font-bold">Arbitro:</span> Ricardo</p>
-                    <p class="text-blanco font-medium text-lg"><span class="font-bold">Oficial 1:</span> Marina</p>
-                    <p class="text-blanco font-medium text-lg"><span class="font-bold">Oficial 2:</span> Saray</p>
+                <div class="w-52 h-16 mb-1  flex flex-wrap gap-2 place-content-center items-center">
+                    <p class="text-blanco font-medium text-base"><span class="font-bold">Arbitro:</span> Ricardo</p>
+                    <p class="text-blanco font-medium text-base"><span class="font-bold">Oficial 1:</span> Marina</p>
+                    <p class="text-blanco font-medium text-base"><span class="font-bold">Oficial 2:</span> Saray</p>
                 </div>
 
                 {/* Tipos de puntos */}
@@ -225,7 +226,7 @@ const PUNTOS = [
                         </defs>
                         </svg>
                     </div>
-                    <a href="/admin" class="w-14 h-14">
+                    <a id="salir" href="/admin" class="w-14 h-14">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
                             <rect width="100" height="100" fill="#EB4335" rx="10"/>
                             <path fill="#6B0014" d="m47 53 2-1 1-2-1-2-2-1-2 1-1 2 1 2 2 1ZM36 75v-6l17-2V36l-1-2-1-1-15-2v-6l15 3a8 8 0 0 1 7 8v35l-22 4Zm-11 0v-6h6V31l1-4 4-2h28l4 2 1 4v38h6v6H25Zm11-6h28V31H36v38Z"/>
@@ -274,6 +275,27 @@ const PUNTOS = [
                     </div>
                 </div>
              </div>
+
+             {/* Barra de confirmaciones */}
+             <div class="absolute left-0 bottom-0 w-full h-5 bg-gray-400 flex flex-row place-content-end overflow-hidden gap-x-4">
+                <div class="h-full w-max flex flex-row items-center place-content-center gap-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-verde" viewBox="0 -960 960 960">
+                        <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                    </svg>
+                    <p class="text-sm text-verde">Envio Completado</p>
+                    <p class="text-sm text-verde">23:47:20</p>
+                </div>
+
+                <div class="h-full w-max flex flex-row items-center place-content-center gap-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-rojo" viewBox="0 -960 960 960">
+                        <path d="M480-280q17 0 29-11t11-29q0-17-11-28t-29-12q-17 0-28 12t-12 28q0 17 12 29t28 11Zm-40-160h80v-240h-80v240Zm40 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                    </svg>
+
+                    <p class="text-sm text-rojo">Error Enviando</p>
+                    <p class="text-sm text-rojo">23:50:46</p>
+                </div>
+
+             </div>
         </div>
 
         <div id="panel_conf" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
@@ -308,6 +330,23 @@ const PUNTOS = [
                 </div>
             </div>            
         </div>
+
+        <div id="panel_informes" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
+            <div class="bg-gris w-[700px] h-96 rounded-md p-2">
+                <h2 class="text-3xl text-amarillo font-semibold text-center">Informes</h2>
+                
+
+                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5">
+                    <div id="cerrar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
+                        <p>Cancelar</p>
+                    </div>
+
+                    <div id="guardar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
+                        <p>Guardar</p>
+                    </div>
+                </div>
+            </div>   
+        </div>
     </section>
     
     </>
@@ -330,6 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let tiempoUltimaJugada = "00:00";
   let LocPuntosUltimaJugada = "0";
   let VisPuntosUltimaJugada = "0";
+  let LocSetUltimaJugada = "0";
+  let VisSetUltimaJugada = "0";
 
  
   //Marcador Variables
@@ -347,109 +388,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let paso_tipo = 0;
   let paso_jugador = 0;
-  const informe = document.getElementById('informe')!;
-  function guardarJugada(nombreArray: string) {
-    const nombre_jugador = document.getElementById('nombre-jugador') as HTMLInputElement;
-    const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
-    const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
-    const tiempo = document.getElementById('tiempo') as HTMLInputElement;
-    const orden = document.getElementById('orden') as HTMLInputElement;
+  const salir = document.getElementById('salir')!;
 
-    // Crear un objeto con la información del jugador
-    const jugada = {
-        nombre: nombre_jugador.value,
-        idEquipo: id_equipo.value,
-        tipoPunto: tipo_punto.value,
-        tiempo: tiempo.value,
-        locPuntos: LocPuntos,
-        visPuntos: VisPuntos,
-        orden: orden.value
-    };
 
-    // Recuperar el array existente de jugadas del localStorage
-    const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
 
-    // Agregar la nueva jugada al array existente
-    jugadasExistentes.push(jugada);
 
-    // Guardar el array actualizado en localStorage
-    localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
-
-    // Crear el nuevo div para la jugada
-    const historialDiv = document.getElementById('historial')!; // Asegúrate de que este ID coincida con tu contenedor de historial
-    const nuevoDiv = document.createElement('div');
-
-    // Asignar las clases y contenido según el equipo
-    if (jugada.idEquipo === 'equipo-local') {
-        nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
-        nuevoDiv.innerHTML = `
-            <div>
-                <div class="flex flex-row items-center">
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
-                            <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
-                        </svg>
-                    </div>
-                    <p class="text-lg font-semibold">${jugada.nombre}</p>
-                </div>
-                <div class="flex flex-row items -center px-2 gap-x-1">
-                    <p>${jugada.tipoPunto}</p>
-                    <span>|</span>
-                    <span>${jugada.tiempo}</span>
-                </div>
-            </div>
-            <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                <p>${LocPuntos}</p>
-                <span>-</span>
-                <p>${VisPuntos}</p>
-            </div>
-            <div class="w-2 h-full border-blanco border-[1px]"></div>
-        `;
-    } else {
-        nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
-        nuevoDiv.innerHTML = `
-            <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                <p>${LocPuntos}</p>
-                <span>-</span>
-                <p>${VisPuntos}</p>
-            </div>
-            <div>
-                <div class="flex flex-row items-center">
-                    <p class="text-lg font-semibold">${jugada.nombre}</p>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
-                            <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
-                        </svg>
-                    </div>
-                </div>
-                <div class="flex flex-row items-center px-2 gap-x-1">
-                    <span>${jugada.tiempo}</span>
-                    <span>|</span>
-                    <p>${jugada.tipoPunto}</p>
-                </div>
-            </div>
-            <div class="w-2 h-full border-blanco border-[1px]"></div>
-        `;
-    }
-
-    // Insertar el nuevo div en el historial
-    historialDiv.appendChild(nuevoDiv);
-
-    // Limpiar los campos después de guardar
-    nombre_jugador.value = '';
-    id_equipo.value = '';
-    tipo_punto.value = '';
-    tiempo.value = '';
-    orden.value = '';
-}
-
-//limpiar storage
-function eliminarJugada(nombreArray: string) {
-    // Eliminar el array del localStorage
-    localStorage.removeItem(nombreArray);
-}
-
-informe.addEventListener('click', () => {
+salir.addEventListener('click', () => {
     eliminarJugada('partido_ejemplo');
 });
 
@@ -480,6 +424,7 @@ informe.addEventListener('click', () => {
             const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
             const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
 
+
             const marcador = document.getElementById('marcador')!;
             const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
             const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
@@ -502,7 +447,9 @@ informe.addEventListener('click', () => {
                 Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
             }
             if(LocSets + VisSets < 2){
-                if(LocPuntos >= conf_puntos){
+                console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
+                console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
+                if(LocPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
                     LocSets++;
                     Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
                     Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
@@ -510,7 +457,24 @@ informe.addEventListener('click', () => {
                     LocPuntos = 0;
                     VisPuntos = 0;
                 }
-                if(VisPuntos >= conf_puntos){
+                if(VisPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
+                    VisSets++;
+                    Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                    Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                    Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                    LocPuntos = 0;
+                    VisPuntos = 0;
+                }
+            } else {
+                if(LocPuntos === conf_puntos_extra){
+                    LocSets++;
+                    Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                    Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                    Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                    LocPuntos = 0;
+                    VisPuntos = 0;
+                }
+                if(VisPuntos === conf_puntos_extra){
                     VisSets++;
                     Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
                     Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
@@ -634,11 +598,11 @@ reloj.addEventListener('click', () => {
     }
 });
 
-  //jugadores
-  const id_equipo_local = document.getElementById('id_equipo_local') as HTMLInputElement;
+//jugadores Local
+const id_equipo_local = document.getElementById('id_equipo_local') as HTMLInputElement;
 
-  let index = 0;
-  while (document.getElementById(`local_play_${index}`)) {
+let index = 0;
+while (document.getElementById(`local_play_${index}`)) {
     const local_play = document.getElementById(`local_play_${index}`)!;
     const local_nombre = document.getElementById(`local_nombre_${index}`) as HTMLInputElement;
     local_play.addEventListener('click', function() {
@@ -657,6 +621,8 @@ reloj.addEventListener('click', () => {
 
     index++;
 }
+
+//Jugadores Visitante
 const id_equipo_visitante = document.getElementById('id_equipo_visitante') as HTMLInputElement;
 index = 0;
 while (document.getElementById(`visitante_play_${index}`)) {
@@ -703,12 +669,43 @@ while (document.getElementById(`visitante_play_${index}`)) {
          conf_dif_puntos = Number(conf_dif_puntos_form.value);
          conf_puntos_extra = Number(conf_puntos_extra_form.value);
          conf_dif_puntos_extra = Number(conf_dif_puntos_extra_form.value);
-
-       
+         
+         guardarConf('conf_partido_ejemplo');
         panel_conf.classList.add('ocultar');
     })
 
+//Configuracion partido
+    const informe = document.getElementById('informe')!;
+    const panel_informes = document.getElementById('panel_informes')!;
+    const cerrar_informes = document.getElementById('cerrar_informes')!;
 
+    informe.addEventListener('click', function(){
+        panel_informes.classList.remove('ocultar');
+    })
+    cerrar_informes.addEventListener('click', function(){
+        panel_informes.classList.add('ocultar');
+    })
+
+
+    
+   // Función para manejar el clic en los divs
+   function handleDivClick(event: MouseEvent) {
+        const clickedDivId = (event.currentTarget as HTMLElement).id; // Obtener el id del div clicado
+        const number = clickedDivId.split('_')[1]; // Extraer el número después de 'jugada_'
+        console.log(`Div clicado: ${clickedDivId}, Número extraído: ${number}`);
+    }
+
+    // Seleccionar todos los divs que tienen un id que comienza con 'jugada_'
+    const divs = document.querySelectorAll("[id^='jugada_']");
+
+    // Agregar el evento de clic a cada div
+    divs.forEach(div => {
+        div.addEventListener('click', handleDivClick as EventListener); // Asegúrate de que el tipo sea correcto
+    });
+ 
+
+    
+//Recuperar Historial Partido de Local Storage
 function cargarHistorial(nombreArray: string) {
     const historialDiv = document.getElementById('historial'); // Asegúrate de que este ID coincida con tu contenedor de historial
 
@@ -721,61 +718,76 @@ function cargarHistorial(nombreArray: string) {
          tiempoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tiempo;
          LocPuntosUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].locPuntos;
          VisPuntosUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].visPuntos;
-        jugadasExistentes.forEach((jugada: { idEquipo: string; nombre: any; tipoPunto: any; tiempo: any; orden: any; locPuntos: string; visPuntos: string; }) => {
+         LocSetUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].locSet;
+         VisSetUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].visSet;
+        jugadasExistentes.forEach((jugada: { idEquipo: string; nombre: any; tipoPunto: any; tiempo: any; orden: any; locPuntos: string; visPuntos: string; locSet: number; visSet: number; }) => {
             const nuevoDiv = document.createElement('div');
 
-            // Asignar las clases y contenido según el equipo
-            if (jugada.idEquipo === 'equipo-local') {
-                nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
-                nuevoDiv.innerHTML = `
-                    <div>
-                        <div class="flex flex-row items-center">
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
-                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
-                                </svg>
-                            </div>
-                            <p class="text-lg font-semibold">${jugada.nombre}</p>
+            if(Number(jugada.locPuntos) === 0 && Number(jugada.visPuntos) === 0){
+        nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_auto] border-blanco border-y-[1px] border-l-[1px] items-center";
+        nuevoDiv.id = `jugada_${jugada.orden}`;
+        nuevoDiv.innerHTML = `
+            <div class="flex items-center justify-center h-full">
+                <p class="text-xl font-semibold">Fin Set ${jugada.locSet + jugada.visSet}</p>
+            </div>
+            <div class="w-2 h-full border-blanco border-[1px]"></div>
+        `;
+    }else{
+        // Asignar las clases y contenido según el equipo
+        if (jugada.idEquipo === 'equipo-local') {
+            nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+            nuevoDiv.id = `jugada_${jugada.orden}`;
+            nuevoDiv.innerHTML = `
+                <div>
+                    <div class="flex flex-row items-center">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                            </svg>
                         </div>
-                        <div class="flex flex-row items-center px-2 gap-x-1">
-                            <p>${jugada.tipoPunto}</p>
-                            <span>|</span>
-                            <span>${jugada.tiempo}</span>
+                        <p class="text-lg font-semibold">${jugada.nombre}</p>
+                    </div>
+                    <div class="flex flex-row items -center px-2 gap-x-1">
+                        <p>${jugada.tipoPunto}</p>
+                        <span>|</span>
+                        <span>${jugada.tiempo}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                    <p>${jugada.locPuntos}</p>
+                    <span>-</span>
+                    <p>${jugada.visPuntos}</p>
+                </div>
+                <div class="w-2 h-full border-blanco border-[1px]"></div>
+            `;
+        } else {
+            nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+            nuevoDiv.id = `jugada_${jugada.orden}`;
+            nuevoDiv.innerHTML = `
+                <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                    <p>${jugada.locPuntos}</p>
+                    <span>-</span>
+                    <p>${jugada.visPuntos}</p>
+                </div>
+                <div>
+                    <div class="flex flex-row items-center">
+                        <p class="text-lg font-semibold">${jugada.nombre}</p>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                            </svg>
                         </div>
                     </div>
-                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                        <p>${jugada.locPuntos}</p>
-                        <span>-</span>
-                        <p>${jugada.visPuntos}</p>
+                    <div class="flex flex-row items-center px-2 gap-x-1">
+                        <span>${jugada.tiempo}</span>
+                        <span>|</span>
+                        <p>${jugada.tipoPunto}</p>
                     </div>
-                    <div class="w-2 h-full border-blanco border-[1px]"></div>
-                `;
-            } else {
-                nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
-                nuevoDiv.innerHTML = `
-                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                        <p>${jugada.locPuntos}</p>
-                        <span>-</span>
-                        <p>${jugada.visPuntos}</p>
-                    </div>
-                    <div>
-                        <div class="flex flex-row items-center">
-                            <p class="text-lg font-semibold">${jugada.nombre}</p>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
-                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="flex flex-row items-center px-2 gap-x-1">
-                            <p>${jugada.tipoPunto}</p>
-                            <span>|</span>
-                            <span>${jugada.tiempo}</span>
-                        </div>
-                    </div>
-                    <div class="w-2 h-full border-blanco border-[1px]"></div>
-                `;
-            }
+                </div>
+                <div class="w-2 h-full border-blanco border-[1px]"></div>
+            `;
+        }
+    }
 
             // Agregar el nuevo div al contenedor de historial
             if (historialDiv) {
@@ -790,17 +802,171 @@ function cargarHistorial(nombreArray: string) {
         }
         const marcador = document.getElementById('marcador')!;
         const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
-        const Marcador_LocStes = marcador.querySelector('[data-LocSets]')!;
+        const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
         const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
-        const Marcador_VisStes = marcador.querySelector('[data-VisSets]')!;
+        const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
         Marcador_LocPuntos.textContent = LocPuntosUltimaJugada;
         Marcador_VisPuntos.textContent = VisPuntosUltimaJugada;
+        Marcador_LocSets.textContent = LocSetUltimaJugada;
+        Marcador_VisSets.textContent = VisSetUltimaJugada;
          LocPuntos = Number(LocPuntosUltimaJugada);
-        //  LocSets = 0;
+         LocSets = Number(LocSetUltimaJugada);
          VisPuntos = Number(VisPuntosUltimaJugada);
-        //  VisSets = 0;
+         VisSets = Number(VisSetUltimaJugada);
     }
 }
+
+//Guardar Jugada Local Storage
+function guardarJugada(nombreArray: string) {
+    const nombre_jugador = document.getElementById('nombre-jugador') as HTMLInputElement;
+    const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+    const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+    const tiempo = document.getElementById('tiempo') as HTMLInputElement;
+    const orden = document.getElementById('orden') as HTMLInputElement;
+
+    // Crear un objeto con la información del jugador
+    const jugada = {
+        nombre: nombre_jugador.value,
+        idEquipo: id_equipo.value,
+        tipoPunto: tipo_punto.value,
+        tiempo: tiempo.value,
+        locPuntos: LocPuntos,
+        visPuntos: VisPuntos,
+        locSet: LocSets,
+        visSet: VisSets,
+        orden: orden.value
+    };
+
+    // Recuperar el array existente de jugadas del localStorage
+    const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+
+    // Agregar la nueva jugada al array existente
+    jugadasExistentes.push(jugada);
+
+    // Guardar el array actualizado en localStorage
+    localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+
+    // Crear el nuevo div para la jugada
+    const historialDiv = document.getElementById('historial')!; // Asegúrate de que este ID coincida con tu contenedor de historial
+    const nuevoDiv = document.createElement('div');
+    if(LocPuntos === 0 && VisPuntos === 0){
+        nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_auto] border-blanco border-y-[1px] border-l-[1px] items-center";
+        nuevoDiv.id = `jugada_${jugada.orden}`;
+        nuevoDiv.innerHTML = `
+            <div class="flex items-center justify-center h-full">
+                <p class="text-xl font-semibold">Fin Set ${LocSets + VisSets}</p>
+            </div>
+            <div class="w-2 h-full border-blanco border-[1px]"></div>
+        `;
+    }else{
+        // Asignar las clases y contenido según el equipo
+        if (jugada.idEquipo === 'equipo-local') {
+            nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+            nuevoDiv.id = `jugada_${jugada.orden}`;
+            nuevoDiv.innerHTML = `
+                <div>
+                    <div class="flex flex-row items-center">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                            </svg>
+                        </div>
+                        <p class="text-lg font-semibold">${jugada.nombre}</p>
+                    </div>
+                    <div class="flex flex-row items -center px-2 gap-x-1">
+                        <p>${jugada.tipoPunto}</p>
+                        <span>|</span>
+                        <span>${jugada.tiempo}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                    <p>${LocPuntos}</p>
+                    <span>-</span>
+                    <p>${VisPuntos}</p>
+                </div>
+                <div class="w-2 h-full border-blanco border-[1px]"></div>
+            `;
+        } else {
+            nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+            nuevoDiv.id = `jugada_${jugada.orden}`;
+            nuevoDiv.innerHTML = `
+                <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                    <p>${LocPuntos}</p>
+                    <span>-</span>
+                    <p>${VisPuntos}</p>
+                </div>
+                <div>
+                    <div class="flex flex-row items-center">
+                        <p class="text-lg font-semibold">${jugada.nombre}</p>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center px-2 gap-x-1">
+                        <span>${jugada.tiempo}</span>
+                        <span>|</span>
+                        <p>${jugada.tipoPunto}</p>
+                    </div>
+                </div>
+                <div class="w-2 h-full border-blanco border-[1px]"></div>
+            `;
+        }
+    }
+
+    // Insertar el nuevo div en el historial
+    historialDiv.appendChild(nuevoDiv);
+
+    // Limpiar los campos después de guardar
+    nombre_jugador.value = '';
+    id_equipo.value = '';
+    tipo_punto.value = '';
+    tiempo.value = '';
+    orden.value = '';
+}
+
+//Guardar Configuracion Local Storage
+function guardarConf(nombreArray: string) {
+    const conf_puntos_form = document.getElementById('conf-puntos') as HTMLInputElement;
+    const conf_dif_puntos_form = document.getElementById('conf-dif-puntos') as HTMLInputElement;
+    const conf_puntos_extra_form = document.getElementById('conf-puntos-extra') as HTMLInputElement;
+    const conf_dif_puntos_extra_form = document.getElementById('conf-dif-puntos-extra') as HTMLInputElement;
+
+    // Crear un objeto con la información del jugador
+    const Configuracion = {
+        conf_puntos: Number(conf_puntos_form.value),
+        conf_dif_puntos: Number(conf_dif_puntos_form.value),
+        conf_puntos_extra: Number(conf_puntos_extra_form.value),
+        conf_dif_puntos_extra: Number(conf_dif_puntos_extra_form.value),
+    };
+
+    // Recuperar el array existente de jugadas del localStorage
+    const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+
+    // Buscar si ya existe una configuración para actualizar
+    const index = jugadasExistentes.findIndex((item: any) => item.conf_puntos === Configuracion.conf_puntos);
+
+    if (index !== -1) {
+        // Si existe, actualiza los valores
+        jugadasExistentes[index] = Configuracion;
+    } else {
+        // Si no existe, puedes optar por añadirlo o no hacer nada
+        jugadasExistentes.push(Configuracion);
+    }
+
+    // Guardar el array actualizado en localStorage
+    localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+}
+
+//limpiar storage
+function eliminarJugada(nombreArray: string) {
+    // Eliminar el array del localStorage
+    localStorage.removeItem(nombreArray);
+}
+
+
+
 
 })
 </script>
