@@ -722,12 +722,95 @@ while (document.getElementById(`visitante_play_${index}`)) {
     })
 
   //Modificar jugada
-
-  
-
-
-    let pulsando: number | null = null;
+  let pulsando: number | null = null;
     let isLongPress = false; // Variable para indicar si se ha mantenido pulsado
+
+    const existingDivs = new Set<HTMLDivElement>();
+
+// Función para agregar eventos a un div
+function addEventListenersToDiv(div: HTMLDivElement) {
+    div.addEventListener('click', (event: MouseEvent) => {
+        if (!isLongPress) {
+            MarcarJugada(event);
+        }
+        isLongPress = false;
+    });
+
+    div.addEventListener('mousedown', () => {
+        isLongPress = false;
+        pulsando = window.setTimeout(() => {
+            isLongPress = true;
+            handleDivClick(div.id);
+        }, 500);
+    });
+
+    div.addEventListener('mouseup', () => {
+        if (pulsando !== null) {
+            clearTimeout(pulsando);
+            pulsando = null;
+        }
+    });
+
+    div.addEventListener('mouseleave', () => {
+        if (pulsando !== null) {
+            clearTimeout(pulsando);
+            pulsando = null;
+        }
+    });
+}
+
+setInterval(() => {
+    const divs = document.querySelectorAll("[id^='jugada_']");
+    const divArray: HTMLDivElement[] = Array.from(divs) as HTMLDivElement[];
+
+    divArray.forEach((div: HTMLDivElement) => {
+        // Si el div no está en el conjunto, agregar eventos
+        if (!existingDivs.has(div)) {
+            existingDivs.add(div); // Agregar el div al conjunto
+            addEventListenersToDiv(div); // Agregar los eventos
+        }
+    });
+}, 1000);
+
+    // Seleccionar todos los divs que tienen un id que comienza con 'jugada_'
+//     setInterval(() => {
+//         const divs = document.querySelectorAll("[id^='jugada_']");
+//         const divArray: HTMLDivElement[] = Array.from(divs) as HTMLDivElement[];
+        
+//     }, 1000);
+    
+//     // Agregar el evento de clic a cada div
+//     divArray.forEach((div: HTMLDivElement) => {
+
+// div.addEventListener('click', (event: MouseEvent) => { // Especificar el tipo de evento
+//     if (!isLongPress) { // Solo ejecutar si no es un "mantener pulsado"
+//         MarcarJugada(event); // Llama a la función de clic
+//     }
+//     isLongPress = false; // Reiniciar la variable después del clic
+// });
+
+// div.addEventListener('mousedown', () => {
+//     isLongPress = false; // Reiniciar la variable al iniciar el "mousedown"
+//     pulsando = window.setTimeout(() => {
+//         isLongPress = true; // Marcar que se ha mantenido pulsado
+//         handleDivClick(div.id); // Llama a la función después de mantener pulsado
+//     }, 500); // Cambia 500 por el tiempo que desees en milisegundos
+// });
+
+// div.addEventListener('mouseup', () => {
+//     if (pulsando !== null) {
+//         clearTimeout(pulsando); // Limpiar el temporizador si se suelta el botón
+//         pulsando = null; // Reiniciar la variable
+//     }
+// });
+
+// div.addEventListener('mouseleave', () => {
+//     if (pulsando !== null) {
+//         clearTimeout(pulsando); // Limpiar el temporizador si el ratón sale del div
+//         pulsando = null; // Reiniciar la variable
+//     }
+// });
+// });
 
     // Función para manejar el clic en los divs
     function handleDivClick(clickedDivId: string) {
@@ -760,43 +843,6 @@ while (document.getElementById(`visitante_play_${index}`)) {
         }
   })
     }
-
-    // Seleccionar todos los divs que tienen un id que comienza con 'jugada_'
-    const divs = document.querySelectorAll("[id^='jugada_']");
-    const divArray: HTMLDivElement[] = Array.from(divs) as HTMLDivElement[];
-    // Agregar el evento de clic a cada div
-    divArray.forEach((div: HTMLDivElement) => {
-
-        div.addEventListener('click', (event: MouseEvent) => { // Especificar el tipo de evento
-            if (!isLongPress) { // Solo ejecutar si no es un "mantener pulsado"
-                MarcarJugada(event); // Llama a la función de clic
-            }
-            isLongPress = false; // Reiniciar la variable después del clic
-        });
-
-        div.addEventListener('mousedown', () => {
-            isLongPress = false; // Reiniciar la variable al iniciar el "mousedown"
-            pulsando = window.setTimeout(() => {
-                isLongPress = true; // Marcar que se ha mantenido pulsado
-                handleDivClick(div.id); // Llama a la función después de mantener pulsado
-            }, 500); // Cambia 500 por el tiempo que desees en milisegundos
-        });
-
-        div.addEventListener('mouseup', () => {
-            if (pulsando !== null) {
-                clearTimeout(pulsando); // Limpiar el temporizador si se suelta el botón
-                pulsando = null; // Reiniciar la variable
-            }
-        });
-
-        div.addEventListener('mouseleave', () => {
-            if (pulsando !== null) {
-                clearTimeout(pulsando); // Limpiar el temporizador si el ratón sale del div
-                pulsando = null; // Reiniciar la variable
-            }
-        });
-    });
-
     function MarcarJugada(event: MouseEvent) {
         const clickedDivId = (event.currentTarget as HTMLElement).id; // Obtener el id del div clicado
         const number = clickedDivId.split('_')[1]; // Extraer el número después de 'jugada_'
