@@ -96,7 +96,7 @@ const PUNTOS = [
                 <div class="w-full mt-4 h-auto flex flex-wrap gap-2 items-center place-content-center">
                     {
                         jugadoresLocal.map((jugador, index) => (
-                            <div id={`local_play_${index}`} class="w-[105px] h-[105px] rounded-md bg-gris-claro flex flex-col items-center place-content-center">
+                            <div id={`local_play_${index}`} class="w-[105px] h-[105px] rounded-md bg-gris-claro flex flex-col items-center place-content-center cursor-pointer">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
                                         <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
@@ -121,11 +121,11 @@ const PUNTOS = [
              <div class="w-full h-full bg-gris-claro flex flex-col items-center pt-4 gap-y-2">
                 {/* Datos generales */}
                 <div class="w-full flex flex-wrap gap-1 ocultar">
-                <input class="w-24" id="nombre-jugador" type="text" disabled/>
-                <input class="w-24" id="id-equipo" type="text" disabled/>
-                <input class="w-24" id="tipo-punto" type="text" disabled/>
-                <input class="w-24" id="tiempo" type="text" disabled/>
-                <input class="w-24" id="orden" type="text" disabled/>
+                    <input class="w-24" id="nombre-jugador" type="text" disabled/>
+                    <input class="w-24" id="id-equipo" type="text" disabled/>
+                    <input class="w-24" id="tipo-punto" type="text" disabled/>
+                    <input class="w-24" id="tiempo" type="text" disabled/>
+                    <input class="w-24" id="orden" type="text" disabled/>
                 </div>
 
                 {/* Marcador */}
@@ -193,7 +193,7 @@ const PUNTOS = [
                 </div>
 
                 {/* Historial */}
-                <div class="w-64 h-48 rounded-md bg-gris overflow-y-scroll scrollbar-fina flex flex-col gap-y-2 border-2 border-gris">
+                <div class="w-64 h-48 rounded-md bg-gris overflow-y-scroll no-scrollbar flex flex-col gap-y-2 border-2 border-gris">
                     <div id="historial" class="w-full h-auto rounded-md bg-gris flex flex-col-reverse gap-y-2 border-2 border-gris">
                         
                         
@@ -213,7 +213,7 @@ const PUNTOS = [
                             <path d="m370-80-16-128q-13-5-24-12t-23-15l-119 50L78-375l103-78-1-13v-27l1-14-103-78 110-190 119 50 23-15 24-12 16-128h220l16 128q13 5 25 12t22 15l119-50 110 190-103 78 1 14v27l-2 13 103 78-110 190-118-50-23 15-24 12-16 128H370Zm70-80h79l14-106q31-8 58-23t48-38l99 41 39-68-86-65q5-14 7-29t2-32q0-16-2-31t-7-30l86-65-39-68-99 42q-22-23-48-38t-58-24l-13-106h-79l-14 106q-31 8-57 24t-49 37l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 49 39t57 23l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99 41t-41 99q0 58 41 99t99 41Zm-2-140Z"/>
                         </svg>
                     </div>
-                    <div id="informe" class="w-14 h-14 bg-gris rounded-md">
+                    <div id="informe" class="w-14 h-14 bg-gris rounded-md cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
                         
                         <g clip-path="url(#a)">
@@ -255,7 +255,7 @@ const PUNTOS = [
                 <div class="w-full mt-4 h-auto flex flex-wrap gap-2 items-center place-content-center">
                     {
                         jugadoresVisitante.map((jugador, index) => (
-                            <div id={`visitante_play_${index}`} class="w-[105px] h-[105px] rounded-md bg-gris-claro flex flex-col items-center place-content-center">
+                            <div id={`visitante_play_${index}`} class="w-[105px] h-[105px] rounded-md bg-gris-claro flex flex-col items-center place-content-center cursor-pointer">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
                                         <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
@@ -277,8 +277,8 @@ const PUNTOS = [
              </div>
 
              {/* Barra de confirmaciones */}
-             <div class="absolute left-0 bottom-0 w-full h-5 bg-gray-400 flex flex-row place-content-end overflow-hidden gap-x-4">
-                <div class="h-full w-max flex flex-row items-center place-content-center gap-x-1">
+             <div id="confirmaciones" class="absolute left-0 bottom-0 w-full h-5 bg-gray-400 flex flex-row place-content-end overflow-hidden gap-x-4">
+                {/* <div class="h-full w-52 flex flex-row items-center place-content-center gap-x-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-verde" viewBox="0 -960 960 960">
                         <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
                     </svg>
@@ -286,14 +286,14 @@ const PUNTOS = [
                     <p class="text-sm text-verde">23:47:20</p>
                 </div>
 
-                <div class="h-full w-max flex flex-row items-center place-content-center gap-x-1">
+                <div class="h-full w-52 flex flex-row items-center place-content-center gap-x-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-rojo" viewBox="0 -960 960 960">
                         <path d="M480-280q17 0 29-11t11-29q0-17-11-28t-29-12q-17 0-28 12t-12 28q0 17 12 29t28 11Zm-40-160h80v-240h-80v240Zm40 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
                     </svg>
 
                     <p class="text-sm text-rojo">Error Enviando</p>
                     <p class="text-sm text-rojo">23:50:46</p>
-                </div>
+                </div> */}
 
              </div>
         </div>
@@ -331,10 +331,21 @@ const PUNTOS = [
             </div>            
         </div>
 
-        <div id="panel_informes" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
+        <div id="panel_informes" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar ">
             <div class="bg-gris w-[700px] h-96 rounded-md p-2">
                 <h2 class="text-3xl text-amarillo font-semibold text-center">Informes</h2>
-                
+                <div id="lista_informes" class="w-[90%] min-h-20 h-auto overflow-y-auto no-scrollbar max-h-40 border-gris-claro border-2 mx-auto">
+
+                </div>
+
+                <div class="w-full flex flex-row items-center place-content-around mt-5">
+                    <div id="nuevo_informe" class="w-max h-max px-3 py-2 bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                        Informe Generico
+                    </div>
+                    <div class="w-max h-max px-3 py-2 bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                        Suspender Partido
+                    </div>
+                </div>
 
                 <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5">
                     <div id="cerrar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
@@ -345,6 +356,24 @@ const PUNTOS = [
                         <p>Guardar</p>
                     </div>
                 </div>
+            </div>   
+        </div>
+
+        <div id="modificar_jugada" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ">
+            <div id="modificar_cerrar" class="absolute top-0 left-0 h-full w-full -z-0"></div>
+            <div class="bg-gris w-max h-auto rounded-md z-10 ">
+                <input id="modificar_reference" type="text" disabled value="" />
+
+                <div class="w-96 flex flex-col items-center place-content-around gap-y-1">
+                    <div id="nuevo_informe" class="w-full h-16 flex items-center place-content-center bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                        Modificar Jugada
+                    </div>
+                    <div class="w-full h-16 flex items-center place-content-center bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                        Eliminar Jugada
+                    </div>
+                </div>
+
+                
             </div>   
         </div>
     </section>
@@ -384,11 +413,16 @@ document.addEventListener('DOMContentLoaded', () => {
   let conf_puntos_extra = 7;
   let conf_dif_puntos_extra = 0;
 
-  cargarHistorial('partido_ejemplo');
+
 
   let paso_tipo = 0;
   let paso_jugador = 0;
   const salir = document.getElementById('salir')!;
+
+  let ordenes: string[] = [];
+
+  //Recuperar Partido del Local Storage
+  cargarHistorial('partido_ejemplo');
 
 
 
@@ -409,7 +443,8 @@ salir.addEventListener('click', () => {
         selectedtipos.forEach(element => {
             element.classList.remove('selected-tipo');
         });
-        orden.value = totalMilisegundos.toString();
+        //orden.value = totalMilisegundos.toString();
+        asignarOrden()
         tiempo.value = String(minutos).padStart(2, '0') + ":" + String(segundos).padStart(2, '0');
         // Reiniciar pasos si es necesario
         paso_tipo = 0; // Reiniciar pasos si es necesario
@@ -686,13 +721,26 @@ while (document.getElementById(`visitante_play_${index}`)) {
         panel_informes.classList.add('ocultar');
     })
 
+  //Modificar jugada
+  const modificar_jugada = document.getElementById("modificar_jugada")!;
+  const modificar_cerrar = document.getElementById("modificar_cerrar")!;
+  
+  modificar_cerrar.addEventListener('click', function() {
+    modificar_jugada.classList.add("ocultar");
+  })
 
-    
-   // Función para manejar el clic en los divs
-   function handleDivClick(event: MouseEvent) {
-        const clickedDivId = (event.currentTarget as HTMLElement).id; // Obtener el id del div clicado
+
+    let pulsando: number | null = null;
+    let isLongPress = false; // Variable para indicar si se ha mantenido pulsado
+
+    // Función para manejar el clic en los divs
+    function handleDivClick(clickedDivId: string) {
         const number = clickedDivId.split('_')[1]; // Extraer el número después de 'jugada_'
-        console.log(`Div clicado: ${clickedDivId}, Número extraído: ${number}`);
+        console.log(`Div mantenido: ${clickedDivId}, Número extraído: ${number}`);
+        const modificar_jugada = document.getElementById("modificar_jugada")!;
+        const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
+        modificar_jugada.classList.remove("ocultar");
+        modificar_reference.value = number;
     }
 
     // Seleccionar todos los divs que tienen un id que comienza con 'jugada_'
@@ -700,10 +748,78 @@ while (document.getElementById(`visitante_play_${index}`)) {
 
     // Agregar el evento de clic a cada div
     divs.forEach(div => {
-        div.addEventListener('click', handleDivClick as EventListener); // Asegúrate de que el tipo sea correcto
-    });
- 
+        div.addEventListener('click', (event: MouseEvent) => { // Especificar el tipo de evento
+            if (!isLongPress) { // Solo ejecutar si no es un "mantener pulsado"
+                MarcarJugada(event); // Llama a la función de clic
+            }
+            isLongPress = false; // Reiniciar la variable después del clic
+        });
 
+        div.addEventListener('mousedown', () => {
+            isLongPress = false; // Reiniciar la variable al iniciar el "mousedown"
+            pulsando = window.setTimeout(() => {
+                isLongPress = true; // Marcar que se ha mantenido pulsado
+                handleDivClick(div.id); // Llama a la función después de mantener pulsado
+            }, 500); // Cambia 500 por el tiempo que desees en milisegundos
+        });
+
+        div.addEventListener('mouseup', () => {
+            if (pulsando !== null) {
+                clearTimeout(pulsando); // Limpiar el temporizador si se suelta el botón
+                pulsando = null; // Reiniciar la variable
+            }
+        });
+
+        div.addEventListener('mouseleave', () => {
+            if (pulsando !== null) {
+                clearTimeout(pulsando); // Limpiar el temporizador si el ratón sale del div
+                pulsando = null; // Reiniciar la variable
+            }
+        });
+    });
+
+    function MarcarJugada(event: MouseEvent) {
+        const clickedDivId = (event.currentTarget as HTMLElement).id; // Obtener el id del div clicado
+        const number = clickedDivId.split('_')[1]; // Extraer el número después de 'jugada_'
+        console.log(`Div clicado: ${clickedDivId}, Número extraído: ${number}`);
+        
+        // Crear el ID del div que se va a marcar
+        const id_marcar = `marcar_jugada_${number}`; // Asegúrate de que este ID existe en el DOM
+        const divToMark = document.getElementById(id_marcar); // Seleccionar el div por su ID
+
+        if (divToMark) { // Verificar que el div existe
+            divToMark.classList.toggle("bg-amarillo"); // Añadir o quitar la clase
+        } else {
+            console.error(`No se encontró el div con ID: ${id_marcar}`);
+        }
+    }
+ 
+    function asignarOrden() {
+        
+        let ordenBase = parseInt(String(totalMilisegundos), 10); // Convertir a número entero
+
+        // Asegurarse de que el orden base es un número válido
+        if (isNaN(ordenBase) || ordenBase < 0) {
+            alert("Por favor, introduce un número de milisegundos válido.");
+            return;
+        }
+
+        // Formatear el número de orden a 4 dígitos
+        let ordenFormateado = ordenBase.toString().padStart(4, '0');
+
+        // Verificar si el orden ya existe y sumar 1 si es necesario
+        while (ordenes.includes(ordenFormateado)) {
+            ordenBase++;
+            ordenFormateado = ordenBase.toString().padStart(4, '0');
+        }
+
+        // Agregar el nuevo número de orden al array
+        ordenes.push(ordenFormateado);
+
+        // Asignar el número de orden al input correspondiente
+        orden.value = ordenFormateado;
+        console.log(`Número de orden asignado: ${ordenFormateado}`);
+    }
     
 //Recuperar Historial Partido de Local Storage
 function cargarHistorial(nombreArray: string) {
@@ -711,9 +827,10 @@ function cargarHistorial(nombreArray: string) {
 
     // Recuperar el array de jugadas del localStorage
     const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
-
+    //ordenes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
     // Verificar si hay jugadas existentes
     if (jugadasExistentes.length > 0) {
+        ordenes = jugadasExistentes.map((jugada: { orden: string; }) => jugada.orden);
         // Extraer el tiempo de la última jugada
          tiempoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tiempo;
          LocPuntosUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].locPuntos;
@@ -730,7 +847,7 @@ function cargarHistorial(nombreArray: string) {
             <div class="flex items-center justify-center h-full">
                 <p class="text-xl font-semibold">Fin Set ${jugada.locSet + jugada.visSet}</p>
             </div>
-            <div class="w-2 h-full border-blanco border-[1px]"></div>
+            <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
         `;
     }else{
         // Asignar las clases y contenido según el equipo
@@ -758,7 +875,7 @@ function cargarHistorial(nombreArray: string) {
                     <span>-</span>
                     <p>${jugada.visPuntos}</p>
                 </div>
-                <div class="w-2 h-full border-blanco border-[1px]"></div>
+                <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
             `;
         } else {
             nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
@@ -784,7 +901,7 @@ function cargarHistorial(nombreArray: string) {
                         <p>${jugada.tipoPunto}</p>
                     </div>
                 </div>
-                <div class="w-2 h-full border-blanco border-[1px]"></div>
+                <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
             `;
         }
     }
@@ -813,7 +930,11 @@ function cargarHistorial(nombreArray: string) {
          LocSets = Number(LocSetUltimaJugada);
          VisPuntos = Number(VisPuntosUltimaJugada);
          VisSets = Number(VisSetUltimaJugada);
+
+
     }
+
+    
 }
 
 //Guardar Jugada Local Storage
@@ -848,7 +969,10 @@ function guardarJugada(nombreArray: string) {
 
     // Crear el nuevo div para la jugada
     const historialDiv = document.getElementById('historial')!; // Asegúrate de que este ID coincida con tu contenedor de historial
+    const confirmaciones = document.getElementById('confirmaciones')!; // Asegúrate de que este ID coincida con tu contenedor de historial
     const nuevoDiv = document.createElement('div');
+    const CofirmacionDiv = document.createElement('div');
+    const hora_actual = obtenerHoraActual();
     if(LocPuntos === 0 && VisPuntos === 0){
         nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_auto] border-blanco border-y-[1px] border-l-[1px] items-center";
         nuevoDiv.id = `jugada_${jugada.orden}`;
@@ -856,7 +980,7 @@ function guardarJugada(nombreArray: string) {
             <div class="flex items-center justify-center h-full">
                 <p class="text-xl font-semibold">Fin Set ${LocSets + VisSets}</p>
             </div>
-            <div class="w-2 h-full border-blanco border-[1px]"></div>
+            <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
         `;
     }else{
         // Asignar las clases y contenido según el equipo
@@ -884,7 +1008,7 @@ function guardarJugada(nombreArray: string) {
                     <span>-</span>
                     <p>${VisPuntos}</p>
                 </div>
-                <div class="w-2 h-full border-blanco border-[1px]"></div>
+                <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
             `;
         } else {
             nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
@@ -910,13 +1034,23 @@ function guardarJugada(nombreArray: string) {
                         <p>${jugada.tipoPunto}</p>
                     </div>
                 </div>
-                <div class="w-2 h-full border-blanco border-[1px]"></div>
+                <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
             `;
         }
     }
-
+            CofirmacionDiv.className = "h-full w-52 flex flex-row items-center place-content-center gap-x-1";
+            CofirmacionDiv.innerHTML = `
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-verde" viewBox="0 -960 960 960">
+                        <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                    </svg>
+                    <p class="text-sm text-verde">Envio Completado</p>
+                    <p class="text-sm text-verde">${hora_actual}</p>
+                
+                `;
     // Insertar el nuevo div en el historial
     historialDiv.appendChild(nuevoDiv);
+    confirmaciones.appendChild(CofirmacionDiv);
 
     // Limpiar los campos después de guardar
     nombre_jugador.value = '';
@@ -966,7 +1100,14 @@ function eliminarJugada(nombreArray: string) {
 }
 
 
+function obtenerHoraActual() {
+    const fecha = new Date(); // Crear un nuevo objeto Date con la fecha y hora actuales
+    const horas = String(fecha.getHours()).padStart(2, '0'); // Obtener las horas y formatear a 2 dígitos
+    const minutos = String(fecha.getMinutes()).padStart(2, '0'); // Obtener los minutos y formatear a 2 dígitos
+    const segundos = String(fecha.getSeconds()).padStart(2, '0'); // Obtener los segundos y formatear a 2 dígitos
 
+    return `${horas}:${minutos}:${segundos}`; // Devolver la hora en formato HH:MM:SS
+}
 
 })
 </script>
@@ -981,6 +1122,10 @@ function eliminarJugada(nombreArray: string) {
     }
     .reloj-activo{
         color: #FFC700;
+    }
+
+    .seleccionar_jugada{
+        background-color: #FFC700;
     }
 
     .ocultar{
