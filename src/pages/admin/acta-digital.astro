@@ -359,7 +359,7 @@ const PUNTOS = [
             </div>   
         </div>
 
-        <div id="modificar_jugada" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ">
+        <div id="modificar_jugada" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
             <div id="modificar_cerrar" class="absolute top-0 left-0 h-full w-full -z-0"></div>
             <div class="bg-gris w-max h-auto rounded-md z-10 ">
                 <input id="modificar_reference" type="text" disabled value="" />
@@ -722,12 +722,8 @@ while (document.getElementById(`visitante_play_${index}`)) {
     })
 
   //Modificar jugada
-  const modificar_jugada = document.getElementById("modificar_jugada")!;
-  const modificar_cerrar = document.getElementById("modificar_cerrar")!;
+
   
-  modificar_cerrar.addEventListener('click', function() {
-    modificar_jugada.classList.add("ocultar");
-  })
 
 
     let pulsando: number | null = null;
@@ -736,18 +732,41 @@ while (document.getElementById(`visitante_play_${index}`)) {
     // Función para manejar el clic en los divs
     function handleDivClick(clickedDivId: string) {
         const number = clickedDivId.split('_')[1]; // Extraer el número después de 'jugada_'
+        const jugada_id = `jugada_${number}`;
+
+        const divToMark = document.getElementById(jugada_id); // Seleccionar el div por su ID
+
+        if (divToMark) { // Verificar que el div existe
+            divToMark.classList.remove("bg-gris-claro");
+            divToMark.classList.add("bg-azul-suave"); // Añadir o quitar la clase
+        } else {
+            console.error(`No se encontró el div con ID: ${jugada_id}`);
+        }
         console.log(`Div mantenido: ${clickedDivId}, Número extraído: ${number}`);
         const modificar_jugada = document.getElementById("modificar_jugada")!;
         const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
         modificar_jugada.classList.remove("ocultar");
         modificar_reference.value = number;
+
+        const modificar_cerrar = document.getElementById("modificar_cerrar")!;
+  
+  modificar_cerrar.addEventListener('click', function() {
+    modificar_jugada.classList.add("ocultar");
+    if (divToMark) { // Verificar que el div existe
+            divToMark.classList.add("bg-gris-claro");
+            divToMark.classList.remove("bg-azul-suave"); // Añadir o quitar la clase
+        } else {
+            console.error(`No se encontró el div con ID: ${jugada_id}`);
+        }
+  })
     }
 
     // Seleccionar todos los divs que tienen un id que comienza con 'jugada_'
     const divs = document.querySelectorAll("[id^='jugada_']");
-
+    const divArray: HTMLDivElement[] = Array.from(divs) as HTMLDivElement[];
     // Agregar el evento de clic a cada div
-    divs.forEach(div => {
+    divArray.forEach((div: HTMLDivElement) => {
+
         div.addEventListener('click', (event: MouseEvent) => { // Especificar el tipo de evento
             if (!isLongPress) { // Solo ejecutar si no es un "mantener pulsado"
                 MarcarJugada(event); // Llama a la función de clic
@@ -1126,6 +1145,10 @@ function obtenerHoraActual() {
 
     .seleccionar_jugada{
         background-color: #FFC700;
+    }
+
+    .modificar_jugada{
+        background-color: #0140B9;
     }
 
     .ocultar{
