@@ -72,7 +72,7 @@ const PUNTOS = [
     }
 ]
 ---
-<LayoutAllSinMenu title='Usuarios'>
+<LayoutAllSinMenu title='Acta Digital'>
 {userHasAccess ? (
     <>
     <section class="h-[700px] w-[1100px] my-auto bg-red-400 overflow-auto mx-auto no-scrollbar relative">
@@ -331,11 +331,15 @@ const PUNTOS = [
             </div>            
         </div>
 
-        <div id="panel_informes" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar ">
+        {/* Informes */}
+        <div id="panel_informes" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center  ">
             <div class="bg-gris w-[700px] h-96 rounded-md p-2">
                 <h2 class="text-3xl text-amarillo font-semibold text-center">Informes</h2>
-                <div id="lista_informes" class="w-[90%] min-h-20 h-auto overflow-y-auto no-scrollbar max-h-40 border-gris-claro border-2 mx-auto">
-
+                <div id="lista_informes" class="w-[90%]  overflow-y-auto no-scrollbar h-40 border-gris-claro border-2 mx-auto">
+                    {/* <div class="w-full border-[1px] bg-gris-claro border-blanco h-20 rounded-lg px-2 py-1 ">
+                        <p class="text-lg text-accent">Informe Generico</p>
+                        <p class="text-base text-blanco puntos">Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1</p>
+                    </div> */}
                 </div>
 
                 <div class="w-full flex flex-row items-center place-content-around mt-5">
@@ -349,16 +353,33 @@ const PUNTOS = [
 
                 <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5">
                     <div id="cerrar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
+                        <p>Cerrar</p>
+                    </div>
+
+                    {/* <div id="guardar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
+                        <p>Guardar</p>
+                    </div> */}
+                </div>
+            </div>  
+            <div id="redactar_informe" class="bg-gris w-[700px] h-96 rounded-md p-2 absolute flex flex-col items-center ocultar">
+                <input type="text" id="tipo_informe" name="tipo_informe" disabled class="text-3xl text-amarillo font-semibold text-cente bg-transparent text-center mx-auto" value="" />
+                <textarea id="contenido_informe" name="contenido_informe"  class="w-[90%] min-h-40 h-auto overflow-y-auto no-scrollbar  border-gris-claro border-2 mx-auto bg-gris-claro text-blanco p-2 rounded-lg"></textarea>
+
+                
+
+                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5">
+                    <div id="cerrar_redactar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
                         <p>Cancelar</p>
                     </div>
 
-                    <div id="guardar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
+                    <div id="guardar_redactar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
                         <p>Guardar</p>
                     </div>
                 </div>
-            </div>   
+            </div> 
         </div>
 
+        {/* Modificar Jugada */}
         <div id="modificar_jugada" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
             <div id="modificar_cerrar" class="absolute top-0 left-0 h-full w-full -z-0"></div>
             <div class="bg-gris w-max h-auto rounded-md z-10 ">
@@ -423,6 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //Recuperar Partido del Local Storage
   cargarHistorial('partido_ejemplo');
+  recuperarInformes();
 
 
 
@@ -713,12 +735,38 @@ while (document.getElementById(`visitante_play_${index}`)) {
     const informe = document.getElementById('informe')!;
     const panel_informes = document.getElementById('panel_informes')!;
     const cerrar_informes = document.getElementById('cerrar_informes')!;
+    const nuevo_informe = document.getElementById('nuevo_informe')!;
+
+    const redactar_informe = document.getElementById("redactar_informe")!;
+    const guardar_redactar_informes = document.getElementById("guardar_redactar_informes")!;
+    const cerrar_redactar_informes = document.getElementById("cerrar_redactar_informes")!;
+
+    const tipo_informe = document.getElementById("tipo_informe") as HTMLInputElement;
+    const contenido_informe = document.getElementById("contenido_informe") as HTMLInputElement;
 
     informe.addEventListener('click', function(){
         panel_informes.classList.remove('ocultar');
     })
     cerrar_informes.addEventListener('click', function(){
         panel_informes.classList.add('ocultar');
+    })
+    nuevo_informe.addEventListener('click', function(){
+        tipo_informe.value = "Informe Generico";
+        redactar_informe.classList.remove("ocultar")
+
+        cerrar_redactar_informes.addEventListener("click", function(){
+            redactar_informe.classList.add("ocultar")
+            tipo_informe.value = "";
+            contenido_informe.value = "";
+        })
+
+        guardar_redactar_informes.addEventListener("click", function(){
+            guardarInforme();
+            redactar_informe.classList.add("ocultar")
+            tipo_informe.value = "";
+            contenido_informe.value = "";
+        })
+
     })
 
   //Modificar jugada
@@ -772,45 +820,7 @@ setInterval(() => {
     });
 }, 1000);
 
-    // Seleccionar todos los divs que tienen un id que comienza con 'jugada_'
-//     setInterval(() => {
-//         const divs = document.querySelectorAll("[id^='jugada_']");
-//         const divArray: HTMLDivElement[] = Array.from(divs) as HTMLDivElement[];
-        
-//     }, 1000);
-    
-//     // Agregar el evento de clic a cada div
-//     divArray.forEach((div: HTMLDivElement) => {
 
-// div.addEventListener('click', (event: MouseEvent) => { // Especificar el tipo de evento
-//     if (!isLongPress) { // Solo ejecutar si no es un "mantener pulsado"
-//         MarcarJugada(event); // Llama a la función de clic
-//     }
-//     isLongPress = false; // Reiniciar la variable después del clic
-// });
-
-// div.addEventListener('mousedown', () => {
-//     isLongPress = false; // Reiniciar la variable al iniciar el "mousedown"
-//     pulsando = window.setTimeout(() => {
-//         isLongPress = true; // Marcar que se ha mantenido pulsado
-//         handleDivClick(div.id); // Llama a la función después de mantener pulsado
-//     }, 500); // Cambia 500 por el tiempo que desees en milisegundos
-// });
-
-// div.addEventListener('mouseup', () => {
-//     if (pulsando !== null) {
-//         clearTimeout(pulsando); // Limpiar el temporizador si se suelta el botón
-//         pulsando = null; // Reiniciar la variable
-//     }
-// });
-
-// div.addEventListener('mouseleave', () => {
-//     if (pulsando !== null) {
-//         clearTimeout(pulsando); // Limpiar el temporizador si el ratón sale del div
-//         pulsando = null; // Reiniciar la variable
-//     }
-// });
-// });
 
     // Función para manejar el clic en los divs
     function handleDivClick(clickedDivId: string) {
@@ -1174,11 +1184,99 @@ function obtenerHoraActual() {
     return `${horas}:${minutos}:${segundos}`; // Devolver la hora en formato HH:MM:SS
 }
 
+
+function guardarInforme() {
+    // Recuperar los elementos de los inputs
+    const tipo_informe = document.getElementById("tipo_informe") as HTMLInputElement | null;
+    const contenido_informe = document.getElementById("contenido_informe") as HTMLInputElement | null;
+
+    // Comprobar si los elementos existen
+    if (!tipo_informe || !contenido_informe) {
+        console.error("Los elementos de entrada no se encontraron.");
+        return;
+    }
+
+    // Obtener los valores de los inputs
+    const tipo = tipo_informe.value.trim(); // Eliminar espacios en blanco
+    const contenido = contenido_informe.value.trim(); // Eliminar espacios en blanco
+
+    // Validar que ambos campos no estén vacíos
+    if (!tipo || !contenido) {
+        console.error("El tipo y el contenido no pueden estar vacíos.");
+        return; // No se guarda el informe si alguno de los campos está vacío
+    }
+
+    // Recuperar el historial existente del local storage o inicializarlo como un array vacío
+    let historial = localStorage.getItem("historial_partido_ejemplo") ? JSON.parse(localStorage.getItem("historial_partido_ejemplo")!) : [];
+
+    // Crear un nuevo informe
+    const nuevoInforme = {
+        tipo: tipo,
+        contenido: contenido
+    };
+
+    // Añadir el nuevo informe al historial
+    historial.push(nuevoInforme);
+
+    // Guardar el historial actualizado en el local storage
+    localStorage.setItem("historial_partido_ejemplo", JSON.stringify(historial));
+
+    // Crear un nuevo div para insertar en lista_informes
+    const informeDiv = document.createElement("div");
+    informeDiv.className = "w-full border-[1px] bg-gris-claro border-blanco h-20 rounded-lg px-2 py-1";
+    informeDiv.innerHTML = `<p class="text-lg text-accent">${tipo}</p><p class="text-base text-blanco puntos">${contenido}</p>`;
+
+    // Insertar el nuevo div en el contenedor lista_informes
+    const listaInformes = document.getElementById("lista_informes");
+    if (listaInformes) {
+        listaInformes.appendChild(informeDiv);
+    } else {
+        console.error("El contenedor lista_informes no se encontró.");
+    }
+
+}
+
+function recuperarInformes() {
+    // Recuperar el historial del local storage
+    const historial = localStorage.getItem("historial_partido_ejemplo");
+    
+    // Comprobar si hay informes guardados
+    if (historial) {
+        const informes = JSON.parse(historial);
+
+        // Obtener el contenedor donde se insertarán los informes
+        const listaInformes = document.getElementById("lista_informes");
+        if (!listaInformes) {
+            console.error("El contenedor lista_informes no se encontró.");
+            return;
+        }
+
+        // Limpiar el contenedor antes de insertar los informes
+        listaInformes.innerHTML = '';
+
+        // Recorrer el array de informes y crear los elementos correspondientes
+        informes.forEach((informe: { tipo: any; contenido: any; }) => {
+            const informeDiv = document.createElement("div");
+            informeDiv.className = "w-full border-[1px] bg-gris-claro border-blanco h-20 rounded-lg px-2 py-1";
+            informeDiv.innerHTML = `<p class="text-lg text-accent">${informe.tipo}</p><p class="text-base text-blanco puntos">${informe.contenido}</p>`;
+            listaInformes.appendChild(informeDiv);
+        });
+    } else {
+        console.log("No hay informes guardados en el local storage.");
+    }
+}
+
 })
 </script>
 
 
 <style>
+    .puntos{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
     .selected{
         background-color: #1666ff;
     }

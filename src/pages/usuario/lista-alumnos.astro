@@ -155,27 +155,25 @@ let TotalAlumnos = TotalStaff + TotalVoluntarios2 + TotalVoluntarios1 + Total2Ba
                     <table class="text-base text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
                     <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
                     
-                    {Jugador4ESOData ? (
+                    {Jugador4ESOData && Jugador4ESOData.length > 0 ? (
                         Jugador4ESOData.map((user, index) => (
-                        <tr class="border-b-2 border-accent">
-                            <td class="w-max" translate="no">
-                                {user.nombre}
-                            </td>
-                            
-                            <td class="w-max">
-                                {user._1r_apellido} {user._2n_apellido}
-                            </td>
-        
-                            <td class="text-center w-max">
-                                {user.curso}
-                            </td>
+                            <tr class="border-b-2 border-accent">
+                                <td class="w-max" translate="no">
+                                    {user.nombre}
+                                </td>
+                                <td class="w-max">
+                                    {user._1r_apellido} {user._2n_apellido}
+                                </td>
+                                <td class="text-center w-max">
+                                    {user.curso}
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colspan="3" class="text-center text-blanco text-base">No hi ha alumnes</td>
                         </tr>
-                        
-                    ))
-                        ) : (
-                        <p class="text-center text-blanco text-base">No hi ha alumnes</p>
-                            
-                        )}
+                    )}
                     </table>
 
                  

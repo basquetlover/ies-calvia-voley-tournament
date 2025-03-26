@@ -49,10 +49,13 @@ try {
 }
 const userHasAccess = accessibleBlocks.includes(pathname);
 ---
-<LayoutAll title='Usuarios'>
+<LayoutAll title='Pistas'>
 {userHasAccess ? (
     <>
-       <Pistas />    
+    <div class="w-full h-screen flex items-center">
+        <h2 class="text-6xl text-amarillo text-center my-auto p-2">Distribución de Pistas por definir</h2>
+    </div>
+       {/* <Pistas />     */}
     </>
 ) : (
     <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
