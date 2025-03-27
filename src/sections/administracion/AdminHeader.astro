@@ -56,6 +56,11 @@ export const VOLUNTARIOS = [
         icon: "",
         href: "acta-digital",
     },
+    // {
+    //     nombre: "Lista Equipos",
+    //     icon: "",
+    //     href: "/usuario/staff/equipos",
+    // },
     {
         nombre: "Pistas",
         icon: "",
@@ -225,6 +230,12 @@ try {
                             {nombre}
                         </a>
                     ))}
+                    <a href="/usuario/staff/equipos" target="_blank" class="w-[95%] h-14 py-2 px-3 my-2 grid grid-rows-1 grid-cols-[max-content_1fr] gap-2 items-center rounded-full bg-azul text-2xl text-amarillo">
+                            <svg class="fill-amarillo w-6 h-6" viewBox="0 0 40 35" xmlns="http://www.w3.org/2000/svg">
+                                <path d="" fill="#FFC700"/>
+                            </svg>
+                            Lista Equipos
+                        </a>
                 </nav>
             </>
         )}
