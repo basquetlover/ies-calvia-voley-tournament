@@ -705,6 +705,175 @@ file.addEventListener('change', (e: Event) => {
 ))} 
 
 
+  <!-- profesor -->
+  <div class="w-max flex flex-row gap-2 my-10">
+    <div class="px-3 py-2 w-max h-12 flex flex-row text-4xl text-amarillo border-none">
+      <h4>Professor Jugador</h4>
+     {/* Genero */}
+     <input type="hidden" name="profesor_id" />
+     <div class="flex flex-col relative">
+      <label class="genero relative">
+          <label for="nombre" class="absolute -top-5 -right-5 flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+          
+          <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                  <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+              </svg> 
+          </span>
+      </label>
+          <input 
+              id={`genero_profesor`}
+              type="hidden"
+              name={`genero_profesor`}
+         
+              class="w-10" 
+          />
+          <span id={`hombre_profesor`} class={`desactivado `}>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                  <path d="M800-800v240h -80v-103L561-505q19 28 29 60t10 65q0 92-64 156t-156 64q-92 0-156-64t-64-156q0-92 64-156t156-64q33 0 65 10t59 29l159-159H560v-80h240ZM380-520q-58 0-99 41t-41 99q0 58 41 99t99 41q58 0 99-41t41-99q0-58-41-99t-99-41Z"/>
+              </svg>
+          </span>
+          <span id={`mujer_profesor`} class={`desactivado `}>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                  <path d="M440-120v-80h-80v-80h80v-84q-79-14-129-75t-51-143q0-91 65-154t155-64q91 0 156 64t64 154q0 81-50 143t-130 75v84h80v80h-80v80h-80Zm40-320q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+              </svg>
+          </span>
+      </label>
+  </div>
+    </div>
+  </div>
+  <div class="flex flex-col items-center ml-2">
+  
+    <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
+      
+      {/* Nombre */}
+      <div class="flex flex-col relative">
+          <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+              Nom
+              <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                      <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                  </svg> 
+              </span>
+          </label>
+          <input
+          type="text"
+          id={`profesor_name`}
+          name={`profesor_name`}
+          placeholder="Nom de l'profesor"
+          class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+          
+          
+          
+          />
+      </div>
+      {/* 1r Apellido */}
+      <div class="flex flex-col relative">
+          <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+              1r Cognom
+              <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                      <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                  </svg> 
+              </span>
+          </label>
+          
+          <input
+          type="text"
+          name={`profesor_1r_apellido`}
+          id={`profesor_1r_apellido`}
+          placeholder="Cognom de l'profesor"
+          class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+          
+          
+          />
+      </div>
+
+      {/* 2n Apellido */}
+      <div class="flex flex-col relative">
+          <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl">2n Cognom</label>
+          <input
+          type="text"
+          name={`profesor_2n_apellido`}
+          placeholder="Segon Cognom de l'profesor"
+          class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+          
+          />
+      </div>
+
+       {/* Curso */}
+      <div class="flex flex-col relative">
+          <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+              Curs
+              <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                      <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                  </svg> 
+              </span>
+          </label>
+          
+      <select
+        name={`profesor_curso`}
+        class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+      >
+        
+      <option value="" disabled selected>Selecciona un curso</option>
+        <hr class="border-accent" />
+        {CURSO_P.map(({ label }) => (
+          <option value={label}>
+            {label}
+          </option>
+        ))}
+        
+      </select>
+      </div>
+      {/* Email */}
+      <div class="flex flex-col relative">
+          <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+              Email
+              <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                      <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                  </svg> 
+              </span>
+          </label>
+          <input
+          type="email"
+          name={`profesor_email`}
+          placeholder="Email de l'profesor"
+          class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+         
+          
+          />
+      
+      </div>
+
+              {/* Imagen cara */}
+              <div class="flex flex-col relative">
+                <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
+                    Imatge Cara .webp
+                    <span class="bg-cancelar bg-opacity-70 flex items-center place-content-center p-[2px] rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="#e8eaed" viewBox="0 -960 960 960">
+                            <path d="M410-120v-238L204-239l-70-121 206-120-206-119 70-121 206 119v-239h140v239l206-119 70 121-206 119 206 120-70 121-206-119v238H410Z"/>
+                        </svg> 
+                    </span>
+                </label>
+                <input
+                type="file"
+                id={`profesor_img`}
+                name={`profesor_img`}
+                placeholder="Email del jugador"
+                class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
+                accept=".webp"
+                />
+            
+            </div>
+           
+    </div>
+    
+  </div>
+
+
 <!--Staff (Publico) -->
 <div class="w-max flex flex-row items-end gap-2">
   <div class="px-3 py-2 w-max h-12  text-4xl text-amarillo border-none"><h4>Tècnics d'equip</h4></div>
@@ -1189,6 +1358,27 @@ while (document.getElementById(`staff_genero_${index}`)) {
         hombre.classList.remove("hombre");
         hombre.classList.add("desactivado");
 });
+
+const hombre_profesor = document.getElementById(`hombre_profesor`)!;
+          const mujer_profesor = document.getElementById(`mujer_profesor`)!;
+          
+          const genero_profesor = document.getElementById(`genero_profesor`)! as HTMLInputElement;
+          hombre_profesor.addEventListener('click',  function(){
+              
+                  genero_profesor.value = "hombre";
+                  hombre_profesor.classList.add("hombre");
+                  hombre_profesor.classList.remove("desactivado");
+                  mujer_profesor.classList.remove("mujer");
+                  mujer_profesor.classList.add("desactivado");
+          });
+          mujer_profesor.addEventListener('click',  function(){
+              
+              genero_profesor.value = "mujer";
+              mujer_profesor.classList.add("mujer");
+              mujer_profesor.classList.remove("desactivado");
+              hombre_profesor.classList.remove("hombre");
+              hombre_profesor.classList.add("desactivado");
+      });
 })
 </script>
 <!-- Errores -->

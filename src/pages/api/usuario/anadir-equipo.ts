@@ -101,6 +101,81 @@ let { data: Usuarios, error } = await supabaseAdmin
   }
 }
 
+let profesor_nombre = "";
+let profesor_curso = "";
+let profesor_1r_apellido = "";
+let profesor_2n_apellido = "";
+let profesor_genero = "";
+let profesor_email = "";
+
+
+let profesor = "";
+const profesor_foto = formData.get('profesor_img')  as File;
+profesor_nombre = formData.get("profesor_name")?.toString().trim() || "";
+if(profesor_nombre !== "") {
+ profesor_curso = formData.get(`profesor_curso`)?.toString().trim() || "";
+ profesor_1r_apellido = formData.get(`profesor_1r_apellido`)?.toString().trim() || "";
+ profesor_2n_apellido = formData.get(`profesor_2n_apellido`)?.toString().trim() || "";
+ profesor_genero = formData.get(`genero_profesor`)?.toString().trim() || "";
+ profesor_email = formData.get(`profesor_email`)?.toString().trim() || "";
+
+ 
+
+ profesor = profesor_nombre + " " + profesor_1r_apellido;
+if (profesor_email) { 
+  const dominio = profesor_email.split('@')[1]; // Esto te dará 'gmail.com'
+  const dominioConArroba = '@' + dominio;
+  if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+    console.log(`El email del professor ha de ser del centre`)
+    return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email del professor ha de ser del centre</div>`, 
+          { status: 401, headers: { "Content-Type": "text/html" } }
+      );
+}
+} else {
+  // Manejo del caso en que email es undefined o vacío
+  console.error("El email no es válido.");
+}
+//const { data: existingCoach, error: checkError } = await supabaseAdmin
+//.from("JugadoresSS")
+//.select("id") // Seleccionar un campo mínimo
+//.eq("email", profesor_email);
+
+// if(existingCoach){
+ // return new Response(
+   // `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'entrenador ja està inscript en un altre Equip</div>`, 
+   // { status: 401, headers: { "Content-Type": "text/html" } }
+// );
+//}
+// if(checkError){
+//  console.log("Entrenador no inscrito en otro equipo")
+//}
+let { data: Usuarios, error } = await supabaseAdmin
+  .from('JugadoresSS')
+  .select('email')
+
+  if (Usuarios) {
+  
+    
+    // Verificar si ya existe un usuario con el mismo email
+    const userExistsByEmail = Usuarios.some(usuario => usuario.email === acompañante_email);
+    
+    if (userExistsByEmail) {
+      return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Del professor ja es troba inscrit.</div>`, 
+        { status: 400, headers: { "Content-Type": "text/html" } }
+      );
+    }
+  }
+
+if (!acompañante_genero) {
+  return new Response(
+    `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Seleccioni el gènere del professor</div>`, 
+    { status: 401, headers: { "Content-Type": "text/html" } }
+);
+}
+}
+
 
   function removeAccents(str: string): string  {
     const accents = [
@@ -410,6 +485,7 @@ async function uploadFileCoach(file: File, email: string | undefined) {
 
 // Llama a la función para subir el escudo
 const CoachPath = await uploadFileCoach(acompañante_foto, acompañante_email);
+
 let publicCoachUrl ="";
 //Obtener la URL pública del escudo subido
 const { data: urlDataCoach } = supabaseAdmin.storage
@@ -700,6 +776,7 @@ console.log(currentDate);
   }
     
   }
+
   if(acompañante_foto.size <= 0){
     const { error: jugadorExtraError } = await supabaseAdmin
       .from('JugadoresSS')
@@ -739,6 +816,82 @@ console.log(currentDate);
       console.error("Error insertando jugador extra:", jugadorExtraError.message);
       // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
     }
+  }
+
+  if(profesor_foto.size > 0){
+    //Subir img entrenador
+    async function uploadFileCoach(file: File, email: string | undefined) {
+        // Extraer la extensión del archivo
+        const extension = file.name.split('.').pop(); // Obtiene la extensión
+          const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
+          const filePath = `${uniqueFileName}`; // Define la ruta del archivo
+      
+        const { data, error } = await supabaseAdmin.storage
+            .from('EquiposIMG')
+            .upload(filePath, file); // Sube el archivo
+      
+        if (error) {
+            console.error("Error al subir imagen:", error.message);
+            throw new Error("Error al subir imagen.");
+        }
+      
+        console.log("Imagen subida correctamente:", data.path);
+        return filePath; // Devuelve la ruta del archivo
+      }
+      
+      // Llama a la función para subir el escudo
+      const CoachPath = await uploadFileCoach(profesor_foto, profesor_email);
+      let publicCoachUrl ="";
+      //Obtener la URL pública del escudo subido
+      const { data: urlDataCoach } = supabaseAdmin.storage
+          .from('EquiposIMG')
+          .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
+      
+      // Verifica si urlData contiene la propiedad publicUrl
+      if (!urlDataCoach || !urlDataCoach.publicUrl) {
+        //   console.error("No se pudo obtener la URL pública del escudo.");
+        //   return new Response(
+        //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+        //     { status: 401, headers: { "Content-Type": "text/html" } }
+        // );
+      }
+      if (urlDataCoach) {
+        publicCoachUrl = urlDataCoach.publicUrl;
+      }
+
+      const { error: jugadorError } = await supabaseAdmin
+      .from('JugadoresSS')
+      .insert([
+        {   nombre: profesor_nombre, 
+          _1r_apellido: profesor_1r_apellido,
+          _2n_apellido: profesor_2n_apellido,
+          curso: profesor_curso,
+          genero: profesor_genero,
+          pertenece_equipo: equipoId,
+          email: profesor_email,
+          ficha: 'profesor',
+          imag: publicCoachUrl,
+          },
+      ])
+      .select()
+
+  }else{
+    const { error: jugadorError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .insert([
+      {   nombre: profesor_nombre, 
+        _1r_apellido: profesor_1r_apellido,
+        _2n_apellido: profesor_2n_apellido,
+        curso: profesor_curso,
+        genero: profesor_genero,
+        pertenece_equipo: equipoId,
+        email: profesor_email,
+        ficha: 'profesor',
+        
+        },
+    ])
+    .select()
+
   }
   
 
