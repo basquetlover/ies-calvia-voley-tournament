@@ -39,6 +39,10 @@ let escudo = "";
 let capitan = "";
 let entrenador = "";
 let id = "";
+
+let profesor_nombre = "";
+let profesor_1r_apellido = "";
+let profesor_curso = "";
 interface Jugador {
   nombre: string;
   pertenece_equipo: string;
@@ -108,6 +112,21 @@ try {
     // const totalJugadores = 10; // Número total de jugadores permitidos
     // const jugadoresFaltantes = totalJugadores - jugadores.length;
     // camposVacios = Array.from({ length: Math.max(0, jugadoresFaltantes) });
+  }
+
+  const {data: ProfesorData, error: ProfesorError} = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, pertenece_equipo, curso, id, _1r_apellido')
+    .eq('pertenece_equipo', id)
+    .eq('ficha', 'profesor')
+    .single();
+
+  if(ProfesorError){
+    console.error(`Error al buscar jugadores`, error?.message);
+  } else if(ProfesorData){
+   profesor_nombre = ProfesorData.nombre;
+   profesor_1r_apellido = ProfesorData._1r_apellido;
+   profesor_curso = ProfesorData.curso;
   }
   
 
@@ -194,7 +213,18 @@ const handleCheckboxChange = (index: number) => {
                       ))
                   }
               </table>
-              {staff === null ? (
+              {profesor_nombre === null || profesor_nombre === "" ? (
+                <></>
+                ):(<>
+                <h2 class=" text-xl text-amarillo font-bold">Professor Jugador</h2>
+                <table class="text-xl text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <tr><td><h4 class="text-accent font-bold">Nom</h4></td>    <td><h4 class="text-accent font-bold">Curs</h4></td></tr>
+                    
+                            <tr><td translate="no">{profesor_nombre} {profesor_1r_apellido}</td>   <td>{profesor_curso}</td></tr>
+                        
+                </table>
+                </>)}
+              {staff === null || staff.length <=0 ? (
               <></>
               ):(<>
               <h2 class=" text-xl text-amarillo font-bold">Tècnics d'equip</h2>
