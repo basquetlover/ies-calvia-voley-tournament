@@ -805,6 +805,29 @@ function addEventListenersToDiv(div: HTMLDivElement) {
             pulsando = null;
         }
     });
+
+    // Eventos para dispositivos táctiles
+div.addEventListener('touchstart', () => {
+    isLongPress = false;
+    pulsando = window.setTimeout(() => {
+        isLongPress = true;
+        handleDivClick(div.id);
+    }, 500);
+});
+
+div.addEventListener('touchend', () => {
+    if (pulsando !== null) {
+        clearTimeout(pulsando);
+        pulsando = null;
+    }
+});
+
+div.addEventListener('touchcancel', () => {
+    if (pulsando !== null) {
+        clearTimeout(pulsando);
+        pulsando = null;
+    }
+});
 }
 
 setInterval(() => {
