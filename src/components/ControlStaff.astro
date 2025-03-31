@@ -13,7 +13,7 @@ if(usuario){
             .from("Administradores")
             .select("rango, user_email")
             .eq("user_email", usuario.email)
-            .in('rango', ['Owner', 'Co-Owner', 'Oficial de Mesa', 'Arbitros', 'Profesor'])
+            .in('rango', ['Owner', 'Co-Owner', 'Oficial de Mesa', 'Arbitros', 'Professor'])
             .single();
 if(error){
     console.log(
