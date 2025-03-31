@@ -6,7 +6,7 @@ import { supabaseAdmin } from "src/lib/supabase";
 const { data: equipos, error } = await supabaseAdmin
   .from('EquiposSS')
   .select('id_equipo, nombre_equipo, capitan, entrenador, escudo, ganador')
-  .eq('estado', 'Acceptat')
+  .eq('aceptado', 'Inscrit')
   .order('id', { ascending: true });
 
 
