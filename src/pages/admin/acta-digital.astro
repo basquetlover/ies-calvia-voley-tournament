@@ -76,10 +76,10 @@ const PUNTOS = [
 {userHasAccess ? (
     <>
     <section class="h-[700px] w-[1100px] my-auto bg-red-400 overflow-auto mx-auto no-scrollbar relative">
-        <div class="w-full h-full border-2 border-accent grid grid-rows-1 grid-cols-3 select-none">
+        <div id="box_principal" class="w-full h-full border-2 border-accent bg-gris grid grid-rows-1 grid-cols-3 select-none">
 
             {/* Datos equipo 1 */}
-            <div class="w-full h-full bg-gris">
+            <div class="w-full h-full bg-transparent">
                 {/* Nombre e Imagen Equipo */}
                 <div class="w-full h-auto grid grid-cols-[max-content_1fr] grid-rows-1 p-2">
                     <div class="w-max h-max">
@@ -102,7 +102,7 @@ const PUNTOS = [
                                         <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
                                     </svg>
                                 </div>
-                                <input id={`local_nombre_${index}`} class="w-full bg-transparent text-center text-blanco" value={`Jugador ${index + 1}`} disabled/>
+                                <input id={`local_nombre_${index}`} class="w-full bg-transparent text-center text-blanco select-none" value={`Jugador ${index + 1}`} disabled/>
                             </div>
                         )
                     )}
@@ -183,7 +183,7 @@ const PUNTOS = [
                         <p class="text-sm text-amarillo">Remate</p>
                     </div>
                     {/* Error */}
-                    <div id="error" class="bg-gris w-20 h-20 rounded-md flex flex-col items-center place-content-center">
+                    <div id="error" class="bg-gris  w-20 h-20 rounded-md flex flex-col items-center place-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16" fill="none" viewBox="0 0 110 110">
                             <path fill="#FFC700" d="M50 28a27 27 0 0 0-17 12l-2-1h-2l1 2 1 1-1 2-2 12a29 29 0 0 0 7 18l2 1a55 55 0 0 1-4 6h1l3-2 2-2 1 1a24 24 0 0 0 14 5l11-2c6-3 11-7 14-13l1-2 2 1 5 1 1-1c0-2-1-3-5-4l-2-1v-1l1-6-1-6-2-8-4-5-1-1 1-1 2-4-4 2-1 1-1-1c-4-3-9-4-15-4a254 254 0 0 1-6 0Zm6 1 4 1 5 1-2 1-8 3-9 9-1 2-8-4 4-7 6-5 9-1Zm-12 2-1 1a21 21 0 0 0-6 10l-3-2 5-5c1-2 5-4 6-4h-1Zm23 1 3 1v1a221 221 0 0 1-15 17l-9-4 2-3c4-6 10-10 16-11l2-1v-1l1 1Zm8 6 2 2v1h-7l2-2 2-3 1 2Zm3 5 2 6v11c-1 3-1 2-1-1v-6l-2-5a453 453 0 0 0-2-7h2l1 2Zm-4 1c2 5 4 8 4 11v6l-3-1-4-2v-1c-1-3-2-8-4-10l-1-1 2-2 1-2h2l1-1 2 3Zm-40 2c2 4 7 8 10 9h2l4 1 2-1h1l-1 1-4 4-4 5-3-1a32 32 0 0 1-11-10l2-10v-1l1 1 1 2Zm6 2 3 2v1l-1 2-1-1-5-6 4 2Zm20-1Zm6 1 4 9-1 1-9-5 2-3 3-3 1 1Zm-13 7h-3l-5-1c-2-1-2-1-1-3v-1l5 2 4 3Zm-20 5a29 29 0 0 0 10 6l-1 2a172 172 0 0 0-4 5l-2-2-2-1a29 29 0 0 1-4-14v1l3 3Zm35 1 2 1v3l-1 8v2l-2 3-10 3c-6 1-12-1-16-4l-1-1v-1h3a31 31 0 0 0 14 2l-4-1h-5a4383 4383 0 0 0-6-2l1-2a170 170 0 0 0 5-5 29 29 0 0 0 11 0v3l-1 3v1l-1 1v1l-1 2-1 3 5-11v-5l-2-8 4 2 6 2Zm-11-3 2 6c0 2 0 2-2 2h-8l3-4 4-5 1 1Zm18 6 3 2-2 4-6 6a66 66 0 0 0 2-13l3 1ZM38 74l-1-1c-1-1-1-1 0 0l1 1Z"/>
                         </svg>
@@ -237,7 +237,7 @@ const PUNTOS = [
              </div>
 
              {/* Datos equipo 2 */}
-             <div class="w-full h-full bg-gris">
+             <div class="w-full h-full ">
                 {/* Nombre e Imagen Equipo */}
                 <div class="w-full h-auto grid grid-cols-[1fr_max-content] grid-rows-1 p-2">
                     
@@ -332,7 +332,7 @@ const PUNTOS = [
         </div>
 
         {/* Informes */}
-        <div id="panel_informes" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center  ">
+        <div id="panel_informes" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center  ocultar">
             <div class="bg-gris w-[700px] h-96 rounded-md p-2">
                 <h2 class="text-3xl text-amarillo font-semibold text-center">Informes</h2>
                 <div id="lista_informes" class="w-[90%]  overflow-y-auto no-scrollbar h-40 border-gris-claro border-2 mx-auto">
@@ -342,11 +342,11 @@ const PUNTOS = [
                     </div> */}
                 </div>
 
-                <div class="w-full flex flex-row items-center place-content-around mt-5">
+                <div class="w-full flex flex-row items-center place-content-around mt-5 ">
                     <div id="nuevo_informe" class="w-max h-max px-3 py-2 bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
                         Informe Generico
                     </div>
-                    <div class="w-max h-max px-3 py-2 bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                    <div id="nuevo_informe_suspender" class="w-max h-max px-3 py-2 bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
                         Suspender Partido
                     </div>
                 </div>
@@ -367,12 +367,35 @@ const PUNTOS = [
 
                 
 
-                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5">
+                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5 ">
                     <div id="cerrar_redactar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
                         <p>Cancelar</p>
                     </div>
 
                     <div id="guardar_redactar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
+                        <p>Guardar</p>
+                    </div>
+                </div>
+            </div> 
+
+            <div id="redactar_informe_suspender" class="bg-gris w-[700px] h-96 rounded-md p-2 absolute flex flex-col items-center ocultar">
+                <input type="text" id="tipo_informe_suspender" name="tipo_informe_suspender" disabled class="text-3xl text-amarillo font-semibold text-cente bg-transparent text-center mx-auto" value="" />
+                <select id="culpable_informe" name="culpable_informe" class="w-40 h-auto bg-gris-claro rounded-full px-3 py-2 my-2 text-blanco">
+                    <option selected disabled>Equipo culpable</option>
+                    <hr />
+                    <option value="Equipo 1">Equipo 1</option>
+                    <option value="Equipo 2">Equipo 2</option>
+                </select>
+                <textarea id="contenido_informe_suspender" name="contenido_informe_suspender"  class="w-[90%] min-h-40 h-auto overflow-y-auto no-scrollbar  border-gris-claro border-2 mx-auto bg-gris-claro text-blanco p-2 rounded-lg"></textarea>
+
+                
+
+                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5 ">
+                    <div id="cerrar_redactar_informe_suspender" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
+                        <p>Cancelar</p>
+                    </div>
+
+                    <div id="guardar_redactar_informe_suspender" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
                         <p>Guardar</p>
                     </div>
                 </div>
@@ -386,10 +409,10 @@ const PUNTOS = [
                 <input id="modificar_reference" type="text" disabled value="" />
 
                 <div class="w-96 flex flex-col items-center place-content-around gap-y-1">
-                    <div id="nuevo_informe" class="w-full h-16 flex items-center place-content-center bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                    <div id="btn_modificar_jugada" class="w-full h-16 flex items-center place-content-center bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
                         Modificar Jugada
                     </div>
-                    <div class="w-full h-16 flex items-center place-content-center bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                    <div id="eliminar_jugada" class="w-full h-16 flex items-center place-content-center bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
                         Eliminar Jugada
                     </div>
                 </div>
@@ -415,12 +438,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
   const tiempo = document.getElementById('tiempo') as HTMLInputElement;
   const orden = document.getElementById('orden') as HTMLInputElement;
-
+  const box_principal = document.getElementById('box_principal')!;
   let tiempoUltimaJugada = "00:00";
   let LocPuntosUltimaJugada = "0";
   let VisPuntosUltimaJugada = "0";
   let LocSetUltimaJugada = "0";
   let VisSetUltimaJugada = "0";
+
+  let modificando = false;
 
  
   //Marcador Variables
@@ -450,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 salir.addEventListener('click', () => {
-    eliminarJugada('partido_ejemplo');
+    eliminarHistorial('partido_ejemplo');
 });
 
 //enviar informacion
@@ -477,72 +502,80 @@ salir.addEventListener('click', () => {
 
     // Iniciar la verificación de pasos
     setInterval(() => {
-        if (paso_tipo === 1 && paso_jugador === 1) {
-            const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
-            const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+        if(modificando === false){
+
+        
+            if (paso_tipo === 1 && paso_jugador === 1) {
+                const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+                const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
 
 
-            const marcador = document.getElementById('marcador')!;
-            const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
-            const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
-            const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
-            const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
-            
-            if(id_equipo.value === "equipo-local" && tipo_punto.value === "Error"){
-                VisPuntos ++;
-                Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
-            } else if(id_equipo.value === "equipo-local"){
-                LocPuntos ++;
-                Marcador_LocPuntos.textContent = String(LocPuntos).padStart(1, '0');
+                const marcador = document.getElementById('marcador')!;
+                const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+                const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+                const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+                const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
+                
+                if(id_equipo.value === "equipo-local" && tipo_punto.value === "Error"){
+                    VisPuntos ++;
+                    Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
+                } else if(id_equipo.value === "equipo-local"){
+                    LocPuntos ++;
+                    Marcador_LocPuntos.textContent = String(LocPuntos).padStart(1, '0');
+                }
+
+                if(id_equipo.value === "equipo-visitante" && tipo_punto.value === "Error"){
+                    LocPuntos ++;
+                    Marcador_LocPuntos.textContent = String(LocPuntos).padStart(1, '0');
+                } else if(id_equipo.value === "equipo-visitante"){
+                    VisPuntos ++;
+                    Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
+                }
+                if(LocSets + VisSets < 2){
+                    console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
+                    console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
+                    if(LocPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
+                        LocSets++;
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                        LocPuntos = 0;
+                        VisPuntos = 0;
+                    }
+                    if(VisPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
+                        VisSets++;
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                        LocPuntos = 0;
+                        VisPuntos = 0;
+                    }
+                } else {
+                    if(LocPuntos === conf_puntos_extra){
+                        LocSets++;
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                        LocPuntos = 0;
+                        VisPuntos = 0;
+                    }
+                    if(VisPuntos === conf_puntos_extra){
+                        VisSets++;
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                        LocPuntos = 0;
+                        VisPuntos = 0;
+                    }
+                }
+                
+
+                enviar();
             }
-
-            if(id_equipo.value === "equipo-visitante" && tipo_punto.value === "Error"){
-                LocPuntos ++;
-                Marcador_LocPuntos.textContent = String(LocPuntos).padStart(1, '0');
-            } else if(id_equipo.value === "equipo-visitante"){
-                VisPuntos ++;
-                Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
+        } else if(modificando === true){
+            if (paso_tipo === 1 && paso_jugador === 1) {
+                modificarJugada('partido_ejemplo');
             }
-            if(LocSets + VisSets < 2){
-                console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
-                console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
-                if(LocPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
-                    LocSets++;
-                    Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
-                    Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
-                    Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
-                    LocPuntos = 0;
-                    VisPuntos = 0;
-                }
-                if(VisPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
-                    VisSets++;
-                    Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
-                    Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
-                    Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
-                    LocPuntos = 0;
-                    VisPuntos = 0;
-                }
-            } else {
-                if(LocPuntos === conf_puntos_extra){
-                    LocSets++;
-                    Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
-                    Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
-                    Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
-                    LocPuntos = 0;
-                    VisPuntos = 0;
-                }
-                if(VisPuntos === conf_puntos_extra){
-                    VisSets++;
-                    Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
-                    Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
-                    Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
-                    LocPuntos = 0;
-                    VisPuntos = 0;
-                }
-            }
-            
-
-            enviar();
         }
     }, 250);
 
@@ -736,6 +769,7 @@ while (document.getElementById(`visitante_play_${index}`)) {
     const panel_informes = document.getElementById('panel_informes')!;
     const cerrar_informes = document.getElementById('cerrar_informes')!;
     const nuevo_informe = document.getElementById('nuevo_informe')!;
+    const nuevo_informe_suspender = document.getElementById('nuevo_informe_suspender')!;
 
     const redactar_informe = document.getElementById("redactar_informe")!;
     const guardar_redactar_informes = document.getElementById("guardar_redactar_informes")!;
@@ -743,6 +777,14 @@ while (document.getElementById(`visitante_play_${index}`)) {
 
     const tipo_informe = document.getElementById("tipo_informe") as HTMLInputElement;
     const contenido_informe = document.getElementById("contenido_informe") as HTMLInputElement;
+
+    const redactar_informe_suspender = document.getElementById("redactar_informe_suspender")!;
+    const guardar_redactar_informe_suspender = document.getElementById("guardar_redactar_informe_suspender")!;
+    const cerrar_redactar_informe_suspender = document.getElementById("cerrar_redactar_informe_suspender")!;
+
+    const tipo_informe_suspender = document.getElementById("tipo_informe_suspender") as HTMLInputElement;
+    const contenido_informe_suspender = document.getElementById("contenido_informe_suspender") as HTMLInputElement;
+    const culpable_informe = document.getElementById("culpable_informe") as HTMLInputElement;
 
     informe.addEventListener('click', function(){
         panel_informes.classList.remove('ocultar');
@@ -765,6 +807,25 @@ while (document.getElementById(`visitante_play_${index}`)) {
             redactar_informe.classList.add("ocultar")
             tipo_informe.value = "";
             contenido_informe.value = "";
+        })
+
+    });
+
+    nuevo_informe_suspender.addEventListener('click', function(){
+        tipo_informe_suspender.value = "Suspender Partido";
+        redactar_informe_suspender.classList.remove("ocultar")
+
+        cerrar_redactar_informe_suspender.addEventListener("click", function(){
+            redactar_informe_suspender.classList.add("ocultar")
+            tipo_informe_suspender.value = "";
+            contenido_informe_suspender.value = "";
+        })
+
+        guardar_redactar_informe_suspender.addEventListener("click", function(){
+            guardarInforme();
+            redactar_informe_suspender.classList.add("ocultar")
+            tipo_informe_suspender.value = "";
+            contenido_informe_suspender.value = "";
         })
 
     })
@@ -805,7 +866,6 @@ function addEventListenersToDiv(div: HTMLDivElement) {
             pulsando = null;
         }
     });
-
     // Eventos para dispositivos táctiles
 div.addEventListener('touchstart', () => {
     isLongPress = false;
@@ -843,6 +903,24 @@ setInterval(() => {
     });
 }, 1000);
 
+
+const eliminar_jugada = document.getElementById("eliminar_jugada")!;
+const modificar_jugada = document.getElementById("modificar_jugada")!;
+const btn_modificar_jugada = document.getElementById('btn_modificar_jugada')!;
+const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
+        
+
+eliminar_jugada.addEventListener('click', function(){
+    modificar_jugada.classList.add("ocultar");
+    eliminarJugada('partido_ejemplo');
+});
+
+btn_modificar_jugada.addEventListener('click', function(){
+    modificar_jugada.classList.add("ocultar");
+    box_principal.classList.add("modificando");
+    modificando = true;
+
+});
 
 
     // Función para manejar el clic en los divs
@@ -918,6 +996,124 @@ setInterval(() => {
         orden.value = ordenFormateado;
         console.log(`Número de orden asignado: ${ordenFormateado}`);
     }
+
+    function eliminarJugada(nombreArray: string) {
+    const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
+    const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+
+    // Obtener el número de referencia de la jugada a eliminar
+    const referencia = modificar_reference.value;
+
+    // Buscar la jugada en el array usando el valor de referencia
+    const index = jugadasExistentes.findIndex((jugada: { orden: string; }) => jugada.orden === referencia);
+        console.log(index)
+    // Verificar si la referencia es válida
+    if (index !== -1) {
+        // Obtener la jugada que se va a eliminar
+        const jugadaAEliminar = jugadasExistentes[index];
+
+        // Verificar que la jugada existe
+        if (jugadaAEliminar) {
+            // Determinar si se debe restar un punto al equipo local o visitante
+            if (jugadaAEliminar.tipoPunto === 'Error') {
+                // Si es un error, restar al equipo contrario
+                if (jugadaAEliminar.idEquipo === 'equipo-local') {
+                    VisPuntos = VisPuntos - 1; // Restar un punto al equipo visitante
+                } else {
+                    LocPuntos = LocPuntos - 1; // Restar un punto al equipo local
+                }
+            } else {
+                // Si no es un error, restar al equipo correspondiente
+                if (jugadaAEliminar.idEquipo === 'equipo-local') {
+                    LocPuntos = LocPuntos - 1; // Asegurarse de que no baje de 0
+                } else {
+                    VisPuntos = VisPuntos - 1; // Asegurarse de que no baje de 0
+                }
+            }
+
+            // Eliminar la jugada del array
+            jugadasExistentes.splice(index, 1);
+
+            // Actualizar el localStorage
+            localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+
+            // Actualizar las jugadas restantes
+            for (let i = index; i < jugadasExistentes.length; i++) {
+                // Restar un punto a cada jugada posterior
+                if (jugadaAEliminar.tipoPunto === 'Error') {
+                    if (jugadaAEliminar.idEquipo === "equipo-local") {
+                        console.log("Ejecutado 1")
+                        jugadasExistentes[i].visPuntos =  jugadasExistentes[i].visPuntos - 1;
+                    } else {
+                        console.log("Ejecutado 2")
+                        jugadasExistentes[i].locPuntos =  jugadasExistentes[i].locPuntos - 1;
+                    }
+                } else {
+                    if (jugadaAEliminar.idEquipo === "equipo-local") {
+                        console.log("Ejecutado 3")
+                        jugadasExistentes[i].locPuntos =  jugadasExistentes[i].locPuntos - 1;
+                        
+                    } 
+                    if (jugadaAEliminar.idEquipo === "equipo-visitante"){
+                        console.log("Ejecutado 4")
+                        jugadasExistentes[i].visPuntos =  jugadasExistentes[i].visPuntos - 1;
+                    }
+                }
+                
+            }
+
+            // Guardar los cambios en el localStorage
+            localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+
+            // Eliminar el div correspondiente
+            const divJugada = document.getElementById(`jugada_${modificar_reference.value}`);
+            if (divJugada) {
+                divJugada.remove();
+            }
+
+            // Actualizar los inputs de las jugadas restantes
+            actualizarJugadasRestantes(jugadasExistentes);
+
+            // Actualizar el marcador en el DOM
+            actualizarMarcador();
+        } else {
+            console.error("La jugada a eliminar no existe.");
+        }
+    } else {
+        console.error("Referencia no válida");
+    }
+}
+
+// Función para actualizar los inputs de las jugadas restantes
+function actualizarJugadasRestantes(jugadas: any[]) {
+    jugadas.forEach((jugada, index) => {
+        const locPuntosInput = document.getElementById(`LocPuntos_${jugada.orden}`) as HTMLInputElement;
+        const visPuntosInput = document.getElementById(`VisPuntos_${jugada.orden}`) as HTMLInputElement;
+
+        // Actualizar los inputs de los puntos
+        if (locPuntosInput) {
+            locPuntosInput.value = jugada.locPuntos.toString();
+        }
+        if (visPuntosInput) {
+            visPuntosInput.value = jugada.visPuntos.toString();
+        }
+    });
+}
+
+    function actualizarMarcador() {
+            const marcador = document.getElementById('marcador')!;
+            const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+            const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+            const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+            const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
+
+    if (Marcador_LocPuntos) {
+        Marcador_LocPuntos.textContent = LocPuntos.toString();
+    }
+    if (Marcador_VisPuntos) {
+        Marcador_VisPuntos.textContent = VisPuntos.toString();
+    }
+}
     
 //Recuperar Historial Partido de Local Storage
 function cargarHistorial(nombreArray: string) {
@@ -960,18 +1156,18 @@ function cargarHistorial(nombreArray: string) {
                                 <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
                             </svg>
                         </div>
-                        <p class="text-lg font-semibold">${jugada.nombre}</p>
+                        <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-24 font-semibold bg-transparent" value="${jugada.nombre}" />
                     </div>
                     <div class="flex flex-row items -center px-2 gap-x-1">
-                        <p>${jugada.tipoPunto}</p>
+                        <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${jugada.tipoPunto}" disabled />
                         <span>|</span>
-                        <span>${jugada.tiempo}</span>
+                        <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
                     </div>
                 </div>
                 <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                    <p>${jugada.locPuntos}</p>
+                    <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${jugada.locPuntos}" disabled />
                     <span>-</span>
-                    <p>${jugada.visPuntos}</p>
+                    <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${jugada.visPuntos}" disabled />
                 </div>
                 <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
             `;
@@ -980,13 +1176,13 @@ function cargarHistorial(nombreArray: string) {
             nuevoDiv.id = `jugada_${jugada.orden}`;
             nuevoDiv.innerHTML = `
                 <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                    <p>${jugada.locPuntos}</p>
+                  <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${jugada.locPuntos}" disabled />
                     <span>-</span>
-                    <p>${jugada.visPuntos}</p>
+                    <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${jugada.visPuntos}" disabled />
                 </div>
                 <div>
                     <div class="flex flex-row items-center">
-                        <p class="text-lg font-semibold">${jugada.nombre}</p>
+                        <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-24 font-semibold bg-transparent" value="${jugada.nombre}" />
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
                                 <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
@@ -994,9 +1190,9 @@ function cargarHistorial(nombreArray: string) {
                         </div>
                     </div>
                     <div class="flex flex-row items-center px-2 gap-x-1">
-                        <span>${jugada.tiempo}</span>
+                        <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${jugada.tipoPunto}" disabled />
                         <span>|</span>
-                        <p>${jugada.tipoPunto}</p>
+                        <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
                     </div>
                 </div>
                 <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
@@ -1093,18 +1289,18 @@ function guardarJugada(nombreArray: string) {
                                 <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
                             </svg>
                         </div>
-                        <p class="text-lg font-semibold">${jugada.nombre}</p>
+                        <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-28 font-semibold bg-transparent" value="${jugada.nombre}" />
                     </div>
                     <div class="flex flex-row items -center px-2 gap-x-1">
-                        <p>${jugada.tipoPunto}</p>
+                        <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${jugada.tipoPunto}" disabled />
                         <span>|</span>
-                        <span>${jugada.tiempo}</span>
+                        <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
                     </div>
                 </div>
                 <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                    <p>${LocPuntos}</p>
+                    <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${LocPuntos}" disabled />
                     <span>-</span>
-                    <p>${VisPuntos}</p>
+                    <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${VisPuntos}" disabled />
                 </div>
                 <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
             `;
@@ -1113,13 +1309,13 @@ function guardarJugada(nombreArray: string) {
             nuevoDiv.id = `jugada_${jugada.orden}`;
             nuevoDiv.innerHTML = `
                 <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
-                    <p>${LocPuntos}</p>
+                  <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${LocPuntos}" disabled />
                     <span>-</span>
-                    <p>${VisPuntos}</p>
+                    <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${VisPuntos}" disabled />
                 </div>
                 <div>
                     <div class="flex flex-row items-center">
-                        <p class="text-lg font-semibold">${jugada.nombre}</p>
+                        <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-24 font-semibold bg-transparent" value="${jugada.nombre}" />
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
                                 <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
@@ -1127,9 +1323,9 @@ function guardarJugada(nombreArray: string) {
                         </div>
                     </div>
                     <div class="flex flex-row items-center px-2 gap-x-1">
-                        <span>${jugada.tiempo}</span>
+                        <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${jugada.tipoPunto}" disabled />
                         <span>|</span>
-                        <p>${jugada.tipoPunto}</p>
+                        <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
                     </div>
                 </div>
                 <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
@@ -1142,7 +1338,7 @@ function guardarJugada(nombreArray: string) {
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-verde" viewBox="0 -960 960 960">
                         <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
                     </svg>
-                    <p class="text-sm text-verde">Envio Completado</p>
+                    <p class="text-sm text-verde whitespace-nowrap">Envio Completado</p>
                     <p class="text-sm text-verde">${hora_actual}</p>
                 
                 `;
@@ -1192,7 +1388,7 @@ function guardarConf(nombreArray: string) {
 }
 
 //limpiar storage
-function eliminarJugada(nombreArray: string) {
+function eliminarHistorial(nombreArray: string) {
     // Eliminar el array del localStorage
     localStorage.removeItem(nombreArray);
 }
@@ -1212,16 +1408,35 @@ function guardarInforme() {
     // Recuperar los elementos de los inputs
     const tipo_informe = document.getElementById("tipo_informe") as HTMLInputElement | null;
     const contenido_informe = document.getElementById("contenido_informe") as HTMLInputElement | null;
+    const tipo_informe_suspender = document.getElementById("tipo_informe_suspender") as HTMLInputElement | null;
+    const contenido_informe_sustipo_informe_suspender = document.getElementById("contenido_informe_sustipo_informe_suspender") as HTMLInputElement | null;
+    const culpable_informe = document.getElementById("culpable_informe") as HTMLInputElement;
+    
 
     // Comprobar si los elementos existen
     if (!tipo_informe || !contenido_informe) {
         console.error("Los elementos de entrada no se encontraron.");
         return;
     }
-
+    // Comprobar si los elementos existen
+    if (!tipo_informe_suspender || !contenido_informe_suspender) {
+        console.error("Los elementos de entrada no se encontraron.");
+        return;
+    }
+    let tipo = "";
+    let contenido = "";
+    let culpable = "";
     // Obtener los valores de los inputs
-    const tipo = tipo_informe.value.trim(); // Eliminar espacios en blanco
-    const contenido = contenido_informe.value.trim(); // Eliminar espacios en blanco
+    if(tipo_informe.value === "Informe Generico"){
+      tipo = tipo_informe.value.trim(); // Eliminar espacios en blanco
+      contenido = contenido_informe.value.trim(); // Eliminar espacios en blanco
+    }
+    if(tipo_informe_suspender.value === "Suspender Partido"){
+      tipo = tipo_informe_suspender.value.trim(); // Eliminar espacios en blanco
+      contenido = contenido_informe_suspender.value.trim(); // Eliminar espacios en blanco
+      culpable = culpable_informe.value.trim();
+    }
+    
 
     // Validar que ambos campos no estén vacíos
     if (!tipo || !contenido) {
@@ -1235,7 +1450,8 @@ function guardarInforme() {
     // Crear un nuevo informe
     const nuevoInforme = {
         tipo: tipo,
-        contenido: contenido
+        contenido: contenido,
+        culpable: culpable
     };
 
     // Añadir el nuevo informe al historial
@@ -1247,7 +1463,7 @@ function guardarInforme() {
     // Crear un nuevo div para insertar en lista_informes
     const informeDiv = document.createElement("div");
     informeDiv.className = "w-full border-[1px] bg-gris-claro border-blanco h-20 rounded-lg px-2 py-1";
-    informeDiv.innerHTML = `<p class="text-lg text-accent">${tipo}</p><p class="text-base text-blanco puntos">${contenido}</p>`;
+    informeDiv.innerHTML = `<p class="text-lg text-accent">${tipo} <span class="text-blanco">${culpable}</span></p><p class="text-base text-blanco puntos">${contenido}</p>`;
 
     // Insertar el nuevo div en el contenedor lista_informes
     const listaInformes = document.getElementById("lista_informes");
@@ -1278,15 +1494,146 @@ function recuperarInformes() {
         listaInformes.innerHTML = '';
 
         // Recorrer el array de informes y crear los elementos correspondientes
-        informes.forEach((informe: { tipo: any; contenido: any; }) => {
+        informes.forEach((informe: { tipo: any; contenido: any; culpable: any; }) => {
             const informeDiv = document.createElement("div");
             informeDiv.className = "w-full border-[1px] bg-gris-claro border-blanco h-20 rounded-lg px-2 py-1";
-            informeDiv.innerHTML = `<p class="text-lg text-accent">${informe.tipo}</p><p class="text-base text-blanco puntos">${informe.contenido}</p>`;
+            informeDiv.innerHTML = `<p class="text-lg text-accent">${informe.tipo} <span class="text-blanco">${informe.culpable}</span></p><p class="text-base text-blanco puntos">${informe.contenido}</p>`;
             listaInformes.appendChild(informeDiv);
         });
     } else {
         console.log("No hay informes guardados en el local storage.");
     }
+}
+
+function modificarJugada(nombreArray: string) {
+    const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
+    const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+
+    // Obtener el número de referencia de la jugada a modificar
+    const referencia = modificar_reference.value;
+
+    // Buscar la jugada en el array usando el valor de referencia
+    const index = jugadasExistentes.findIndex((jugada: { orden: string; }) => jugada.orden === referencia);
+    console.log(index);
+    
+    const nombre_jugador = document.getElementById('nombre-jugador') as HTMLInputElement;
+    const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+    const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+
+    const marcador = document.getElementById('marcador')!;
+    const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+    const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+
+    if (index !== -1) { // Verificar si la jugada existe
+        const jugada = jugadasExistentes[index];
+        const locPuntosInput = document.getElementById(`LocPuntos_${referencia}`) as HTMLInputElement;
+        const visPuntosInput = document.getElementById(`VisPuntos_${referencia}`) as HTMLInputElement;
+        const tipoPuntoInput = document.getElementById(`jugada_tipoPunto_${referencia}`) as HTMLInputElement;
+        const NombreInput = document.getElementById(`jugada_nombre_${referencia}`) as HTMLInputElement;
+
+        // Modificar la jugada
+        tipoPuntoInput.value = tipo_punto.value;
+        NombreInput.value = nombre_jugador.value;
+
+        // Si la jugada es del mismo equipo
+        if (jugada.idEquipo === id_equipo.value) {
+            if (tipo_punto.value === "Error") {
+                if (jugada.tipoPunto !== tipo_punto.value) {
+                    if (id_equipo.value === "equipo-local") {
+                        locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                        visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                        LocPuntos = LocPuntos - 1;
+                        VisPuntos = VisPuntos + 1;
+                    } else {
+                        locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                        visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                        LocPuntos = LocPuntos + 1;
+                        VisPuntos = VisPuntos - 1;
+                    }
+                }
+            }
+        }
+
+        // Actualizar el array de jugadas
+        jugadasExistentes[index] = {
+            ...jugada,
+            nombre: nombre_jugador.value,
+            tipoPunto: tipo_punto.value,
+            locPuntos: locPuntosInput.value, 
+            visPuntos: visPuntosInput.value
+        };
+
+
+
+        // Guardar los cambios en el localStorage
+        localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+        
+        
+        const jugadaAModificar = jugadasExistentes[index];
+
+            // Modificar la jugada
+            jugadasExistentes.splice(index, 1);
+
+            // Actualizar las jugadas restantes
+            for (let i = index; i < jugadasExistentes.length; i++) {
+                // Restar un punto a cada jugada posterior
+                if (jugadaAModificar.tipoPunto === 'Error') {
+                    if (jugadaAModificar.idEquipo === "equipo-local") {
+                        console.log("Ejecutado 1");
+                        jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos || 0) + 1; // Asegúrate de que visPuntos esté definido
+                        jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos || 0) - 1;
+                    } else {
+                        console.log("Ejecutado 2");
+                        jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos || 0) + 1; // Asegúrate de que locPuntos esté definido
+                        jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos || 0) - 1; // Asegúrate de que visPuntos esté definido
+                    }
+                } else {
+                    
+                }
+
+                console.log(jugadasExistentes)
+            }
+
+            // Guardar los cambios en el localStorage
+            // localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+    
+
+    actualizarJugadasRestantes(jugadasExistentes);
+        // Actualizar los marcadores
+        if (Marcador_LocPuntos) {
+            Marcador_LocPuntos.textContent = LocPuntos.toString();
+        }
+        if (Marcador_VisPuntos) {
+            Marcador_VisPuntos.textContent = VisPuntos.toString();
+        }
+    }
+
+    // Reiniciar campos
+    paso_tipo = 0; // Reiniciar pasos si es necesario
+    paso_jugador = 0;
+    nombre_jugador.value = '';
+    id_equipo.value = '';
+    tipo_punto.value = '';
+    tiempo.value = '';
+    orden.value = '';
+    modificando = false;
+    box_principal.classList.remove("modificando");
+
+    // Limpiar selecciones
+    const selectedElements = document.querySelectorAll('.selected');
+    selectedElements.forEach(element => {
+        element.classList.remove('selected');
+    });
+    const selectedtipos = document.querySelectorAll('.selected-tipo');
+    selectedtipos.forEach(element => {
+        element.classList.remove('selected-tipo');
+    });
+
+    const selectedJugada = document.querySelectorAll('.bg-azul-suave');
+    selectedJugada.forEach(element => {
+        element.classList.remove('bg-azul-suave');
+        element.classList.add('bg-gris-claro');
+    });
 }
 
 })
@@ -1344,5 +1691,11 @@ function recuperarInformes() {
 /* Para Internet Explorer y Edge */
 .scrollbar-fina {
     -ms-overflow-style: -ms-autohiding-scrollbar; /* Estilo de scrollbar autohide */
+}
+
+.modificando {
+    -webkit-box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+-moz-box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
 }
 </style>
