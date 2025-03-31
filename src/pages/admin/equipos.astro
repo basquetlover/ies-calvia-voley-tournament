@@ -52,7 +52,7 @@ try {
 const userHasAccess = accessibleBlocks.includes(pathname);
 
 let equiposSS = 0;
-
+let equipossTotal = 0;
 const { data: equipos, error } = await supabaseAdmin
   .from('EquiposSS')
   .select('id')
@@ -64,9 +64,19 @@ if (error) {
 } else if (!equipos || equipos.length === 0) {
   console.log('No se encontraron equipos');
 } else {
-    equiposSS = equipos.length;
+    equipossTotal = equipos.length;
   console.log(`Se encontraron ${equipos.length} equipos`);
 }
+
+const { data: equiposNumero, error: errorNumero } = await supabaseAdmin
+  .from('EquiposSS')
+  .select('id')
+  .eq('aceptado', 'Inscrit')
+  .order('id', { ascending: true });
+
+  if(equiposNumero){
+    equiposSS = equiposNumero.length;
+  }
 ---
 <LayoutAll title="Gestionar Equipos">
     {userHasAccess ? (
@@ -84,7 +94,7 @@ if (error) {
           Equipos inscritos 
         </h2> 
         <h2 class="ml-10 text-accent font-bold text-5xl">
-          Equipos Semana Santa <span class="text-amarillo">{equiposSS}</span>
+          Equipos Semana Santa <span class="text-amarillo">{equiposSS} <span class="text-3xl">/ {equipossTotal}</span></span>
         </h2>
         <EquiposListSS />
         <h2 class="ml-10 text-accent font-bold text-5xl">
