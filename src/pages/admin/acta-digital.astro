@@ -444,15 +444,29 @@ document.addEventListener('DOMContentLoaded', () => {
   let VisPuntosUltimaJugada = "0";
   let LocSetUltimaJugada = "0";
   let VisSetUltimaJugada = "0";
+  let tipoPuntoUltimaJugada = "";
+
+  let ModificarHasta = -100;
 
   let modificando = false;
+  let FinSet = false;
 
- 
+
   //Marcador Variables
   let LocPuntos = 0;
   let LocSets = 0;
   let VisPuntos = 0;
   let VisSets = 0;
+
+    //Set 1
+    let LocSet1 = 0;
+    let VisSet1 = 0;
+    //Set 2
+    let LocSet2 = 0;
+    let VisSet2 = 0;
+    //Set 3
+    let LocSet3 = 0;
+    let VisSet3 = 0;
 
   let conf_puntos = 10;
   let conf_dif_puntos = 0;
@@ -480,6 +494,15 @@ salir.addEventListener('click', () => {
 
 //enviar informacion
   function enviar() {
+    const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+                const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+
+
+                const marcador = document.getElementById('marcador')!;
+                const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+                const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+                const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+                const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
         // Aquí puedes realizar la acción que desees
         console.log("Enviando datos porque pasos es igual a 2");
         const selectedElements = document.querySelectorAll('.selected');
@@ -497,6 +520,55 @@ salir.addEventListener('click', () => {
         paso_tipo = 0; // Reiniciar pasos si es necesario
         paso_jugador = 0;
         guardarJugada('partido_ejemplo');
+
+        if(LocSets + VisSets < 2){
+                    console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
+                    console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
+                    if(LocPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
+                        LocSets++;
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                        if(LocPuntos + VisPuntos === 0){
+                            LocSet1 = LocPuntos;
+                            VisSet1 = VisPuntos;
+                        }
+                        FinSet = true;
+                        tipo_punto.value = "FinSet";
+                        asignarOrden()
+                        ModificarHasta = Number(orden.value);
+                        console.log(ModificarHasta);
+                        guardarJugada('partido_ejemplo');
+                    }
+                    if(VisPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
+                        VisSets++;
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                        LocPuntos = 0;
+                        VisPuntos = 0;
+                        guardarJugada('partido_ejemplo');
+                    }
+                } else {
+                    if(LocPuntos === conf_puntos_extra){
+                        LocSets++;
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                        LocPuntos = 0;
+                        VisPuntos = 0;
+                        guardarJugada('partido_ejemplo');
+                    }
+                    if(VisPuntos === conf_puntos_extra){
+                        VisSets++;
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                        LocPuntos = 0;
+                        VisPuntos = 0;
+                        guardarJugada('partido_ejemplo');
+                    }
+        }
     
 }
 
@@ -531,43 +603,7 @@ salir.addEventListener('click', () => {
                     VisPuntos ++;
                     Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
                 }
-                if(LocSets + VisSets < 2){
-                    console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
-                    console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
-                    if(LocPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
-                        LocSets++;
-                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
-                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
-                        Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
-                        LocPuntos = 0;
-                        VisPuntos = 0;
-                    }
-                    if(VisPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
-                        VisSets++;
-                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
-                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
-                        Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
-                        LocPuntos = 0;
-                        VisPuntos = 0;
-                    }
-                } else {
-                    if(LocPuntos === conf_puntos_extra){
-                        LocSets++;
-                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
-                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
-                        Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
-                        LocPuntos = 0;
-                        VisPuntos = 0;
-                    }
-                    if(VisPuntos === conf_puntos_extra){
-                        VisSets++;
-                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
-                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
-                        Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
-                        LocPuntos = 0;
-                        VisPuntos = 0;
-                    }
-                }
+                
                 
 
                 enviar();
@@ -849,7 +885,7 @@ function addEventListenersToDiv(div: HTMLDivElement) {
         isLongPress = false;
         pulsando = window.setTimeout(() => {
             isLongPress = true;
-            handleDivClick(div.id);
+            handleDivClick(div.id); // Ejecuta
         }, 500);
     });
 
@@ -871,7 +907,7 @@ div.addEventListener('touchstart', () => {
     isLongPress = false;
     pulsando = window.setTimeout(() => {
         isLongPress = true;
-        handleDivClick(div.id);
+        handleDivClick(div.id); // Ejecuta
     }, 500);
 });
 
@@ -1003,8 +1039,8 @@ btn_modificar_jugada.addEventListener('click', function(){
 
     // Obtener el número de referencia de la jugada a eliminar
     const referencia = modificar_reference.value;
-
-    // Buscar la jugada en el array usando el valor de referencia
+    if(Number(referencia) > ModificarHasta){
+        // Buscar la jugada en el array usando el valor de referencia
     const index = jugadasExistentes.findIndex((jugada: { orden: string; }) => jugada.orden === referencia);
         console.log(index)
     // Verificar si la referencia es válida
@@ -1018,16 +1054,31 @@ btn_modificar_jugada.addEventListener('click', function(){
             if (jugadaAEliminar.tipoPunto === 'Error') {
                 // Si es un error, restar al equipo contrario
                 if (jugadaAEliminar.idEquipo === 'equipo-local') {
-                    VisPuntos = VisPuntos - 1; // Restar un punto al equipo visitante
+                    if(VisPuntos > 0){
+                            VisPuntos = VisPuntos - 1;
+                           
+                        }
+                    
                 } else {
-                    LocPuntos = LocPuntos - 1; // Restar un punto al equipo local
+                    if(LocPuntos > 0){
+                           
+                            LocPuntos = LocPuntos - 1;
+                        }
+                    
                 }
             } else {
                 // Si no es un error, restar al equipo correspondiente
                 if (jugadaAEliminar.idEquipo === 'equipo-local') {
-                    LocPuntos = LocPuntos - 1; // Asegurarse de que no baje de 0
+                    if(LocPuntos > 0){
+                           
+                            LocPuntos = LocPuntos - 1;
+                        }
                 } else {
-                    VisPuntos = VisPuntos - 1; // Asegurarse de que no baje de 0
+                    if(VisPuntos > 0){
+                            VisPuntos = VisPuntos - 1;
+                            
+                        }
+                   
                 }
             }
 
@@ -1043,20 +1094,32 @@ btn_modificar_jugada.addEventListener('click', function(){
                 if (jugadaAEliminar.tipoPunto === 'Error') {
                     if (jugadaAEliminar.idEquipo === "equipo-local") {
                         console.log("Ejecutado 1")
-                        jugadasExistentes[i].visPuntos =  jugadasExistentes[i].visPuntos - 1;
+                        if(jugadasExistentes[i].visPuntos > 0){
+                            jugadasExistentes[i].visPuntos =  jugadasExistentes[i].visPuntos - 1;
+                        }
+                        
                     } else {
                         console.log("Ejecutado 2")
-                        jugadasExistentes[i].locPuntos =  jugadasExistentes[i].locPuntos - 1;
+                        if(jugadasExistentes[i].locPuntos > 0){
+                            jugadasExistentes[i].locPuntos =  jugadasExistentes[i].locPuntos - 1;
+                        }
+                        
                     }
                 } else {
                     if (jugadaAEliminar.idEquipo === "equipo-local") {
                         console.log("Ejecutado 3")
-                        jugadasExistentes[i].locPuntos =  jugadasExistentes[i].locPuntos - 1;
+                        if(jugadasExistentes[i].locPuntos > 0){
+                            jugadasExistentes[i].locPuntos =  jugadasExistentes[i].locPuntos - 1;
+                        }
+                        
                         
                     } 
                     if (jugadaAEliminar.idEquipo === "equipo-visitante"){
                         console.log("Ejecutado 4")
-                        jugadasExistentes[i].visPuntos =  jugadasExistentes[i].visPuntos - 1;
+                        if(jugadasExistentes[i].visPuntos > 0){
+                         jugadasExistentes[i].visPuntos =  jugadasExistentes[i].visPuntos - 1;
+                        }
+                        
                     }
                 }
                 
@@ -1082,6 +1145,8 @@ btn_modificar_jugada.addEventListener('click', function(){
     } else {
         console.error("Referencia no válida");
     }
+    }
+    
 }
 
 // Función para actualizar los inputs de las jugadas restantes
@@ -1126,15 +1191,20 @@ function cargarHistorial(nombreArray: string) {
     if (jugadasExistentes.length > 0) {
         ordenes = jugadasExistentes.map((jugada: { orden: string; }) => jugada.orden);
         // Extraer el tiempo de la última jugada
-         tiempoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tiempo;
+        tipoPuntoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tipoPunto;
+        if(tipoPuntoUltimaJugada !== "FinSet"){
+            tiempoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tiempo;
+        }
+         
          LocPuntosUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].locPuntos;
          VisPuntosUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].visPuntos;
          LocSetUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].locSet;
          VisSetUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].visSet;
+         
         jugadasExistentes.forEach((jugada: { idEquipo: string; nombre: any; tipoPunto: any; tiempo: any; orden: any; locPuntos: string; visPuntos: string; locSet: number; visSet: number; }) => {
             const nuevoDiv = document.createElement('div');
 
-            if(Number(jugada.locPuntos) === 0 && Number(jugada.visPuntos) === 0){
+            if(jugada.tipoPunto === "FinSet"){
         nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_auto] border-blanco border-y-[1px] border-l-[1px] items-center";
         nuevoDiv.id = `jugada_${jugada.orden}`;
         nuevoDiv.innerHTML = `
@@ -1216,13 +1286,17 @@ function cargarHistorial(nombreArray: string) {
         const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
         const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
         const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
-        Marcador_LocPuntos.textContent = LocPuntosUltimaJugada;
-        Marcador_VisPuntos.textContent = VisPuntosUltimaJugada;
+        
+        
         Marcador_LocSets.textContent = LocSetUltimaJugada;
         Marcador_VisSets.textContent = VisSetUltimaJugada;
-         LocPuntos = Number(LocPuntosUltimaJugada);
+        if(tipoPuntoUltimaJugada !== "FinSet"){
+            Marcador_LocPuntos.textContent = LocPuntosUltimaJugada;
+            Marcador_VisPuntos.textContent = VisPuntosUltimaJugada;
+            LocPuntos = Number(LocPuntosUltimaJugada);
+            VisPuntos = Number(VisPuntosUltimaJugada);
+        }
          LocSets = Number(LocSetUltimaJugada);
-         VisPuntos = Number(VisPuntosUltimaJugada);
          VisSets = Number(VisSetUltimaJugada);
 
 
@@ -1267,7 +1341,7 @@ function guardarJugada(nombreArray: string) {
     const nuevoDiv = document.createElement('div');
     const CofirmacionDiv = document.createElement('div');
     const hora_actual = obtenerHoraActual();
-    if(LocPuntos === 0 && VisPuntos === 0){
+    if(FinSet === true){
         nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_auto] border-blanco border-y-[1px] border-l-[1px] items-center";
         nuevoDiv.id = `jugada_${jugada.orden}`;
         nuevoDiv.innerHTML = `
@@ -1276,6 +1350,9 @@ function guardarJugada(nombreArray: string) {
             </div>
             <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
         `;
+        LocPuntos = 0;
+        VisPuntos = 0;
+        FinSet = false;
     }else{
         // Asignar las clases y contenido según el equipo
         if (jugada.idEquipo === 'equipo-local') {
@@ -1511,8 +1588,8 @@ function modificarJugada(nombreArray: string) {
 
     // Obtener el número de referencia de la jugada a modificar
     const referencia = modificar_reference.value;
-
-    // Buscar la jugada en el array usando el valor de referencia
+    if(Number(referencia) > ModificarHasta){
+        // Buscar la jugada en el array usando el valor de referencia
     const index = jugadasExistentes.findIndex((jugada: { orden: string; }) => jugada.orden === referencia);
     console.log(index);
     
@@ -1530,27 +1607,176 @@ function modificarJugada(nombreArray: string) {
         const visPuntosInput = document.getElementById(`VisPuntos_${referencia}`) as HTMLInputElement;
         const tipoPuntoInput = document.getElementById(`jugada_tipoPunto_${referencia}`) as HTMLInputElement;
         const NombreInput = document.getElementById(`jugada_nombre_${referencia}`) as HTMLInputElement;
-
-        // Modificar la jugada
-        tipoPuntoInput.value = tipo_punto.value;
+        let jugadaAModificar_tipoPunto = tipoPuntoInput.value;
+     // Modificar la jugada
+      tipoPuntoInput.value = tipo_punto.value;
         NombreInput.value = nombre_jugador.value;
 
-        // Si la jugada es del mismo equipo
+        
+        // Actualizar puntos
         if (jugada.idEquipo === id_equipo.value) {
             if (tipo_punto.value === "Error") {
                 if (jugada.tipoPunto !== tipo_punto.value) {
                     if (id_equipo.value === "equipo-local") {
-                        locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                        
                         visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
-                        LocPuntos = LocPuntos - 1;
+                        if(LocPuntos > 0){
+                            locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                            LocPuntos = LocPuntos - 1;
+                        }
+                       
                         VisPuntos = VisPuntos + 1;
                     } else {
                         locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
-                        visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                        
                         LocPuntos = LocPuntos + 1;
-                        VisPuntos = VisPuntos - 1;
+                        if(VisPuntos > 0){
+                            VisPuntos = VisPuntos - 1;
+                            visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                        }
+                        
                     }
                 }
+            } else {
+                if (jugada.tipoPunto === "Error" && tipo_punto.value !== "Error") {
+                    if (id_equipo.value === "equipo-local") {
+                        locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                       
+                        LocPuntos = LocPuntos + 1;
+                        if(VisPuntos > 0){
+                            VisPuntos = VisPuntos - 1;
+                            visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                        }
+                       
+                    } else {
+                        
+                        visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                        if(LocPuntos > 0){
+                            locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                            LocPuntos = LocPuntos - 1;
+                        }
+                        VisPuntos = VisPuntos + 1;
+                    }
+                }
+            }
+        } else{
+
+            if(id_equipo.value === "equipo-local"){
+                if (tipo_punto.value === "Error") {
+                    if (jugada.tipoPunto !== tipo_punto.value) {
+                        
+                            //locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                            //visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                            //LocPuntos = LocPuntos - 1;
+                            //VisPuntos = VisPuntos + 1;
+                            console.log("Ejecutado 8")
+                     } else {
+                        if(LocPuntos > 0){
+                            locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                            LocPuntos = LocPuntos - 1;
+                        }
+                        
+
+                        visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                        VisPuntos = VisPuntos + 1;
+                        console.log("Ejecutado 8")
+                }
+                } else {
+                    
+                            locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                            
+                            LocPuntos = LocPuntos + 1;
+                            if(VisPuntos > 0){
+                            VisPuntos = VisPuntos - 1;
+                            visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                        }
+                           
+                            console.log("Ejecutado 9")
+                    
+                }
+                const nuevoDiv = document.getElementById(`jugada_${referencia}`)!;
+                
+                nuevoDiv.innerHTML = `
+                <div>
+                    <div class="flex flex-row items-center">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                            </svg>
+                        </div>
+                        <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-28 font-semibold bg-transparent" value="${nombre_jugador.value}" />
+                    </div>
+                    <div class="flex flex-row items -center px-2 gap-x-1">
+                        <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${tipo_punto.value}" disabled />
+                        <span>|</span>
+                        <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
+                    </div>
+                </div>
+                <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                    <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${LocPuntos}" disabled />
+                    <span>-</span>
+                    <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${VisPuntos}" disabled />
+                </div>
+                <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+            `;
+            } else{
+                if (tipo_punto.value === "Error") {
+                    if (jugada.tipoPunto !== tipo_punto.value) {
+                        
+                            //locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                            //visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                            //LocPuntos = LocPuntos + 1;
+                            //VisPuntos = VisPuntos - 1;
+                            console.log("Ejecutado 8")
+                    }else {
+                        
+                        locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                        LocPuntos = LocPuntos + 1;
+                        if(VisPuntos > 0){
+                            VisPuntos = VisPuntos - 1;
+                            visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                        }
+                        
+                        console.log("Ejecutado 8")
+                }
+                } else {
+                    
+                            
+                            visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                            if(LocPuntos > 0){
+                            locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                            LocPuntos = LocPuntos - 1;
+                        }
+                           
+                            VisPuntos = VisPuntos + 1;
+                            console.log("Ejecutado 9")
+                    
+                }
+                const nuevoDiv = document.getElementById(`jugada_${referencia}`)!;
+                
+                nuevoDiv.innerHTML = `
+                <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                  <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${LocPuntos}" disabled />
+                    <span>-</span>
+                    <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${VisPuntos}" disabled />
+                </div>
+                <div>
+                    <div class="flex flex-row items-center">
+                        <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-24 font-semibold bg-transparent" value="${nombre_jugador.value}" />
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center px-2 gap-x-1">
+                        <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${tipo_punto.value}" disabled />
+                        <span>|</span>
+                        <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
+                    </div>
+                </div>
+                <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+            `;
             }
         }
 
@@ -1559,46 +1785,45 @@ function modificarJugada(nombreArray: string) {
             ...jugada,
             nombre: nombre_jugador.value,
             tipoPunto: tipo_punto.value,
-            locPuntos: locPuntosInput.value, 
-            visPuntos: visPuntosInput.value
+            locPuntos: Number(locPuntosInput.value), 
+            visPuntos: Number(visPuntosInput.value),
+            idEquipo: id_equipo.value
         };
+        const jugadaAModificar = jugadasExistentes[index];
 
-
+        // Actualizar las jugadas posteriores
+        for (let i = index + 1; i < jugadasExistentes.length; i++) {
+            //const jugadaPosterior = jugadasExistentes[i];
+            if(tipo_punto.value !== jugadaAModificar_tipoPunto){
+                if (tipo_punto.value === 'Error') {
+                    if (jugada.idEquipo === "equipo-local") {
+                        jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) + 1;
+                        jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) - 1;
+                    } else {
+                        jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) + 1;
+                        jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) - 1;
+                    }
+                }else {
+                    if (jugada.tipoPunto === "Error" && tipo_punto.value !== "Error") {
+                        if (jugada.idEquipo === "equipo-local") {
+                        jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) - 1;
+                        jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) + 1;
+                    } else {
+                        jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) - 1;
+                        jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) + 1;
+                    }
+                    }
+                }
+            }
+            
+        }
 
         // Guardar los cambios en el localStorage
         localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
-        
-        
-        const jugadaAModificar = jugadasExistentes[index];
-
-            // Modificar la jugada
-            jugadasExistentes.splice(index, 1);
-
-            // Actualizar las jugadas restantes
-            for (let i = index; i < jugadasExistentes.length; i++) {
-                // Restar un punto a cada jugada posterior
-                if (jugadaAModificar.tipoPunto === 'Error') {
-                    if (jugadaAModificar.idEquipo === "equipo-local") {
-                        console.log("Ejecutado 1");
-                        jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos || 0) + 1; // Asegúrate de que visPuntos esté definido
-                        jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos || 0) - 1;
-                    } else {
-                        console.log("Ejecutado 2");
-                        jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos || 0) + 1; // Asegúrate de que locPuntos esté definido
-                        jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos || 0) - 1; // Asegúrate de que visPuntos esté definido
-                    }
-                } else {
-                    
-                }
-
-                console.log(jugadasExistentes)
-            }
-
-            // Guardar los cambios en el localStorage
-            // localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
     
 
     actualizarJugadasRestantes(jugadasExistentes);
+
         // Actualizar los marcadores
         if (Marcador_LocPuntos) {
             Marcador_LocPuntos.textContent = LocPuntos.toString();
@@ -1634,6 +1859,8 @@ function modificarJugada(nombreArray: string) {
         element.classList.remove('bg-azul-suave');
         element.classList.add('bg-gris-claro');
     });
+    }
+    
 }
 
 })
