@@ -38,7 +38,7 @@ const { data: StaffData, error: fetchOwnerError } = await supabaseAdmin
 if(StaffData){
     TotalStaff = StaffData.length;
 }
-const { data: ProfesoresData, error: fetchOwnerError } = await supabaseAdmin
+const { data: ProfesoresData, error: fetchProfesoresError } = await supabaseAdmin
         .from("Administradores")
         .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
         .eq('curso', 'Professor');
