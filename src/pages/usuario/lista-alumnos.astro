@@ -22,6 +22,7 @@ let Total1Bat = 0;
 let Total4Eso = 0;
 let Total3Eso = 0;
 let TotalFp = 0;
+let TotalProfesores = 0;
 const { data: Equipos, error: EquiposError } = await supabaseAdmin
     .from("EquiposSS")
     .select("id")
@@ -36,6 +37,13 @@ const { data: StaffData, error: fetchOwnerError } = await supabaseAdmin
         .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E']);
 if(StaffData){
     TotalStaff = StaffData.length;
+}
+const { data: ProfesoresData, error: fetchOwnerError } = await supabaseAdmin
+        .from("Administradores")
+        .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
+        .eq('curso', 'Professor');
+if(ProfesoresData){
+    TotalProfesores = ProfesoresData.length;
 }
 const { data: VoluntarioData, error: fetchVoluntarioError } = await supabaseAdmin
         .from("Administradores")
@@ -329,6 +337,41 @@ let TotalAlumnos = TotalStaff + TotalVoluntarios2 + TotalVoluntarios1 + Total2Ba
                     
                     {JugadorFPData ? (
                         JugadorFPData.map((user, index) => (
+                        <tr class="border-b-2 border-accent">
+                            <td class="w-max" translate="no">
+                                {user.nombre}
+                            </td>
+                            
+                            <td class="w-max">
+                                {user._1r_apellido} {user._2n_apellido}
+                            </td>
+        
+                            <td class="text-center w-max">
+                                {user.curso}
+                            </td>
+                        </tr>
+                        
+                    ))
+                        ) : (
+                        <p class="text-center text-blanco text-base">No hi ha alumnes</p>
+                            
+                        )}
+                    </table>
+
+                 
+                </div>
+
+                {/* Profesores */}
+                <div class="w-[400px] h-max bg-gris-claro rounded-lg px-2 relative">
+                    <span class="text-xl text-blanco absolute top-1 left-1">Total Professors: {TotalProfesores}</span>
+                    <h2 class="text-center text-amarillo font-bold text-4xl mt-10">
+                        Professor
+                    </h2>
+                    <table class="text-base text-blanco font-normal max-w-3xl w-full h-auto my-2 border-spacing-y-8">
+                    <tr><td><h4 class="text-accent font-bold text-3xl my-2">Nom</h4></td>    <td><h4 class="text-center text-accent font-bold text-3xl my-2">Llinatge</h4></td> <td><h4 class="text-center text-accent font-bold text-3xl my-2">Curs</h4></td></tr>
+                    
+                    {ProfesoresData ? (
+                        ProfesoresData.map((user, index) => (
                         <tr class="border-b-2 border-accent">
                             <td class="w-max" translate="no">
                                 {user.nombre}
