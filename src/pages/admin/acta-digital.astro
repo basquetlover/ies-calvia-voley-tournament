@@ -226,12 +226,12 @@ const PUNTOS = [
                         </defs>
                         </svg>
                     </div>
-                    <a id="salir" href="/admin" class="w-14 h-14">
+                    <div id="salir" class="w-14 h-14 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
                             <rect width="100" height="100" fill="#EB4335" rx="10"/>
                             <path fill="#6B0014" d="m47 53 2-1 1-2-1-2-2-1-2 1-1 2 1 2 2 1ZM36 75v-6l17-2V36l-1-2-1-1-15-2v-6l15 3a8 8 0 0 1 7 8v35l-22 4Zm-11 0v-6h6V31l1-4 4-2h28l4 2 1 4v38h6v6H25Zm11-6h28V31H36v38Z"/>
                         </svg>
-                    </a>
+                    </div>
                 </div>
                 
              </div>
@@ -420,8 +420,114 @@ const PUNTOS = [
                 
             </div>   
         </div>
+
+        {/*Confirmar Eliminar Jugada */}
+        <div id="div_eliminar_jugada"  class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
+            <div class="w-96 h-52 bg-gris rounded-lg">
+                <h2 class="text-4xl text-center text-amarillo">¿Estas seguro de eliminar la jugada?</h2>
+                <div class="w-full flex flex-wrap items-center place-content-around mt-5">
+                    <div id="cancelar_eliminar" class="cursor-pointer text-lg font-semibold rounded-md px-3 py-2 bg-rojo text-blanco">Cancelar</div>
+                    <div id="confirmar_eliminar" class="cursor-pointer text-lg font-semibold rounded-md px-3 py-2 bg-verde text-blanco">Confirmar</div>
+                </div>
+            </div>
+            
+        </div>
+
+        {/*Confirmar Eliminar Jugada */}
+        <div id="div_confirmar_set"  class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
+            <div id="fondo_confirmar_set" class="w-full h-full absolute top-0 z-0 left-0 ">
+            </div>
+            <div class="w-96 h-40 bg-gris rounded-lg flex flex-col items-center place-content-center gap-y-4 z-10">
+                <input id="confirmar_set_value" disabled type="text" class="w-full text-4xl bg-transparent text-center text-amarillo" />
+                <div class="w-full flex flex-wrap items-center place-content-around ">
+                    
+                    <div id="confirmar_set" class="cursor-pointer text-lg font-semibold rounded-md px-3 py-2 bg-verde text-blanco">OK</div>
+                </div>
+            </div>
+            
+        </div>
+
+        {/*Resumen Partido */}
+        <div id="resumen_partido" class="w-full h-full bg-gris absolute top-0 left-0 border-accent border-2 ocultar">
+
+            <div class="w-full grid grid-cols-2 place-items-center mt-8">
+                <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
+                    <div class="flex items-center place-content-center">
+                        <p class="text-4xl text-accent font-semibold">Nombre Equipo 1</p>
+                    </div>
+                    <div class="w-max h-max">
+                        <img src="/img/escudos/sin-escudo.png" class="w-16 h-16" />
+                    </div>
+
+                    <input id="resultado_final_local" class="w-10 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                </div>
+
+                <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
+                    <input id="resultado_final_visitante" class="w-10 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    <div class="w-max h-max">
+                        <img src="/img/escudos/sin-escudo.png" class="w-16 h-16" />
+                    </div>
+                    <div class="flex items-center place-content-center">
+                        <p class="text-4xl text-accent font-semibold">Nombre Equipo 1</p>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="w-full grid grid-cols-2 place-items-center mt-10">
+                <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-5">
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Set 1</p>
+                        <input id="resultado_set1_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Set 2</p>
+                        <input id="resultado_set2_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Extra Set</p>
+                        <input id="resultado_set3_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                </div>
+
+                <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-5">
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Extra Set</p>
+                        <input id="resultado_set3_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Set 2</p>
+                        <input id="resultado_set2_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Set 1</p>
+                        <input id="resultado_set1_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div> 
+                </div>
+            </div>
+
+            <div class="w-[90%] h-[2px] bg-accent mx-auto my-10 rounded-full"></div>
+
+            <div class=" my-auto h-72 w-full grid grid-cols-2 place-items-center">
+                <div class="w-full h-full flex-col items-center place-content-center space-y-4">
+                    <h2 class="text-azul-suave text-3xl font-semibold text-center">Arbitros Designados</h2>
+                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Arbitro:</span> Ricardo</p>
+                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Oficial 1:</span> Marina</p>
+                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Oficial 2:</span> Saray</p>
+                </div>
+                <div class="w-full h-full flex-col items-center place-content-center space-y-4">
+                    <p class="text-sm text-naranja bg-naranja-claro p-2 rounded-lg w-[80%] mx-auto">Una vez finalizado el partido del todo, no se podra realizar ninguna modificacion sin la autorizacion de un staff autorizado (Pere Alemany o Santino Bonavera)</p>
+                    <p class="text-3xl text-accent text-center">Finalizar el Partido de Prueba</p>
+                    <div class="w-full flex flex-wrap items-center place-content-around">
+                        <div id="volver_acta" class="text-xl cursor-pointer font-semibold px-3 py-2 rounded-2xl bg-gris-claro text-blanco">Volver a la Acta</div>
+                        <a href="/admin/designaciones" id="final_definitivo" class="text-xl font-semibold px-3 py-2 rounded-2xl bg-rojo-claro text-rojo">Cerrar Partido</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
     </section>
-    
+
     </>
    
 ) : (
@@ -446,7 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let VisSetUltimaJugada = "0";
   let tipoPuntoUltimaJugada = "";
 
-  let ModificarHasta = -100;
+  let ModificarHasta = -100000000000;
 
   let modificando = false;
   let FinSet = false;
@@ -489,7 +595,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 salir.addEventListener('click', () => {
-    eliminarHistorial('partido_ejemplo');
+    FinalPartido();
+    
 });
 
 //enviar informacion
@@ -522,6 +629,10 @@ salir.addEventListener('click', () => {
         guardarJugada('partido_ejemplo');
 
         if(LocSets + VisSets < 2){
+            const div_confirmar_set = document.getElementById('div_confirmar_set')!;
+            const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
+            const confirmar_set = document.getElementById('confirmar_set')!;
+            const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
                     console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
                     console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
                     if(LocPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
@@ -529,44 +640,118 @@ salir.addEventListener('click', () => {
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
-                        if(LocPuntos + VisPuntos === 0){
+                        if(LocSets + VisSets === 1){
                             LocSet1 = LocPuntos;
                             VisSet1 = VisPuntos;
                         }
+                        if(LocSets + VisSets === 2){
+                            LocSet2 = LocPuntos;
+                            VisSet2 = VisPuntos;
+                        }
+                        confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                        div_confirmar_set.classList.remove('ocultar');
+                        fondo_confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
                         FinSet = true;
                         tipo_punto.value = "FinSet";
                         asignarOrden()
                         ModificarHasta = Number(orden.value);
                         console.log(ModificarHasta);
                         guardarJugada('partido_ejemplo');
+
+                        if(LocSets - VisSets === 2 || LocSets - VisSets === -2){
+                            FinalPartido();
+                        }
                     }
                     if(VisPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
                         VisSets++;
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
-                        LocPuntos = 0;
-                        VisPuntos = 0;
+                        if(LocSets + VisSets === 1){
+                            LocSet1 = LocPuntos;
+                            VisSet1 = VisPuntos;
+                        }
+                        if(LocSets + VisSets === 2){
+                            LocSet2 = LocPuntos;
+                            VisSet2 = VisPuntos;
+                        }
+                        confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                        div_confirmar_set.classList.remove('ocultar');
+                        fondo_confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        FinSet = true;
+                        tipo_punto.value = "FinSet";
+                        asignarOrden()
+                        ModificarHasta = Number(orden.value);
+                        console.log(ModificarHasta);
                         guardarJugada('partido_ejemplo');
+                        if(LocSets - VisSets === 2 || LocSets - VisSets === -2){
+                            FinalPartido();
+                        }
                     }
                 } else {
-                    if(LocPuntos === conf_puntos_extra){
+                    const div_confirmar_set = document.getElementById('div_confirmar_set')!;
+                    const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
+                    const confirmar_set = document.getElementById('confirmar_set')!;
+                    const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
+                    if(LocPuntos === conf_puntos_extra && (LocPuntos - VisPuntos) !== conf_dif_puntos_extra){
                         LocSets++;
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
-                        LocPuntos = 0;
-                        VisPuntos = 0;
+                        LocSet3 = LocPuntos;
+                        VisSet3 = VisPuntos;
+
+                        confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                        div_confirmar_set.classList.remove('ocultar');
+                        fondo_confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        FinSet = true;
+                        tipo_punto.value = "FinSet";
+                        asignarOrden()
+                        ModificarHasta = Number(orden.value);
+                        console.log(ModificarHasta);
                         guardarJugada('partido_ejemplo');
+
+                        FinalPartido();
                     }
-                    if(VisPuntos === conf_puntos_extra){
+                    if(VisPuntos === conf_puntos_extra && (LocPuntos - VisPuntos) !== conf_dif_puntos_extra){
                         VisSets++;
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
-                        LocPuntos = 0;
-                        VisPuntos = 0;
+                        LocSet3 = LocPuntos;
+                        VisSet3 = VisPuntos;
+
+                        confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                        div_confirmar_set.classList.remove('ocultar');
+                        fondo_confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        FinSet = true;
+                        tipo_punto.value = "FinSet";
+                        asignarOrden()
+                        ModificarHasta = Number(orden.value);
+                        console.log(ModificarHasta);
                         guardarJugada('partido_ejemplo');
+
+                        FinalPartido();
                     }
         }
     
@@ -948,7 +1133,21 @@ const modificar_reference = document.getElementById("modificar_reference") as HT
 
 eliminar_jugada.addEventListener('click', function(){
     modificar_jugada.classList.add("ocultar");
-    eliminarJugada('partido_ejemplo');
+   
+    const div_eliminar_jugada = document.getElementById('div_eliminar_jugada')!;
+    const div_cancelar_eliminar = document.getElementById('cancelar_eliminar')!;
+    const div_confirmar_eliminar = document.getElementById('confirmar_eliminar')!;
+    div_eliminar_jugada.classList.remove('ocultar');
+
+    div_cancelar_eliminar.addEventListener('click', function(){
+        div_eliminar_jugada.classList.add('ocultar');
+    })
+
+    div_confirmar_eliminar.addEventListener('click', function(){
+        div_eliminar_jugada.classList.add('ocultar');
+        eliminarJugada('partido_ejemplo');
+    })
+    
 });
 
 btn_modificar_jugada.addEventListener('click', function(){
@@ -961,9 +1160,10 @@ btn_modificar_jugada.addEventListener('click', function(){
 
     // Función para manejar el clic en los divs
     function handleDivClick(clickedDivId: string) {
+        
         const number = clickedDivId.split('_')[1]; // Extraer el número después de 'jugada_'
         const jugada_id = `jugada_${number}`;
-
+        if(Number(number) > ModificarHasta || Number(number) === ModificarHasta){
         const divToMark = document.getElementById(jugada_id); // Seleccionar el div por su ID
 
         if (divToMark) { // Verificar que el div existe
@@ -989,7 +1189,13 @@ btn_modificar_jugada.addEventListener('click', function(){
             console.error(`No se encontró el div con ID: ${jugada_id}`);
         }
   })
+
+
+           
+            
     }
+    }
+
     function MarcarJugada(event: MouseEvent) {
         const clickedDivId = (event.currentTarget as HTMLElement).id; // Obtener el id del div clicado
         const number = clickedDivId.split('_')[1]; // Extraer el número después de 'jugada_'
@@ -1039,7 +1245,7 @@ btn_modificar_jugada.addEventListener('click', function(){
 
     // Obtener el número de referencia de la jugada a eliminar
     const referencia = modificar_reference.value;
-    if(Number(referencia) > ModificarHasta){
+  //  if(Number(referencia) < ModificarHasta){
         // Buscar la jugada en el array usando el valor de referencia
     const index = jugadasExistentes.findIndex((jugada: { orden: string; }) => jugada.orden === referencia);
         console.log(index)
@@ -1050,6 +1256,7 @@ btn_modificar_jugada.addEventListener('click', function(){
 
         // Verificar que la jugada existe
         if (jugadaAEliminar) {
+            
             // Determinar si se debe restar un punto al equipo local o visitante
             if (jugadaAEliminar.tipoPunto === 'Error') {
                 // Si es un error, restar al equipo contrario
@@ -1082,8 +1289,35 @@ btn_modificar_jugada.addEventListener('click', function(){
                 }
             }
 
+            if(jugadaAEliminar.tipoPunto === "FinSet"){
+                LocPuntos = Number(jugadaAEliminar.locPuntos);
+                VisPuntos = Number(jugadaAEliminar.visPuntos);
+                ModificarHasta = -10000;
+                if(Number(jugadaAEliminar.locPuntos) < Number(jugadaAEliminar.visPuntos)){
+                    VisSets = VisSets -1;
+                } else{
+                    LocSets = LocSets -1;
+                }
+            }
+
             // Eliminar la jugada del array
             jugadasExistentes.splice(index, 1);
+            if(jugadaAEliminar.tipoPunto === "FinSet"){
+                let PuntoFinSet = index -1;
+                const PuntoFinSet_orden = jugadasExistentes[PuntoFinSet].orden;
+                console.log(PuntoFinSet_orden);
+                jugadasExistentes.splice(PuntoFinSet, 1);
+                const divJugada = document.getElementById(`jugada_${PuntoFinSet_orden}`);
+                if (divJugada) {
+                    divJugada.remove(); // Elimina el elemento del DOM si existe
+                }
+
+                let ActualizarMarcador = index -2;
+                const PuntosLoc = jugadasExistentes[ActualizarMarcador].locPuntos;
+                const PuntosVis = jugadasExistentes[ActualizarMarcador].visPuntos;
+                LocPuntos = Number(PuntosLoc);
+                VisPuntos = Number(PuntosVis);
+            }
 
             // Actualizar el localStorage
             localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
@@ -1145,7 +1379,9 @@ btn_modificar_jugada.addEventListener('click', function(){
     } else {
         console.error("Referencia no válida");
     }
-    }
+ 
+
+//}
     
 }
 
@@ -1174,10 +1410,13 @@ function actualizarJugadasRestantes(jugadas: any[]) {
 
     if (Marcador_LocPuntos) {
         Marcador_LocPuntos.textContent = LocPuntos.toString();
+        
     }
     if (Marcador_VisPuntos) {
         Marcador_VisPuntos.textContent = VisPuntos.toString();
     }
+    Marcador_LocSets.textContent = LocSets.toString();
+    Marcador_VisSets.textContent = VisSets.toString();
 }
     
 //Recuperar Historial Partido de Local Storage
@@ -1302,6 +1541,25 @@ function cargarHistorial(nombreArray: string) {
 
     }
 
+
+    const FinalesDeSet = jugadasExistentes.filter((jugada: { tipoPunto: string; }) => jugada.tipoPunto === "FinSet");
+
+// Iteramos sobre cada jugada filtrada
+FinalesDeSet.forEach((jugada: { locSet: any; visSet: any; locPuntos: any; visPuntos: any; }) => {
+    const suma = jugada.locSet + jugada.visSet;
+
+    // Realizamos acciones según el valor de la suma
+    if (suma === 1) {
+        LocSet1 = Number(jugada.locPuntos);
+        VisSet1 = Number(jugada.visPuntos);
+    } else if (suma === 2) {
+        LocSet2 = Number(jugada.locPuntos);
+        VisSet2 = Number(jugada.visPuntos);
+    } else if (suma === 3) {
+        LocSet3 = Number(jugada.locPuntos);
+        VisSet3 = Number(jugada.visPuntos);
+    }
+});
     
 }
 
@@ -1588,7 +1846,7 @@ function modificarJugada(nombreArray: string) {
 
     // Obtener el número de referencia de la jugada a modificar
     const referencia = modificar_reference.value;
-    if(Number(referencia) > ModificarHasta){
+   // if(Number(referencia) > ModificarHasta){
         // Buscar la jugada en el array usando el valor de referencia
     const index = jugadasExistentes.findIndex((jugada: { orden: string; }) => jugada.orden === referencia);
     console.log(index);
@@ -1859,8 +2117,52 @@ function modificarJugada(nombreArray: string) {
         element.classList.remove('bg-azul-suave');
         element.classList.add('bg-gris-claro');
     });
-    }
+ 
+//}
     
+}
+
+
+function FinalPartido(){
+    console.log("Final del Partido")
+    const resumen_partido = document.getElementById('resumen_partido')!;
+
+    const resultado_final_local = document.getElementById('resultado_final_local') as HTMLInputElement;
+    const resultado_final_visitante = document.getElementById('resultado_final_visitante') as HTMLInputElement;
+
+    const resultado_set1_local = document.getElementById('resultado_set1_local') as HTMLInputElement;
+    const resultado_set2_local = document.getElementById('resultado_set2_local') as HTMLInputElement;
+    const resultado_set3_local = document.getElementById('resultado_set3_local') as HTMLInputElement;
+    const resultado_set1_visitante = document.getElementById('resultado_set1_visitante') as HTMLInputElement;
+    const resultado_set2_visitante = document.getElementById('resultado_set2_visitante') as HTMLInputElement;
+    const resultado_set3_visitante = document.getElementById('resultado_set3_visitante') as HTMLInputElement;
+
+    const volver_acta = document.getElementById('volver_acta')!;
+    const final_definitivo = document.getElementById('final_definitivo')!;
+    
+    //Insertar todos los datos
+    resultado_final_local.value = String(LocSets);
+    resultado_final_visitante.value = String(VisSets);
+
+    resultado_set1_local.value = String(LocSet1);
+    resultado_set2_local.value = String(LocSet2);
+    resultado_set3_local.value = String(LocSet3);
+
+    resultado_set1_visitante.value = String(VisSet1);
+    resultado_set2_visitante.value = String(VisSet2);
+    resultado_set3_visitante.value = String(VisSet3);
+    //Hacer visible
+    resumen_partido.classList.remove('ocultar');
+
+    volver_acta.addEventListener('click', function(){
+        resumen_partido.classList.add('ocultar');
+    })
+
+    final_definitivo.addEventListener('click', function(){
+        
+        eliminarHistorial('partido_ejemplo');
+    })
+
 }
 
 })
