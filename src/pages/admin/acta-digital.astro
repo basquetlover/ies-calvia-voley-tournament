@@ -635,7 +635,7 @@ salir.addEventListener('click', () => {
             const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
                     console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
                     console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
-                    if(LocPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
+                    if(LocPuntos === conf_puntos && Math.abs((LocPuntos - VisPuntos)) !== conf_dif_puntos){
                         LocSets++;
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
@@ -667,7 +667,7 @@ salir.addEventListener('click', () => {
                             FinalPartido();
                         }
                     }
-                    if(VisPuntos === conf_puntos && (LocPuntos - VisPuntos) !== conf_dif_puntos){
+                    if(VisPuntos === conf_puntos && Math.abs((LocPuntos - VisPuntos)) !== conf_dif_puntos){
                         VisSets++;
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
@@ -698,12 +698,12 @@ salir.addEventListener('click', () => {
                             FinalPartido();
                         }
                     }
-                } else {
+                } else if(LocSets + VisSets >= 2) {
                     const div_confirmar_set = document.getElementById('div_confirmar_set')!;
                     const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
                     const confirmar_set = document.getElementById('confirmar_set')!;
                     const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
-                    if(LocPuntos === conf_puntos_extra && (LocPuntos - VisPuntos) !== conf_dif_puntos_extra){
+                    if(LocPuntos === conf_puntos_extra && Math.abs((LocPuntos - VisPuntos)) !== conf_dif_puntos_extra){
                         LocSets++;
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
@@ -728,7 +728,7 @@ salir.addEventListener('click', () => {
 
                         FinalPartido();
                     }
-                    if(VisPuntos === conf_puntos_extra && (LocPuntos - VisPuntos) !== conf_dif_puntos_extra){
+                    if(VisPuntos === conf_puntos_extra && Math.abs((LocPuntos - VisPuntos)) !== conf_dif_puntos_extra){
                         VisSets++;
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
