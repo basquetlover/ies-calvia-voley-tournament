@@ -590,6 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //Recuperar Partido del Local Storage
   cargarHistorial('partido_ejemplo');
   recuperarInformes();
+  cargarConf('conf_partido_ejemplo');
 
 
 
@@ -1694,37 +1695,69 @@ function guardarJugada(nombreArray: string) {
     orden.value = '';
 }
 
+//Recuperar Configuracion Partidos
+function cargarConf(nombreArray: string) {
+    // Recuperar el array existente de configuraciones del localStorage
+    const configuracionesExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : null;
+
+    if (configuracionesExistentes) {
+        // Suponiendo que solo hay una configuración que deseas cargar
+        const configuracion = configuracionesExistentes[0]; // O puedes usar un índice específico si hay múltiples configuraciones
+
+        // Asignar los valores a las constantes
+        const conf_puntos_form = document.getElementById('conf-puntos') as HTMLInputElement;
+        const conf_dif_puntos_form = document.getElementById('conf-dif-puntos') as HTMLInputElement;
+        const conf_puntos_extra_form = document.getElementById('conf-puntos-extra') as HTMLInputElement;
+        const conf_dif_puntos_extra_form = document.getElementById('conf-dif-puntos-extra') as HTMLInputElement;
+
+        // Cargar los valores en los campos de entrada
+        if (conf_puntos_form) conf_puntos_form.value = configuracion.conf_puntos.toString();
+        if (conf_dif_puntos_form) conf_dif_puntos_form.value = configuracion.conf_dif_puntos.toString();
+        if (conf_puntos_extra_form) conf_puntos_extra_form.value = configuracion.conf_puntos_extra.toString();
+        if (conf_dif_puntos_extra_form) conf_dif_puntos_extra_form.value = configuracion.conf_dif_puntos_extra.toString();
+
+        conf_puntos = Number(configuracion.conf_puntos);
+         conf_dif_puntos = Number(configuracion.conf_dif_puntos);
+         conf_puntos_extra = Number(configuracion.conf_puntos_extra);
+         conf_dif_puntos_extra = Number(configuracion.conf_dif_puntos_extra);
+
+    } else {
+        console.log("No hay configuraciones guardadas.");
+    }
+}
+
 //Guardar Configuracion Local Storage
 function guardarConf(nombreArray: string) {
     const conf_puntos_form = document.getElementById('conf-puntos') as HTMLInputElement;
-    const conf_dif_puntos_form = document.getElementById('conf-dif-puntos') as HTMLInputElement;
-    const conf_puntos_extra_form = document.getElementById('conf-puntos-extra') as HTMLInputElement;
-    const conf_dif_puntos_extra_form = document.getElementById('conf-dif-puntos-extra') as HTMLInputElement;
+const conf_dif_puntos_form = document.getElementById('conf-dif-puntos') as HTMLInputElement;
+const conf_puntos_extra_form = document.getElementById('conf-puntos-extra') as HTMLInputElement;
+const conf_dif_puntos_extra_form = document.getElementById('conf-dif-puntos-extra') as HTMLInputElement;
 
-    // Crear un objeto con la información del jugador
-    const Configuracion = {
-        conf_puntos: Number(conf_puntos_form.value),
-        conf_dif_puntos: Number(conf_dif_puntos_form.value),
-        conf_puntos_extra: Number(conf_puntos_extra_form.value),
-        conf_dif_puntos_extra: Number(conf_dif_puntos_extra_form.value),
-    };
+// Crear un objeto con la información del jugador
+const Configuracion = {
+    conf_puntos: Number(conf_puntos_form.value),
+    conf_dif_puntos: Number(conf_dif_puntos_form.value),
+    conf_puntos_extra: Number(conf_puntos_extra_form.value),
+    conf_dif_puntos_extra: Number(conf_dif_puntos_extra_form.value),
+};
 
-    // Recuperar el array existente de jugadas del localStorage
-    const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+// Recuperar el array existente de configuraciones del localStorage
+//const nombreArray = 'nombreDeTuArray'; // Asegúrate de definir el nombre del array
+const configuracionesExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
 
-    // Buscar si ya existe una configuración para actualizar
-    const index = jugadasExistentes.findIndex((item: any) => item.conf_puntos === Configuracion.conf_puntos);
+// Buscar si ya existe una configuración para actualizar
+const index = configuracionesExistentes.findIndex((item: any) => item.conf_puntos === Configuracion.conf_puntos);
 
-    if (index !== -1) {
-        // Si existe, actualiza los valores
-        jugadasExistentes[index] = Configuracion;
-    } else {
-        // Si no existe, puedes optar por añadirlo o no hacer nada
-        jugadasExistentes.push(Configuracion);
-    }
+if (index !== -1) {
+    // Si existe, actualiza los valores
+    configuracionesExistentes[index] = Configuracion;
+} else {
+    // Si no existe, añade la nueva configuración
+    configuracionesExistentes.push(Configuracion);
+}
 
-    // Guardar el array actualizado en localStorage
-    localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+// Guardar el array actualizado en localStorage
+localStorage.setItem(nombreArray, JSON.stringify(configuracionesExistentes));
 }
 
 //limpiar storage
