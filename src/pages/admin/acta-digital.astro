@@ -635,7 +635,7 @@ salir.addEventListener('click', () => {
             const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
                     console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
                     console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
-                    if(LocPuntos === conf_puntos && Math.abs((LocPuntos - VisPuntos)) !== conf_dif_puntos){
+                    if ( LocPuntos > VisPuntos && LocPuntos >= conf_puntos && Math.abs((LocPuntos - VisPuntos)) >= conf_dif_puntos){
                         LocSets++;
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
@@ -667,7 +667,7 @@ salir.addEventListener('click', () => {
                             FinalPartido();
                         }
                     }
-                    if(VisPuntos === conf_puntos && Math.abs((LocPuntos - VisPuntos)) !== conf_dif_puntos){
+                    if(LocPuntos < VisPuntos && VisPuntos >= conf_puntos && Math.abs((LocPuntos - VisPuntos)) >= conf_dif_puntos){
                         VisSets++;
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
@@ -703,7 +703,7 @@ salir.addEventListener('click', () => {
                     const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
                     const confirmar_set = document.getElementById('confirmar_set')!;
                     const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
-                    if(LocPuntos === conf_puntos_extra && Math.abs((LocPuntos - VisPuntos)) !== conf_dif_puntos_extra){
+                    if(LocPuntos > VisPuntos && LocPuntos >= conf_puntos_extra && Math.abs(LocPuntos - VisPuntos) >= conf_dif_puntos_extra){
                         LocSets++;
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
@@ -728,7 +728,7 @@ salir.addEventListener('click', () => {
 
                         FinalPartido();
                     }
-                    if(VisPuntos === conf_puntos_extra && Math.abs((LocPuntos - VisPuntos)) !== conf_dif_puntos_extra){
+                    if(LocPuntos < VisPuntos && VisPuntos >= conf_puntos_extra && Math.abs(LocPuntos - VisPuntos) >= conf_dif_puntos_extra){
                         VisSets++;
                         Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
                         Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
@@ -753,7 +753,12 @@ salir.addEventListener('click', () => {
 
                         FinalPartido();
                     }
+                   
         }
+
+        console.log("Diferencia de puntos: ", Math.abs((LocPuntos - VisPuntos)));
+        console.log("Configuracion de diferencia de puntos: ", conf_dif_puntos_extra);
+
     
 }
 
@@ -1856,8 +1861,10 @@ function modificarJugada(nombreArray: string) {
     const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
 
     const marcador = document.getElementById('marcador')!;
-    const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
-    const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+                const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+                const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+                const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+                const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
 
     if (index !== -1) { // Verificar si la jugada existe
         const jugada = jugadasExistentes[index];
@@ -2037,6 +2044,135 @@ function modificarJugada(nombreArray: string) {
             `;
             }
         }
+
+        if(LocSets + VisSets < 2){
+            const div_confirmar_set = document.getElementById('div_confirmar_set')!;
+            const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
+            const confirmar_set = document.getElementById('confirmar_set')!;
+            const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
+                    console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
+                    console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
+                    if ( LocPuntos > VisPuntos && LocPuntos >= conf_puntos && Math.abs((LocPuntos - VisPuntos)) >= conf_dif_puntos){
+                        LocSets++;
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                        if(LocSets + VisSets === 1){
+                            LocSet1 = LocPuntos;
+                            VisSet1 = VisPuntos;
+                        }
+                        if(LocSets + VisSets === 2){
+                            LocSet2 = LocPuntos;
+                            VisSet2 = VisPuntos;
+                        }
+                        confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                        div_confirmar_set.classList.remove('ocultar');
+                        fondo_confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        FinSet = true;
+                        tipo_punto.value = "FinSet";
+                        asignarOrden()
+                        ModificarHasta = Number(orden.value);
+                        console.log(ModificarHasta);
+                        guardarJugada('partido_ejemplo');
+
+                        if(LocSets - VisSets === 2 || LocSets - VisSets === -2){
+                            FinalPartido();
+                        }
+                    }
+                    if(LocPuntos < VisPuntos && VisPuntos >= conf_puntos && Math.abs((LocPuntos - VisPuntos)) >= conf_dif_puntos){
+                        VisSets++;
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                        if(LocSets + VisSets === 1){
+                            LocSet1 = LocPuntos;
+                            VisSet1 = VisPuntos;
+                        }
+                        if(LocSets + VisSets === 2){
+                            LocSet2 = LocPuntos;
+                            VisSet2 = VisPuntos;
+                        }
+                        confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                        div_confirmar_set.classList.remove('ocultar');
+                        fondo_confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        FinSet = true;
+                        tipo_punto.value = "FinSet";
+                        asignarOrden()
+                        ModificarHasta = Number(orden.value);
+                        console.log(ModificarHasta);
+                        guardarJugada('partido_ejemplo');
+                        if(LocSets - VisSets === 2 || LocSets - VisSets === -2){
+                            FinalPartido();
+                        }
+                    }
+                } else if(LocSets + VisSets >= 2) {
+                    const div_confirmar_set = document.getElementById('div_confirmar_set')!;
+                    const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
+                    const confirmar_set = document.getElementById('confirmar_set')!;
+                    const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
+                    if(LocPuntos > VisPuntos && LocPuntos >= conf_puntos_extra && Math.abs(LocPuntos - VisPuntos) >= conf_dif_puntos_extra){
+                        LocSets++;
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                        LocSet3 = LocPuntos;
+                        VisSet3 = VisPuntos;
+
+                        confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                        div_confirmar_set.classList.remove('ocultar');
+                        fondo_confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        FinSet = true;
+                        tipo_punto.value = "FinSet";
+                        asignarOrden()
+                        ModificarHasta = Number(orden.value);
+                        console.log(ModificarHasta);
+                        guardarJugada('partido_ejemplo');
+
+                        FinalPartido();
+                    }
+                    if(LocPuntos < VisPuntos && VisPuntos >= conf_puntos_extra && Math.abs(LocPuntos - VisPuntos) >= conf_dif_puntos_extra){
+                        VisSets++;
+                        Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                        Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                        LocSet3 = LocPuntos;
+                        VisSet3 = VisPuntos;
+
+                        confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                        div_confirmar_set.classList.remove('ocultar');
+                        fondo_confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        confirmar_set.addEventListener('click', function(){
+                            div_confirmar_set.classList.add('ocultar');
+                        })
+                        FinSet = true;
+                        tipo_punto.value = "FinSet";
+                        asignarOrden()
+                        ModificarHasta = Number(orden.value);
+                        console.log(ModificarHasta);
+                        guardarJugada('partido_ejemplo');
+
+                        FinalPartido();
+                    }
+                   
+        }
+
 
         // Actualizar el array de jugadas
         jugadasExistentes[index] = {
