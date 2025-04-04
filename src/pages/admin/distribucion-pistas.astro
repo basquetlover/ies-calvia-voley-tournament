@@ -5,6 +5,7 @@ import LayoutAll from "@layouts/LayoutAll.astro";
 import { supabaseAdmin } from "../../lib/supabase";
 import SinPermisos from '@components/admin/SinPermisos.astro';
 import Pistas from '@sections/administracion/Pistas.astro';
+import PistasSS from "@sections/administracion/PistasSS.astro";
 
 // Verifica si hay un usuario autenticado
 const user = Astro.locals.StaffUser;
@@ -52,9 +53,10 @@ const userHasAccess = accessibleBlocks.includes(pathname);
 <LayoutAll title='Pistas'>
 {userHasAccess ? (
     <>
-    <div class="w-full h-screen flex items-center">
+    {/* <div class="w-full h-screen flex items-center">
         <h2 class="text-6xl text-amarillo text-center my-auto p-2">Distribución de Pistas por definir</h2>
-    </div>
+    </div> */}
+    <PistasSS />
        {/* <Pistas />     */}
     </>
 ) : (

@@ -1,0 +1,183 @@
+---
+
+import { supabaseAdmin } from "../../../lib/supabase";
+import LayoutOwner from '@layouts/LayoutOwner.astro';
+import { RANGOS } from '@const/rangos'
+import LayoutAllSinMenu from "@layouts/LayoutAllSinMenu.astro";
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+type AdministradorProps = {
+  user_email: string;
+  rango: string;
+};
+
+// Genera rutas dinámicas
+// export async function getStaticPaths() {
+//   // Consulta a la base de datos para obtener user_email y rango
+//   const { data, error } = await supabaseAdmin
+//     .from('Administradores')
+//     .select('user_email, rango');
+
+//   if (error) {
+//     console.error('Error fetching administradores:', error.message);
+//     return { paths: [] };
+//   }
+
+//   // Genera las rutas dinámicas con datos adicionales
+//   const paths = data.map((admin) => ({
+//     params: { user_email: admin.user_email },
+//     props: { rango: admin.rango }, // Pasamos rango como parte de los props
+//   }));
+
+//   return { paths };
+// }
+
+type Jugador = {
+    nombre: string;
+    _1r_apellido: string;
+    img: string;
+};
+
+const id_partido = Astro.url.pathname.split('/').pop();
+
+let nombre_equipo_local = "";
+let nombre_equipo_visitante = "";
+let pista = "";
+
+let jugadoresLocal: Jugador[] = [];
+let id_equipo_local = "";
+let escudo_equipo_local = "";
+
+let jugadoresVisitante: Jugador[] = [];
+let id_equipo_visitante = "";
+let escudo_equipo_visitante = "";
+const { data, error } = await supabaseAdmin
+    .from('PartidosSS')
+    .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2')
+    .eq('id_partido', id_partido)
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else {
+    nombre_equipo_local = data.equipo_local;
+    nombre_equipo_visitante = data.equipo_visitante;
+    pista = data.pista
+  }
+  let { data: EquipoLocale, error: EquipoLocaleError } = await supabaseAdmin
+    .from('EquiposSS')
+    .select('id, escudo')
+    .eq('nombre_equipo', nombre_equipo_local)
+    .single();
+    if(EquipoLocale){
+        id_equipo_local = EquipoLocale.id;
+        escudo_equipo_local = EquipoLocale.escudo;
+    }
+    
+  let { data: JugadoresLocales, error: JugadoresLocalesError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .in('ficha', ['jugador', 'profesor'])
+    .eq('pertenece_equipo', id_equipo_local);
+
+    if(JugadoresLocales){
+     jugadoresLocal = JugadoresLocales
+    }
+    
+    let { data: EquipoVisitante, error: EquipoVisitanteError } = await supabaseAdmin
+    .from('EquiposSS')
+    .select('id, escudo')
+    .eq('nombre_equipo', nombre_equipo_visitante)
+    .single();
+    if(EquipoVisitante){
+        id_equipo_visitante = EquipoVisitante.id;
+        escudo_equipo_visitante = EquipoVisitante.escudo;
+    }
+    
+  let { data: JugadoresVisitantes, error: JugadoresVisitantesError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .in('ficha', ['jugador', 'profesor'])
+    .eq('pertenece_equipo', id_equipo_visitante);
+
+    if(JugadoresVisitantes){
+     jugadoresVisitante = JugadoresVisitantes
+    }
+
+
+---
+
+<LayoutAllSinMenu title={`Equipos ${id_partido}`}>
+    <div class="w-full h-auto flex flex-col ">
+    <div class="w-[90%] mx-auto h-auto grid grid-cols-3 place-items-center my-5">
+        <a href="/admin/designaciones" class="w-max h-max px-3 py-2 bg-amarillo rounded-full">Volver a las designaciones</a>
+        <p class="text-xl font-bold text-blanco">{id_partido}</p>
+        <p class="text-xl text-blanco">{pista}</p>
+    </div>
+    <section class="w-[90%] mx-auto h-auto grid grid-cols-2 place-items-center">
+        <div class="w-full h-auto flex flex-col place-content-center">
+            <div class="flex flex-row items-center place-content-center">
+                <img src={escudo_equipo_local} alt="escudo equipo local" class="w-28 h-28"/>
+                <h2 class="text-4xl font-semibold text-accent">{nombre_equipo_local}</h2>
+            </div>
+            <div class="w-full h-auto flex flex-wrap items-center place-content-center gap-2 mt-5">
+            
+            
+                {
+                    jugadoresLocal.map((jugador, index) => (
+                        <div id={`local_play_${index}`} class="w-52 h-52 rounded-md bg-amarillo flex flex-col text-azul items-center place-content-center cursor-pointer">
+                            <div>
+                                <img src={jugador.img} alt={`${jugador.nombre} ${jugador._1r_apellido}`} class="w-44 h-44" />
+                            </div>
+                            <p id={`local_nombre_${index}`} class="w-full bg-transparent text-center text-azul select-none">{jugador.nombre} {jugador._1r_apellido}</p>
+                        </div>
+                    ))
+                }
+                
+            </div>
+        </div>
+        <div class="w-full h-auto flex flex-col place-content-center">
+            <div class="flex flex-row items-center place-content-center">
+                
+                <h2 class="text-4xl font-semibold text-accent">{nombre_equipo_visitante}</h2>
+                <img src={escudo_equipo_visitante} alt="escudo equipo local" class="w-28 h-28"/>
+            </div>
+            <div class="w-full h-auto flex flex-wrap items-center place-content-center gap-2 mt-5">
+                {
+                    jugadoresVisitante.map((jugador, index) => (
+                        <div id={`local_play_${index}`} class="w-52 h-52 rounded-md bg-azul-suave flex flex-col items-center place-content-center cursor-pointer">
+                            <div>
+                                <img src={jugador.img} alt={`${jugador.nombre} ${jugador._1r_apellido}`} class="w-44 h-44" />
+                            </div>
+                            <p id={`local_nombre_${index}`} class="w-full bg-transparent text-center text-blanco select-none"> {jugador.nombre} {jugador._1r_apellido} </p>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+        
+    </section>
+</div>
+
+    <style>
+        .centrar {
+            z-index: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .formulario {
+            z-index: 10000;
+        }
+        .form {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+        }
+    </style>
+</LayoutAllSinMenu>

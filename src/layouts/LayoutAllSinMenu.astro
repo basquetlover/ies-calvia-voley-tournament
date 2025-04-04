@@ -46,7 +46,7 @@ import Analytics from '@vercel/analytics/astro'
 
 	<body class="bg-gris ">
 		<Analytics />
-		{user && (
+		{user ? (
 		<div class="">
 		
 		
@@ -61,9 +61,14 @@ import Analytics from '@vercel/analytics/astro'
 		
 			//<!-- <Footer /> -->
 		
+		):
+		(
+			<>
+			<Signin />
+			</>
 		)} 
 
-		<Signin />
+		
     
 	
 		

@@ -14,27 +14,31 @@ interface Equipo {
 }
 
 interface Partido {
-  equipo_a: string;
-  equipo_b: string;
+  equipo_local: string;
+  equipo_visitante: string;
   arbitro: string;
-  oficial_mesa_1: string;
-  oficial_mesa_2: string;
+  oficial_1: string;
+  oficial_2: string;
   pista: string;
-  numero_partido: string;
+  id_partido: string;
 }
 
 let partidos_designados: Partido[] = [];
 let escudosMappartidos_designados: Record<string, string> = {}; // Mapa para guardar escudos por nombre de equipo
 
-
+let { data: Administradores, error } = await supabaseAdmin
+  .from('Administradores')
+  .select('nombre')
+  .eq('user_email', userWithRango.email)
+  .single();
 
 try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
-    .from('ResultadoNavidad')
-    .select('equipo_a, equipo_b, pista, numero_partido, arbitro, oficial_mesa_1, oficial_mesa_2')
-    .or(`arbitro.eq.${userWithRango.email},oficial_mesa_1.eq.${userWithRango.email},oficial_mesa_2.eq.${userWithRango.email}`)
-    .order('orden', { ascending: true });
+    .from('PartidosSS')
+    .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2')
+    .or(`arbitro.eq.${Administradores?.nombre},oficial_1.eq.${Administradores?.nombre},oficial_2.eq.${Administradores?.nombre}`)
+    .order('id', { ascending: true });
 
   if (error) {
     console.error(`Error al buscar partido 1`, error.message);
@@ -43,11 +47,11 @@ try {
   }
 
   // Obtener todos los nombres de los equipos
-  const equiposNombres = [...new Set(partidos_designados.flatMap(partido => [partido.equipo_a, partido.equipo_b]))];
+  const equiposNombres = [...new Set(partidos_designados.flatMap(partido => [partido.equipo_local, partido.equipo_visitante]))];
 
   // Obtener escudos de los equipos
   const { data: equipos, error: errorEquipos } = await supabaseAdmin
-    .from('Equipos')
+    .from('EquiposSS')
     .select('nombre_equipo, escudo')
     .in('nombre_equipo', equiposNombres);
 
@@ -67,22 +71,22 @@ try {
 
 ---
 <LayoutAll title="Designaciones">
-<!-- <section class="max-w-full w-full flex flex-wrap gap-10  items-center place-content-center">
+  <section class="max-w-full w-full flex flex-wrap gap-10  items-center place-content-center">
 <div class="w-max h-auto">
   <h2 class="text-3xl text-accent font-semibold text-center">Designaciones</h2>
-  <h3 class="text-xl text-blanco font-semibold text-center">{userWithRango.email}</h3>
+  <h3 class="text-xl text-blanco font-semibold text-center">{Administradores?.nombre}</h3>
 <div class="flex flex-col gap-2">
   {partidos_designados.map(partido => (
     <div class="bg-amarillo h-auto w-[400px] rounded-lg">
         <div class="text-gris w-full  flex flex-row items-center place-content-around">
             <p>{partido.pista}</p>
-            <p>{partido.numero_partido}</p>
+            <p>{partido.id_partido}</p>
         </div>
         <div class="w-[95%] h-[2px] mx-auto my-1 border-none block rounded-full bg-accent select-none">&nbsp;</div>
         <div class=" text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2"> 
         <div>
-        {escudosMappartidos_designados[partido.equipo_a] && escudosMappartidos_designados[partido.equipo_a].trim() !== "" ?  (
-            <img src={escudosMappartidos_designados[partido.equipo_a]} class="w-14 h-14" alt={partido.equipo_a} />
+        {escudosMappartidos_designados[partido.equipo_local] && escudosMappartidos_designados[partido.equipo_local].trim() !== "" ?  (
+            <img src={escudosMappartidos_designados[partido.equipo_local]} class="w-14 h-14" alt={partido.equipo_local} />
                 ) : (
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-w-14" fill="none" viewBox="0 0 650 650">
                         <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
@@ -90,12 +94,12 @@ try {
                     </svg>
             )}
         </div>
-        <p>{partido.equipo_a}</p>
+        <p>{partido.equipo_local}</p>
         <p>VS</p>
-        <p>{partido.equipo_b}</p>
+        <p>{partido.equipo_visitante}</p>
         <div>
-        {escudosMappartidos_designados[partido.equipo_b] && escudosMappartidos_designados[partido.equipo_b].trim() !== "" ?  (
-            <img src={escudosMappartidos_designados[partido.equipo_b]} class="w-14 h-14" alt={partido.equipo_b} />
+        {escudosMappartidos_designados[partido.equipo_visitante] && escudosMappartidos_designados[partido.equipo_visitante].trim() !== "" ?  (
+            <img src={escudosMappartidos_designados[partido.equipo_visitante]} class="w-14 h-14" alt={partido.equipo_visitante} />
                 ) : (
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-w-14" fill="none" viewBox="0 0 650 650">
                         <circle cx="325" cy="325" r="315" stroke="#313131" stroke-width="20"/>
@@ -105,13 +109,18 @@ try {
         </div>
         
         </div>
+        <div class="w-full h-auto flex flex-row items-center place-content-around">
+          <a href={`/admin/partido/${partido.id_partido}`} class="w-max h-max px-2 py-2 rounded-md bg-azul-suave text-blanco mb-1">
+            Lista Equipos
+          </a>
+        </div>
     </div>
   ))}
 </div>
 </div>
-</section> -->
-<section>
-    <!-- {partidos_designados.length === 0 ? ( -->
+</section>
+<!-- <section>
+    
         <div class="w-full h-auto my-10 flex items-center place-content-center">
     <section class="max-w-2xl w-full h-max p-10 mx-auto my-auto">
         <h2 class=" w-full text-center text-accent font-bold text-5xl">Sin Designaciones</h2>
@@ -130,6 +139,6 @@ try {
         </section>
 </div>
        
-      <!-- ) : null} -->
-</section>
+      ) : null}
+</section> -->
 </LayoutAll>
