@@ -119,7 +119,7 @@ const { data, error } = await supabaseAdmin
 ---
 
 <LayoutAllSinMenu title={`Acta | ${id_partido}`}>
-
+<div class="h-screen flex items-center place-content-center">    
     <form id="formulario" method="POST" action="/api/usuario/ActaDigital" class="h-[700px] w-[1100px] my-auto bg-red-400 overflow-auto mx-auto no-scrollbar relative">
         <div id="box_principal" class="w-full h-full border-2 border-accent bg-gris grid grid-rows-1 grid-cols-3 select-none">
 
@@ -582,7 +582,7 @@ const { data, error } = await supabaseAdmin
             </div>
         </div>
     </form>
-
+</div>
 
         
         

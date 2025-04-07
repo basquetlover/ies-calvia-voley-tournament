@@ -109,13 +109,14 @@ const { data, error } = await supabaseAdmin
 ---
 
 <LayoutAllSinMenu title={`Equipos ${id_partido}`}>
+
     <div class="w-full h-auto flex flex-col ">
     <div class="w-[90%] mx-auto h-auto grid grid-cols-3 place-items-center my-5">
         <a href="/admin/designaciones" class="w-max h-max px-3 py-2 bg-amarillo rounded-full">Volver a las designaciones</a>
         <p class="text-xl font-bold text-blanco">{id_partido}</p>
         <p class="text-xl text-blanco">{pista}</p>
     </div>
-    <section class="w-[90%] mx-auto h-auto grid grid-cols-2 place-items-center">
+    <section class="w-[95%] mx-auto h-auto grid grid-cols-2 place-items-center">
         <div class="w-full h-auto flex flex-col place-content-center">
             <div class="flex flex-row items-center place-content-center">
                 <img src={escudo_equipo_local} alt="escudo equipo local" class="w-28 h-28"/>
