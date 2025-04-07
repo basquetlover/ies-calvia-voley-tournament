@@ -23,6 +23,7 @@
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.0.0",
     "crypto-js": "^4.2.0",
+    "express": "^5.1.0",
     "firebase": "^11.0.2",
     "lucia": "^3.2.2",
     "lucia-adapter-astrodb": "^0.2.0",
@@ -38,6 +39,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/crypto-js": "^4.2.2",
+    "@types/express": "^5.0.1",
     "parcel": "^2.6.2"
   }
 }

@@ -1,0 +1,2526 @@
+---
+
+import { supabaseAdmin } from "../../../lib/supabase";
+import LayoutOwner from '@layouts/LayoutOwner.astro';
+import { RANGOS } from '@const/rangos'
+import LayoutAllSinMenu from "@layouts/LayoutAllSinMenu.astro";
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+type AdministradorProps = {
+  user_email: string;
+  rango: string;
+};
+
+// Genera rutas dinámicas
+// export async function getStaticPaths() {
+//   // Consulta a la base de datos para obtener user_email y rango
+//   const { data, error } = await supabaseAdmin
+//     .from('Administradores')
+//     .select('user_email, rango');
+
+//   if (error) {
+//     console.error('Error fetching administradores:', error.message);
+//     return { paths: [] };
+//   }
+
+//   // Genera las rutas dinámicas con datos adicionales
+//   const paths = data.map((admin) => ({
+//     params: { user_email: admin.user_email },
+//     props: { rango: admin.rango }, // Pasamos rango como parte de los props
+//   }));
+
+//   return { paths };
+// }
+
+type Jugador = {
+    nombre: string;
+    _1r_apellido: string;
+    img: string;
+};
+
+const id_partido = Astro.url.pathname.split('/').pop();
+
+let nombre_equipo_local = "";
+let nombre_equipo_visitante = "";
+let pista = "";
+let arbitro = "";
+let oficial_1 = "";
+let oficial_2 = "";
+
+let jugadoresLocal: Jugador[] = [];
+let id_equipo_local = "";
+let escudo_equipo_local = "";
+let referencia_EL = "";
+
+let jugadoresVisitante: Jugador[] = [];
+let id_equipo_visitante = "";
+let escudo_equipo_visitante = "";
+let referencia_EV = "";
+const { data, error } = await supabaseAdmin
+    .from('PartidosSS')
+    .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2')
+    .eq('id_partido', id_partido)
+    .single();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else {
+    nombre_equipo_local = data.equipo_local;
+    nombre_equipo_visitante = data.equipo_visitante;
+    pista = data.pista
+    arbitro = data.arbitro;
+    oficial_1 = data.oficial_1;
+    oficial_2 = data.oficial_2;
+  }
+  let { data: EquipoLocale, error: EquipoLocaleError } = await supabaseAdmin
+    .from('EquiposSS')
+    .select('id, escudo')
+    .eq('nombre_equipo', nombre_equipo_local)
+    .single();
+    if(EquipoLocale){
+        id_equipo_local = EquipoLocale.id;
+        escudo_equipo_local = EquipoLocale.escudo;
+        referencia_EL = EquipoLocale.id;
+    }
+    
+  let { data: JugadoresLocales, error: JugadoresLocalesError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .in('ficha', ['jugador', 'profesor'])
+    .eq('pertenece_equipo', id_equipo_local);
+
+    if(JugadoresLocales){
+     jugadoresLocal = JugadoresLocales
+    }
+    
+    let { data: EquipoVisitante, error: EquipoVisitanteError } = await supabaseAdmin
+    .from('EquiposSS')
+    .select('id, escudo')
+    .eq('nombre_equipo', nombre_equipo_visitante)
+    .single();
+    if(EquipoVisitante){
+        id_equipo_visitante = EquipoVisitante.id;
+        escudo_equipo_visitante = EquipoVisitante.escudo;
+        referencia_EV = EquipoVisitante.id;
+    }
+    
+  let { data: JugadoresVisitantes, error: JugadoresVisitantesError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .in('ficha', ['jugador', 'profesor'])
+    .eq('pertenece_equipo', id_equipo_visitante);
+
+    if(JugadoresVisitantes){
+     jugadoresVisitante = JugadoresVisitantes
+    }
+
+
+---
+
+<LayoutAllSinMenu title={`Acta | ${id_partido}`}>
+
+    <form id="formulario" method="POST" action="/api/usuario/ActaDigital" class="h-[700px] w-[1100px] my-auto bg-red-400 overflow-auto mx-auto no-scrollbar relative">
+        <div id="box_principal" class="w-full h-full border-2 border-accent bg-gris grid grid-rows-1 grid-cols-3 select-none">
+
+            {/* Datos equipo 1 */}
+            <div class="w-full h-full bg-transparent">
+                {/* Nombre e Imagen Equipo */}
+                <div class="w-full h-auto grid grid-cols-[max-content_1fr] grid-rows-1 p-2">
+                    <div class="w-max h-max">
+                        <img src={escudo_equipo_local} class="w-16 h-16" />
+                    </div>
+                    <div class="flex items-center place-content-center">
+                        <input type="hidden" id="id_equipo_local" disabled value={`equipo-local`}/>
+                        <input type="hidden" name="referencia_equipo_local" value={referencia_EL} />
+                        <input type="hidden" id="local_total_play" disabled value={jugadoresLocal.length} />
+                        <p class="text-2xl text-accent font-semibold">{nombre_equipo_local}</p>
+                    </div>
+                </div>
+
+                {/* Lista jugadores */}
+                <div class="w-full mt-4 h-auto flex flex-wrap gap-2 items-center place-content-center">
+                    {
+                        jugadoresLocal.map((jugador, index) => (
+                            <div id={`local_play_${index}`} class="w-[105px] h-[105px] rounded-md bg-gris-claro flex flex-col items-center place-content-center cursor-pointer">
+                                <div>
+                                    {/* <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg> */}
+                                    <img src={jugador.img} class="w-20 h-20"/>
+                                </div>
+                                <input id={`local_nombre_${index}`} class="w-full bg-transparent text-center text-blanco select-none" value={`${jugador.nombre}`} disabled/>
+                            </div>
+                        )
+                    )}
+                    <div class="w-full h-auto rounded-md mx-3 bg-gris-claro grid grid-cols-[max-content_1fr] grid-rows-1">
+                        <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg>
+                                </div>
+                                <p class="my-auto text-blanco">Entrenador</p>
+                    </div>
+                </div>
+            </div>
+
+             {/* Datos equipo Generales */}
+             <div class="w-full h-full bg-gris-claro flex flex-col items-center pt-4 gap-y-2">
+                {/* Datos generales */}
+                <div class="w-full flex flex-wrap gap-1 ocultar">
+                    <input class="w-24" id="nombre-jugador" name="nombre-jugador" type="text" />
+                    <input class="w-24" id="id-equipo" name="id-equipo" type="text" />
+                    <input class="w-24" id="tipo-punto" name="tipo-punto" type="text" />
+                    <input class="w-24" id="tiempo" name="tiempo" type="text" />
+                    <input class="w-24" id="orden" name="orden" type="text" />
+                    <input class="w-24" name="id_partido" id="id_partido" type="text"  value={id_partido}/>
+                    <input name="FormLocPuntos" id="FormLocPuntos" type="text" />
+                    <input name="FormLocSet" id="FormLocSet" type="text" />
+                    <input name="FormVisPuntos" id="FormVisPuntos" type="text" />
+                    <input name="FormVisSet" id="FormVisSet" type="text" />
+                    <input name="FormAction" id="FormAction" type="text" />
+                </div>
+
+                {/* Marcador */}
+                <div id="marcador" class="w-[90%] h-auto grid grid-rows-1 grid-cols-[max-content_max-content_1fr_max-content_max-content]  gap-x-1">
+                    {/* Puntos */}
+                    <span data-LocPuntos class="text-blanco text-7xl font-semibold">0</span>
+                    {/* Sets */}
+                    <span data-LocSets class="text-blanco text-4xl font-semibold flex flex-col place-content-end">0</span>
+                    {/* Pista */}
+                    <span class="text-blanco text-2xl flex flex-col place-content-center items-center">{pista}</span>
+                    {/* Sets */}
+                    <span data-VisSets class="text-blanco text-4xl font-semibold flex flex-col place-content-end">0</span>
+                    {/* Puntos */}
+                    <span data-VisPuntos class="text-blanco text-7xl font-semibold">0</span>
+                </div>
+
+                {/* Reloj */}
+                <div id="reloj" class="w-52 h-auto text-azul-suave flex flex-row gap-2 place-content-center items-center cursor-pointer select-none">
+                    <span data-minutos class="text-5xl font-semibold ">00</span>
+                    <span class="text-5xl font-semibold ">:</span>
+                    <span data-segundos class="text-5xl font-semibold ">00</span>
+                    
+                </div>
+
+                {/* Arbitros */}
+                <div class="w-52 h-16 mb-1  flex flex-wrap gap-2 place-content-center items-center">
+                    <p class="text-blanco font-medium text-base"><span class="font-bold">Arbitro:</span> {arbitro}</p>
+                    <p class="text-blanco font-medium text-base"><span class="font-bold">Oficial 1:</span> {oficial_1}</p>
+                    <p class="text-blanco font-medium text-base"><span class="font-bold">Oficial 2:</span> {oficial_2}</p>
+                </div>
+
+                {/* Tipos de puntos */}
+                <div class="w-52 h-auto  flex flex-wrap gap-2 place-content-center items-center">
+                    {/* Directo */}
+                    <div id="directo" class="bg-gris w-20 h-20 rounded-md flex flex-col items-center place-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16" fill="none"  viewBox="0 0 110 110">
+                            <path fill="#FFC700" d="M34 27a4173 4173 0 0 1 2 1L24 17l10 10Zm0-6a3535 3535 0 0 0 22 21L42 28l-8-7Z"/>
+                            <path fill="#FFC700" d="M37 40a1155 1155 0 0 1 2 5 405 405 0 0 0 10 12h-1l-6-6-8-8 11 11 3 4-1 1v1a511 511 0 0 1-22-21l10 11 9 9 2 2v2a1233 1233 0 0 1-13-12l13 13v7l-2-2a1246 1246 0 0 0 3 5l6 9a17 17 0 0 0 12 4c5 0 7-1 11-3 5-4 9-11 8-18 0-4-1-9-3-11-4-4-8-7-14-7h-2l-1-2a12634 12634 0 0 1-9-8l8 9-2 1h-1l-4-4c-4-3-3-2 1 2l2 2-6-5a1488 1488 0 0 1-5-4l10 10h-1l-2 1-7-7c-15-15-15-15-2-1a442 442 0 0 1 8 9h-1l-3-2a263 263 0 0 1-14-14l-5-5 5 6 11 11 6 5h-1l-1 1-13-13a2375 2375 0 0 0-1 0Zm32 9 3 1h-1l-8 4-6 7-1 4-4-3-1-2 3-5 5-6 5-1 5 1Zm-12 2-3 3-3 5v1l-1-1-1-2 1-1 6-5h1Zm20 2 3 2 1 2h-3l-7 1c-3 1-6 5-6 8l-1 1h-5l-1-1-1-2a21 21 0 0 1 15-13h2l3 2Zm5 6a20 20 0 0 1 1 11v2l-1-2v-5l-3-7-1-1h3l1 2Zm-3 1 3 7v8l-5 7-1 1v-2l1-13-5-8v-1h1l2-1 3-1 1 3Zm-30-1 4 6c2 1 2 2 5 2l5 1 1-1 1-1 2-3 3-3h1c2 2 4 5 4 8l1 11-2 5-8 2h-1l1-2 2-4 1-4-1-4-2-5h-1 1v3l2 4-1 1h-3l-8-1a22 22 0 0 1-9-7c-1-1 0-5 2-8 0-1 0-1 0 0Zm1 13a27 27 0 0 0 6 3c2 1 8 2 10 1l2 1v2l-3 6v1h-1l-9-2-3-4h-1l2 1 6 2h7-2l-11-3-3-1v-2c-2-2-3-5-3-8v-1l1 1 2 3Z"/>
+                            <path fill="#FFC700" d="m21 33 6 6a45 45 0 0 0-6-6Zm15 7 3 3-3-3-4-3 4 3Zm-14 3Zm23 0Zm-5 20-3-4 3 4Z"/>
+                        </svg>
+                        <p class="text-sm text-amarillo">Directo</p>
+                    </div>
+                    {/* Bloqueo */}
+                    <div id="bloqueo" class="bg-gris w-20 h-20 rounded-md flex flex-col items-center place-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16" fill="none" viewBox="0 0 110 110">
+                            <path fill="#FFC700" d="M53 26a20 20 0 0 0-16 18l-1 1v4l-2 6-1 3 1 4v9l-4 4-4 4c1 1 1 0 5-3l4-6v-6l-1-6 1-2c1-3 1-3 0 0v4l1-3a112 112 0 0 1 3-13h1l-2 8-1 7 1 1v-3l1-5a186 186 0 0 0 2-9l1 1v6l-1 4 1 5h3l3-4c1-2 2-4 3-3l-1 7-1 5-2 6-2 2-7 10 3-3 4-6c3-3 3-4 4-7v-1h2l5 1 6-1 1 1v4l2 4a100 100 0 0 1 5 9h1a108 108 0 0 0-7-14l-1-6a56 56 0 0 0-1-8c0-5 3-5 4 1l1 2c1 2 2 2 3 2l2-4v-6c-1-4 0-6 2-6l1 4a143 143 0 0 0 0 8v5a50 50 0 0 0 1-8 164 164 0 0 1 0-7 99 99 0 0 1 1 16l1-5v-4 10l-2 9 3 6 4 6-3-6-3-5v-3l1-6 1-4v-3l-1-6v-5l-1-1h-1v-2c-1-8-7-14-14-16l-5-1h-4Zm8 2h3l2 2c3 5 3 11 2 17l-3 5v-1l-2-1-1-1-3-4V33l-3-5v-1h2l3 1Zm-6 0 2 4 1 1h-1c-7 1-12 4-16 8l-2 2-1 1c1-9 7-15 14-16h3Zm14 4c3 2 5 6 6 9v2h-2l-1 1-1 7v3l-1 1-4-2 1-2 3-10-2-9-1-1 2 1Zm-11 4v6l-2 1c-5 1-10 4-13 8l-1 2 1-3v-7l-1-1 1-1a22 22 0 0 1 15-7v2Zm0 8 3 6 1 1v10l-6-3a24 24 0 0 1-5-7l-1-2-1-2 1-1 6-2h2Zm-21 3c0 1 0 1 0 0v-1 1Zm41 3v2a23 23 0 0 1-1-5l1 3Zm-29 0 1 1-1 1c-1 0-2 1-2 3l-1 2-3 2v-2l-1-2 1-1 1-2 4-4 1 2Zm-12-1v-1 1Zm0 0h-1 1Zm32 6 2 1-2 3-2-2-1-2h3Zm-12 4 4 3 1 1-1 1H51l-1-1 1-3 1-4v-1l2 1 3 3Z"/>
+                        </svg>
+                        <p class="text-sm text-amarillo">Bloqueo</p>
+                    </div>
+                    {/* Remate */}
+                    <div id="remate" class="bg-gris w-20 h-20 rounded-md flex flex-col items-center place-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16" fill="none" viewBox="0 0 110 110">
+                            <path fill="#FFC700" d="M65 16c-3 1-2 7 2 8 2 0 2-1 3-2 2-1 2-4 0-6h-5Zm11 11-5 5-5 5-4 3-3 2h-2v-2l-1-2h-1v-1l-2-1-3 1-1 3v1l1 1h-1l-1 1h-1l-1-4v-4l1-2h-1v-1l-1-2-1-1v2-1c0 2 0 3-1 2v1l1 2v3l-1 6 1 1 1 1h-3v2c1 2 5 2 6 0l1-1 6 5 3 4-1 2c-2 1-2 2-2 7l-2 7h-1l-7-1c-3 0-3 0-4-2l-2-2-3 3c-3 3-3 4-3 5h2l1-1h4l1-1 5 2 3 2c2 2 5 2 6 1 1 0 3-2 5-6l1-2 1 6-1 1-2 2-3 5h-2c-1-1-2-1-2 1l1 2v2l1 4 2-3 1-2v-1l1-2 3-2 3-2 3-1 1-4a668 668 0 0 1-4-31v-1l1-1 4-6 4-4 1-2 2-2v-3 1ZM52 44h1v1h-1l-1-1h1Z"/>
+                        </svg>
+                        <p class="text-sm text-amarillo">Remate</p>
+                    </div>
+                    {/* Error */}
+                    <div id="error" class="bg-gris  w-20 h-20 rounded-md flex flex-col items-center place-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16" fill="none" viewBox="0 0 110 110">
+                            <path fill="#FFC700" d="M50 28a27 27 0 0 0-17 12l-2-1h-2l1 2 1 1-1 2-2 12a29 29 0 0 0 7 18l2 1a55 55 0 0 1-4 6h1l3-2 2-2 1 1a24 24 0 0 0 14 5l11-2c6-3 11-7 14-13l1-2 2 1 5 1 1-1c0-2-1-3-5-4l-2-1v-1l1-6-1-6-2-8-4-5-1-1 1-1 2-4-4 2-1 1-1-1c-4-3-9-4-15-4a254 254 0 0 1-6 0Zm6 1 4 1 5 1-2 1-8 3-9 9-1 2-8-4 4-7 6-5 9-1Zm-12 2-1 1a21 21 0 0 0-6 10l-3-2 5-5c1-2 5-4 6-4h-1Zm23 1 3 1v1a221 221 0 0 1-15 17l-9-4 2-3c4-6 10-10 16-11l2-1v-1l1 1Zm8 6 2 2v1h-7l2-2 2-3 1 2Zm3 5 2 6v11c-1 3-1 2-1-1v-6l-2-5a453 453 0 0 0-2-7h2l1 2Zm-4 1c2 5 4 8 4 11v6l-3-1-4-2v-1c-1-3-2-8-4-10l-1-1 2-2 1-2h2l1-1 2 3Zm-40 2c2 4 7 8 10 9h2l4 1 2-1h1l-1 1-4 4-4 5-3-1a32 32 0 0 1-11-10l2-10v-1l1 1 1 2Zm6 2 3 2v1l-1 2-1-1-5-6 4 2Zm20-1Zm6 1 4 9-1 1-9-5 2-3 3-3 1 1Zm-13 7h-3l-5-1c-2-1-2-1-1-3v-1l5 2 4 3Zm-20 5a29 29 0 0 0 10 6l-1 2a172 172 0 0 0-4 5l-2-2-2-1a29 29 0 0 1-4-14v1l3 3Zm35 1 2 1v3l-1 8v2l-2 3-10 3c-6 1-12-1-16-4l-1-1v-1h3a31 31 0 0 0 14 2l-4-1h-5a4383 4383 0 0 0-6-2l1-2a170 170 0 0 0 5-5 29 29 0 0 0 11 0v3l-1 3v1l-1 1v1l-1 2-1 3 5-11v-5l-2-8 4 2 6 2Zm-11-3 2 6c0 2 0 2-2 2h-8l3-4 4-5 1 1Zm18 6 3 2-2 4-6 6a66 66 0 0 0 2-13l3 1ZM38 74l-1-1c-1-1-1-1 0 0l1 1Z"/>
+                        </svg>
+                        <p class="text-sm text-amarillo">Error</p>
+                    </div>
+                
+                </div>
+
+                {/* Historial */}
+                <div class="w-64 h-48 rounded-md bg-gris overflow-y-scroll no-scrollbar flex flex-col gap-y-2 border-2 border-gris">
+                    <div id="historial" class="w-full h-auto rounded-md bg-gris flex flex-col-reverse gap-y-2 border-2 border-gris">
+                        
+                        
+                    </div>
+                </div>
+
+                {/* Botones */}
+                <div class="w-64 h-14 flex flex-row items-center place-content-between">
+                    <div class="w-14 h-14 bg-gris rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
+                            
+                            <path fill="#E8EAED" d="M32 66V33l40 17-40 16Zm4-6 25-10-25-11v8l13 3-13 3v7Z"/>
+                        </svg>
+                    </div>
+                    <div id="conf_partido" class="w-14 h-14 bg-gris rounded-md flex items-center place-content-center cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="#e8eaed" viewBox="0 -960 960 960">
+                            <path d="m370-80-16-128q-13-5-24-12t-23-15l-119 50L78-375l103-78-1-13v-27l1-14-103-78 110-190 119 50 23-15 24-12 16-128h220l16 128q13 5 25 12t22 15l119-50 110 190-103 78 1 14v27l-2 13 103 78-110 190-118-50-23 15-24 12-16 128H370Zm70-80h79l14-106q31-8 58-23t48-38l99 41 39-68-86-65q5-14 7-29t2-32q0-16-2-31t-7-30l86-65-39-68-99 42q-22-23-48-38t-58-24l-13-106h-79l-14 106q-31 8-57 24t-49 37l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 49 39t57 23l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99 41t-41 99q0 58 41 99t99 41Zm-2-140Z"/>
+                        </svg>
+                    </div>
+                    <div id="informe" class="w-14 h-14 bg-gris rounded-md cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
+                        
+                        <g clip-path="url(#a)">
+                            <path fill="#E8EAED" d="M42 63h16v-5H42v5Zm0-9h16v-4H42v4Zm-4 17-3-1-2-3V33l2-3 3-1h16l13 13v25l-2 3-2 1H38Zm14-27V33H38v34h25V44H52Z"/>
+                        </g>
+                        <defs>
+                            <clipPath id="a">
+                            <path fill="#fff" d="M0 0h50v50H0z" transform="translate(25 25)"/>
+                            </clipPath>
+                        </defs>
+                        </svg>
+                    </div>
+                    <div id="salir" class="w-14 h-14 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
+                            <rect width="100" height="100" fill="#EB4335" rx="10"/>
+                            <path fill="#6B0014" d="m47 53 2-1 1-2-1-2-2-1-2 1-1 2 1 2 2 1ZM36 75v-6l17-2V36l-1-2-1-1-15-2v-6l15 3a8 8 0 0 1 7 8v35l-22 4Zm-11 0v-6h6V31l1-4 4-2h28l4 2 1 4v38h6v6H25Zm11-6h28V31H36v38Z"/>
+                        </svg>
+                    </div>
+                </div>
+                
+             </div>
+
+             {/* Datos equipo 2 */}
+             <div class="w-full h-full ">
+                {/* Nombre e Imagen Equipo */}
+                <div class="w-full h-auto grid grid-cols-[1fr_max-content] grid-rows-1 p-2">
+                    
+                    <div class="flex items-center place-content-center">
+                        <input type="hidden" id="id_equipo_visitante" disabled value={`equipo-visitante`}/>
+                        <input type="hidden" id="visitante_total_play" disabled value={jugadoresVisitante.length} />
+                        <input type="hidden" name="referencia_equipo_visitante" value={referencia_EV} />
+                        <p class="text-2xl text-accent font-semibold">{nombre_equipo_visitante}</p>
+                    </div>
+                    <div class="w-max h-max">
+                        <img src={escudo_equipo_visitante} class="w-16 h-16" />
+                    </div>
+                </div>
+
+                {/* Lista jugadores */}
+                <div class="w-full mt-4 h-auto flex flex-wrap gap-2 items-center place-content-center">
+                    {
+                        jugadoresVisitante.map((jugador, index) => (
+                            <div id={`visitante_play_${index}`} class="w-[105px] h-[105px] rounded-md bg-gris-claro flex flex-col items-center place-content-center cursor-pointer">
+                                <div>
+                                    {/* <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg> */}
+                                    <img src={jugador.img} class="w-20 h-20"/>
+                                </div>
+                                <input id={`visitante_nombre_${index}`} class="w-full bg-transparent text-center text-blanco" value={`${jugador.nombre}`} disabled/>
+                            </div>
+                        )
+                    )}
+                    <div class="w-full h-auto rounded-md mx-3 bg-gris-claro grid grid-cols-[max-content_1fr] grid-rows-1">
+                        <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg>
+                                </div>
+                                <p class="my-auto text-blanco">Entrenador</p>
+                    </div>
+                </div>
+             </div>
+
+             {/* Barra de confirmaciones */}
+             <div id="confirmaciones" class="absolute left-0 bottom-0 w-full h-5 bg-gray-400 flex flex-row place-content-end overflow-hidden gap-x-4">
+                {/* <div class="h-full w-52 flex flex-row items-center place-content-center gap-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-verde" viewBox="0 -960 960 960">
+                        <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                    </svg>
+                    <p class="text-sm text-verde">Envio Completado</p>
+                    <p class="text-sm text-verde">23:47:20</p>
+                </div>
+
+                <div class="h-full w-52 flex flex-row items-center place-content-center gap-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-rojo" viewBox="0 -960 960 960">
+                        <path d="M480-280q17 0 29-11t11-29q0-17-11-28t-29-12q-17 0-28 12t-12 28q0 17 12 29t28 11Zm-40-160h80v-240h-80v240Zm40 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                    </svg>
+
+                    <p class="text-sm text-rojo">Error Enviando</p>
+                    <p class="text-sm text-rojo">23:50:46</p>
+                </div> */}
+
+             </div>
+        </div>
+
+        <div id="panel_conf" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
+            <div class="bg-gris w-[450px] h-96 rounded-md p-2">
+                <h2 class="text-3xl text-amarillo font-semibold text-center">Configuración Partido</h2>
+                <div class="flex flex-row items-center text-lg gap-x-2 mt-5">
+                    <p class="text-accent">Puntos de Set</p>
+                    <input name="conf-puntos" id="conf-puntos" type="number" min="10" max="21" class=" text-blanco bg-gris-claro px-2 py-1 rounded-md w-20" value="10"/>
+                </div>
+                <div class="flex flex-row items-center text-lg gap-x-2 mt-5">
+                    <p class="text-accent">Diferencia de Puntos Set</p>
+                    <input name="conf-dif-puntos" id="conf-dif-puntos" type="number" min="0" max="2" class=" text-blanco bg-gris-claro px-2 py-1 rounded-md w-20" value="0"/>
+                </div>
+                <hr class="w-[90%] mt-5 mx-auto border-amarillo" />
+                <div class="flex flex-row items-center text-lg gap-x-2 mt-5">
+                    <p class="text-accent">Puntos ExtraSet</p>
+                    <input name="conf-puntos-extra" id="conf-puntos-extra" type="number" min="7" class=" text-blanco bg-gris-claro px-2 py-1 rounded-md w-20" value="7"/>
+                </div>
+                <div class="flex flex-row items-center text-lg gap-x-2 mt-5">
+                    <p class="text-accent">Diferencia de Puntos ExtraSet</p>
+                    <input name="conf-dif-puntos-extra" id="conf-dif-puntos-extra" type="number" min="0" max="2" class=" text-blanco bg-gris-claro px-2 py-1 rounded-md w-20" value="0"/>
+                </div>
+
+                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5">
+                    <div id="cerrar_conf" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
+                        <p>Cancelar</p>
+                    </div>
+
+                    <div id="guardar_conf" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
+                        <p>Guardar</p>
+                    </div>
+                </div>
+            </div>            
+        </div>
+
+        {/* Informes */}
+        <div id="panel_informes" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center  ocultar">
+            <div class="bg-gris w-[700px] h-96 rounded-md p-2">
+                <h2 class="text-3xl text-amarillo font-semibold text-center">Informes</h2>
+                <div id="lista_informes" class="w-[90%]  overflow-y-auto no-scrollbar h-40 border-gris-claro border-2 mx-auto">
+                    {/* <div class="w-full border-[1px] bg-gris-claro border-blanco h-20 rounded-lg px-2 py-1 ">
+                        <p class="text-lg text-accent">Informe Generico</p>
+                        <p class="text-base text-blanco puntos">Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1 Prueba de informe numero 1</p>
+                    </div> */}
+                </div>
+
+                <div class="w-full flex flex-row items-center place-content-around mt-5 ">
+                    <div id="nuevo_informe" class="w-max h-max px-3 py-2 bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                        Informe Generico
+                    </div>
+                    <div id="nuevo_informe_suspender" class="w-max h-max px-3 py-2 bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                        Suspender Partido
+                    </div>
+                </div>
+
+                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5">
+                    <div id="cerrar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
+                        <p>Cerrar</p>
+                    </div>
+
+                    {/* <div id="guardar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
+                        <p>Guardar</p>
+                    </div> */}
+                </div>
+            </div>  
+            <div id="redactar_informe" class="bg-gris w-[700px] h-96 rounded-md p-2 absolute flex flex-col items-center ocultar">
+                <input type="text" id="tipo_informe" name="tipo_informe" disabled class="text-3xl text-amarillo font-semibold text-cente bg-transparent text-center mx-auto" value="" />
+                <textarea id="contenido_informe" name="contenido_informe"  class="w-[90%] min-h-40 h-auto overflow-y-auto no-scrollbar  border-gris-claro border-2 mx-auto bg-gris-claro text-blanco p-2 rounded-lg"></textarea>
+
+                
+
+                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5 ">
+                    <div id="cerrar_redactar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
+                        <p>Cancelar</p>
+                    </div>
+
+                    <div id="guardar_redactar_informes" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
+                        <p>Guardar</p>
+                    </div>
+                </div>
+            </div> 
+
+            <div id="redactar_informe_suspender" class="bg-gris w-[700px] h-96 rounded-md p-2 absolute flex flex-col items-center ocultar">
+                <input type="text" id="tipo_informe_suspender" name="tipo_informe_suspender" disabled class="text-3xl text-amarillo font-semibold text-cente bg-transparent text-center mx-auto" value="" />
+                <select id="culpable_informe" name="culpable_informe" class="w-40 h-auto bg-gris-claro rounded-full px-3 py-2 my-2 text-blanco">
+                    <option selected disabled>Equipo culpable</option>
+                    <hr />
+                    <option value="Equipo 1">Equipo 1</option>
+                    <option value="Equipo 2">Equipo 2</option>
+                </select>
+                <textarea id="contenido_informe_suspender" name="contenido_informe_suspender"  class="w-[90%] min-h-40 h-auto overflow-y-auto no-scrollbar  border-gris-claro border-2 mx-auto bg-gris-claro text-blanco p-2 rounded-lg"></textarea>
+
+                
+
+                <div class="w-full flex flex-wrap items-center place-content-center gap-10 my-5 ">
+                    <div id="cerrar_redactar_informe_suspender" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-cancelar">
+                        <p>Cancelar</p>
+                    </div>
+
+                    <div id="guardar_redactar_informe_suspender" class="cursor-pointer w-max h-max px-3 py-2 text-lg flex items-center place-content-center rounded-full font-bold text-blanco bg-aceptar">
+                        <p>Guardar</p>
+                    </div>
+                </div>
+            </div> 
+        </div>
+
+        {/* Modificar Jugada */}
+        <div id="modificar_jugada" class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
+            <div id="modificar_cerrar" class="absolute top-0 left-0 h-full w-full -z-0"></div>
+            <div class="bg-gris w-max h-auto rounded-md z-10 ">
+                <input id="modificar_reference" name="modificar_reference" type="text" value="" />
+
+                <div class="w-96 flex flex-col items-center place-content-around gap-y-1">
+                    <div id="btn_modificar_jugada" class="w-full h-16 flex items-center place-content-center bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                        Modificar Jugada
+                    </div>
+                    <div id="eliminar_jugada" class="w-full h-16 flex items-center place-content-center bg-azul-suave rounded-xl text-blanco text-xl text-center font-medium cursor-pointer">
+                        Eliminar Jugada
+                    </div>
+                </div>
+
+                
+            </div>   
+        </div>
+
+        {/*Confirmar Eliminar Jugada */}
+        <div id="div_eliminar_jugada"  class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
+            <div class="w-96 h-52 bg-gris rounded-lg">
+                <h2 class="text-4xl text-center text-amarillo">¿Estas seguro de eliminar la jugada?</h2>
+                <div class="w-full flex flex-wrap items-center place-content-around mt-5">
+                    <div id="cancelar_eliminar" class="cursor-pointer text-lg font-semibold rounded-md px-3 py-2 bg-rojo text-blanco">Cancelar</div>
+                    <div id="confirmar_eliminar" class="cursor-pointer text-lg font-semibold rounded-md px-3 py-2 bg-verde text-blanco">Confirmar</div>
+                </div>
+            </div>
+            
+        </div>
+
+        {/*Confirmar Eliminar Jugada */}
+        <div id="div_confirmar_set"  class="w-full h-full bg-gris bg-opacity-65 absolute top-0 left-0 flex items-center place-content-center ocultar">
+            <div id="fondo_confirmar_set" class="w-full h-full absolute top-0 z-0 left-0 ">
+            </div>
+            <div class="w-96 h-40 bg-gris rounded-lg flex flex-col items-center place-content-center gap-y-4 z-10">
+                <input id="confirmar_set_value" disabled type="text" class="w-full text-4xl bg-transparent text-center text-amarillo" />
+                <div class="w-full flex flex-wrap items-center place-content-around ">
+                    
+                    <div id="confirmar_set" class="cursor-pointer text-lg font-semibold rounded-md px-3 py-2 bg-verde text-blanco">OK</div>
+                </div>
+            </div>
+            
+        </div>
+
+        {/*Resumen Partido */}
+        <div id="resumen_partido" class="w-full h-full bg-gris absolute top-0 left-0 border-accent border-2 ocultar">
+
+            <div class="w-full grid grid-cols-2 place-items-center mt-8">
+                <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
+                    <div class="flex items-center place-content-center">
+                        <p class="text-4xl text-accent font-semibold">Nombre Equipo 1</p>
+                    </div>
+                    <div class="w-max h-max">
+                        <img src="/img/escudos/sin-escudo.png" class="w-16 h-16" />
+                    </div>
+
+                    <input id="resultado_final_local" class="w-10 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                </div>
+
+                <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
+                    <input id="resultado_final_visitante" class="w-10 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    <div class="w-max h-max">
+                        <img src="/img/escudos/sin-escudo.png" class="w-16 h-16" />
+                    </div>
+                    <div class="flex items-center place-content-center">
+                        <p class="text-4xl text-accent font-semibold">Nombre Equipo 1</p>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="w-full grid grid-cols-2 place-items-center mt-10">
+                <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-5">
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Set 1</p>
+                        <input id="resultado_set1_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Set 2</p>
+                        <input id="resultado_set2_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Extra Set</p>
+                        <input id="resultado_set3_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                </div>
+
+                <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-5">
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Extra Set</p>
+                        <input id="resultado_set3_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Set 2</p>
+                        <input id="resultado_set2_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div>
+                    <div class="w-max flex flex-col items-center place-content-center gap-y-2">
+                        <p class="text-3xl font-semibold text-amarillo">Set 1</p>
+                        <input id="resultado_set1_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    </div> 
+                </div>
+            </div>
+
+            <div class="w-[90%] h-[2px] bg-accent mx-auto my-10 rounded-full"></div>
+
+            <div class=" my-auto h-72 w-full grid grid-cols-2 place-items-center">
+                <div class="w-full h-full flex-col items-center place-content-center space-y-4">
+                    <h2 class="text-azul-suave text-3xl font-semibold text-center">Arbitros Designados</h2>
+                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Arbitro:</span> Ricardo</p>
+                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Oficial 1:</span> Marina</p>
+                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Oficial 2:</span> Saray</p>
+                </div>
+                <div class="w-full h-full flex-col items-center place-content-center space-y-4">
+                    <p class="text-sm text-naranja bg-naranja-claro p-2 rounded-lg w-[80%] mx-auto">Una vez finalizado el partido del todo, no se podra realizar ninguna modificacion sin la autorizacion de un staff autorizado (Pere Alemany o Santino Bonavera)</p>
+                    <p class="text-3xl text-accent text-center">Finalizar el Partido de Prueba</p>
+                    <div class="w-full flex flex-wrap items-center place-content-around">
+                        <div id="volver_acta" class="text-xl cursor-pointer font-semibold px-3 py-2 rounded-2xl bg-gris-claro text-blanco">Volver a la Acta</div>
+                        <a href="/admin/designaciones" id="final_definitivo" class="text-xl font-semibold px-3 py-2 rounded-2xl bg-rojo-claro text-rojo">Cerrar Partido</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+        
+        
+        <style>
+            .puntos{
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+          }
+            .selected{
+                background-color: #1666ff;
+            }
+            .selected-tipo{
+                background-color: #0140B9;
+            }
+            .reloj-activo{
+                color: #FFC700;
+            }
+        
+            .seleccionar_jugada{
+                background-color: #FFC700;
+            }
+        
+            .modificar_jugada{
+                background-color: #0140B9;
+            }
+        
+            .ocultar{
+                display: none;
+            }
+            .scrollbar-fina::-webkit-scrollbar {
+            width: 8px; /* Ancho de la barra de desplazamiento vertical */
+            height: 8px; /* Altura de la barra de desplazamiento horizontal */
+        }
+        
+        .scrollbar-fina::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.5); /* Color de la parte que se arrastra */
+            border-radius: 10px; /* Bordes redondeados */
+        }
+        
+        .scrollbar-fina::-webkit-scrollbar-track {
+            background: transparent; /* Color de la pista */
+        }
+        
+        /* Para Firefox */
+        .scrollbar-fina {
+            scrollbar-width: thin; /* Hacer la barra de desplazamiento más fina */
+            scrollbar-color: #1666ff; /* Color del thumb y de la pista */
+        }
+        
+        /* Para Internet Explorer y Edge */
+        .scrollbar-fina {
+            -ms-overflow-style: -ms-autohiding-scrollbar; /* Estilo de scrollbar autohide */
+        }
+        
+        .modificando {
+            -webkit-box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+        -moz-box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+        box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+        }
+        </style>
+
+</LayoutAllSinMenu>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("Script Cargado");
+    
+      const nombre_jugador = document.getElementById('nombre-jugador') as HTMLInputElement;
+      const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+      const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+      const tiempo = document.getElementById('tiempo') as HTMLInputElement;
+      const orden = document.getElementById('orden') as HTMLInputElement;
+      const box_principal = document.getElementById('box_principal')!;
+
+      const form_id_partido = document.getElementById('id_partido') as HTMLInputElement;
+        const id_partido = form_id_partido.value;
+      let tiempoUltimaJugada = "00:00";
+      let LocPuntosUltimaJugada = "0";
+      let VisPuntosUltimaJugada = "0";
+      let LocSetUltimaJugada = "0";
+      let VisSetUltimaJugada = "0";
+      let tipoPuntoUltimaJugada = "";
+    
+      let ModificarHasta = -100000000000;
+    
+      let modificando = false;
+      let FinSet = false;
+    
+    
+      //Marcador Variables
+      let LocPuntos = 0;
+      let LocSets = 0;
+      let VisPuntos = 0;
+      let VisSets = 0;
+    
+        //Set 1
+        let LocSet1 = 0;
+        let VisSet1 = 0;
+        //Set 2
+        let LocSet2 = 0;
+        let VisSet2 = 0;
+        //Set 3
+        let LocSet3 = 0;
+        let VisSet3 = 0;
+    
+      let conf_puntos = 10;
+      let conf_dif_puntos = 0;
+      let conf_puntos_extra = 7;
+      let conf_dif_puntos_extra = 0;
+    
+    
+    
+      let paso_tipo = 0;
+      let paso_jugador = 0;
+      const salir = document.getElementById('salir')!;
+    
+      let ordenes: string[] = [];
+    
+      //Recuperar Partido del Local Storage
+      cargarHistorial(id_partido);
+      recuperarInformes();
+      cargarConf(`conf_${id_partido}`);
+    
+    
+    
+    
+    salir.addEventListener('click', () => {
+        FinalPartido();
+        
+    });
+    
+    //enviar informacion
+      function enviar() {
+        const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+                    const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+    
+    
+                    const marcador = document.getElementById('marcador')!;
+                    const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+                    const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+                    const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+                    const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
+            // Aquí puedes realizar la acción que desees
+            //console.log("Enviando datos porque pasos es igual a 2");
+            const selectedElements = document.querySelectorAll('.selected');
+            selectedElements.forEach(element => {
+                element.classList.remove('selected');
+            });
+            const selectedtipos = document.querySelectorAll('.selected-tipo');
+            selectedtipos.forEach(element => {
+                element.classList.remove('selected-tipo');
+            });
+            //orden.value = totalMilisegundos.toString();
+            asignarOrden()
+            tiempo.value = String(minutos).padStart(2, '0') + ":" + String(segundos).padStart(2, '0');
+            // Reiniciar pasos si es necesario
+            paso_tipo = 0; // Reiniciar pasos si es necesario
+            paso_jugador = 0;
+            guardarJugada(id_partido);
+    
+            if(LocSets + VisSets < 2){
+                const div_confirmar_set = document.getElementById('div_confirmar_set')!;
+                const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
+                const confirmar_set = document.getElementById('confirmar_set')!;
+                const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
+                        //console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
+                        //console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
+                        if ( LocPuntos > VisPuntos && LocPuntos >= conf_puntos && Math.abs((LocPuntos - VisPuntos)) >= conf_dif_puntos){
+                            LocSets++;
+                            Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                            if(LocSets + VisSets === 1){
+                                LocSet1 = LocPuntos;
+                                VisSet1 = VisPuntos;
+                            }
+                            if(LocSets + VisSets === 2){
+                                LocSet2 = LocPuntos;
+                                VisSet2 = VisPuntos;
+                            }
+                            confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                            div_confirmar_set.classList.remove('ocultar');
+                            fondo_confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            FinSet = true;
+                            tipo_punto.value = "FinSet";
+                            asignarOrden()
+                            ModificarHasta = Number(orden.value);
+                            //console.log(ModificarHasta);
+                            guardarJugada(id_partido);
+    
+                            if(LocSets - VisSets === 2 || LocSets - VisSets === -2){
+                                FinalPartido();
+                            }
+                        }
+                        if(LocPuntos < VisPuntos && VisPuntos >= conf_puntos && Math.abs((LocPuntos - VisPuntos)) >= conf_dif_puntos){
+                            VisSets++;
+                            Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                            if(LocSets + VisSets === 1){
+                                LocSet1 = LocPuntos;
+                                VisSet1 = VisPuntos;
+                            }
+                            if(LocSets + VisSets === 2){
+                                LocSet2 = LocPuntos;
+                                VisSet2 = VisPuntos;
+                            }
+                            confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                            div_confirmar_set.classList.remove('ocultar');
+                            fondo_confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            FinSet = true;
+                            tipo_punto.value = "FinSet";
+                            asignarOrden()
+                            ModificarHasta = Number(orden.value);
+                            //console.log(ModificarHasta);
+                            guardarJugada(id_partido);
+                            if(LocSets - VisSets === 2 || LocSets - VisSets === -2){
+                                FinalPartido();
+                            }
+                        }
+                    } else if(LocSets + VisSets >= 2) {
+                        const div_confirmar_set = document.getElementById('div_confirmar_set')!;
+                        const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
+                        const confirmar_set = document.getElementById('confirmar_set')!;
+                        const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
+                        if(LocPuntos > VisPuntos && LocPuntos >= conf_puntos_extra && Math.abs(LocPuntos - VisPuntos) >= conf_dif_puntos_extra){
+                            LocSets++;
+                            Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                            LocSet3 = LocPuntos;
+                            VisSet3 = VisPuntos;
+    
+                            confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                            div_confirmar_set.classList.remove('ocultar');
+                            fondo_confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            FinSet = true;
+                            tipo_punto.value = "FinSet";
+                            asignarOrden()
+                            ModificarHasta = Number(orden.value);
+                            //console.log(ModificarHasta);
+                            guardarJugada(id_partido);
+    
+                            FinalPartido();
+                        }
+                        if(LocPuntos < VisPuntos && VisPuntos >= conf_puntos_extra && Math.abs(LocPuntos - VisPuntos) >= conf_dif_puntos_extra){
+                            VisSets++;
+                            Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                            LocSet3 = LocPuntos;
+                            VisSet3 = VisPuntos;
+    
+                            confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                            div_confirmar_set.classList.remove('ocultar');
+                            fondo_confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            FinSet = true;
+                            tipo_punto.value = "FinSet";
+                            asignarOrden()
+                            ModificarHasta = Number(orden.value);
+                            //console.log(ModificarHasta);
+                            guardarJugada(id_partido);
+    
+                            FinalPartido();
+                        }
+                       
+            }
+    
+            //console.log("Diferencia de puntos: ", Math.abs((LocPuntos - VisPuntos)));
+            //console.log("Configuracion de diferencia de puntos: ", conf_dif_puntos_extra);
+    
+        
+    }
+    
+        // Iniciar la verificación de pasos
+        setInterval(() => {
+            if(modificando === false){
+    
+            
+                if (paso_tipo === 1 && paso_jugador === 1) {
+                    const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+                    const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+    
+    
+                    const marcador = document.getElementById('marcador')!;
+                    const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+                    const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+                    const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+                    const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
+                    
+                    if(id_equipo.value === "equipo-local" && tipo_punto.value === "Error"){
+                        VisPuntos ++;
+                        Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
+                    } else if(id_equipo.value === "equipo-local"){
+                        LocPuntos ++;
+                        Marcador_LocPuntos.textContent = String(LocPuntos).padStart(1, '0');
+                    }
+    
+                    if(id_equipo.value === "equipo-visitante" && tipo_punto.value === "Error"){
+                        LocPuntos ++;
+                        Marcador_LocPuntos.textContent = String(LocPuntos).padStart(1, '0');
+                    } else if(id_equipo.value === "equipo-visitante"){
+                        VisPuntos ++;
+                        Marcador_VisPuntos.textContent = String(VisPuntos).padStart(1, '0');
+                    }
+                    
+                    
+    
+                    enviar();
+                }
+            } else if(modificando === true){
+                if (paso_tipo === 1 && paso_jugador === 1) {
+                    modificarJugada(id_partido);
+                }
+            }
+        }, 250);
+    
+      //tipos de puntos
+      const directo = document.getElementById('directo')!;
+      const bloqueo = document.getElementById('bloqueo')!;
+      const remate = document.getElementById('remate')!;
+      const error = document.getElementById('error')!;
+    
+        directo.addEventListener('click', function(){
+            directo.classList.add('selected-tipo');
+            remate.classList.remove('selected-tipo');
+            bloqueo.classList.remove('selected-tipo');
+            error.classList.remove('selected-tipo');
+            tipo_punto.value = "Directo"
+            
+            paso_tipo = 1;
+        });
+    
+        remate.addEventListener('click', function(){
+            remate.classList.add('selected-tipo');
+            directo.classList.remove('selected-tipo');
+            bloqueo.classList.remove('selected-tipo');
+            error.classList.remove('selected-tipo');
+            tipo_punto.value = "Remate"
+            
+            paso_tipo = 1;
+        });
+    
+        bloqueo.addEventListener('click', function(){
+            bloqueo.classList.add('selected-tipo');
+            directo.classList.remove('selected-tipo');
+            remate.classList.remove('selected-tipo');
+            error.classList.remove('selected-tipo');
+            tipo_punto.value = "Bloqueo"
+            
+            paso_tipo = 1;
+        });
+    
+        error.addEventListener('click', function(){
+            error.classList.add('selected-tipo');
+            directo.classList.remove('selected-tipo');
+            bloqueo.classList.remove('selected-tipo');
+            remate.classList.remove('selected-tipo');
+            tipo_punto.value = "Error"
+            
+            paso_tipo = 1;
+        });
+    
+    // Tiempo
+    const reloj = document.getElementById('reloj')!;
+    const minutosElement = reloj.querySelector('[data-minutos]')!;
+    const segundosElement = reloj.querySelector('[data-segundos]')!;
+    let totalMilisegundos = 0;
+    let minutos = 0;
+    let segundos = 0;
+    let intervalo: ReturnType<typeof setInterval> | null = null;
+    let corriendo = false;
+    
+    // Función para separar minutos y segundos
+    function separarMinutosSegundos(tiempo: string) {
+        const [minutos, segundos] = tiempo.split(':');
+        const minutosNumericos = parseInt(minutos, 10);
+        const segundosNumericos = parseInt(segundos, 10);
+    
+        return {
+            minutos: minutosNumericos,
+            segundos: segundosNumericos
+        };
+    }
+    
+    // Suponiendo que tienes el tiempo de la última jugada en formato "MM:SS"
+    const tiempoUltimaJugadaFormateado = separarMinutosSegundos(tiempoUltimaJugada);
+    
+    // Establecer los minutos y segundos del cronómetro con el tiempo de la última jugada
+    minutos = tiempoUltimaJugadaFormateado.minutos;
+    segundos = tiempoUltimaJugadaFormateado.segundos;
+    
+    // Actualizar el DOM con el tiempo inicial
+    minutosElement.textContent = String(minutos).padStart(2, '0');
+    segundosElement.textContent = String(segundos).padStart(2, '0');
+    
+    reloj.addEventListener('click', () => {
+        reloj.classList.toggle('reloj-activo');
+        if (!corriendo) {
+            // Iniciar el cronómetro
+            corriendo = true;
+            intervalo = setInterval(() => {
+                segundos++;
+                if (segundos >= 60) {
+                    minutos++;
+                    segundos = 0;
+                }
+                // Actualizar el DOM
+                minutosElement.textContent = String(minutos).padStart(2, '0');
+                segundosElement.textContent = String(segundos).padStart(2, '0');
+    
+                totalMilisegundos = (minutos * 60 + segundos) * 1000;
+    
+                // Formatear el tiempo a una cadena de 10 dígitos (si es necesario)
+                const tiempoFormateado = String(totalMilisegundos).padStart(10, '0');
+            }, 1000);
+        } else {
+            // Pausar el cronómetro
+            corriendo = false;
+            if (intervalo) {
+                clearInterval(intervalo);
+                intervalo = null; // Reiniciar intervalo a null después de pausar
+            }
+        }
+    });
+    
+    //jugadores Local
+    const id_equipo_local = document.getElementById('id_equipo_local') as HTMLInputElement;
+    
+    let index = 0;
+    while (document.getElementById(`local_play_${index}`)) {
+        const local_play = document.getElementById(`local_play_${index}`)!;
+        const local_nombre = document.getElementById(`local_nombre_${index}`) as HTMLInputElement;
+        local_play.addEventListener('click', function() {
+            // Eliminar la clase 'selected' de todos los elementos con esa clase
+            const selectedElements = document.querySelectorAll('.selected');
+            selectedElements.forEach(element => {
+                element.classList.remove('selected');
+            });
+    
+            // Agregar la clase 'selected' al elemento actual
+            local_play.classList.add('selected');
+            nombre_jugador.value = local_nombre.value
+            id_equipo.value = id_equipo_local.value;
+            paso_jugador = 1;
+        });
+    
+        index++;
+    }
+    
+    //Jugadores Visitante
+    const id_equipo_visitante = document.getElementById('id_equipo_visitante') as HTMLInputElement;
+    index = 0;
+    while (document.getElementById(`visitante_play_${index}`)) {
+        const visitante_play = document.getElementById(`visitante_play_${index}`)!;
+        const visitante_nombre = document.getElementById(`visitante_nombre_${index}`) as HTMLInputElement;
+        visitante_play.addEventListener('click', function() {
+            // Eliminar la clase 'selected' de todos los elementos con esa clase
+            const selectedElements = document.querySelectorAll('.selected');
+            selectedElements.forEach(element => {
+                element.classList.remove('selected');
+            });
+    
+            // Agregar la clase 'selected' al elemento actual
+            visitante_play.classList.add('selected');
+            nombre_jugador.value = visitante_nombre.value;
+            id_equipo.value = id_equipo_visitante.value;
+            paso_jugador = 1;
+            
+        });
+    
+        index++;
+    }
+    
+    //Configuracion partido
+        const conf_partido = document.getElementById('conf_partido')!;
+        const panel_conf = document.getElementById('panel_conf')!;
+        const cerrar_conf = document.getElementById('cerrar_conf')!;
+        const guardar_conf = document.getElementById('guardar_conf')!;
+    
+        conf_partido.addEventListener('click', function(){
+            panel_conf.classList.remove('ocultar');
+        })
+    
+        cerrar_conf.addEventListener('click', function(){
+            panel_conf.classList.add('ocultar');
+        })
+        guardar_conf.addEventListener('click', function(){
+            const conf_puntos_form = document.getElementById('conf-puntos') as HTMLInputElement;
+            const conf_dif_puntos_form = document.getElementById('conf-dif-puntos') as HTMLInputElement;
+            const conf_puntos_extra_form = document.getElementById('conf-puntos-extra') as HTMLInputElement;
+            const conf_dif_puntos_extra_form = document.getElementById('conf-dif-puntos-extra') as HTMLInputElement;
+    
+             conf_puntos = Number(conf_puntos_form.value);
+             conf_dif_puntos = Number(conf_dif_puntos_form.value);
+             conf_puntos_extra = Number(conf_puntos_extra_form.value);
+             conf_dif_puntos_extra = Number(conf_dif_puntos_extra_form.value);
+             
+             guardarConf(`conf_${id_partido}`);
+            panel_conf.classList.add('ocultar');
+        })
+    
+    //Configuracion partido
+        const informe = document.getElementById('informe')!;
+        const panel_informes = document.getElementById('panel_informes')!;
+        const cerrar_informes = document.getElementById('cerrar_informes')!;
+        const nuevo_informe = document.getElementById('nuevo_informe')!;
+        const nuevo_informe_suspender = document.getElementById('nuevo_informe_suspender')!;
+    
+        const redactar_informe = document.getElementById("redactar_informe")!;
+        const guardar_redactar_informes = document.getElementById("guardar_redactar_informes")!;
+        const cerrar_redactar_informes = document.getElementById("cerrar_redactar_informes")!;
+    
+        const tipo_informe = document.getElementById("tipo_informe") as HTMLInputElement;
+        const contenido_informe = document.getElementById("contenido_informe") as HTMLInputElement;
+    
+        const redactar_informe_suspender = document.getElementById("redactar_informe_suspender")!;
+        const guardar_redactar_informe_suspender = document.getElementById("guardar_redactar_informe_suspender")!;
+        const cerrar_redactar_informe_suspender = document.getElementById("cerrar_redactar_informe_suspender")!;
+    
+        const tipo_informe_suspender = document.getElementById("tipo_informe_suspender") as HTMLInputElement;
+        const contenido_informe_suspender = document.getElementById("contenido_informe_suspender") as HTMLInputElement;
+        const culpable_informe = document.getElementById("culpable_informe") as HTMLInputElement;
+    
+        informe.addEventListener('click', function(){
+            panel_informes.classList.remove('ocultar');
+        })
+        cerrar_informes.addEventListener('click', function(){
+            panel_informes.classList.add('ocultar');
+        })
+        nuevo_informe.addEventListener('click', function(){
+            tipo_informe.value = "Informe Generico";
+            redactar_informe.classList.remove("ocultar")
+    
+            cerrar_redactar_informes.addEventListener("click", function(){
+                redactar_informe.classList.add("ocultar")
+                tipo_informe.value = "";
+                contenido_informe.value = "";
+            })
+    
+            guardar_redactar_informes.addEventListener("click", function(){
+                guardarInforme();
+                redactar_informe.classList.add("ocultar")
+                tipo_informe.value = "";
+                contenido_informe.value = "";
+            })
+    
+        });
+    
+        nuevo_informe_suspender.addEventListener('click', function(){
+            tipo_informe_suspender.value = "Suspender Partido";
+            redactar_informe_suspender.classList.remove("ocultar")
+    
+            cerrar_redactar_informe_suspender.addEventListener("click", function(){
+                redactar_informe_suspender.classList.add("ocultar")
+                tipo_informe_suspender.value = "";
+                contenido_informe_suspender.value = "";
+            })
+    
+            guardar_redactar_informe_suspender.addEventListener("click", function(){
+                guardarInforme();
+                redactar_informe_suspender.classList.add("ocultar")
+                tipo_informe_suspender.value = "";
+                contenido_informe_suspender.value = "";
+            })
+    
+        })
+    
+      //Modificar jugada
+      let pulsando: number | null = null;
+        let isLongPress = false; // Variable para indicar si se ha mantenido pulsado
+    
+        const existingDivs = new Set<HTMLDivElement>();
+    
+    // Función para agregar eventos a un div
+    function addEventListenersToDiv(div: HTMLDivElement) {
+        div.addEventListener('click', (event: MouseEvent) => {
+            if (!isLongPress) {
+                MarcarJugada(event);
+            }
+            isLongPress = false;
+        });
+    
+        div.addEventListener('mousedown', () => {
+            isLongPress = false;
+            pulsando = window.setTimeout(() => {
+                isLongPress = true;
+                handleDivClick(div.id); // Ejecuta
+            }, 500);
+        });
+    
+        div.addEventListener('mouseup', () => {
+            if (pulsando !== null) {
+                clearTimeout(pulsando);
+                pulsando = null;
+            }
+        });
+    
+        div.addEventListener('mouseleave', () => {
+            if (pulsando !== null) {
+                clearTimeout(pulsando);
+                pulsando = null;
+            }
+        });
+        // Eventos para dispositivos táctiles
+    div.addEventListener('touchstart', () => {
+        isLongPress = false;
+        pulsando = window.setTimeout(() => {
+            isLongPress = true;
+            handleDivClick(div.id); // Ejecuta
+        }, 500);
+    });
+    
+    div.addEventListener('touchend', () => {
+        if (pulsando !== null) {
+            clearTimeout(pulsando);
+            pulsando = null;
+        }
+    });
+    
+    div.addEventListener('touchcancel', () => {
+        if (pulsando !== null) {
+            clearTimeout(pulsando);
+            pulsando = null;
+        }
+    });
+    }
+    
+    setInterval(() => {
+        const divs = document.querySelectorAll("[id^='jugada_']");
+        const divArray: HTMLDivElement[] = Array.from(divs) as HTMLDivElement[];
+    
+        divArray.forEach((div: HTMLDivElement) => {
+            // Si el div no está en el conjunto, agregar eventos
+            if (!existingDivs.has(div)) {
+                existingDivs.add(div); // Agregar el div al conjunto
+                addEventListenersToDiv(div); // Agregar los eventos
+            }
+        });
+    }, 1000);
+    
+    
+    const eliminar_jugada = document.getElementById("eliminar_jugada")!;
+    const modificar_jugada = document.getElementById("modificar_jugada")!;
+    const btn_modificar_jugada = document.getElementById('btn_modificar_jugada')!;
+    const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
+            
+    
+    eliminar_jugada.addEventListener('click', function(){
+        modificar_jugada.classList.add("ocultar");
+       
+        const div_eliminar_jugada = document.getElementById('div_eliminar_jugada')!;
+        const div_cancelar_eliminar = document.getElementById('cancelar_eliminar')!;
+        const div_confirmar_eliminar = document.getElementById('confirmar_eliminar')!;
+        div_eliminar_jugada.classList.remove('ocultar');
+    
+        div_cancelar_eliminar.addEventListener('click', function(){
+            div_eliminar_jugada.classList.add('ocultar');
+        })
+    
+        div_confirmar_eliminar.addEventListener('click', function(){
+            div_eliminar_jugada.classList.add('ocultar');
+            eliminarJugada(id_partido);
+        })
+        
+    });
+    
+    btn_modificar_jugada.addEventListener('click', function(){
+        modificar_jugada.classList.add("ocultar");
+        box_principal.classList.add("modificando");
+        modificando = true;
+    
+    });
+    
+    
+        // Función para manejar el clic en los divs
+        function handleDivClick(clickedDivId: string) {
+            
+            const number = clickedDivId.split('_')[1]; // Extraer el número después de 'jugada_'
+            const jugada_id = `jugada_${number}`;
+            if(Number(number) > ModificarHasta || Number(number) === ModificarHasta){
+            const divToMark = document.getElementById(jugada_id); // Seleccionar el div por su ID
+    
+            if (divToMark) { // Verificar que el div existe
+                divToMark.classList.remove("bg-gris-claro");
+                divToMark.classList.add("bg-azul-suave"); // Añadir o quitar la clase
+            } else {
+                console.error(`No se encontró el div con ID: ${jugada_id}`);
+            }
+            //console.log(`Div mantenido: ${clickedDivId}, Número extraído: ${number}`);
+            const modificar_jugada = document.getElementById("modificar_jugada")!;
+            const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
+            modificar_jugada.classList.remove("ocultar");
+            modificar_reference.value = number;
+    
+            const modificar_cerrar = document.getElementById("modificar_cerrar")!;
+      
+      modificar_cerrar.addEventListener('click', function() {
+        modificar_jugada.classList.add("ocultar");
+        if (divToMark) { // Verificar que el div existe
+                divToMark.classList.add("bg-gris-claro");
+                divToMark.classList.remove("bg-azul-suave"); // Añadir o quitar la clase
+            } else {
+                console.error(`No se encontró el div con ID: ${jugada_id}`);
+            }
+      })
+    
+    
+               
+                
+        }
+        }
+    
+        function MarcarJugada(event: MouseEvent) {
+            const clickedDivId = (event.currentTarget as HTMLElement).id; // Obtener el id del div clicado
+            const number = clickedDivId.split('_')[1]; // Extraer el número después de 'jugada_'
+           // console.log(`Div clicado: ${clickedDivId}, Número extraído: ${number}`);
+            
+            // Crear el ID del div que se va a marcar
+            const id_marcar = `marcar_jugada_${number}`; // Asegúrate de que este ID existe en el DOM
+            const divToMark = document.getElementById(id_marcar); // Seleccionar el div por su ID
+    
+            if (divToMark) { // Verificar que el div existe
+                divToMark.classList.toggle("bg-amarillo"); // Añadir o quitar la clase
+            } else {
+                console.error(`No se encontró el div con ID: ${id_marcar}`);
+            }
+        }
+     
+        function asignarOrden() {
+            
+            let ordenBase = parseInt(String(totalMilisegundos), 10); // Convertir a número entero
+    
+            // Asegurarse de que el orden base es un número válido
+            if (isNaN(ordenBase) || ordenBase < 0) {
+                alert("Por favor, introduce un número de milisegundos válido.");
+                return;
+            }
+    
+            // Formatear el número de orden a 4 dígitos
+            let ordenFormateado = ordenBase.toString().padStart(4, '0');
+    
+            // Verificar si el orden ya existe y sumar 1 si es necesario
+            while (ordenes.includes(ordenFormateado)) {
+                ordenBase++;
+                ordenFormateado = ordenBase.toString().padStart(4, '0');
+            }
+    
+            // Agregar el nuevo número de orden al array
+            ordenes.push(ordenFormateado);
+    
+            // Asignar el número de orden al input correspondiente
+            orden.value = ordenFormateado;
+            //console.log(`Número de orden asignado: ${ordenFormateado}`);
+        }
+    
+     async   function eliminarJugada(nombreArray: string) {
+        const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
+        const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+
+        const FormLocPuntos = document.getElementById('FormLocPuntos') as HTMLInputElement;
+        const FormLocSet = document.getElementById('FormLocSet') as HTMLInputElement;
+        const FormVisPuntos = document.getElementById('FormVisPuntos') as HTMLInputElement;
+        const FormVisSet = document.getElementById('FormVisSet') as HTMLInputElement;
+
+        const FormAction = document.getElementById('FormAction') as HTMLInputElement;
+    
+        // Obtener el número de referencia de la jugada a eliminar
+        const referencia = modificar_reference.value;
+      //  if(Number(referencia) < ModificarHasta){
+            // Buscar la jugada en el array usando el valor de referencia
+        const index = jugadasExistentes.findIndex((jugada: { orden: string; }) => jugada.orden === referencia);
+           // console.log(index)
+        // Verificar si la referencia es válida
+        if (index !== -1) {
+            // Obtener la jugada que se va a eliminar
+            const jugadaAEliminar = jugadasExistentes[index];
+    
+            // Verificar que la jugada existe
+            if (jugadaAEliminar) {
+                
+                // Determinar si se debe restar un punto al equipo local o visitante
+                if (jugadaAEliminar.tipoPunto === 'Error') {
+                    // Si es un error, restar al equipo contrario
+                    if (jugadaAEliminar.idEquipo === 'equipo-local') {
+                        if(VisPuntos > 0){
+                                VisPuntos = VisPuntos - 1;
+                               
+                            }
+                        
+                    } else {
+                        if(LocPuntos > 0){
+                               
+                                LocPuntos = LocPuntos - 1;
+                            }
+                        
+                    }
+                } else {
+                    // Si no es un error, restar al equipo correspondiente
+                    if (jugadaAEliminar.idEquipo === 'equipo-local') {
+                        if(LocPuntos > 0){
+                               
+                                LocPuntos = LocPuntos - 1;
+                            }
+                    } else {
+                        if(VisPuntos > 0){
+                                VisPuntos = VisPuntos - 1;
+                                
+                            }
+                       
+                    }
+                }
+    
+                if(jugadaAEliminar.tipoPunto === "FinSet"){
+                    LocPuntos = Number(jugadaAEliminar.locPuntos);
+                    VisPuntos = Number(jugadaAEliminar.visPuntos);
+                    ModificarHasta = -10000;
+                    if(Number(jugadaAEliminar.locPuntos) < Number(jugadaAEliminar.visPuntos)){
+                        VisSets = VisSets -1;
+                    } else{
+                        LocSets = LocSets -1;
+                    }
+                }
+    
+                // Eliminar la jugada del array
+                jugadasExistentes.splice(index, 1);
+                if(jugadaAEliminar.tipoPunto === "FinSet"){
+                    let PuntoFinSet = index -1;
+                    const PuntoFinSet_orden = jugadasExistentes[PuntoFinSet].orden;
+                   // console.log(PuntoFinSet_orden);
+                    jugadasExistentes.splice(PuntoFinSet, 1);
+                    const divJugada = document.getElementById(`jugada_${PuntoFinSet_orden}`);
+                    if (divJugada) {
+                        divJugada.remove(); // Elimina el elemento del DOM si existes
+                    }
+    
+                    let ActualizarMarcador = index -2;
+                    const PuntosLoc = jugadasExistentes[ActualizarMarcador].locPuntos;
+                    const PuntosVis = jugadasExistentes[ActualizarMarcador].visPuntos;
+                    LocPuntos = Number(PuntosLoc);
+                    VisPuntos = Number(PuntosVis);
+                }
+    
+                // Actualizar el localStorage
+                localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+    
+                // Actualizar las jugadas restantes
+                for (let i = index; i < jugadasExistentes.length; i++) {
+                    // Restar un punto a cada jugada posterior
+                    if (jugadaAEliminar.tipoPunto === 'Error') {
+                        if (jugadaAEliminar.idEquipo === "equipo-local") {
+                        //    console.log("Ejecutado 1")
+                            if(jugadasExistentes[i].visPuntos > 0){
+                                jugadasExistentes[i].visPuntos =  jugadasExistentes[i].visPuntos - 1;
+                            }
+                            
+                        } else {
+                          //  console.log("Ejecutado 2")
+                            if(jugadasExistentes[i].locPuntos > 0){
+                                jugadasExistentes[i].locPuntos =  jugadasExistentes[i].locPuntos - 1;
+                            }
+                            
+                        }
+                    } else {
+                        if (jugadaAEliminar.idEquipo === "equipo-local") {
+                           // console.log("Ejecutado 3")
+                            if(jugadasExistentes[i].locPuntos > 0){
+                                jugadasExistentes[i].locPuntos =  jugadasExistentes[i].locPuntos - 1;
+                            }
+                            
+                            
+                        } 
+                        if (jugadaAEliminar.idEquipo === "equipo-visitante"){
+                           // console.log("Ejecutado 4")
+                            if(jugadasExistentes[i].visPuntos > 0){
+                             jugadasExistentes[i].visPuntos =  jugadasExistentes[i].visPuntos - 1;
+                            }
+                            
+                        }
+                    }
+                    
+                }
+    
+                // Guardar los cambios en el localStorage
+                localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+    
+                // Eliminar el div correspondiente
+                const divJugada = document.getElementById(`jugada_${modificar_reference.value}`);
+                if (divJugada) {
+                    divJugada.remove();
+                }
+    
+                // Actualizar los inputs de las jugadas restantes
+                actualizarJugadasRestantes(jugadasExistentes);
+    
+                // Actualizar el marcador en el DOM
+                actualizarMarcador();
+                FormAction.value = "EliminarJugada";
+
+            try {
+                await enviarDatosAPi(); // Espera a que se complete la función
+                console.log("El código continúa después de recibir la respuesta.");
+            } catch (error) {
+                console.error("Ocurrió un error al enviar los datos:", error);
+            }
+            } else {
+                console.error("La jugada a eliminar no existe.");
+            }
+        } else {
+            console.error("Referencia no válida");
+        }
+     
+    
+    //}
+        
+    }
+    
+    // Función para actualizar los inputs de las jugadas restantes
+    function actualizarJugadasRestantes(jugadas: any[]) {
+        jugadas.forEach((jugada, index) => {
+            const locPuntosInput = document.getElementById(`LocPuntos_${jugada.orden}`) as HTMLInputElement;
+            const visPuntosInput = document.getElementById(`VisPuntos_${jugada.orden}`) as HTMLInputElement;
+    
+            // Actualizar los inputs de los puntos
+            if (locPuntosInput) {
+                locPuntosInput.value = jugada.locPuntos.toString();
+            }
+            if (visPuntosInput) {
+                visPuntosInput.value = jugada.visPuntos.toString();
+            }
+        });
+    }
+    
+        function actualizarMarcador() {
+                const marcador = document.getElementById('marcador')!;
+                const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+                const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+                const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+                const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
+    
+        if (Marcador_LocPuntos) {
+            Marcador_LocPuntos.textContent = LocPuntos.toString();
+            
+        }
+        if (Marcador_VisPuntos) {
+            Marcador_VisPuntos.textContent = VisPuntos.toString();
+        }
+        Marcador_LocSets.textContent = LocSets.toString();
+        Marcador_VisSets.textContent = VisSets.toString();
+    }
+        
+    //Recuperar Historial Partido de Local Storage
+    function cargarHistorial(nombreArray: string) {
+        const historialDiv = document.getElementById('historial'); // Asegúrate de que este ID coincida con tu contenedor de historial
+    
+        // Recuperar el array de jugadas del localStorage
+        const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+        //ordenes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+        // Verificar si hay jugadas existentes
+        if (jugadasExistentes.length > 0) {
+            ordenes = jugadasExistentes.map((jugada: { orden: string; }) => jugada.orden);
+            // Extraer el tiempo de la última jugada
+            tipoPuntoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tipoPunto;
+            if(tipoPuntoUltimaJugada !== "FinSet"){
+                tiempoUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].tiempo;
+            }
+             
+             LocPuntosUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].locPuntos;
+             VisPuntosUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].visPuntos;
+             LocSetUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].locSet;
+             VisSetUltimaJugada = jugadasExistentes[jugadasExistentes.length - 1].visSet;
+             
+            jugadasExistentes.forEach((jugada: { idEquipo: string; nombre: any; tipoPunto: any; tiempo: any; orden: any; locPuntos: string; visPuntos: string; locSet: number; visSet: number; }) => {
+                const nuevoDiv = document.createElement('div');
+    
+                if(jugada.tipoPunto === "FinSet"){
+            nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_auto] border-blanco border-y-[1px] border-l-[1px] items-center";
+            nuevoDiv.id = `jugada_${jugada.orden}`;
+            nuevoDiv.innerHTML = `
+                <div class="flex items-center justify-center h-full">
+                    <p class="text-xl font-semibold">Fin Set ${jugada.locSet + jugada.visSet}</p>
+                </div>
+                <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+            `;
+        }else{
+            // Asignar las clases y contenido según el equipo
+            if (jugada.idEquipo === 'equipo-local') {
+                nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+                nuevoDiv.id = `jugada_${jugada.orden}`;
+                nuevoDiv.innerHTML = `
+                    <div>
+                        <div class="flex flex-row items-center">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                </svg>
+                            </div>
+                            <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-24 font-semibold bg-transparent" value="${jugada.nombre}" />
+                        </div>
+                        <div class="flex flex-row items -center px-2 gap-x-1">
+                            <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${jugada.tipoPunto}" disabled />
+                            <span>|</span>
+                            <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                        <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${jugada.locPuntos}" disabled />
+                        <span>-</span>
+                        <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${jugada.visPuntos}" disabled />
+                    </div>
+                    <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+                `;
+            } else {
+                nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+                nuevoDiv.id = `jugada_${jugada.orden}`;
+                nuevoDiv.innerHTML = `
+                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                      <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${jugada.locPuntos}" disabled />
+                        <span>-</span>
+                        <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${jugada.visPuntos}" disabled />
+                    </div>
+                    <div>
+                        <div class="flex flex-row items-center">
+                            <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-24 font-semibold bg-transparent" value="${jugada.nombre}" />
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex flex-row items-center px-2 gap-x-1">
+                            <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${jugada.tipoPunto}" disabled />
+                            <span>|</span>
+                            <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
+                        </div>
+                    </div>
+                    <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+                `;
+            }
+        }
+    
+                // Agregar el nuevo div al contenedor de historial
+                if (historialDiv) {
+                    historialDiv.appendChild(nuevoDiv);
+                }
+            });
+    
+            // Establecer el tiempo de la última jugada en algún lugar específico, si es necesario
+            const tiempoUltimaJugadaDiv = document.getElementById('tiempo') as HTMLInputElement; // Asegúrate de que este ID coincida con tu contenedor para mostrar el tiempo
+            if (tiempoUltimaJugadaDiv) {
+                tiempoUltimaJugadaDiv.value = tiempoUltimaJugada;
+            }
+            const marcador = document.getElementById('marcador')!;
+            const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+            const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+            const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+            const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
+            
+            
+            Marcador_LocSets.textContent = LocSetUltimaJugada;
+            Marcador_VisSets.textContent = VisSetUltimaJugada;
+            if(tipoPuntoUltimaJugada !== "FinSet"){
+                Marcador_LocPuntos.textContent = LocPuntosUltimaJugada;
+                Marcador_VisPuntos.textContent = VisPuntosUltimaJugada;
+                LocPuntos = Number(LocPuntosUltimaJugada);
+                VisPuntos = Number(VisPuntosUltimaJugada);
+            }
+             LocSets = Number(LocSetUltimaJugada);
+             VisSets = Number(VisSetUltimaJugada);
+    
+    
+        }
+    
+    
+        const FinalesDeSet = jugadasExistentes.filter((jugada: { tipoPunto: string; }) => jugada.tipoPunto === "FinSet");
+    
+    // Iteramos sobre cada jugada filtrada
+    FinalesDeSet.forEach((jugada: { locSet: any; visSet: any; locPuntos: any; visPuntos: any; }) => {
+        const suma = jugada.locSet + jugada.visSet;
+    
+        // Realizamos acciones según el valor de la suma
+        if (suma === 1) {
+            LocSet1 = Number(jugada.locPuntos);
+            VisSet1 = Number(jugada.visPuntos);
+        } else if (suma === 2) {
+            LocSet2 = Number(jugada.locPuntos);
+            VisSet2 = Number(jugada.visPuntos);
+        } else if (suma === 3) {
+            LocSet3 = Number(jugada.locPuntos);
+            VisSet3 = Number(jugada.visPuntos);
+        }
+    });
+        
+    }
+
+    // Función para enviar datos a la API
+async function enviarDatosAPi() {
+        const FormAction = document.getElementById('FormAction') as HTMLInputElement;
+    const form = document.getElementById('formulario') as HTMLFormElement; // Asegúrate de que este ID coincida con tu formulario
+    if (!form) {
+        console.error("Formulario no encontrado");
+        return; // Salir si el formulario no se encuentra
+    }
+
+    const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+
+    const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+    });
+
+    const contentType = response.headers.get("Content-Type");
+    if (contentType && contentType.includes("text/html")) {
+        const html = await response.text();
+        // Manejo de HTML
+    } else if (contentType && contentType.includes("application/json")) {
+        const jsonResponse = await response.json();
+        if (jsonResponse.success) {
+            console.log("Código de la API finalizado");
+                   // Limpiar los campos después de guardar
+       
+        } else {
+            console.log("Error en los datos");
+        }
+    }
+}
+
+    //Guardar Jugada Local Storage
+ async  function guardarJugada(nombreArray: string) {
+        const nombre_jugador = document.getElementById('nombre-jugador') as HTMLInputElement;
+        const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+        const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+        const tiempo = document.getElementById('tiempo') as HTMLInputElement;
+        const orden = document.getElementById('orden') as HTMLInputElement;
+        const FormLocPuntos = document.getElementById('FormLocPuntos') as HTMLInputElement;
+        const FormLocSet = document.getElementById('FormLocSet') as HTMLInputElement;
+        const FormVisPuntos = document.getElementById('FormVisPuntos') as HTMLInputElement;
+        const FormVisSet = document.getElementById('FormVisSet') as HTMLInputElement;
+
+        const FormAction = document.getElementById('FormAction') as HTMLInputElement;
+
+        FormAction.value = "GuardarJugada";
+        FormLocPuntos.value = String(LocPuntos);
+        FormLocSet.value = String(LocSets); 
+        FormVisPuntos.value = String(VisPuntos); 
+        FormVisSet.value = String(VisSets); 
+        try {
+        await enviarDatosAPi(); // Espera a que se complete la función
+        console.log("El código continúa después de recibir la respuesta.");
+    } catch (error) {
+        console.error("Ocurrió un error al enviar los datos:", error);
+    }
+    if(orden.value !== ""){
+        // Crear un objeto con la información del jugador
+        const jugada = {
+            nombre: nombre_jugador.value,
+            idEquipo: id_equipo.value,
+            tipoPunto: tipo_punto.value,
+            tiempo: tiempo.value,
+            locPuntos: LocPuntos,
+            visPuntos: VisPuntos,
+            locSet: LocSets,
+            visSet: VisSets,
+            orden: orden.value
+        };
+    
+        // Recuperar el array existente de jugadas del localStorage
+        const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+    
+        // Agregar la nueva jugada al array existente
+        jugadasExistentes.push(jugada);
+
+        
+        // Guardar el array actualizado en localStorage
+        localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+    
+        // Crear el nuevo div para la jugada
+        const historialDiv = document.getElementById('historial')!; // Asegúrate de que este ID coincida con tu contenedor de historial
+        const confirmaciones = document.getElementById('confirmaciones')!; // Asegúrate de que este ID coincida con tu contenedor de historial
+        
+        const CofirmacionDiv = document.createElement('div');
+        const hora_actual = obtenerHoraActual();
+        
+            const nuevoDiv = document.createElement('div');
+            if(FinSet === true){
+            nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_auto] border-blanco border-y-[1px] border-l-[1px] items-center";
+            nuevoDiv.id = `jugada_${jugada.orden}`;
+            nuevoDiv.innerHTML = `
+                <div class="flex items-center justify-center h-full">
+                    <p class="text-xl font-semibold">Fin Set ${LocSets + VisSets}</p>
+                </div>
+                <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+            `;
+            LocPuntos = 0;
+            VisPuntos = 0;
+            FinSet = false;
+        }else{
+            // Asignar las clases y contenido según el equipo
+            if (jugada.idEquipo === 'equipo-local') {
+                nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+                nuevoDiv.id = `jugada_${jugada.orden}`;
+                nuevoDiv.innerHTML = `
+                    <div>
+                        <div class="flex flex-row items-center">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                </svg>
+                            </div>
+                            <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-28 font-semibold bg-transparent" value="${jugada.nombre}" />
+                        </div>
+                        <div class="flex flex-row items -center px-2 gap-x-1">
+                            <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${jugada.tipoPunto}" disabled />
+                            <span>|</span>
+                            <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                        <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${LocPuntos}" disabled />
+                        <span>-</span>
+                        <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${VisPuntos}" disabled />
+                    </div>
+                    <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+                `;
+            } else {
+                nuevoDiv.className = "w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center";
+                nuevoDiv.id = `jugada_${jugada.orden}`;
+                nuevoDiv.innerHTML = `
+                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                      <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${LocPuntos}" disabled />
+                        <span>-</span>
+                        <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${VisPuntos}" disabled />
+                    </div>
+                    <div>
+                        <div class="flex flex-row items-center">
+                            <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-24 font-semibold bg-transparent" value="${jugada.nombre}" />
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex flex-row items-center px-2 gap-x-1">
+                            <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${jugada.tipoPunto}" disabled />
+                            <span>|</span>
+                            <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
+                        </div>
+                    </div>
+                    <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+                `;
+            }
+        }
+        historialDiv.appendChild(nuevoDiv);
+        
+        
+                CofirmacionDiv.className = "h-full w-52 flex flex-row items-center place-content-center gap-x-1";
+                CofirmacionDiv.innerHTML = `
+                    
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-verde" viewBox="0 -960 960 960">
+                            <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                        </svg>
+                        <p class="text-sm text-verde whitespace-nowrap">Envio Completado</p>
+                        <p class="text-sm text-verde">${hora_actual}</p>
+                    
+                    `;
+        // Insertar el nuevo div en el historial
+       
+        confirmaciones.appendChild(CofirmacionDiv);
+}
+        // Limpiar los campos después de guardar
+    nombre_jugador.value = '';
+    id_equipo.value = '';
+    tipo_punto.value = '';
+    tiempo.value = '';
+    orden.value = '';
+ 
+    }
+    
+    //Recuperar Configuracion Partidos
+    function cargarConf(nombreArray: string) {
+        // Recuperar el array existente de configuraciones del localStorage
+        const configuracionesExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : null;
+    
+        if (configuracionesExistentes) {
+            // Suponiendo que solo hay una configuración que deseas cargar
+            const configuracion = configuracionesExistentes[0]; // O puedes usar un índice específico si hay múltiples configuraciones
+    
+            // Asignar los valores a las constantes
+            const conf_puntos_form = document.getElementById('conf-puntos') as HTMLInputElement;
+            const conf_dif_puntos_form = document.getElementById('conf-dif-puntos') as HTMLInputElement;
+            const conf_puntos_extra_form = document.getElementById('conf-puntos-extra') as HTMLInputElement;
+            const conf_dif_puntos_extra_form = document.getElementById('conf-dif-puntos-extra') as HTMLInputElement;
+    
+            // Cargar los valores en los campos de entrada
+            if (conf_puntos_form) conf_puntos_form.value = configuracion.conf_puntos.toString();
+            if (conf_dif_puntos_form) conf_dif_puntos_form.value = configuracion.conf_dif_puntos.toString();
+            if (conf_puntos_extra_form) conf_puntos_extra_form.value = configuracion.conf_puntos_extra.toString();
+            if (conf_dif_puntos_extra_form) conf_dif_puntos_extra_form.value = configuracion.conf_dif_puntos_extra.toString();
+    
+            conf_puntos = Number(configuracion.conf_puntos);
+             conf_dif_puntos = Number(configuracion.conf_dif_puntos);
+             conf_puntos_extra = Number(configuracion.conf_puntos_extra);
+             conf_dif_puntos_extra = Number(configuracion.conf_dif_puntos_extra);
+    
+        } else {
+            //console.log("No hay configuraciones guardadas.");
+        }
+    }
+    
+    //Guardar Configuracion Local Storage
+    function guardarConf(nombreArray: string) {
+        const conf_puntos_form = document.getElementById('conf-puntos') as HTMLInputElement;
+    const conf_dif_puntos_form = document.getElementById('conf-dif-puntos') as HTMLInputElement;
+    const conf_puntos_extra_form = document.getElementById('conf-puntos-extra') as HTMLInputElement;
+    const conf_dif_puntos_extra_form = document.getElementById('conf-dif-puntos-extra') as HTMLInputElement;
+    
+    // Crear un objeto con la información del jugador
+    const Configuracion = {
+        conf_puntos: Number(conf_puntos_form.value),
+        conf_dif_puntos: Number(conf_dif_puntos_form.value),
+        conf_puntos_extra: Number(conf_puntos_extra_form.value),
+        conf_dif_puntos_extra: Number(conf_dif_puntos_extra_form.value),
+    };
+    
+    // Recuperar el array existente de configuraciones del localStorage
+    //const nombreArray = 'nombreDeTuArray'; // Asegúrate de definir el nombre del array
+    const configuracionesExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+    
+    // Buscar si ya existe una configuración para actualizar
+    const index = configuracionesExistentes.findIndex((item: any) => item.conf_puntos === Configuracion.conf_puntos);
+    
+    if (index !== -1) {
+        // Si existe, actualiza los valores
+        configuracionesExistentes[index] = Configuracion;
+    } else {
+        // Si no existe, añade la nueva configuración
+        configuracionesExistentes.push(Configuracion);
+    }
+    
+    // Guardar el array actualizado en localStorage
+    localStorage.setItem(nombreArray, JSON.stringify(configuracionesExistentes));
+    }
+    
+    //limpiar storage
+    function eliminarHistorial(nombreArray: string) {
+        // Eliminar el array del localStorage
+        localStorage.removeItem(nombreArray);
+    }
+    
+    
+    function obtenerHoraActual() {
+        const fecha = new Date(); // Crear un nuevo objeto Date con la fecha y hora actuales
+        const horas = String(fecha.getHours()).padStart(2, '0'); // Obtener las horas y formatear a 2 dígitos
+        const minutos = String(fecha.getMinutes()).padStart(2, '0'); // Obtener los minutos y formatear a 2 dígitos
+        const segundos = String(fecha.getSeconds()).padStart(2, '0'); // Obtener los segundos y formatear a 2 dígitos
+    
+        return `${horas}:${minutos}:${segundos}`; // Devolver la hora en formato HH:MM:SS
+    }
+    
+    
+    function guardarInforme() {
+        // Recuperar los elementos de los inputs
+        const tipo_informe = document.getElementById("tipo_informe") as HTMLInputElement | null;
+        const contenido_informe = document.getElementById("contenido_informe") as HTMLInputElement | null;
+        const tipo_informe_suspender = document.getElementById("tipo_informe_suspender") as HTMLInputElement | null;
+        const contenido_informe_sustipo_informe_suspender = document.getElementById("contenido_informe_sustipo_informe_suspender") as HTMLInputElement | null;
+        const culpable_informe = document.getElementById("culpable_informe") as HTMLInputElement;
+        
+    
+        // Comprobar si los elementos existen
+        if (!tipo_informe || !contenido_informe) {
+            console.error("Los elementos de entrada no se encontraron.");
+            return;
+        }
+        // Comprobar si los elementos existen
+        if (!tipo_informe_suspender || !contenido_informe_suspender) {
+            console.error("Los elementos de entrada no se encontraron.");
+            return;
+        }
+        let tipo = "";
+        let contenido = "";
+        let culpable = "";
+        // Obtener los valores de los inputs
+        if(tipo_informe.value === "Informe Generico"){
+          tipo = tipo_informe.value.trim(); // Eliminar espacios en blanco
+          contenido = contenido_informe.value.trim(); // Eliminar espacios en blanco
+        }
+        if(tipo_informe_suspender.value === "Suspender Partido"){
+          tipo = tipo_informe_suspender.value.trim(); // Eliminar espacios en blanco
+          contenido = contenido_informe_suspender.value.trim(); // Eliminar espacios en blanco
+          culpable = culpable_informe.value.trim();
+        }
+        
+    
+        // Validar que ambos campos no estén vacíos
+        if (!tipo || !contenido) {
+            console.error("El tipo y el contenido no pueden estar vacíos.");
+            return; // No se guarda el informe si alguno de los campos está vacío
+        }
+    
+        // Recuperar el historial existente del local storage o inicializarlo como un array vacío
+        let historial = localStorage.getItem(`informes_${id_partido}`) ? JSON.parse(localStorage.getItem(`informes_${id_partido}`)!) : [];
+    
+        // Crear un nuevo informe
+        const nuevoInforme = {
+            tipo: tipo,
+            contenido: contenido,
+            culpable: culpable
+        };
+    
+        // Añadir el nuevo informe al historial
+        historial.push(nuevoInforme);
+    
+        // Guardar el historial actualizado en el local storage
+        localStorage.setItem(`informes_${id_partido}`, JSON.stringify(historial));
+    
+        // Crear un nuevo div para insertar en lista_informes
+        const informeDiv = document.createElement("div");
+        informeDiv.className = "w-full border-[1px] bg-gris-claro border-blanco h-20 rounded-lg px-2 py-1";
+        informeDiv.innerHTML = `<p class="text-lg text-accent">${tipo} <span class="text-blanco">${culpable}</span></p><p class="text-base text-blanco puntos">${contenido}</p>`;
+    
+        // Insertar el nuevo div en el contenedor lista_informes
+        const listaInformes = document.getElementById("lista_informes");
+        if (listaInformes) {
+            listaInformes.appendChild(informeDiv);
+        } else {
+            console.error("El contenedor lista_informes no se encontró.");
+        }
+    
+    }
+    
+    function recuperarInformes() {
+        // Recuperar el historial del local storage
+        const historial = localStorage.getItem(`informes_${id_partido}`);
+        
+        // Comprobar si hay informes guardados
+        if (historial) {
+            const informes = JSON.parse(historial);
+    
+            // Obtener el contenedor donde se insertarán los informes
+            const listaInformes = document.getElementById("lista_informes");
+            if (!listaInformes) {
+                console.error("El contenedor lista_informes no se encontró.");
+                return;
+            }
+    
+            // Limpiar el contenedor antes de insertar los informes
+            listaInformes.innerHTML = '';
+    
+            // Recorrer el array de informes y crear los elementos correspondientes
+            informes.forEach((informe: { tipo: any; contenido: any; culpable: any; }) => {
+                const informeDiv = document.createElement("div");
+                informeDiv.className = "w-full border-[1px] bg-gris-claro border-blanco h-20 rounded-lg px-2 py-1";
+                informeDiv.innerHTML = `<p class="text-lg text-accent">${informe.tipo} <span class="text-blanco">${informe.culpable}</span></p><p class="text-base text-blanco puntos">${informe.contenido}</p>`;
+                listaInformes.appendChild(informeDiv);
+            });
+        } else {
+          //  console.log("No hay informes guardados en el local storage.");
+        }
+    }
+    
+    function modificarJugada(nombreArray: string) {
+        const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
+        const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
+    
+        // Obtener el número de referencia de la jugada a modificar
+        const referencia = modificar_reference.value;
+       // if(Number(referencia) > ModificarHasta){
+            // Buscar la jugada en el array usando el valor de referencia
+        const index = jugadasExistentes.findIndex((jugada: { orden: string; }) => jugada.orden === referencia);
+       // console.log(index);
+        
+        const nombre_jugador = document.getElementById('nombre-jugador') as HTMLInputElement;
+        const id_equipo = document.getElementById('id-equipo') as HTMLInputElement;
+        const tipo_punto = document.getElementById('tipo-punto') as HTMLInputElement;
+    
+        const marcador = document.getElementById('marcador')!;
+                    const Marcador_LocPuntos = marcador.querySelector('[data-LocPuntos]')!;
+                    const Marcador_LocSets = marcador.querySelector('[data-LocSets]')!;
+                    const Marcador_VisPuntos = marcador.querySelector('[data-VisPuntos]')!;
+                    const Marcador_VisSets = marcador.querySelector('[data-VisSets]')!;
+    
+        if (index !== -1) { // Verificar si la jugada existe
+            const jugada = jugadasExistentes[index];
+            const locPuntosInput = document.getElementById(`LocPuntos_${referencia}`) as HTMLInputElement;
+            const visPuntosInput = document.getElementById(`VisPuntos_${referencia}`) as HTMLInputElement;
+            const tipoPuntoInput = document.getElementById(`jugada_tipoPunto_${referencia}`) as HTMLInputElement;
+            const NombreInput = document.getElementById(`jugada_nombre_${referencia}`) as HTMLInputElement;
+            let jugadaAModificar_tipoPunto = tipoPuntoInput.value;
+         // Modificar la jugada
+          tipoPuntoInput.value = tipo_punto.value;
+            NombreInput.value = nombre_jugador.value;
+    
+            
+            // Actualizar puntos
+            if (jugada.idEquipo === id_equipo.value) {
+                if (tipo_punto.value === "Error") {
+                    if (jugada.tipoPunto !== tipo_punto.value) {
+                        if (id_equipo.value === "equipo-local") {
+                            
+                            visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                            if(LocPuntos > 0){
+                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                                LocPuntos = LocPuntos - 1;
+                            }
+                           
+                            VisPuntos = VisPuntos + 1;
+                        } else {
+                            locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                            
+                            LocPuntos = LocPuntos + 1;
+                            if(VisPuntos > 0){
+                                VisPuntos = VisPuntos - 1;
+                                visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                            }
+                            
+                        }
+                    }
+                } else {
+                    if (jugada.tipoPunto === "Error" && tipo_punto.value !== "Error") {
+                        if (id_equipo.value === "equipo-local") {
+                            locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                           
+                            LocPuntos = LocPuntos + 1;
+                            if(VisPuntos > 0){
+                                VisPuntos = VisPuntos - 1;
+                                visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                            }
+                           
+                        } else {
+                            
+                            visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                            if(LocPuntos > 0){
+                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                                LocPuntos = LocPuntos - 1;
+                            }
+                            VisPuntos = VisPuntos + 1;
+                        }
+                    }
+                }
+            } else{
+    
+                if(id_equipo.value === "equipo-local"){
+                    if (tipo_punto.value === "Error") {
+                        if (jugada.tipoPunto !== tipo_punto.value) {
+                            
+                                //locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                                //visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                                //LocPuntos = LocPuntos - 1;
+                                //VisPuntos = VisPuntos + 1;
+                               // console.log("Ejecutado 8")
+                         } else {
+                            if(LocPuntos > 0){
+                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                                LocPuntos = LocPuntos - 1;
+                            }
+                            
+    
+                            visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                            VisPuntos = VisPuntos + 1;
+                           // console.log("Ejecutado 8")
+                    }
+                    } else {
+                        
+                                locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                                
+                                LocPuntos = LocPuntos + 1;
+                                if(VisPuntos > 0){
+                                VisPuntos = VisPuntos - 1;
+                                visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                            }
+                               
+                              //  console.log("Ejecutado 9")
+                        
+                    }
+                    const nuevoDiv = document.getElementById(`jugada_${referencia}`)!;
+                    
+                    nuevoDiv.innerHTML = `
+                    <div>
+                        <div class="flex flex-row items-center">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                </svg>
+                            </div>
+                            <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-28 font-semibold bg-transparent" value="${nombre_jugador.value}" />
+                        </div>
+                        <div class="flex flex-row items -center px-2 gap-x-1">
+                            <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${tipo_punto.value}" disabled />
+                            <span>|</span>
+                            <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                        <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${LocPuntos}" disabled />
+                        <span>-</span>
+                        <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${VisPuntos}" disabled />
+                    </div>
+                    <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+                `;
+                } else{
+                    if (tipo_punto.value === "Error") {
+                        if (jugada.tipoPunto !== tipo_punto.value) {
+                            
+                                //locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                                //visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                                //LocPuntos = LocPuntos + 1;
+                                //VisPuntos = VisPuntos - 1;
+                             //   console.log("Ejecutado 8")
+                        }else {
+                            
+                            locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
+                            LocPuntos = LocPuntos + 1;
+                            if(VisPuntos > 0){
+                                VisPuntos = VisPuntos - 1;
+                                visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
+                            }
+                            
+                          //  console.log("Ejecutado 8")
+                    }
+                    } else {
+                        
+                                
+                                visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
+                                if(LocPuntos > 0){
+                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                                LocPuntos = LocPuntos - 1;
+                            }
+                               
+                                VisPuntos = VisPuntos + 1;
+                               // console.log("Ejecutado 9")
+                        
+                    }
+                    const nuevoDiv = document.getElementById(`jugada_${referencia}`)!;
+                    
+                    nuevoDiv.innerHTML = `
+                    <div class="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
+                      <input type="text" id="LocPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${LocPuntos}" disabled />
+                        <span>-</span>
+                        <input type="text" id="VisPuntos_${jugada.orden}" class="bg-transparent w-10 text-center h-max" value="${VisPuntos}" disabled />
+                    </div>
+                    <div>
+                        <div class="flex flex-row items-center">
+                            <input type="text" id="jugada_nombre_${jugada.orden}" disabled class="text-lg w-24 font-semibold bg-transparent" value="${nombre_jugador.value}" />
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
+                                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex flex-row items-center px-2 gap-x-1">
+                            <input type="text" id="jugada_tipoPunto_${jugada.orden}" class="bg-transparent min-w-14 w-max max-w-16 h-max" value="${tipo_punto.value}" disabled />
+                            <span>|</span>
+                            <input type="text" id="jugada_tiempo_${jugada.orden}" class="bg-transparent w-10 h-max" value="${jugada.tiempo}" disabled />
+                        </div>
+                    </div>
+                    <div id="marcar_jugada_${jugada.orden}" class="w-2 h-full  border-blanco border-[1px]">&nbsp;</div>
+                `;
+                }
+            }
+    
+            if(LocSets + VisSets < 2){
+                const div_confirmar_set = document.getElementById('div_confirmar_set')!;
+                const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
+                const confirmar_set = document.getElementById('confirmar_set')!;
+                const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
+                       // console.log("Puntos x Set: ", conf_puntos, "Diferencia: ", conf_dif_puntos);
+                       // console.log("Puntos x ExtraSet: ", conf_puntos_extra, "Diferencia ExtraSet: ", conf_dif_puntos_extra);
+                        if ( LocPuntos > VisPuntos && LocPuntos >= conf_puntos && Math.abs((LocPuntos - VisPuntos)) >= conf_dif_puntos){
+                            LocSets++;
+                            Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                            if(LocSets + VisSets === 1){
+                                LocSet1 = LocPuntos;
+                                VisSet1 = VisPuntos;
+                            }
+                            if(LocSets + VisSets === 2){
+                                LocSet2 = LocPuntos;
+                                VisSet2 = VisPuntos;
+                            }
+                            confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                            div_confirmar_set.classList.remove('ocultar');
+                            fondo_confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            FinSet = true;
+                            tipo_punto.value = "FinSet";
+                            asignarOrden()
+                            ModificarHasta = Number(orden.value);
+                          //  console.log(ModificarHasta);
+                            guardarJugada(id_partido);
+    
+                            if(LocSets - VisSets === 2 || LocSets - VisSets === -2){
+                                FinalPartido();
+                            }
+                        }
+                        if(LocPuntos < VisPuntos && VisPuntos >= conf_puntos && Math.abs((LocPuntos - VisPuntos)) >= conf_dif_puntos){
+                            VisSets++;
+                            Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                            if(LocSets + VisSets === 1){
+                                LocSet1 = LocPuntos;
+                                VisSet1 = VisPuntos;
+                            }
+                            if(LocSets + VisSets === 2){
+                                LocSet2 = LocPuntos;
+                                VisSet2 = VisPuntos;
+                            }
+                            confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                            div_confirmar_set.classList.remove('ocultar');
+                            fondo_confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            FinSet = true;
+                            tipo_punto.value = "FinSet";
+                            asignarOrden()
+                            ModificarHasta = Number(orden.value);
+                           // console.log(ModificarHasta);
+                            guardarJugada(id_partido);
+                            if(LocSets - VisSets === 2 || LocSets - VisSets === -2){
+                                FinalPartido();
+                            }
+                        }
+                    } else if(LocSets + VisSets >= 2) {
+                        const div_confirmar_set = document.getElementById('div_confirmar_set')!;
+                        const fondo_confirmar_set = document.getElementById('fondo_confirmar_set')!;
+                        const confirmar_set = document.getElementById('confirmar_set')!;
+                        const confirmar_set_value = document.getElementById('confirmar_set_value') as HTMLInputElement;
+                        if(LocPuntos > VisPuntos && LocPuntos >= conf_puntos_extra && Math.abs(LocPuntos - VisPuntos) >= conf_dif_puntos_extra){
+                            LocSets++;
+                            Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_LocSets.textContent = String(LocSets).padStart(1, '0');
+                            LocSet3 = LocPuntos;
+                            VisSet3 = VisPuntos;
+    
+                            confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                            div_confirmar_set.classList.remove('ocultar');
+                            fondo_confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            FinSet = true;
+                            tipo_punto.value = "FinSet";
+                            asignarOrden()
+                            ModificarHasta = Number(orden.value);
+                           // console.log(ModificarHasta);
+                            guardarJugada(id_partido);
+    
+                            FinalPartido();
+                        }
+                        if(LocPuntos < VisPuntos && VisPuntos >= conf_puntos_extra && Math.abs(LocPuntos - VisPuntos) >= conf_dif_puntos_extra){
+                            VisSets++;
+                            Marcador_VisPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_LocPuntos.textContent = String(0).padStart(1, '0');
+                            Marcador_VisSets.textContent = String(VisSets).padStart(1, '0');
+                            LocSet3 = LocPuntos;
+                            VisSet3 = VisPuntos;
+    
+                            confirmar_set_value.value = `Fin Set ${LocSets + VisSets}`
+                            div_confirmar_set.classList.remove('ocultar');
+                            fondo_confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            confirmar_set.addEventListener('click', function(){
+                                div_confirmar_set.classList.add('ocultar');
+                            })
+                            FinSet = true;
+                            tipo_punto.value = "FinSet";
+                            asignarOrden()
+                            ModificarHasta = Number(orden.value);
+                           // console.log(ModificarHasta);
+                            guardarJugada(id_partido);
+    
+                            FinalPartido();
+                        }
+                       
+            }
+    
+    
+            // Actualizar el array de jugadas
+            jugadasExistentes[index] = {
+                ...jugada,
+                nombre: nombre_jugador.value,
+                tipoPunto: tipo_punto.value,
+                locPuntos: Number(locPuntosInput.value), 
+                visPuntos: Number(visPuntosInput.value),
+                idEquipo: id_equipo.value
+            };
+            const jugadaAModificar = jugadasExistentes[index];
+    
+            // Actualizar las jugadas posteriores
+            for (let i = index + 1; i < jugadasExistentes.length; i++) {
+                //const jugadaPosterior = jugadasExistentes[i];
+                if(tipo_punto.value !== jugadaAModificar_tipoPunto){
+                    if (tipo_punto.value === 'Error') {
+                        if (jugada.idEquipo === "equipo-local") {
+                            jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) + 1;
+                            jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) - 1;
+                        } else {
+                            jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) + 1;
+                            jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) - 1;
+                        }
+                    }else {
+                        if (jugada.tipoPunto === "Error" && tipo_punto.value !== "Error") {
+                            if (jugada.idEquipo === "equipo-local") {
+                            jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) - 1;
+                            jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) + 1;
+                        } else {
+                            jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) - 1;
+                            jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) + 1;
+                        }
+                        }
+                    }
+                }
+                
+            }
+    
+            // Guardar los cambios en el localStorage
+            localStorage.setItem(nombreArray, JSON.stringify(jugadasExistentes));
+        
+    
+        actualizarJugadasRestantes(jugadasExistentes);
+    
+            // Actualizar los marcadores
+            if (Marcador_LocPuntos) {
+                Marcador_LocPuntos.textContent = LocPuntos.toString();
+            }
+            if (Marcador_VisPuntos) {
+                Marcador_VisPuntos.textContent = VisPuntos.toString();
+            }
+        }
+    
+        // Reiniciar campos
+        paso_tipo = 0; // Reiniciar pasos si es necesario
+        paso_jugador = 0;
+        nombre_jugador.value = '';
+        id_equipo.value = '';
+        tipo_punto.value = '';
+        tiempo.value = '';
+        orden.value = '';
+        modificando = false;
+        box_principal.classList.remove("modificando");
+    
+        // Limpiar selecciones
+        const selectedElements = document.querySelectorAll('.selected');
+        selectedElements.forEach(element => {
+            element.classList.remove('selected');
+        });
+        const selectedtipos = document.querySelectorAll('.selected-tipo');
+        selectedtipos.forEach(element => {
+            element.classList.remove('selected-tipo');
+        });
+    
+        const selectedJugada = document.querySelectorAll('.bg-azul-suave');
+        selectedJugada.forEach(element => {
+            element.classList.remove('bg-azul-suave');
+            element.classList.add('bg-gris-claro');
+        });
+     
+    //}
+        
+    }
+    
+    
+    function FinalPartido(){
+        console.log("Final del Partido")
+        const resumen_partido = document.getElementById('resumen_partido')!;
+    
+        const resultado_final_local = document.getElementById('resultado_final_local') as HTMLInputElement;
+        const resultado_final_visitante = document.getElementById('resultado_final_visitante') as HTMLInputElement;
+    
+        const resultado_set1_local = document.getElementById('resultado_set1_local') as HTMLInputElement;
+        const resultado_set2_local = document.getElementById('resultado_set2_local') as HTMLInputElement;
+        const resultado_set3_local = document.getElementById('resultado_set3_local') as HTMLInputElement;
+        const resultado_set1_visitante = document.getElementById('resultado_set1_visitante') as HTMLInputElement;
+        const resultado_set2_visitante = document.getElementById('resultado_set2_visitante') as HTMLInputElement;
+        const resultado_set3_visitante = document.getElementById('resultado_set3_visitante') as HTMLInputElement;
+    
+        const volver_acta = document.getElementById('volver_acta')!;
+        const final_definitivo = document.getElementById('final_definitivo')!;
+        
+        //Insertar todos los datos
+        resultado_final_local.value = String(LocSets);
+        resultado_final_visitante.value = String(VisSets);
+    
+        resultado_set1_local.value = String(LocSet1);
+        resultado_set2_local.value = String(LocSet2);
+        resultado_set3_local.value = String(LocSet3);
+    
+        resultado_set1_visitante.value = String(VisSet1);
+        resultado_set2_visitante.value = String(VisSet2);
+        resultado_set3_visitante.value = String(VisSet3);
+        //Hacer visible
+        resumen_partido.classList.remove('ocultar');
+    
+        volver_acta.addEventListener('click', function(){
+            resumen_partido.classList.add('ocultar');
+        })
+    
+        final_definitivo.addEventListener('click', function(){
+            
+            eliminarHistorial(id_partido);
+        })
+    
+    }
+    
+    })
+    </script>
