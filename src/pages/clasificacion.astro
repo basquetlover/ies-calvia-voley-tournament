@@ -2,6 +2,7 @@
 import Loading from "@components/Loading.astro";
 import LayoutMenuSinLoader from "@layouts/LayoutMenuSinLoader.astro";
 import Pistas from "@sections/administracion/Pistas.astro";
+import ClasificacionSS from "@sections/clasificacion/ClasificacionSS.astro";
 import Consolacion from "@sections/clasificacion/Consolacion.astro";
 
 import Eliminatoria from "@sections/clasificacion/Eliminatoria.astro";
@@ -61,8 +62,10 @@ import SistemaClass from "@sections/clasificacion/SistemaClass.astro";
  </script>
 
 <LayoutMenuSinLoader title="Clasificació | IES Calvià Voley Tournament" descripcion="Clasificacion del torneo de navidad">
-     <Loading />
-     <h1 class="text-accent text-center font-bold text-6xl">Clasificació Torneig Nadal</h1>
+     <!-- <Loading /> -->
+     <h1 class="text-accent text-center font-bold text-6xl">Clasificació Torneig Setmana Santa</h1>
+     <ClasificacionSS />
+     <!-- <h1 class="text-accent text-center font-bold text-6xl">Clasificació Torneig Nadal</h1>
      <div class="w-max ml-5 h-auto flex flex-row gap-x-2 px-4 pt-2 mt-5 rounded-tr-md rounded-tl-md bg-azul">
           <div id="btn-eliminatoria" class="text-center py-2 px-3 rounded-tr-md rounded-tl-md text-amarillo text-2xl cursor-pointer seleccionado">Eliminatoria</div>
           <div id="btn-consolacion" class="text-center py-2 px-3 rounded-tr-md rounded-tl-md text-amarillo text-2xl cursor-pointer">Consolació</div>
@@ -78,7 +81,7 @@ import SistemaClass from "@sections/clasificacion/SistemaClass.astro";
         <div id="pistas" class="desactivado">
             <Pistas />
           </div>
-      </div>
+      </div> -->
 
       <SistemaClass />
       
