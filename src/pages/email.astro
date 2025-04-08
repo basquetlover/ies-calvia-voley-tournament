@@ -1,9 +1,5 @@
 ---
-import LayoutVacio from "@layouts/LayoutVacio.astro";
-let escudo = "/img/escudos/team-teto.png";
-let generoEntrenador = "mujer";
-let generoJugador = "hombre";
-
+import { supabaseAdmin } from "../lib/supabase";
 interface Jugador {
   email: string;
 }
@@ -18,7 +14,7 @@ const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
   if(jugadorError){
     console.error(`Error al buscar jugadores`, error?.message);
   } else if(jugadoresData){
-    jugadores = jugadoresData
+    jugadores = jugadoresData;
   }
 ---
 
