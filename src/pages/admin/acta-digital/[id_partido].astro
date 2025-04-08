@@ -84,15 +84,46 @@ const { data, error } = await supabaseAdmin
         referencia_EL = EquipoLocale.id;
     }
     
-  let { data: JugadoresLocales, error: JugadoresLocalesError } = await supabaseAdmin
+    let { data: JugadoresLocales, error: JugadoresLocalesError } = await supabaseAdmin
     .from('JugadoresSS')
     .select('nombre, _1r_apellido, img')
-    .in('ficha', ['jugador', 'profesor'])
-    .eq('pertenece_equipo', id_equipo_local);
+    .in('ficha', ['jugador'])
+    .eq('pertenece_equipo', id_equipo_local)
+    .order('id', { ascending: true });
 
-    if(JugadoresLocales){
-     jugadoresLocal = JugadoresLocales
+if (JugadoresLocales) {
+    // Filtrar jugadores con nombre no nulo o vacío
+    JugadoresLocales.forEach(jugador => {
+        if (jugador.nombre && jugador.nombre.trim() !== '') {
+            jugadoresLocal.push(jugador);
+        }
+    });
+ 
+}
+
+if (JugadoresLocalesError) {
+    console.log(JugadoresLocalesError);
+}
+
+// Buscar entrenador
+let { data: Entrenador, error: EntrenadorError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .eq('ficha', 'profesor')
+    .eq('pertenece_equipo', id_equipo_local)
+    .single(); // Asumiendo que solo hay un entrenador
+
+if (Entrenador) {
+    // Verificar si el nombre del entrenador no es nulo o vacío
+    if (Entrenador.nombre && Entrenador.nombre.trim() !== '') {
+        jugadoresLocal.push(Entrenador);
     }
+   // console.log(Entrenador);
+}
+
+if (EntrenadorError) {
+    console.log(EntrenadorError);
+}
     
     let { data: EquipoVisitante, error: EquipoVisitanteError } = await supabaseAdmin
     .from('EquiposSS')
@@ -105,15 +136,42 @@ const { data, error } = await supabaseAdmin
         referencia_EV = EquipoVisitante.id;
     }
     
-  let { data: JugadoresVisitantes, error: JugadoresVisitantesError } = await supabaseAdmin
+    let { data: JugadoresVisitantes, error: JugadoresVisitantesError } = await supabaseAdmin
     .from('JugadoresSS')
     .select('nombre, _1r_apellido, img')
-    .in('ficha', ['jugador', 'profesor'])
-    .eq('pertenece_equipo', id_equipo_visitante);
+    .in('ficha', ['jugador']) // Solo buscamos jugadores primero
+    .eq('pertenece_equipo', id_equipo_visitante)
+    .order('id', { ascending: true });
 
-    if(JugadoresVisitantes){
-     jugadoresVisitante = JugadoresVisitantes
+if (JugadoresVisitantes) {
+    // Filtrar jugadores con nombre no nulo o vacío
+    JugadoresVisitantes.forEach(jugador => {
+        if (jugador.nombre && jugador.nombre.trim() !== '') {
+            jugadoresVisitante.push(jugador);
+        }
+    });
+  
+}
+
+if (JugadoresVisitantesError) {
+    console.log(JugadoresVisitantesError);
+}
+
+// Buscar entrenador
+let { data: EntrenadorVisitante, error: EntrenadorVisitanteError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .eq('ficha', 'profesor') // Buscamos al entrenador
+    .eq('pertenece_equipo', id_equipo_visitante)
+    .single(); // Asumiendo que solo hay un entrenador
+
+if (EntrenadorVisitante) {
+    // Verificar si el nombre del entrenador no es nulo o vacío
+    if (EntrenadorVisitante.nombre && EntrenadorVisitante.nombre.trim() !== '') {
+        jugadoresVisitante.push(EntrenadorVisitante);
     }
+    console.log(EntrenadorVisitante);
+}
 
 
 ---
@@ -2066,10 +2124,11 @@ async function enviarDatosAPi() {
         }
     }
     
-    function modificarJugada(nombreArray: string) {
+ async   function modificarJugada(nombreArray: string) {
         const modificar_reference = document.getElementById("modificar_reference") as HTMLInputElement;
         const jugadasExistentes = localStorage.getItem(nombreArray) ? JSON.parse(localStorage.getItem(nombreArray)!) : [];
-    
+
+        const FormAction = document.getElementById('FormAction') as HTMLInputElement;
         // Obtener el número de referencia de la jugada a modificar
         const referencia = modificar_reference.value;
        // if(Number(referencia) > ModificarHasta){
@@ -2408,6 +2467,7 @@ async function enviarDatosAPi() {
     
             // Actualizar las jugadas posteriores
             for (let i = index + 1; i < jugadasExistentes.length; i++) {
+                
                 //const jugadaPosterior = jugadasExistentes[i];
                 if(tipo_punto.value !== jugadaAModificar_tipoPunto){
                     if (tipo_punto.value === 'Error') {
@@ -2446,6 +2506,14 @@ async function enviarDatosAPi() {
             if (Marcador_VisPuntos) {
                 Marcador_VisPuntos.textContent = VisPuntos.toString();
             }
+        }
+
+        FormAction.value = "ModificarJugada";
+
+        try {
+            await enviarDatosAPi(); // Espera a que se complete la función
+            console.log("El código continúa después de recibir la respuesta.");
+        } catch (error) {
         }
     
         // Reiniciar campos

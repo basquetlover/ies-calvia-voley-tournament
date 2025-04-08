@@ -5,17 +5,24 @@ interface Jugador {
 }
 
 let jugadores: Jugador[] = [];
-
+const { data: Equipos, error: EquiposError } = await supabaseAdmin
+    .from("EquiposSS")
+    .select("id")
+    .eq('aceptado', 'Inscrit')
+    const equipoIds = Equipos?.map(equipo => equipo.id) || [];
 const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
     .from('JugadoresSS')
     .select('email')
+    .in('pertenece_equipo', equipoIds)
     .order('id', {ascending: true});
 
   if(jugadorError){
-    console.error(`Error al buscar jugadores`, error?.message);
+    console.error(`Error al buscar jugadores`, jugadorError?.message);
   } else if(jugadoresData){
     jugadores = jugadoresData;
   }
+
+  console.log(jugadoresData?.length)
 ---
 
   {
