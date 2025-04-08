@@ -1,27 +1,7 @@
 ---
-import { supabaseAdmin } from "../lib/supabase";
-interface Jugador {
-  email: string;
-}
-
-let jugadores: Jugador[] = [];
-
-const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
-    .from('JugadoresSS')
-    .select('email')
-    .order('id', {ascending: true});
-
-  if(jugadorError){
-    console.error(`Error al buscar jugadores`, error?.message);
-  } else if(jugadoresData){
-    jugadores = jugadoresData;
-  }
+import ListaEmails from '@sections/ListaEmails.astro';
 ---
 
 <LayoutVacio title="Version email" descripcion="">
-  {
-    jugadores.map((jugador) => (
-        <p class="text-blanco text-base">{jugador.email}</p>
-    ))
-}
+<ListaEmails />
 </LayoutVacio>
