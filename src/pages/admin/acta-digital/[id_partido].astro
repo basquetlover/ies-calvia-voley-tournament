@@ -591,30 +591,30 @@ if (EntrenadorVisitante) {
                 <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-5">
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Set 1</p>
-                        <input id="resultado_set1_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                        <input id="resultado_set1_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
                     </div>
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Set 2</p>
-                        <input id="resultado_set2_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                        <input id="resultado_set2_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
                     </div>
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Extra Set</p>
-                        <input id="resultado_set3_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                        <input id="resultado_set3_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
                     </div>
                 </div>
 
                 <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-5">
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Extra Set</p>
-                        <input id="resultado_set3_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                        <input id="resultado_set3_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
                     </div>
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Set 2</p>
-                        <input id="resultado_set2_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                        <input id="resultado_set2_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
                     </div>
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Set 1</p>
-                        <input id="resultado_set1_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                        <input id="resultado_set1_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
                     </div> 
                 </div>
             </div>
@@ -633,7 +633,7 @@ if (EntrenadorVisitante) {
                     <p class="text-3xl text-accent text-center">Finalizar el Partido de Prueba</p>
                     <div class="w-full flex flex-wrap items-center place-content-around">
                         <div id="volver_acta" class="text-xl cursor-pointer font-semibold px-3 py-2 rounded-2xl bg-gris-claro text-blanco">Volver a la Acta</div>
-                        <a href="/admin/designaciones" id="final_definitivo" class="text-xl font-semibold px-3 py-2 rounded-2xl bg-rojo-claro text-rojo">Cerrar Partido</a>
+                        <div id="final_definitivo" class="text-xl font-semibold px-3 py-2 rounded-2xl bg-rojo-claro text-rojo">Cerrar Partido</div>
                     </div>
                     
                 </div>
@@ -2023,14 +2023,14 @@ async function enviarDatosAPi() {
     }
     
     
-    function guardarInforme() {
+  async  function guardarInforme() {
         // Recuperar los elementos de los inputs
         const tipo_informe = document.getElementById("tipo_informe") as HTMLInputElement | null;
         const contenido_informe = document.getElementById("contenido_informe") as HTMLInputElement | null;
         const tipo_informe_suspender = document.getElementById("tipo_informe_suspender") as HTMLInputElement | null;
         const contenido_informe_sustipo_informe_suspender = document.getElementById("contenido_informe_sustipo_informe_suspender") as HTMLInputElement | null;
         const culpable_informe = document.getElementById("culpable_informe") as HTMLInputElement;
-        
+        const FormAction = document.getElementById('FormAction') as HTMLInputElement;
     
         // Comprobar si los elementos existen
         if (!tipo_informe || !contenido_informe) {
@@ -2063,6 +2063,13 @@ async function enviarDatosAPi() {
             return; // No se guarda el informe si alguno de los campos está vacío
         }
     
+        FormAction.value = "CrearInforme";
+
+        try {
+            await enviarDatosAPi(); // Espera a que se complete la función
+            console.log("El código continúa después de recibir la respuesta.");
+        } catch (error) {
+        }
         // Recuperar el historial existente del local storage o inicializarlo como un array vacío
         let historial = localStorage.getItem(`informes_${id_partido}`) ? JSON.parse(localStorage.getItem(`informes_${id_partido}`)!) : [];
     
@@ -2091,6 +2098,7 @@ async function enviarDatosAPi() {
         } else {
             console.error("El contenedor lista_informes no se encontró.");
         }
+
     
     }
     
@@ -2156,7 +2164,8 @@ async function enviarDatosAPi() {
          // Modificar la jugada
           tipoPuntoInput.value = tipo_punto.value;
             NombreInput.value = nombre_jugador.value;
-    
+            let ModLoc = "No";
+            let ModVis = "No";
             
             // Actualizar puntos
             if (jugada.idEquipo === id_equipo.value) {
@@ -2166,19 +2175,29 @@ async function enviarDatosAPi() {
                             
                             visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
                             if(LocPuntos > 0){
-                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                                
                                 LocPuntos = LocPuntos - 1;
                             }
+                            if(Number(locPuntosInput.value) > 0){
+                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                            }
+                            
                            
                             VisPuntos = VisPuntos + 1;
+                            ModVis = "Si";
                         } else {
                             locPuntosInput.value = String(Number(locPuntosInput.value) + 1);
                             
                             LocPuntos = LocPuntos + 1;
                             if(VisPuntos > 0){
                                 VisPuntos = VisPuntos - 1;
+                                
+                            }
+                            if(Number(visPuntosInput.value) > 0){
                                 visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
                             }
+                            
+                            ModLoc = "Si";
                             
                         }
                     }
@@ -2190,17 +2209,25 @@ async function enviarDatosAPi() {
                             LocPuntos = LocPuntos + 1;
                             if(VisPuntos > 0){
                                 VisPuntos = VisPuntos - 1;
+                               
+                            }
+                            if(Number(visPuntosInput.value) > 0){
                                 visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
                             }
+                            ModLoc = "Si";
                            
                         } else {
                             
                             visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
                             if(LocPuntos > 0){
-                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                                
                                 LocPuntos = LocPuntos - 1;
                             }
+                            if(Number(locPuntosInput.value) > 0){
+                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                            }
                             VisPuntos = VisPuntos + 1;
+                            ModVis = "Si";
                         }
                     }
                 }
@@ -2217,13 +2244,15 @@ async function enviarDatosAPi() {
                                // console.log("Ejecutado 8")
                          } else {
                             if(LocPuntos > 0){
-                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                              
                                 LocPuntos = LocPuntos - 1;
                             }
-                            
-    
+                            if(Number(locPuntosInput.value) > 0){
+                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                            }
                             visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
                             VisPuntos = VisPuntos + 1;
+                            ModVis = "Si";
                            // console.log("Ejecutado 8")
                     }
                     } else {
@@ -2233,8 +2262,12 @@ async function enviarDatosAPi() {
                                 LocPuntos = LocPuntos + 1;
                                 if(VisPuntos > 0){
                                 VisPuntos = VisPuntos - 1;
+                                
+                            }
+                            if(Number(visPuntosInput.value) > 0){
                                 visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
                             }
+                            ModLoc = "Si";
                                
                               //  console.log("Ejecutado 9")
                         
@@ -2279,6 +2312,9 @@ async function enviarDatosAPi() {
                             LocPuntos = LocPuntos + 1;
                             if(VisPuntos > 0){
                                 VisPuntos = VisPuntos - 1;
+                                
+                            }
+                            if(Number(visPuntosInput.value) > 0){
                                 visPuntosInput.value = String(Number(visPuntosInput.value) - 1);
                             }
                             
@@ -2289,8 +2325,11 @@ async function enviarDatosAPi() {
                                 
                                 visPuntosInput.value = String(Number(visPuntosInput.value) + 1);
                                 if(LocPuntos > 0){
-                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
+                               
                                 LocPuntos = LocPuntos - 1;
+                            }
+                            if(Number(locPuntosInput.value) > 0){
+                                locPuntosInput.value = String(Number(locPuntosInput.value) - 1);
                             }
                                
                                 VisPuntos = VisPuntos + 1;
@@ -2469,26 +2508,41 @@ async function enviarDatosAPi() {
             for (let i = index + 1; i < jugadasExistentes.length; i++) {
                 
                 //const jugadaPosterior = jugadasExistentes[i];
-                if(tipo_punto.value !== jugadaAModificar_tipoPunto){
-                    if (tipo_punto.value === 'Error') {
-                        if (jugada.idEquipo === "equipo-local") {
-                            jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) + 1;
-                            jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) - 1;
-                        } else {
-                            jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) + 1;
-                            jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) - 1;
-                        }
-                    }else {
-                        if (jugada.tipoPunto === "Error" && tipo_punto.value !== "Error") {
-                            if (jugada.idEquipo === "equipo-local") {
-                            jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) - 1;
-                            jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) + 1;
-                        } else {
-                            jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) - 1;
-                            jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) + 1;
-                        }
-                        }
+                // if(tipo_punto.value !== jugadaAModificar_tipoPunto){
+                //     if (tipo_punto.value === 'Error') {
+                //         if (jugada.idEquipo === "equipo-local") {
+                //             jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) + 1;
+                //             jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) - 1;
+                //         } else {
+                //             jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) + 1;
+                //             jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) - 1;
+                //         }
+                //     }else {
+                //         if (jugada.tipoPunto === "Error" && tipo_punto.value !== "Error") {
+                //             if (jugada.idEquipo === "equipo-local") {
+                //             jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) - 1;
+                //             jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) + 1;
+                //         } else {
+                //             jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) - 1;
+                //             jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) + 1;
+                //         }
+                //         }
+                //     }
+                // }
+
+                if(ModVis === "Si"){
+                    jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) + 1;
+                    if(jugadasExistentes[i].locPuntos > 0){
+                        jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) - 1;
                     }
+                    
+                }
+                if(ModLoc === "Si"){
+                    if(jugadasExistentes[i].visPuntos){
+                        jugadasExistentes[i].visPuntos = (jugadasExistentes[i].visPuntos) - 1;
+                    }
+                    
+                    jugadasExistentes[i].locPuntos = (jugadasExistentes[i].locPuntos) + 1;
                 }
                 
             }
@@ -2548,10 +2602,10 @@ async function enviarDatosAPi() {
     }
     
     
-    function FinalPartido(){
+  async  function FinalPartido(){
         console.log("Final del Partido")
         const resumen_partido = document.getElementById('resumen_partido')!;
-    
+        const FormAction = document.getElementById('FormAction') as HTMLInputElement;
         const resultado_final_local = document.getElementById('resultado_final_local') as HTMLInputElement;
         const resultado_final_visitante = document.getElementById('resultado_final_visitante') as HTMLInputElement;
     
@@ -2583,9 +2637,16 @@ async function enviarDatosAPi() {
             resumen_partido.classList.add('ocultar');
         })
     
-        final_definitivo.addEventListener('click', function(){
-            
+        final_definitivo.addEventListener('click', async function(){
+            FormAction.value = "CerrarPartido";
+
+        try {
+            await enviarDatosAPi(); // Espera a que se complete la función
+            console.log("El código continúa después de recibir la respuesta.");
+        } catch (error) {
+        }
             eliminarHistorial(id_partido);
+            //window.location.href = '/admin/designaciones';
         })
     
     }
