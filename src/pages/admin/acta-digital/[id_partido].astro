@@ -41,6 +41,8 @@ type Jugador = {
 
 const id_partido = Astro.url.pathname.split('/').pop();
 
+let estado = "";
+
 let nombre_equipo_local = "";
 let nombre_equipo_visitante = "";
 let pista = "";
@@ -59,7 +61,7 @@ let escudo_equipo_visitante = "";
 let referencia_EV = "";
 const { data, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2')
+    .select('equipo_local, equipo_visitante, pista, estado, id_partido, arbitro, oficial_1, oficial_2')
     .eq('id_partido', id_partido)
     .single();
 
@@ -72,6 +74,18 @@ const { data, error } = await supabaseAdmin
     arbitro = data.arbitro;
     oficial_1 = data.oficial_1;
     oficial_2 = data.oficial_2;
+    estado = data.estado;
+  }
+
+  if(estado === "Per Jugar"){
+    const { data: EquipoLocale, error: EquipoLocaleError } = await supabaseAdmin
+    .from('PartidosSS')
+    .update({
+        estado: "En Directe"
+    })
+    .eq('id_partido', id_partido)
+    .single();
+    
   }
   let { data: EquipoLocale, error: EquipoLocaleError } = await supabaseAdmin
     .from('EquiposSS')
@@ -102,7 +116,7 @@ if (JugadoresLocales) {
 }
 
 if (JugadoresLocalesError) {
-    console.log(JugadoresLocalesError);
+   // console.log(JugadoresLocalesError);
 }
 
 // Buscar entrenador
@@ -154,7 +168,7 @@ if (JugadoresVisitantes) {
 }
 
 if (JugadoresVisitantesError) {
-    console.log(JugadoresVisitantesError);
+   // console.log(JugadoresVisitantesError);
 }
 
 // Buscar entrenador
@@ -170,13 +184,26 @@ if (EntrenadorVisitante) {
     if (EntrenadorVisitante.nombre && EntrenadorVisitante.nombre.trim() !== '') {
         jugadoresVisitante.push(EntrenadorVisitante);
     }
-    console.log(EntrenadorVisitante);
+   // console.log(EntrenadorVisitante);
 }
 
 
 ---
 
 <LayoutAllSinMenu title={`Acta | ${id_partido}`}>
+
+    {
+        estado === "Finalitzat" ? (<>
+        <section class="w-full h-screen flex items-center place-content-center">
+            <div class="flex flex-col items-center place-content-center gap-y-4">
+                <h2 class="text-4xl text-amarillo font-semibold">El Partido ya ha acabado</h2>
+                <p class="text-sm text-naranja bg-naranja-claro p-2 text-center rounded-lg w-[80%] mx-auto">Una vez finalizado el partido del todo, no se podrá realizar ninguna modificación sin la autorización de un staff autorizado (Pere Alemany o Santino Bonavera)</p>
+                <a href="/admin/designaciones" class="w-max h-max px-3 py-2 bg-amarillo text-azul-suave text-xl rounded-full">Volver a las Designaciones</a>
+            </div>
+        </section>
+        </>) : (<>
+        
+        
 <div class="h-screen flex items-center place-content-center">    
     <form id="formulario" method="POST" action="/api/usuario/ActaDigital" class="h-[700px] w-[1100px] my-auto bg-red-400 overflow-auto mx-auto no-scrollbar relative">
         <div id="box_principal" class="w-full h-full border-2 border-accent bg-gris grid grid-rows-1 grid-cols-3 select-none">
@@ -629,7 +656,7 @@ if (EntrenadorVisitante) {
                     <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Oficial 2:</span> Saray</p>
                 </div>
                 <div class="w-full h-full flex-col items-center place-content-center space-y-4">
-                    <p class="text-sm text-naranja bg-naranja-claro p-2 rounded-lg w-[80%] mx-auto">Una vez finalizado el partido del todo, no se podra realizar ninguna modificacion sin la autorizacion de un staff autorizado (Pere Alemany o Santino Bonavera)</p>
+                    <p class="text-sm text-naranja bg-naranja-claro p-2 rounded-lg w-[80%] mx-auto">Una vez finalizado el partido del todo, no se podrá realizar ninguna modificación sin la autorización de un staff autorizado (Pere Alemany o Santino Bonavera)</p>
                     <p class="text-3xl text-accent text-center">Finalizar el Partido de Prueba</p>
                     <div class="w-full flex flex-wrap items-center place-content-around">
                         <div id="volver_acta" class="text-xl cursor-pointer font-semibold px-3 py-2 rounded-2xl bg-gris-claro text-blanco">Volver a la Acta</div>
@@ -641,9 +668,8 @@ if (EntrenadorVisitante) {
         </div>
     </form>
 </div>
-
-        
-        
+</>)
+    }
         <style>
             .puntos{
             overflow: hidden;

@@ -21,6 +21,7 @@ interface Partido {
   oficial_2: string;
   pista: string;
   id_partido: string;
+  estado: string;
 }
 
 let partidos_designados: Partido[] = [];
@@ -36,7 +37,7 @@ try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2')
+    .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado')
     .or(`arbitro.eq.${Administradores?.nombre},oficial_1.eq.${Administradores?.nombre},oficial_2.eq.${Administradores?.nombre}`)
     .order('id', { ascending: true });
 
@@ -113,15 +114,201 @@ try {
           <a href={`/admin/partido/${partido.id_partido}`} class="w-max h-max px-2 py-2 rounded-md bg-azul-suave text-blanco mb-1">
             Lista Equipos
           </a>
-          <a href={`/admin/acta-digital/${partido.id_partido}`} class="w-max h-max px-2 py-2 rounded-md bg-azul-suave text-blanco mb-1">
+          {
+            partido.estado !== "Finalitzat" ?
+            (<>
+            <a href={`/admin/acta-digital/${partido.id_partido}`} class={`w-max h-max px-2 py-2 rounded-md bg-azul-suave text-blanco mb-1 `}>
             Acta Digital
           </a>
+            </>):(<>
+            <div id={partido.id_partido} class={`w-max h-max px-2 py-2 rounded-md bg-azul-suave text-blanco mb-1 ${partido.estado === "Finalitzat" ? "bg-gray-500 cursor-pointer": " bg-azul-suave"}`}>
+            Acta Digital
+          </div>
+            </>)
+          }
+          
         </div>
     </div>
   ))}
 </div>
 </div>
 </section>
+
+<form id="DarAcceso" method="POST" action="/api/usuario/RenaudarPartido" class=" w-full h-full bg-gris-claro bg-opacity-55 absolute top-0 left-0 flex items-center place-content-center ocultar">
+  <div class="w-96 h-96 bg-gris rounded-lg flex flex-col items-center gap-y-4">
+    <h3 class="text-2xl text-amarillo">El partido ha acabado</h3>
+    <select name="nombre_admin" class="bg-gris-claro w-28 h-10 px-2 rounded-lg">
+      <option value="" selected disabled></option>
+      <option value="Santi">Santino</option>
+      <option value="Pere">Pere</option>
+    </select>
+    <input id="id_partido" name="id_partido" type="hidden" />
+    <div class="w-64 h-12 relative">
+      <input type="password" id="password" name="password" placeholder="Introdueix una contrasenya" class="px-3 py-2 w-64 h-12 bg-gris-claro rounded-lg text-base text-blanco border-none" />
+      <div class="absolute w-6 h-6 right-2 top-3 cursor-pointer select-none" id="estado">
+          <span class="block" id="oculto">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                  <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 35-12t37-4q75 0 128 53t52 127q0 20-4 38t-12 34Zm128 126-58-56q38-29 68-63t50-79q-50-101-143-160t-209-60q-29 0-57 4t-55 12l-62-62q41-17 84-25t90-9q151 0 269 84t171 216q-23 59-60 110t-88 88Zm20 246L624-222q-35 11-70 17t-74 5q-151 0-269-83T40-500q21-53 53-98t73-82L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 144 161t208 59q20 0 39-2t39-6l-36-38-21 5q-10 2-21 1-75 0-127-52t-53-128q0-11 2-21t4-21l-84-82Zm319 93Zm-151 75Z"/>
+                </svg>
+          </span>
+          <span class="hidden" id="visible">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                  <path d="M480-320q75 0 128-52t52-128q0-75-52-127t-128-53q-75 0-127 53t-53 127q0 75 53 128t127 52Zm0-72q-45 0-76-31t-32-77q0-45 32-76t76-32q45 0 77 32t31 76q0 45-31 77t-77 31Zm0 192q-146 0-266-81T40-500q54-137 174-218t266-82q146 0 266 82t174 218q-54 137-174 219t-266 81Zm0-300Zm0 220q113 0 208-59t144-161q-50-101-144-160t-208-60q-113 0-207 60T128-500q50 101 145 161t207 59Z"/>
+                </svg>
+          </span>
+      </div>
+
+      <div class="w-full h-auto flex flex-row items-center place-content-around mt-10">
+        <div id="cancelar" class="px-3 py-2 text-blanco font-semibold bg-cancelar rounded-full text-xl hover:scale-110 duration-300 transition-all transform cursor-pointer"> Cancelar </div>
+        <button id="comprobacion" type="submit" class="px-3 py-2 cursor-pointer text-blanco font-semibold bg-aceptar rounded-full text-xl hover:scale-110 duration-300 transition-all transform">Acta Digital</button>
+    </div>
+
+    <div id="errorbox" class="text-red-500"></div>
+  </div>
+</form>
+
+<script>
+  // Función para manejar el clic en el div
+  function handleClick(event: MouseEvent) {
+      const partidoId = (event.currentTarget as HTMLElement).id; // Obtiene el ID del div clicado
+      console.log(`Has hecho clic en el div con ID: ${partidoId}`);
+
+      const DarAcceso = document.getElementById("DarAcceso")!;
+      const id_partido = document.getElementById("id_partido") as HTMLInputElement;
+      const cancelar = document.getElementById("cancelar")!;
+      id_partido.value = partidoId
+      DarAcceso.classList.remove("ocultar")
+
+      cancelar.addEventListener('click', function(){
+        DarAcceso.classList.add("ocultar")
+        
+      })
+  }
+
+  // Selecciona todos los divs que comienzan con 'partido_'
+  const partidos = document.querySelectorAll('div[id^="partido_"]');
+
+  // Agrega el evento de clic a cada div
+  partidos.forEach(partido => {
+      (partido as HTMLElement).addEventListener('click', handleClick);
+  });
+</script>
+
+<script>
+  let ojo = true
+  const estado = document.getElementById("estado")!;
+  const oculto = document.getElementById("oculto")!;
+  const visible = document.getElementById("visible")!;
+  const password = document.getElementById("password")! as HTMLInputElement;
+  estado.addEventListener('click',  function(){
+      if(ojo){
+          password.type = "text";
+          oculto.classList.remove("block");
+          oculto.classList.add("hidden");
+          visible.classList.add("block");
+          visible.classList.remove("hidden");  
+          ojo = false
+      } else{
+          password.type = "password";
+          oculto.classList.add("block");
+          oculto.classList.remove("hidden");
+          visible.classList.remove("block");
+          visible.classList.add("hidden");
+          ojo = true  
+      }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      console.log('Script cargado');
+  document.getElementById('DarAcceso')?.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Evita el envío del formulario por defecto
+
+      const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+      const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+      const id_partido = document.getElementById("id_partido") as HTMLInputElement;
+      const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+      });
+
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("text/html")) {
+          const html = await response.text();
+          document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+      } else if (contentType && contentType.includes("application/json")) {
+          const jsonResponse = await response.json();
+          if (jsonResponse.success) {
+            
+              // Redirigir a la página principal
+              window.location.href = `/admin/acta-digital/${id_partido.value}`; // Redirige al usuario
+          } else {
+              // Manejo de errores si es necesario
+              document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
+          }
+      }
+  });
+});
+</script>
+<style>
+  .puntos{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+  .selected{
+      background-color: #1666ff;
+  }
+  .selected-tipo{
+      background-color: #0140B9;
+  }
+  .reloj-activo{
+      color: #FFC700;
+  }
+
+  .seleccionar_jugada{
+      background-color: #FFC700;
+  }
+
+  .modificar_jugada{
+      background-color: #0140B9;
+  }
+
+  .ocultar{
+      display: none;
+  }
+  .scrollbar-fina::-webkit-scrollbar {
+  width: 8px; /* Ancho de la barra de desplazamiento vertical */
+  height: 8px; /* Altura de la barra de desplazamiento horizontal */
+}
+
+.scrollbar-fina::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Color de la parte que se arrastra */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+.scrollbar-fina::-webkit-scrollbar-track {
+  background: transparent; /* Color de la pista */
+}
+
+/* Para Firefox */
+.scrollbar-fina {
+  scrollbar-width: thin; /* Hacer la barra de desplazamiento más fina */
+  scrollbar-color: #1666ff; /* Color del thumb y de la pista */
+}
+
+/* Para Internet Explorer y Edge */
+.scrollbar-fina {
+  -ms-overflow-style: -ms-autohiding-scrollbar; /* Estilo de scrollbar autohide */
+}
+
+.modificando {
+  -webkit-box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+-moz-box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+}
+</style>
 <!-- <section>
     
         <div class="w-full h-auto my-10 flex items-center place-content-center">
