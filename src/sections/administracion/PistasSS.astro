@@ -9,6 +9,7 @@ interface Equipo {
 interface Partido {
   equipo_local: string;
   equipo_visitante: string;
+  estado: string;
 }
 
 let pista1: Partido[] = [];
@@ -25,7 +26,7 @@ try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('equipo_local, equipo_visitante')
+    .select('equipo_local, equipo_visitante, estado')
     .eq('pista', 'Pista 1')
     .order('id', { ascending: true });
 
@@ -61,7 +62,7 @@ try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('equipo_local, equipo_visitante')
+    .select('equipo_local, equipo_visitante, estado')
     .eq('pista', 'Pista 2')
     .order('id', { ascending: true });
 
@@ -98,7 +99,7 @@ try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('equipo_local, equipo_visitante')
+    .select('equipo_local, equipo_visitante, estado')
     .eq('pista', 'Pista Central')
     .order('id', { ascending: true });
 
@@ -135,7 +136,7 @@ try {
   <h2 class="text-2xl text-accent font-semibold text-center">Pista 1</h2>
 <ul class="flex flex-col gap-2">
   {pista1.map(partido => (
-    <li class="bg-amarillo w-[400px] text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2 rounded-lg"> 
+    <li class={`bg-amarillo w-[400px] text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2 rounded-lg ${partido.estado === "En Directe" ? "bg-red-500" : " "} ${partido.estado === "Finalitzat" ? "bg-azul-suave" : " "}`}> 
     <div>
       {escudosMapPista1[partido.equipo_local] && escudosMapPista1[partido.equipo_local].trim() !== "" ?  (
           <img src={escudosMapPista1[partido.equipo_local]} class="w-14 h-14" alt={partido.equipo_local} />
@@ -165,11 +166,11 @@ try {
 </ul>
 </div>
 
-<div class="w-[400px] p-2 rounded-lg h-auto bg-gris-claro">
+<div class="w-max p-2 rounded-lg h-auto bg-gris-claro">
   <h2 class="text-2xl text-accent font-semibold text-center">Pista 2</h2>
 <ul class="flex flex-col gap-2">
   {pista2.map(partido => (
-    <li class="bg-amarillo w-[400px] text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2 rounded-lg"> 
+    <li class={`bg-amarillo w-[400px] text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2 rounded-lg ${partido.estado === "En Directe" ? "bg-red-500" : " "} ${partido.estado === "Finalitzat" ? "bg-azul-suave" : " "}`}> 
     <div>
       {escudosMapPista2[partido.equipo_local] && escudosMapPista2[partido.equipo_local].trim() !== "" ?  (
           <img src={escudosMapPista2[partido.equipo_local]} class="w-14 h-14" alt={partido.equipo_local} />
@@ -199,11 +200,11 @@ try {
 </ul>
 </div>
 
-<div class="w-[400px] p-2 rounded-lg h-auto bg-gris-claro">
+<div class="w-max p-2 rounded-lg h-auto bg-gris-claro">
     <h2 class="text-2xl text-accent font-semibold text-center">Pista Central</h2>
   <ul class="flex flex-col gap-2">
     {pistaCentral.map(partido => (
-      <li class="bg-amarillo w-[400px] text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2 rounded-lg"> 
+      <li class={`bg-amarillo w-[400px] text-center grid grid-cols-[60px_1fr_30px_1fr_60px] items-center px-2 py-1 gap-2 rounded-lg ${partido.estado === "En Directe" ? "bg-red-500" : " "} ${partido.estado === "Finalitzat" ? "bg-azul-suave" : " "}`}> 
       <div>
         {escudosMapPistaCentral[partido.equipo_local] && escudosMapPistaCentral[partido.equipo_local].trim() !== "" ?  (
             <img src={escudosMapPistaCentral[partido.equipo_local]} class="w-14 h-14" alt={partido.equipo_local} />
