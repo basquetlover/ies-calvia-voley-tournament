@@ -31,7 +31,7 @@ try {
     .from('PartidosSS')
     .select('equipo_local, equipo_visitante, estado, pista, id_partido, LocGlobal, VisGlobal, LocSet1, VisSet1, LocSet2, VisSet2, LocSet3, VisSet3')
     //.in('estado', ['Per Jugar', 'Finalitzat'])
-    //.neq('id_partido', 'partido_prueba')
+    .neq('id_partido', 'partido_prueba')
     .order('id', {ascending: true});
 
   if (error) {
