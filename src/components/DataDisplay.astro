@@ -1,0 +1,32 @@
+---
+const { historial, jugadores, partidos } = Astro.props;
+---
+
+<div>
+  <h2>Historial</h2>
+  <ul>
+    {
+      historial.map((item: { descripcion: unknown; }, index: any) => (
+        <li >{item.descripcion}</li>
+      ))
+    }
+  </ul>
+
+  <h2>Jugadores</h2>
+  <ul>
+    {
+      jugadores.map((item: { nombre: unknown; }, index: any) => (
+        <li >{item.nombre}</li>
+      ))
+    }
+  </ul>
+
+  <h2>Partidos</h2>
+  <ul>
+    {
+      partidos.map((item: { titulo: unknown; }, index: any) => (
+        <li>{item.titulo}</li>
+      ))
+    }
+  </ul>
+</div>

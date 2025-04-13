@@ -6,7 +6,8 @@ import ClasificacionSS from "@sections/clasificacion/ClasificacionSS.astro";
 import Consolacion from "@sections/clasificacion/Consolacion.astro";
 
 import Eliminatoria from "@sections/clasificacion/Eliminatoria.astro";
-import PartidosSS from "@sections/clasificacion/PartidosSS.astro";
+import PartidosSS from '@sections/clasificacion/PartidosSS.tsx';
+import Partidos from '@sections/clasificacion/Partidos.astro';
 import SistemaClass from "@sections/clasificacion/SistemaClass.astro";
 ---
 <script>
@@ -83,7 +84,8 @@ import SistemaClass from "@sections/clasificacion/SistemaClass.astro";
             <Pistas />
           </div>
       </div> -->
-        <!-- <PartidosSS /> -->
+      <!-- <PartidosSS client:load /> -->
+       <Partidos />
       <SistemaClass />
       
 </LayoutMenu>

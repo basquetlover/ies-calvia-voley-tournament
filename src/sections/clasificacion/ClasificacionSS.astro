@@ -1945,7 +1945,8 @@ try {
     <!--Equipo 1 -->
     <div class="grid grid-cols-3 place-items-center text-blanco">
         <h4 class="text-sm">Partit 8</h4>
-        <h5 class="text-gray-500 text-xs">{estado_p8}</h5>
+        
+        <h5 class={`text-gray-500 text-xs  ${estado_p8 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p8}</h5>
         <h4 class="text-sm">{pista_p8}</h4>
     </div>
     <EquipoBox>

@@ -7,6 +7,8 @@ import vercel from '@astrojs/vercel/serverless';
 
 import partytown from '@astrojs/partytown'
 
+import react from '@astrojs/react';
+
 // import db from '@astrojs/db';
 
 // https://astro.build/config
@@ -16,13 +18,11 @@ export default defineConfig({
   },
   // site: 'https://ies-calvia-voley-tournament.vercel.app/',
   site: 'https://iescalvia-voley.com',
-  integrations: [tailwind(),
-    partytown({
-        config: {
-          forward: ["dataLayer.push"],
-        },
-    }),
-  ],
+  integrations: [tailwind(), partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
+  }), react()],
   output: 'server',
   adapter: vercel(),
   vite: {
@@ -32,10 +32,10 @@ export default defineConfig({
     },
   },
   // vite: {
-	// 	optimizeDeps: {
-	// 		exclude: ["astro:db"]
-	// 	}
-	// }
+    // 	optimizeDeps: {
+    // 		exclude: ["astro:db"]
+    // 	}
+    // }
 });
 
 // "@astrojs/db": "^0.14.3",
