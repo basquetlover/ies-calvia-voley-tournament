@@ -42,14 +42,37 @@ export default {
 			'.no-scrollbar::-webkit-scrollbar': {
 			  display: 'none', // Para Chrome, Safari y Opera
 			},
-
 			'.scrollbar-fina': {
 			  /* Ocultar scrollbar en navegadores modernos */
 			  '-ms-overflow-style': 'none', // Para Internet Explorer y Edge
 			  'scrollbar-width': 'none', // Para Firefox
-			},	
-
-			
+			},
+			'.espacio': {
+			  'border-collapse': 'separate', /* Necesario para que funcione border-spacing */
+			  'border-spacing': '5px', /* Espacio entre columnas y filas */
+			},
+			'.espacio th, .espacio td': {
+			  padding: '2px', /* Espacio interno en las celdas */
+			},
+			'.redondo': {
+			  width: '10px', /* Ancho del span */
+			  height: '10px', /* Alto del span */
+			  backgroundColor: 'red', /* Color de fondo */
+			  borderRadius: '50%', /* Hace que el span sea redondo */
+			  position: 'relative', /* Necesario para el efecto de sombra */
+			  animation: 'pulsar 1.5s infinite', /* Animación que se repite infinitamente */
+			},
+			'@keyframes pulsar': {
+			  '0%': {
+				boxShadow: '0 0 0 rgba(255, 0, 0, 0)',
+			  },
+			  '50%': {
+				boxShadow: '0 0 20px rgba(255, 0, 0, 0.8)', /* Sombra más intensa */
+			  },
+			  '100%': {
+				boxShadow: '0 0 0 rgba(255, 0, 0, 0)',
+			  },
+			},
 		  });
 		},
 	  ],

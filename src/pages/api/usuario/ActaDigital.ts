@@ -885,8 +885,7 @@ const usuario_email = "voley_tournament@iescalvia.com"
         const resultado_set2_visitante = formData.get('resultado_set2_visitante') ?.toString().trim() || "-";
         const resultado_set3_visitante = formData.get('resultado_set3_visitante') ?.toString().trim() || "-";
 
-        resultado_final_local = "2";
-        resultado_final_visitante = "1";
+        
         let id_equipoG = "";
         let id_equipoP = "";
         if(Number(resultado_final_local) > Number(resultado_final_visitante)){

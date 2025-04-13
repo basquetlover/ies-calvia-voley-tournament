@@ -593,22 +593,22 @@ if (EntrenadorVisitante) {
             <div class="w-full grid grid-cols-2 place-items-center mt-8">
                 <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
                     <div class="flex items-center place-content-center">
-                        <p class="text-4xl text-accent font-semibold">Nombre Equipo 1</p>
+                        <p class="text-4xl text-accent font-semibold">{nombre_equipo_local}</p>
                     </div>
                     <div class="w-max h-max">
-                        <img src="/img/escudos/sin-escudo.png" class="w-16 h-16" />
+                        <img src={escudo_equipo_local} class="w-16 h-16" />
                     </div>
 
-                    <input id="resultado_final_local" class="w-10 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    <input id="resultado_final_local" name="resultado_final_local" class="w-10 h-auto text-center text-6xl bg-transparent text-blanco"  value="0" />
                 </div>
 
                 <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
-                    <input id="resultado_final_visitante" class="w-10 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="0" />
+                    <input id="resultado_final_visitante" name="resultado_final_visitante" class="w-10 h-auto text-center text-6xl bg-transparent text-blanco"  value="0" />
                     <div class="w-max h-max">
-                        <img src="/img/escudos/sin-escudo.png" class="w-16 h-16" />
+                        <img src={escudo_equipo_visitante} class="w-16 h-16" />
                     </div>
                     <div class="flex items-center place-content-center">
-                        <p class="text-4xl text-accent font-semibold">Nombre Equipo 1</p>
+                        <p class="text-4xl text-accent font-semibold">{nombre_equipo_local}</p>
                     </div>
                     
                 </div>
@@ -618,30 +618,33 @@ if (EntrenadorVisitante) {
                 <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-5">
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Set 1</p>
-                        <input id="resultado_set1_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
+                        <input id="resultado_set1_local" name="resultado_set1_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco"  value="-" />
+                        
                     </div>
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Set 2</p>
-                        <input id="resultado_set2_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
+                        <input id="resultado_set2_local" name="resultado_set2_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco"  value="-" />
+                        
                     </div>
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Extra Set</p>
-                        <input id="resultado_set3_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
+                        <input id="resultado_set3_local" name="resultado_set3_local" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco"  value="-" />
+                        
                     </div>
                 </div>
 
                 <div class="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-5">
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Extra Set</p>
-                        <input id="resultado_set3_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
+                        <input id="resultado_set3_visitante" name="resultado_set3_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco"  value="-" />
                     </div>
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Set 2</p>
-                        <input id="resultado_set2_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
+                        <input id="resultado_set2_visitante" name="resultado_set2_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco"  value="-" />
                     </div>
                     <div class="w-max flex flex-col items-center place-content-center gap-y-2">
                         <p class="text-3xl font-semibold text-amarillo">Set 1</p>
-                        <input id="resultado_set1_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco" disabled value="-" />
+                        <input id="resultado_set1_visitante" name="resultado_set1_visitante" class="w-16 h-auto text-center text-6xl bg-transparent text-blanco"  value="-" />
                     </div> 
                 </div>
             </div>
@@ -651,9 +654,9 @@ if (EntrenadorVisitante) {
             <div class=" my-auto h-72 w-full grid grid-cols-2 place-items-center">
                 <div class="w-full h-full flex-col items-center place-content-center space-y-4">
                     <h2 class="text-azul-suave text-3xl font-semibold text-center">Arbitros Designados</h2>
-                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Arbitro:</span> Ricardo</p>
-                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Oficial 1:</span> Marina</p>
-                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Oficial 2:</span> Saray</p>
+                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Arbitro:</span> {arbitro}</p>
+                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Oficial 1:</span> {oficial_1}</p>
+                    <p class="text-blanco font-medium text-xl text-center"><span class="font-bold">Oficial 2:</span> {oficial_2}</p>
                 </div>
                 <div class="w-full h-full flex-col items-center place-content-center space-y-4">
                     <p class="text-sm text-naranja bg-naranja-claro p-2 rounded-lg w-[80%] mx-auto">Una vez finalizado el partido del todo, no se podrá realizar ninguna modificación sin la autorización de un staff autorizado (Pere Alemany o Santino Bonavera)</p>
