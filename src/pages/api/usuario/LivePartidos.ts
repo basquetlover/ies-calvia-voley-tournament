@@ -81,11 +81,11 @@ export const POST: APIRoute = async ({ request }) => {
               </p>
               <p>${partido.pista}</p>
           </div>
-          <div class="w-full text-center grid grid-cols-[60px_1fr_max-content_30px_max-content_1fr_60px] items-center px-2 py-1 gap-2 text-blanco"> 
+          <div class="w-full text-center grid grid-cols-[max-content_1fr_max-content_30px_max-content_1fr_max-content] items-center px-2 py-1 gap-2 text-blanco"> 
               <div>
                   ${escudosMapPista1[partido.equipo_local] && escudosMapPista1[partido.equipo_local].trim() !== "" ?  
-                      `<img src="${escudosMapPista1[partido.equipo_local]}" class="w-14 h-14" alt="${partido.equipo_local}" />` : 
-                      `<svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" fill="none" viewBox="0 0 650 650">
+                      `<img src="${escudosMapPista1[partido.equipo_local]}" class="w-10 h-10" alt="${partido.equipo_local}" />` : 
+                      `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 650 650">
                           <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
                           <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
                       </svg>`
@@ -98,8 +98,8 @@ export const POST: APIRoute = async ({ request }) => {
               <p>${partido.equipo_visitante}</p>
               <div>
                   ${escudosMapPista1[partido.equipo_visitante] && escudosMapPista1[partido.equipo_visitante].trim() !== "" ?  
-                      `<img src="${escudosMapPista1[partido.equipo_visitante]}" class="w-14 h-14" alt="${partido.equipo_visitante}" />` : 
-                      `<svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" fill="none" viewBox="0 0 650 650">
+                      `<img src="${escudosMapPista1[partido.equipo_visitante]}" class="w-10 h-10" alt="${partido.equipo_visitante}" />` : 
+                      `<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 650 650">
                           <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
                           <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
                       </svg>`
@@ -141,7 +141,7 @@ export const POST: APIRoute = async ({ request }) => {
     
       return new Response(
         `
-        <div id="ArrayPartidos" class="flex flex-col items-center gap-y-4">
+        <div id="ArrayPartidos" class="flex flex-col items-center gap-y-4 p-1">
           ${partidosHTML}
         </div>
         `, 

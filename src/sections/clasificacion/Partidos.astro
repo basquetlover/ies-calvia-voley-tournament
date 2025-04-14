@@ -82,11 +82,11 @@ try {
 <form id="LivePartidos" method="POST" action="/api/usuario/LivePartidos" class="max-w-4xl w-auto mx-auto h-auto  flex-col items-center gap-y-4 mt-5 hidden">
 <input name="EnDirecto" value="EnDirecto">
 </form>
-<section id="Partidos" class="max-w-4xl w-auto mx-auto h-auto  mt-5">
+<section id="Partidos" class="max-w-4xl w-auto mx-auto h-auto  mt-5 transform ">
     <div class="flex flex-col items-center gap-y-4">
 
     </div >
-    <div id="ArrayPartidos" class="flex flex-col items-center gap-y-4">
+    <div id="ArrayPartidos" class="flex flex-col items-center gap-y-4 p-1">
     {pista1.map(partido => (
     <div class={`max-w-[500px] w-full flex flex-col items-center place-content-center border-2 border-blanco rounded-md p-2 ${partido.estado === "En Directe"? "border-rojo-claro" : " "}`}>
         <div class="w-full h-auto grid grid-cols-3 place-items-center text-base text-blanco">
@@ -94,12 +94,12 @@ try {
             <p class={`${partido.estado === "En Directe" ? "text-red-600 flex flex-row gap-x-2 items-center place-content-center":" " }`}><span class={`${partido.estado === "En Directe" ?"redondo ":" "}`}></span>{partido.estado}</p>
             <p>{partido.pista}</p>
         </div>
-        <div class={` w-full text-center grid grid-cols-[60px_1fr_max-content_30px_max-content_1fr_60px] items-center px-2 py-1 gap-2  text-blanco `}> 
+        <div class={` w-full text-center grid grid-cols-[max-content_1fr_max-content_30px_max-content_1fr_max-content] items-center px-2 py-1 gap-2  text-blanco `}> 
         <div>
           {escudosMapPista1[partido.equipo_local] && escudosMapPista1[partido.equipo_local].trim() !== "" ?  (
-              <img src={escudosMapPista1[partido.equipo_local]} class="w-14 h-14" alt={partido.equipo_local} />
+              <img src={escudosMapPista1[partido.equipo_local]} class="w-10 h-10" alt={partido.equipo_local} />
                   ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-w-14" fill="none" viewBox="0 0 650 650">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-w-10" fill="none" viewBox="0 0 650 650">
                           <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
                           <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
                       </svg>
@@ -112,9 +112,9 @@ try {
           <p>{partido.equipo_visitante}</p>
           <div>
           {escudosMapPista1[partido.equipo_visitante] && escudosMapPista1[partido.equipo_visitante].trim() !== "" ?  (
-              <img src={escudosMapPista1[partido.equipo_visitante]} class="w-14 h-14" alt={partido.equipo_visitante} />
+              <img src={escudosMapPista1[partido.equipo_visitante]} class="w-10 h-10" alt={partido.equipo_visitante} />
                   ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-w-14" fill="none" viewBox="0 0 650 650">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-w-10" fill="none" viewBox="0 0 650 650">
                           <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
                           <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
                       </svg>
