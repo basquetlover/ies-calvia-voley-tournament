@@ -88,16 +88,7 @@ const { data, error } = await supabaseAdmin
     estado = data.estado;
   }
 
-  if(estado === "Per Jugar"){
-    const { data: EquipoLocale, error: EquipoLocaleError } = await supabaseAdmin
-    .from('PartidosSS')
-    .update({
-        estado: "En Directe"
-    })
-    .eq('id_partido', id_partido)
-    .single();
-    
-  }
+  
   let { data: EquipoLocale, error: EquipoLocaleError } = await supabaseAdmin
     .from('EquiposSS')
     .select('id, escudo')

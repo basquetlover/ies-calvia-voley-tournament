@@ -72,7 +72,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Generar el HTML dinámicamente
     const partidosHTML = pista1.map(partido => `
-      <div class="max-w-[500px] w-full flex flex-col items-center place-content-center border-2 border-blanco rounded-md p-2 ${partido.estado === "En Directe"? "border-rojo-claro" : " "}">
+      <div class="max-w-[500px] w-full flex flex-col items-center place-content-center border-2 border-blanco rounded-md p-2 ${partido.estado === "En Directe" ? "border-rojo-claro" : ""}">
           <div class="w-full h-auto grid grid-cols-3 place-items-center text-base text-blanco">
               <p>${partido.id_partido}</p>
               <p class="${partido.estado === "En Directe" ? "text-red-600 flex flex-row gap-x-2 items-center place-content-center" : ""}">
@@ -135,6 +135,10 @@ export const POST: APIRoute = async ({ request }) => {
                       <p class="text-blanco">${partido.VisSet1}</p>
                   </div>
               </div>
+          </div>
+          <div class="flex items-center place-content-center">
+              <a class="text-blanco" href="/partidosSS/${partido.id_partido}">Estadística</a>
+
           </div>
       </div>
   `).join('');

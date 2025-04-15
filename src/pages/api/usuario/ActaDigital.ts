@@ -6,7 +6,7 @@ import { Resend } from 'resend';
 import { jugadores } from '@sections/administracion/CrearEquipo.astro';
 
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
 
   const FormAction = formData.get("FormAction")?.toString().trim() || "";
@@ -1030,6 +1030,7 @@ const usuario_email = "voley_tournament@iescalvia.com"
         })
         .eq('id_partido', id_partido)
         .select()
+        //return redirect("/admin/designaciones");
 
   }
 
@@ -1041,3 +1042,4 @@ const usuario_email = "voley_tournament@iescalvia.com"
     },
   });
 };
+
