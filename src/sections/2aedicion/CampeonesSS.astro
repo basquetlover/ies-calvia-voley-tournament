@@ -1,0 +1,89 @@
+
+<div class="max-w-7xl w-auto mx-auto h-auto relative grid grid-cols-[max-content_1fr] grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] md:grid-cols-[max-content_1fr] md:grid-rows-1 place-items-center gap-4 mb-10">
+    <div class=" campeonas-box  w-96 h-96 relative flex flex-col items-center transform scale-100 xs:scale-75 sm:scale-75 md:scale-100">
+         <p class="text-4xl font-bold text-amarillo letras-arriba">Campions</p>
+         <div class="z-10"><img src="/img/trofeo.webp" alt="Trofeu torneig" class="h-96" /></div>
+         <p class="text-3xl font-bold text-accent letras-abajo uppercase">Los PR</p>
+    </div>
+    <div class=" w-[80%] h-auto">
+     <p class="text-base text-blanco">Després d’haver quedat segons a la 1a edició, LOS PR han tornat amb força i han aconseguit proclamar-se campions de la 2a Edició del Torneig de Voleibol de l’IES Calvià. El seu recorregut fins al triomf ha estat impecable, demostrant una gran evolució en el seu joc i una determinació admirable.</p>
+     <p class="text-base text-blanco mt-4">La final, disputada contra Las Gamba, va ser un autèntic espectacle esportiu. Cada punt es va lluitar amb una intensitat màxima, mantenint el públic en tensió fins al darrer moment. Amb un format especial per a la final —dos sets a 21 punts i, en cas d’empat, un set de desempat amb diferència mínima de 2 punts—, el partit va viure moments d’alta emoció i equilibri. Finalment, LOS PR es van imposar i van aixecar el trofeu, convertint-se en els nous campions del torneig.</p>
+ </div>
+ </div>
+ 
+ <style>
+ .letras-arriba{
+     position: absolute;
+     top: 80px;
+     left: 25px;
+     /* final -30px */
+     z-index: 0;
+     animation: salidaIzq 0.5s ease-in-out forwards;
+ }
+ .letras-abajo{
+     position: absolute;
+     bottom: 80px;
+     right: 85px;
+     z-index: 0;
+     animation: salidaDer 0.5s ease-in-out forwards;
+ }
+ 
+ /* .letras-arriba{
+     left: -30px ;
+     animation: entradaIzq 0.5 ease-in-out;
+ }
+ .letras-abajo{
+  right: 0px;
+ } */
+ .campeonas-box:hover .letras-arriba {
+     animation: entradaIzq 0.5s ease-in-out forwards;
+ }
+ 
+ .campeonas-box:hover .letras-abajo {
+     animation: entradaDer 0.5s ease-in-out forwards;
+ }
+ 
+ 
+ @keyframes entradaIzq {
+     from {
+         left: 25px;
+         
+     }
+     to {
+         left: -30px;
+        
+     }
+ }
+ 
+ @keyframes entradaDer {
+     from {
+         right: 85px;
+        
+     }
+     to {
+         right: 0px;
+        
+     }
+ }
+ 
+ @keyframes salidaIzq {
+     from {
+         left: -30px;
+     }
+     to {
+         left: 25px;
+     }
+ }
+ 
+ @keyframes salidaDer {
+     from {
+         right: 0px;
+     }
+     to {
+         right: 85px;
+     }
+ }
+ </style>
+ 
+ 
+ 

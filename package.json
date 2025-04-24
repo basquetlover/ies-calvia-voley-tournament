@@ -24,7 +24,7 @@
     "astro": "^4.16.14",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
-    "chart.js": "^4.0.0",
+    "chart.js": "^4.4.9",
     "crypto-js": "^4.2.0",
     "express": "^5.1.0",
     "firebase": "^11.0.2",
