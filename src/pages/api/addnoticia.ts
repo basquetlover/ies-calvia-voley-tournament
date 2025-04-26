@@ -66,11 +66,13 @@ async function uploadFile(file: File, id_noticia: string) {
   
     if (error) {
         console.error("Error al subir imagen:", error.message);
-        throw new Error("Error al subir imagen.");
+        //throw new Error("Error al subir imagen.");
     }
-  
+  if(data){
     console.log("Imagen subida correctamente:", data.path);
-    return filePath; // Devuelve la ruta del archivo
+    
+  }
+  return filePath; // Devuelve la ruta del archivo
   }
   
   // Llama a la función para subir el imagen_noticia
@@ -84,7 +86,7 @@ async function uploadFile(file: File, id_noticia: string) {
   // Verifica si urlData contiene la propiedad publicUrl
   if (!urlData || !urlData.publicUrl) {
       console.error("No se pudo obtener la URL pública del imagen_noticia.");
-      return new Response("Hubo un error al procesar el imagen_noticia.", { status: 500 });
+      //return new Response("Hubo un error al procesar el imagen_noticia.", { status: 500 });
   }
   
   // Ahora puedes usar urlData.publicUrl para insertar en la base de datos
