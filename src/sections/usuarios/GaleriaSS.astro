@@ -1,7 +1,7 @@
 ---
 import { verificarSesion } from "src/lib/session";
 import { supabaseAdmin } from "src/lib/supabase";
-import {IMAGENES} from "@const/imagenes-torneo-navidad"
+import {IMG} from "@const/img-torneo-semana-santa"
 const usuario = await verificarSesion(Astro.request);
 let equipo = "Sense Equip";
 let equipo_id = "";
@@ -90,11 +90,11 @@ if(usuario){
 <div class="h-[2px] bg-accent rounded-full w-[95%] mx-auto my-10">
 
 </div>
-<div id="photo-container" class="max-w-full mx-auto w-full h-auto flex  place-content-center items-center flex-wrap gap-y-4 gap-x-4 xs:gap-x-0 sm:gap-x-2 md-gap-x-4 ">
+<div id="photo-container-SS" class="max-w-full mx-auto w-full h-auto flex  place-content-center items-center flex-wrap gap-y-4 gap-x-4 xs:gap-x-0 sm:gap-x-2 md-gap-x-4 ">
    
-    {IMAGENES.slice(0, 50).map((img, index) => (
-        <div class={`w-96 h-60 overflow-hidden relative xs:scale-90 sm:scale-90 md:scale-100 scale-100 text-blanco ${block === true ? " cursor-pointer" : " cursor-not-allowed "} `} id={`image-${index}`}>
-            <img src={img.enlace} alt={`Imagen ${index + 1}`} loading="lazy" class="h-full w-auto mx-auto img" />
+    {IMG.slice(0, 50).map((img, index) => (
+        <div class={`w-96 h-60 overflow-hidden relative xs:scale-90 sm:scale-90 md:scale-100 scale-100 text-blanco ${block === true ? " cursor-pointer" : " cursor-not-allowed "} `} id={`image-SS-${index}`}>
+            <img src={`/img/${img.referencia}`} alt={`Imagen ${index + 1}`} loading="lazy" class="h-full w-auto mx-auto img" />
             <img src="/img/img-block.png" alt="" loading="lazy" class={`placeholder w-96 h-60 ${block === true ? " opacity-0" : " opacity-100 "} `} />
         </div>
     ))}
@@ -102,7 +102,7 @@ if(usuario){
     
 </div>
 <div class="w-full flex items-center place-content-center">
-    <button id="load-more" class="mt-4 mx-auto w-max p-2 bg-azul-suave text-white rounded">Cargar más fotos</button>
+    <button id="load-more-SS" class="mt-4 mx-auto w-max p-2 bg-azul-suave text-white rounded">Cargar más fotos</button>
 </div>
 
 {
@@ -125,28 +125,28 @@ if(usuario){
 
 </section>
 <script>
-import { IMAGENES } from "@const/imagenes-torneo-navidad";
+import {IMG} from "@const/img-torneo-semana-santa"
 
     let displayedImages = 50; // Número de imágenes que se muestran inicialmente
-    const loadMoreButton = document.getElementById('load-more')!;
-    const photoContainer = document.getElementById('photo-container')!;
+    const loadMoreButton = document.getElementById('load-more-SS')!;
+    const photoContainer = document.getElementById('photo-container-SS')!;
 
     loadMoreButton.addEventListener('click', () => {
         // Cargar más imágenes al hacer clic
         displayedImages += 50; // Incrementamos el número de imágenes a mostrar
-        const newImages = IMAGENES.slice(displayedImages - 50, displayedImages);
+        const newImages = IMG.slice(displayedImages - 50, displayedImages);
         
         newImages.forEach((img, index) => {
             const imageElement = document.createElement('div');
             imageElement.classList.add('w-96', 'h-60', 'overflow-hidden', 'relative', 'xs:scale-90', 'sm:scale-90', 'md:scale-100', 'scale-100', 'text-blanco');
-            imageElement.id = `image-${index}`
+            imageElement.id = `image-SS-${index}`
             imageElement.innerHTML = `
-                <img src="${img.enlace}" alt="Imagen ${displayedImages - 50 + index + 1}" loading="lazy" class="h-full w-auto mx-auto img" />
+                <img src="/img/${img.referencia}" alt="Imagen ${displayedImages - 50 + index + 1}" loading="lazy" class="h-full w-auto mx-auto img" />
                 <img src="/img/img-block.png" alt="" loading="lazy" class="placeholder w-96 h-60 opacity-100" />
             `;
             photoContainer.appendChild(imageElement);
         });
-        if (displayedImages >= IMAGENES.length) {
+        if (displayedImages >= IMG.length) {
         loadMoreButton.style.display = 'none'; // Hide button if no more images
         return;
     }
@@ -221,11 +221,11 @@ import { IMAGENES } from "@const/imagenes-torneo-navidad";
 </style>
 
 <script>
-    import { IMAGENES } from "@const/imagenes-torneo-navidad"; // Asegúrate de que esta importación sea correcta
+    import {IMG} from "@const/img-torneo-semana-santa" // Asegúrate de que esta importación sea correcta
 
     document.addEventListener('DOMContentLoaded', () => {
         // Suponiendo que IMAGENES es un array de objetos con la propiedad 'enlace'
-        const imageArray = IMAGENES.map(img => img.enlace); // Extraemos las URLs de las imágenes
+        const imageArray = IMG.map(img => img.referencia); // Extraemos las URLs de las imágenes
         let currentIndex = 0;
         const numero_img = document.getElementById('numero-img') as HTMLInputElement;
         const src_img = document.getElementById('src-img') as HTMLInputElement;
@@ -235,7 +235,7 @@ import { IMAGENES } from "@const/imagenes-torneo-navidad";
             const modal = document.getElementById('modal');
             const modalImage = document.getElementById('modalImage') as HTMLImageElement;
             if (modalImage) {
-                modalImage.src = imageArray[currentIndex];
+                modalImage.src = "/img/"+imageArray[currentIndex];
                 numero_img.value = `Imatge Nº ${currentIndex + 1}`;
                 src_img.value = imageArray[currentIndex];
             }
@@ -269,7 +269,7 @@ import { IMAGENES } from "@const/imagenes-torneo-navidad";
 
         // Asignar eventos a las imágenes
         imageArray.forEach((_, index) => {
-            const imageElement = document.getElementById(`image-${index}`);
+            const imageElement = document.getElementById(`image-SS-${index}`);
             if (imageElement) {
                 imageElement.addEventListener('click', () => openModal(index));
             }

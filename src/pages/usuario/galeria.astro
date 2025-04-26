@@ -5,6 +5,7 @@ import LayoutMenu from "@layouts/LayoutMenu.astro";
 import PortadaGaleria from "@sections/usuarios/PortadaGaleria.astro";
 import GaleriaFotos from "@sections/usuarios/Galeria.astro";
 import SpamDescarga from "@sections/usuarios/SpamDescarga.astro";
+import GaleriaSS from "@sections/usuarios/GaleriaSS.astro";
 ---
 <ControlAcces>
     <script>
@@ -15,6 +16,9 @@ import SpamDescarga from "@sections/usuarios/SpamDescarga.astro";
 <LayoutMenu title="Galeria | IES Calvià Voley Tournament" descripcion="Galeria d'imatges de la edició de Nadal" >
     <SpamDescarga />
     <PortadaGaleria />
+    <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa</h2>
+    <GaleriaSS />
+    <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal</h2>
     <GaleriaFotos />
     <div class="w-full h-10 mt-10 flex items-center place-content-center">
         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=voley_tournament@iescalvia.com&su=Descarregar%20Imatges%20|%20IES%20Calvià%20Voley%20Tournament" target="_blank" class=" bg-amarillo px-3 py-2 rounded-full mx-auto text-xl hover:scale-105 transition-all duration-300">
