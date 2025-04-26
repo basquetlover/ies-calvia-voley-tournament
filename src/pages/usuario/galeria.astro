@@ -12,6 +12,10 @@ import GaleriaSS from "@sections/usuarios/GaleriaSS.astro";
         document.addEventListener("contextmenu", function(e){
             e.preventDefault();
         }, false)
+
+        document.addEventListener("touchstart", function(e) {
+            e.preventDefault();
+        }, false);
     </script>
 <LayoutMenu title="Galeria | IES Calvià Voley Tournament" descripcion="Galeria d'imatges de la edició de Nadal" >
     <SpamDescarga />
