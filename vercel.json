@@ -1,4 +1,11 @@
 {
+    "redirects": [
+    {
+      "source": "/ads.txt",
+      "destination": "https://srv.adstxtmanager.com/74682/iescalvia-voley.com",
+      "permanent": true
+    }
+  ],
     "env": {
       "NODE_ENV": "production"
     }
