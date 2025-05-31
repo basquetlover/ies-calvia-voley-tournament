@@ -1,11 +1,32 @@
 ---
 import {CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
-export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "" }));
-export const jugadores_extra = Array.from({ length: 3 }, () => ({ nombre: "", curso: "" }));
-export const staff = Array.from({ length: 5 }, () => ({ nombre: "", curso: "" }));
+import { supabaseAdmin } from "src/lib/supabase";
+let jugadores: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }[] = [];
+let jugadores_extra: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }[] = [];
+let staff: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }[] = [];
+
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('min_jugadores, max_jugadores, max_staff, entrenador, profesor')
+  .eq('estado', 'Actual')
+  .single();
+
+if (ConfTorneo) {
+  const min_jugadores = ConfTorneo.min_jugadores;
+  const max_jugadores = ConfTorneo.max_jugadores;
+  const max_staff = ConfTorneo.max_staff;
+
+  jugadores = Array.from({ length: min_jugadores }, () => ({ nombre: "", curso: "" }));
+  jugadores_extra = Array.from({ length: max_jugadores - min_jugadores }, () => ({ nombre: "", curso: "" }));
+  staff = Array.from({ length: max_staff }, () => ({ nombre: "", curso: "" }));
+}
+
+// Exportar solo después de asegurar que están definidos
+export { jugadores, jugadores_extra, staff };
 import { verificarSesion } from "src/lib/session";
 import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
 import FormSend from "@components/FormSend.astro";
+
 
 const usuario = await verificarSesion(Astro.request);
 interface Jugador {
@@ -108,7 +129,9 @@ file.addEventListener('change', (e: Event) => {
     </div>
 
     <!-- Entrenador -->
-    <div class="w-max flex flex-row gap-2">
+     {
+      ConfTorneo?.entrenador === "Permitido" ? (
+        <div class="w-max flex flex-row gap-2">
       <div class="px-3 py-2 w-96 h-12 flex flex-row text-4xl text-amarillo border-none">
         <h4>Entrenador</h4>
        {/* Genero */}
@@ -144,6 +167,11 @@ file.addEventListener('change', (e: Event) => {
     </div>
       </div>
     </div>
+      ):(<></>)
+     }
+    
+
+
     <div class="flex flex-col items-center ml-2">
     
       <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
@@ -281,7 +309,7 @@ file.addEventListener('change', (e: Event) => {
         
         </div>
 
-                {/* Imagen cara */}
+                <!-- {/* Imagen cara */}
                 <div class="flex flex-col relative">
                   <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                       Imatge Cara
@@ -300,7 +328,7 @@ file.addEventListener('change', (e: Event) => {
                   accept=".png, .jpg, .jpeg, .webp"
                   />
               
-              </div>
+              </div> -->
               
       </div>
       
@@ -310,7 +338,7 @@ file.addEventListener('change', (e: Event) => {
     </div>
 
     <!--Jugadores -->
-{jugadores.map((jugador, index) => (
+{jugadores.map((jugador: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }, index: number) => (
       <div class="w-[100%] h-[2px] my-0 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
       <div class="flex flex-row gap-2 items-end">
         <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1}. Jugador</p>
@@ -484,7 +512,7 @@ file.addEventListener('change', (e: Event) => {
         
         </div>
 
-        {/* Imagen cara */}
+        {/* Imagen cara
         <div class="flex flex-col relative">
             <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                 Imatge Cara .webp
@@ -505,11 +533,11 @@ file.addEventListener('change', (e: Event) => {
             value={jugador.nombre}
             />
         
-        </div>
+        </div> */}
       </div>
     ))} 
 
- {jugadores_extra.map((jugador, index) => (
+ {jugadores_extra.map((jugador: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }, index: number) => (
   <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
   <div class="flex flex-row gap-2 items-end">
         <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 7}. Jugador</p>
@@ -679,7 +707,7 @@ file.addEventListener('change', (e: Event) => {
         
         </div>
         
-        {/* Imagen cara */}
+        {/* Imagen cara
         <div class="flex flex-col relative">
             <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                 Imatge Cara .webp
@@ -700,12 +728,14 @@ file.addEventListener('change', (e: Event) => {
             value={jugador.nombre}
             />
         
-        </div>
+        </div> */}
   </div>
 ))} 
 
 
   <!-- profesor -->
+    {
+      ConfTorneo?.profesor === "Permitido" ? (
   <div class="w-max flex flex-row gap-2 my-10">
     <div class="px-3 py-2 w-max h-12 flex flex-row text-4xl text-amarillo border-none">
       <h4>Professor Jugador</h4>
@@ -742,6 +772,9 @@ file.addEventListener('change', (e: Event) => {
   </div>
     </div>
   </div>
+
+
+
   <div class="flex flex-col items-center ml-2">
   
     <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
@@ -848,7 +881,7 @@ file.addEventListener('change', (e: Event) => {
       
       </div>
 
-              {/* Imagen cara */}
+              <!-- {/* Imagen cara */}
               <div class="flex flex-col relative">
                 <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                     Imatge Cara .webp
@@ -867,19 +900,24 @@ file.addEventListener('change', (e: Event) => {
                 accept=".webp"
                 />
             
-            </div>
+            </div> -->
            
     </div>
     
   </div>
-
+  ):(<></>)
+}
 
 <!--Staff (Publico) -->
-<div class="w-max flex flex-row items-end gap-2">
+{
+  ConfTorneo?.max_staff > 0 ? 
+  (
+    <>
+    <div class="w-max flex flex-row items-end gap-2">
   <div class="px-3 py-2 w-max h-12  text-4xl text-amarillo border-none"><h4>Tècnics d'equip</h4></div>
   <p class="text-gray-500 text-sm">(No poden jugar)</p>
 </div>
-{staff.map((jugador, index) => (
+{staff.map((jugador: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }, index: number) => (
   <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
   <div class="flex flex-row gap-2 items-end">
         <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1}. Staff</p>
@@ -1045,7 +1083,7 @@ file.addEventListener('change', (e: Event) => {
         
         </div>
         
-        {/* Imagen cara */}
+        {/* Imagen cara
         <div class="flex flex-col relative">
             <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                 Imatge Cara
@@ -1066,9 +1104,13 @@ file.addEventListener('change', (e: Event) => {
             value={jugador.nombre}
             />
         
-        </div>
+        </div> */}
   </div>
 ))} 
+</>
+  ):(<></>)
+}
+
 
 <div class="w-max flex flex-row gap-2 px-6">
   <p class="text-lg text-blanco">Permets que el capità pugui modificar l'equip?</p>

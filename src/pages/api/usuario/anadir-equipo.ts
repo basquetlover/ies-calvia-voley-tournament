@@ -5,6 +5,11 @@ import type { APIRoute } from "astro";
 import { supabase, supabaseAdmin } from "../../../lib/supabase";
 import { Resend } from 'resend';
 
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
 
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
@@ -76,7 +81,7 @@ export const POST: APIRoute = async ({ request }) => {
   //  console.log("Entrenador no inscrito en otro equipo")
 //}
 let { data: Usuarios, error } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .select('email')
 
     if (Usuarios) {
@@ -151,7 +156,7 @@ if (profesor_email) {
 //  console.log("Entrenador no inscrito en otro equipo")
 //}
 let { data: Usuarios, error } = await supabaseAdmin
-  .from('JugadoresSS')
+  .from(`Jugadores${ConfTorneo?.id_torneo}`)
   .select('email')
 
   if (Usuarios) {
@@ -242,7 +247,7 @@ if (!acompañante_genero) {
       mujeres++;
     }
     let { data: Usuarios, error } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .select('email')
 
     if (Usuarios) {
@@ -304,7 +309,7 @@ if (!acompañante_genero) {
         mujeres++;
       }
       let { data: Usuarios, error } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .select('email')
 
     if (Usuarios) {
@@ -361,7 +366,7 @@ if (!acompañante_genero) {
       
       }
       let { data: Usuarios, error } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .select('email')
 
     if (Usuarios) {
@@ -401,9 +406,9 @@ if (!acompañante_genero) {
   }
   
 
-  // Verificar si el equipo ya existe en la tabla 'EquiposSS'
+  // Verificar si el equipo ya existe en la tabla `Equipos${ConfTorneo?.id_torneo}`
   const { data: existingEquipo, error: checkError } = await supabaseAdmin
-  .from("EquiposSS")
+  .from("`Equipos${ConfTorneo?.id_torneo}`")
   .select("id") // Seleccionar un campo mínimo
   .eq("nombre_equipo", nombre_equipo);
 
@@ -428,7 +433,7 @@ async function uploadFile(file: File, id_equipo: string) {
   // Extraer la extensión del archivo
   const extension = file.name.split('.').pop(); // Obtiene la extensión
   const uniqueFileName = `${id_equipo}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-  const filePath = `escudosSS/${uniqueFileName}`; // Define la ruta del archivo
+  const filePath = `escudos${ConfTorneo?.id_torneo}/${uniqueFileName}`; // Define la ruta del archivo
 
   const { data, error } = await supabaseAdmin.storage
       .from('EquiposIMG')
@@ -464,49 +469,51 @@ if (urlData) {
 }
 
 //Subir img entrenador
-async function uploadFileCoach(file: File, email: string | undefined) {
-  // Extraer la extensión del archivo
-  const extension = file.name.split('.').pop(); // Obtiene la extensión
-  const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-  const filePath = `${uniqueFileName}`; // Define la ruta del archivo
+// async function uploadFileCoach(file: File, email: string | undefined) {
+//   // Extraer la extensión del archivo
+//   const extension = file.name.split('.').pop(); // Obtiene la extensión
+//   const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
+//   const filePath = `${uniqueFileName}`; // Define la ruta del archivo
 
-  const { data, error } = await supabaseAdmin.storage
-      .from('JugadoresIMG')
-      .upload(filePath, file); // Sube el archivo
+//   const { data, error } = await supabaseAdmin.storage
+//       .from('JugadoresIMG')
+//       .upload(filePath, file); // Sube el archivo
 
-  if (error) {
-      console.error("Error al subir imagen:", error.message);
-      throw new Error("Error al subir imagen.");
-  }
+//   if (error) {
+//       console.error("Error al subir imagen:", error.message);
+//       throw new Error("Error al subir imagen.");
+//   }
 
-  console.log("Imagen subida correctamente:", data.path);
-  return filePath; // Devuelve la ruta del archivo
-}
+//   console.log("Imagen subida correctamente:", data.path);
+//   return filePath; // Devuelve la ruta del archivo
+// }
 
 // Llama a la función para subir el escudo
-const CoachPath = await uploadFileCoach(acompañante_foto, acompañante_email);
+//const CoachPath = await uploadFileCoach(acompañante_foto, acompañante_email);
 
-let publicCoachUrl ="";
+//let publicCoachUrl ="";
 //Obtener la URL pública del escudo subido
-const { data: urlDataCoach } = supabaseAdmin.storage
-    .from('JugadoresIMG')
-    .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
+// const { data: urlDataCoach } = supabaseAdmin.storage
+//     .from('JugadoresIMG')
+//     .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
 
 // Verifica si urlData contiene la propiedad publicUrl
-if (!urlDataCoach || !urlDataCoach.publicUrl) {
-  //   console.error("No se pudo obtener la URL pública del escudo.");
-  //   return new Response(
-  //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
-  //     { status: 401, headers: { "Content-Type": "text/html" } }
-  // );
-}
-if (urlData) {
-  publicCoachUrl = urlDataCoach.publicUrl;
-}
+// if (!urlDataCoach || !urlDataCoach.publicUrl) {
+//   //   console.error("No se pudo obtener la URL pública del escudo.");
+//   //   return new Response(
+//   //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+//   //     { status: 401, headers: { "Content-Type": "text/html" } }
+//   // );
+// }
+// if (urlData) {
+//   publicCoachUrl = urlDataCoach.publicUrl;
+// }
 
 
 // Ahora puedes usar urlData.publicUrl para insertar en la base de datos
-
+if(escudo.size <= 0){
+  publicUrl = "https://iescalvia-voley.com/img/escudos/sin-escudo.png";
+}
 console.log("URL pública del escudo:", publicUrl);
 
 const getCurrentDateInCatalan = () => {
@@ -521,7 +528,7 @@ console.log(currentDate);
     
   // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(`Equipos${ConfTorneo?.id_torneo}`)
     .insert([
         { nombre_equipo: nombre_equipo ,
           id_equipo: id_equipo ,
@@ -546,7 +553,7 @@ console.log(currentDate);
   }
 
   const { data: equipoData, error: busquedaError } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(`Equipos${ConfTorneo?.id_torneo}`)
     .select('id')
     .eq('nombre_equipo', nombre_equipo)
     .single();
@@ -562,29 +569,29 @@ console.log(currentDate);
   const equipoId = equipoData.id;
 
 
-  async function uploadJugadorIMG(file: File, email: string | undefined) {
-    // Extraer la extensión del archivo
-    const extension = file.name.split('.').pop(); // Obtiene la extensión
-    const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-    const filePath = `${uniqueFileName}`; // Define la ruta del archivo
+  // async function uploadJugadorIMG(file: File, email: string | undefined) {
+  //   // Extraer la extensión del archivo
+  //   const extension = file.name.split('.').pop(); // Obtiene la extensión
+  //   const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
+  //   const filePath = `${uniqueFileName}`; // Define la ruta del archivo
   
-    const { data, error } = await supabaseAdmin.storage
-        .from('JugadoresIMG')
-        .upload(filePath, file); // Sube el archivo
+  //   const { data, error } = await supabaseAdmin.storage
+  //       .from('JugadoresIMG')
+  //       .upload(filePath, file); // Sube el archivo
   
-    if (error) {
-        console.error("Error al subir imagen:", error.message);
-        throw new Error("Error al subir imagen.");
-    }
+  //   if (error) {
+  //       console.error("Error al subir imagen:", error.message);
+  //       throw new Error("Error al subir imagen.");
+  //   }
   
-    console.log("Imagen subida correctamente:", data.path);
-    return filePath; // Devuelve la ruta del archivo
-  }
+  //   console.log("Imagen subida correctamente:", data.path);
+  //   return filePath; // Devuelve la ruta del archivo
+  // }
   
   for (const jugador of jugadores) {
-    if(jugador.img.size <= 0){
+    //if(jugador.img.size <= 0){
       const { error: jugadorError } = await supabaseAdmin
-        .from('JugadoresSS')
+        .from(`Jugadores${ConfTorneo?.id_torneo}`)
         .insert([
           {   nombre: jugador.nombre, 
               _1r_apellido: jugador._1r_apellido,
@@ -602,54 +609,54 @@ console.log(currentDate);
         console.error("Error insertando jugador principal:", jugadorError.message);
         // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
       }
-    } else {
-      let publicIMGurl = "";
-      // Llama a la función para subir el escudo
-    const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
+    // } else {
+    //   let publicIMGurl = "";
+    //   // Llama a la función para subir el escudo
+    // const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
     
-    //Obtener la URL pública del escudo subido
-    const { data: urlIMGData } = supabaseAdmin.storage
-        .from('JugadoresIMG')
-        .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
+    // //Obtener la URL pública del escudo subido
+    // const { data: urlIMGData } = supabaseAdmin.storage
+    //     .from('JugadoresIMG')
+    //     .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
     
-    // Verifica si urlData contiene la propiedad publicUrl
-    if (!urlIMGData || !urlIMGData.publicUrl) {
-      //   console.error("No se pudo obtener la URL pública del escudo.");
-      //   return new Response(
-      //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
-      //     { status: 401, headers: { "Content-Type": "text/html" } }
-      // );
-    }
-    if (urlIMGData) {
-      publicIMGurl = urlIMGData.publicUrl;
-    }
+    // // Verifica si urlData contiene la propiedad publicUrl
+    // if (!urlIMGData || !urlIMGData.publicUrl) {
+    //   //   console.error("No se pudo obtener la URL pública del escudo.");
+    //   //   return new Response(
+    //   //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+    //   //     { status: 401, headers: { "Content-Type": "text/html" } }
+    //   // );
+    // }
+    // if (urlIMGData) {
+    //   publicIMGurl = urlIMGData.publicUrl;
+    // }
   
-      const { error: jugadorError } = await supabaseAdmin
-        .from('JugadoresSS')
-        .insert([
-          {   nombre: jugador.nombre, 
-              _1r_apellido: jugador._1r_apellido,
-              _2n_apellido: jugador._2n_apellido,
-              curso: jugador.curso,
-              genero: jugador.genero,
-              pertenece_equipo: equipoId,
-              email: jugador.email,
-              ficha: 'jugador',
-              img: publicIMGurl,
-            },
-        ]).select()
+    //   const { error: jugadorError } = await supabaseAdmin
+    //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    //     .insert([
+    //       {   nombre: jugador.nombre, 
+    //           _1r_apellido: jugador._1r_apellido,
+    //           _2n_apellido: jugador._2n_apellido,
+    //           curso: jugador.curso,
+    //           genero: jugador.genero,
+    //           pertenece_equipo: equipoId,
+    //           email: jugador.email,
+    //           ficha: 'jugador',
+    //           img: publicIMGurl,
+    //         },
+    //     ]).select()
   
-      if (jugadorError) {
-        console.error("Error insertando jugador principal:", jugadorError.message);
-        // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-      }
-    }
+    //   if (jugadorError) {
+    //     console.error("Error insertando jugador principal:", jugadorError.message);
+    //     // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+    //   }
+    // }
   }
 
   for (const jugador of jugadores_extra) {
-    if(jugador.img.size <= 0){
+    //if(jugador.img.size <= 0){
       const { error: jugadorError } = await supabaseAdmin
-        .from('JugadoresSS')
+        .from(`Jugadores${ConfTorneo?.id_torneo}`)
         .insert([
           {   nombre: jugador.nombre, 
               _1r_apellido: jugador._1r_apellido,
@@ -667,54 +674,54 @@ console.log(currentDate);
         console.error("Error insertando jugador principal:", jugadorError.message);
         // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
       }
-    } else {
-      let publicIMGurl = "";
-      // Llama a la función para subir el escudo
-    const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
+    // } else {
+    //   let publicIMGurl = "";
+    //   // Llama a la función para subir el escudo
+    // const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
     
-    //Obtener la URL pública del escudo subido
-    const { data: urlIMGData } = supabaseAdmin.storage
-        .from('JugadoresIMG')
-        .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
+    // //Obtener la URL pública del escudo subido
+    // const { data: urlIMGData } = supabaseAdmin.storage
+    //     .from('JugadoresIMG')
+    //     .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
     
-    // Verifica si urlData contiene la propiedad publicUrl
-    if (!urlIMGData || !urlIMGData.publicUrl) {
-      //   console.error("No se pudo obtener la URL pública del escudo.");
-      //   return new Response(
-      //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
-      //     { status: 401, headers: { "Content-Type": "text/html" } }
-      // );
-    }
-    if (urlIMGData) {
-      publicIMGurl = urlIMGData.publicUrl;
-    }
+    // // Verifica si urlData contiene la propiedad publicUrl
+    // if (!urlIMGData || !urlIMGData.publicUrl) {
+    //   //   console.error("No se pudo obtener la URL pública del escudo.");
+    //   //   return new Response(
+    //   //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+    //   //     { status: 401, headers: { "Content-Type": "text/html" } }
+    //   // );
+    // }
+    // if (urlIMGData) {
+    //   publicIMGurl = urlIMGData.publicUrl;
+    // }
   
-      const { error: jugadorError } = await supabaseAdmin
-        .from('JugadoresSS')
-        .insert([
-          {   nombre: jugador.nombre, 
-              _1r_apellido: jugador._1r_apellido,
-              _2n_apellido: jugador._2n_apellido,
-              curso: jugador.curso,
-              genero: jugador.genero_extra,
-              pertenece_equipo: equipoId,
-              email: jugador.email,
-              ficha: 'jugador',
-              img: publicIMGurl,
-            },
-        ]).select()
+    //   const { error: jugadorError } = await supabaseAdmin
+    //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    //     .insert([
+    //       {   nombre: jugador.nombre, 
+    //           _1r_apellido: jugador._1r_apellido,
+    //           _2n_apellido: jugador._2n_apellido,
+    //           curso: jugador.curso,
+    //           genero: jugador.genero_extra,
+    //           pertenece_equipo: equipoId,
+    //           email: jugador.email,
+    //           ficha: 'jugador',
+    //           img: publicIMGurl,
+    //         },
+    //     ]).select()
   
-      if (jugadorError) {
-        console.error("Error insertando jugador principal:", jugadorError.message);
-        // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-      }
-    }
+    //   if (jugadorError) {
+    //     console.error("Error insertando jugador principal:", jugadorError.message);
+    //     // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+    //   }
+    // }
   }
 
   for (const jugador of staff) {
-    if(jugador.img.size <= 0){
+   // if(jugador.img.size <= 0){
     const { error: jugadorError } = await supabaseAdmin
-      .from('JugadoresSS')
+      .from(`Jugadores${ConfTorneo?.id_torneo}`)
       .insert([
         {   nombre: jugador.nombre, 
             _1r_apellido: jugador._1r_apellido,
@@ -732,54 +739,54 @@ console.log(currentDate);
       console.error("Error insertando jugador principal:", jugadorError.message);
       // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
     }
-  } else {
-    let publicIMGurl = "";
-    // Llama a la función para subir el escudo
-  const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
+  // } else {
+  //   let publicIMGurl = "";
+  //   // Llama a la función para subir el escudo
+  // const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
   
-  //Obtener la URL pública del escudo subido
-  const { data: urlIMGData } = supabaseAdmin.storage
-      .from('JugadoresIMG')
-      .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
+  // //Obtener la URL pública del escudo subido
+  // const { data: urlIMGData } = supabaseAdmin.storage
+  //     .from('JugadoresIMG')
+  //     .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
   
-  // Verifica si urlData contiene la propiedad publicUrl
-  if (!urlIMGData || !urlIMGData.publicUrl) {
-    //   console.error("No se pudo obtener la URL pública del escudo.");
-    //   return new Response(
-    //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
-    //     { status: 401, headers: { "Content-Type": "text/html" } }
-    // );
-  }
-  if (urlIMGData) {
-    publicIMGurl = urlIMGData.publicUrl;
-  }
+  // // Verifica si urlData contiene la propiedad publicUrl
+  // if (!urlIMGData || !urlIMGData.publicUrl) {
+  //   //   console.error("No se pudo obtener la URL pública del escudo.");
+  //   //   return new Response(
+  //   //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+  //   //     { status: 401, headers: { "Content-Type": "text/html" } }
+  //   // );
+  // }
+  // if (urlIMGData) {
+  //   publicIMGurl = urlIMGData.publicUrl;
+  // }
 
-    const { error: jugadorError } = await supabaseAdmin
-      .from('JugadoresSS')
-      .insert([
-        {   nombre: jugador.nombre, 
-            _1r_apellido: jugador._1r_apellido,
-            _2n_apellido: jugador._2n_apellido,
-            curso: jugador.curso,
-            genero: jugador.genero_staff,
-            pertenece_equipo: equipoId,
-            email: jugador.email,
-            ficha: 'cuerpo_tecnico',
-            img: publicIMGurl,
-          },
-      ]).select()
+  //   const { error: jugadorError } = await supabaseAdmin
+  //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+  //     .insert([
+  //       {   nombre: jugador.nombre, 
+  //           _1r_apellido: jugador._1r_apellido,
+  //           _2n_apellido: jugador._2n_apellido,
+  //           curso: jugador.curso,
+  //           genero: jugador.genero_staff,
+  //           pertenece_equipo: equipoId,
+  //           email: jugador.email,
+  //           ficha: 'cuerpo_tecnico',
+  //           img: publicIMGurl,
+  //         },
+  //     ]).select()
 
-    if (jugadorError) {
-      console.error("Error insertando jugador principal:", jugadorError.message);
-      // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-    }
-  }
+  //   if (jugadorError) {
+  //     console.error("Error insertando jugador principal:", jugadorError.message);
+  //     // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+  //   }
+  // }
     
   }
 
-  if(acompañante_foto.size <= 0){
+  //if(acompañante_foto.size <= 0){
     const { error: jugadorExtraError } = await supabaseAdmin
-      .from('JugadoresSS')
+      .from(`Jugadores${ConfTorneo?.id_torneo}`)
       .insert([
         { nombre: acompañante_nombre, 
           _1r_apellido: acompañante_1r_apellido,
@@ -796,88 +803,88 @@ console.log(currentDate);
       console.error("Error insertando jugador extra:", jugadorExtraError.message);
       // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
     }
-  } else {
-    const { error: jugadorExtraError } = await supabaseAdmin
-      .from('JugadoresSS')
-      .insert([
-        { nombre: acompañante_nombre, 
-          _1r_apellido: acompañante_1r_apellido,
-          _2n_apellido: acompañante_2n_apellido,
-          curso: acompañante_curso,
-          genero: acompañante_genero,
-          email: acompañante_email,
-          pertenece_equipo: equipoId,
-          img: publicCoachUrl,
-          ficha: 'entrenador',
-        },
-    ]).select()
+  // } else {
+  //   const { error: jugadorExtraError } = await supabaseAdmin
+  //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+  //     .insert([
+  //       { nombre: acompañante_nombre, 
+  //         _1r_apellido: acompañante_1r_apellido,
+  //         _2n_apellido: acompañante_2n_apellido,
+  //         curso: acompañante_curso,
+  //         genero: acompañante_genero,
+  //         email: acompañante_email,
+  //         pertenece_equipo: equipoId,
+  //         img: publicCoachUrl,
+  //         ficha: 'entrenador',
+  //       },
+  //   ]).select()
 
-    if (jugadorExtraError) {
-      console.error("Error insertando jugador extra:", jugadorExtraError.message);
-      // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-    }
-  }
+  //   if (jugadorExtraError) {
+  //     console.error("Error insertando jugador extra:", jugadorExtraError.message);
+  //     // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+  //   }
+  // }
 
-  if(profesor_foto.size > 0){
+ // if(profesor_foto.size > 0){
     //Subir img entrenador
-    async function uploadFileCoach(file: File, email: string | undefined) {
-        // Extraer la extensión del archivo
-        const extension = file.name.split('.').pop(); // Obtiene la extensión
-          const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-          const filePath = `${uniqueFileName}`; // Define la ruta del archivo
+    // async function uploadFileCoach(file: File, email: string | undefined) {
+    //     // Extraer la extensión del archivo
+    //     const extension = file.name.split('.').pop(); // Obtiene la extensión
+    //       const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
+    //       const filePath = `${uniqueFileName}`; // Define la ruta del archivo
       
-        const { data, error } = await supabaseAdmin.storage
-            .from('EquiposIMG')
-            .upload(filePath, file); // Sube el archivo
+    //     const { data, error } = await supabaseAdmin.storage
+    //         .from('EquiposIMG')
+    //         .upload(filePath, file); // Sube el archivo
       
-        if (error) {
-            console.error("Error al subir imagen:", error.message);
-            throw new Error("Error al subir imagen.");
-        }
+    //     if (error) {
+    //         console.error("Error al subir imagen:", error.message);
+    //         throw new Error("Error al subir imagen.");
+    //     }
       
-        console.log("Imagen subida correctamente:", data.path);
-        return filePath; // Devuelve la ruta del archivo
-      }
+    //     console.log("Imagen subida correctamente:", data.path);
+    //     return filePath; // Devuelve la ruta del archivo
+    //   }
       
-      // Llama a la función para subir el escudo
-      const CoachPath = await uploadFileCoach(profesor_foto, profesor_email);
-      let publicCoachUrl ="";
-      //Obtener la URL pública del escudo subido
-      const { data: urlDataCoach } = supabaseAdmin.storage
-          .from('EquiposIMG')
-          .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
+    //   // Llama a la función para subir el escudo
+    //   const CoachPath = await uploadFileCoach(profesor_foto, profesor_email);
+    //   let publicCoachUrl ="";
+    //   //Obtener la URL pública del escudo subido
+    //   const { data: urlDataCoach } = supabaseAdmin.storage
+    //       .from('EquiposIMG')
+    //       .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
       
-      // Verifica si urlData contiene la propiedad publicUrl
-      if (!urlDataCoach || !urlDataCoach.publicUrl) {
-        //   console.error("No se pudo obtener la URL pública del escudo.");
-        //   return new Response(
-        //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
-        //     { status: 401, headers: { "Content-Type": "text/html" } }
-        // );
-      }
-      if (urlDataCoach) {
-        publicCoachUrl = urlDataCoach.publicUrl;
-      }
+    //   // Verifica si urlData contiene la propiedad publicUrl
+    //   if (!urlDataCoach || !urlDataCoach.publicUrl) {
+    //     //   console.error("No se pudo obtener la URL pública del escudo.");
+    //     //   return new Response(
+    //     //     `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Hi ha hagut un error en processar l'escut. Torna-ho a intentar més tard.</div>`, 
+    //     //     { status: 401, headers: { "Content-Type": "text/html" } }
+    //     // );
+    //   }
+    //   if (urlDataCoach) {
+    //     publicCoachUrl = urlDataCoach.publicUrl;
+    //   }
 
-      const { error: jugadorError } = await supabaseAdmin
-      .from('JugadoresSS')
-      .insert([
-        {   nombre: profesor_nombre, 
-          _1r_apellido: profesor_1r_apellido,
-          _2n_apellido: profesor_2n_apellido,
-          curso: profesor_curso,
-          genero: profesor_genero,
-          pertenece_equipo: equipoId,
-          email: profesor_email,
-          ficha: 'profesor',
-          imag: publicCoachUrl,
-          },
-      ])
-      .select()
+  //     const { error: jugadorError } = await supabaseAdmin
+  //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+  //     .insert([
+  //       {   nombre: profesor_nombre, 
+  //         _1r_apellido: profesor_1r_apellido,
+  //         _2n_apellido: profesor_2n_apellido,
+  //         curso: profesor_curso,
+  //         genero: profesor_genero,
+  //         pertenece_equipo: equipoId,
+  //         email: profesor_email,
+  //         ficha: 'profesor',
+  //         imag: publicCoachUrl,
+  //         },
+  //     ])
+  //     .select()
 
-  }else{
+  // }else{
     const { error: jugadorError } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .insert([
       {   nombre: profesor_nombre, 
         _1r_apellido: profesor_1r_apellido,
@@ -892,7 +899,7 @@ console.log(currentDate);
     ])
     .select()
 
-  }
+ // }
   
 
 
@@ -1047,7 +1054,7 @@ a[x-apple-data-detectors],
                   <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
                    <table cellspacing="0" cellpadding="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0"><h2 class="es-m-txt-c" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:28.8px;color:#333333"><b style="color:#1666ff">Preinscripció realitzada correctament al Torneig de Setmana Santa</b></h2></td>
+                      <td align="center" style="padding:0;Margin:0"><h2 class="es-m-txt-c" style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:24px;font-style:normal;font-weight:normal;line-height:28.8px;color:#333333"><b style="color:#1666ff">Preinscripció realitzada correctament al ${ConfTorneo?.nombre}</b></h2></td>
                      </tr>
                      <tr>
                       <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-right:20px;padding-left:20px;font-size:0">
@@ -1068,7 +1075,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:560px">
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Benvolguts/des,<br><br>Hem rebut correctament la vostra preinscripció al Torneig de Setmana Santa. Us informem que aquesta preinscripció serà revisada pel nostre equip de staff per assegurar que compleix amb tots els requisits necessaris. Un cop validada, rebreu un correu electrònic confirmant l'acceptació definitiva de la vostra inscripció.<br><br>Gràcies per la vostra participació i no dubteu a contactar-nos si teniu cap dubte.</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Benvolguts/des,<br><br>Hem rebut correctament la vostra preinscripció al ${ConfTorneo?.nombre}. Us informem que aquesta preinscripció serà revisada pel nostre equip de staff per assegurar que compleix amb tots els requisits necessaris. Un cop validada, rebreu un correu electrònic confirmant l'acceptació definitiva de la vostra inscripció.<br><br>Gràcies per la vostra participació i no dubteu a contactar-nos si teniu cap dubte.</p></td>
                      </tr>
                    </table></td>
                  </tr>
