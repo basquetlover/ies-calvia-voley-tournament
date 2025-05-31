@@ -2,6 +2,9 @@
 import Boton from "@components/Boton.astro";
 import EnlazesFooter from "@components/EnlacesFooter.astro";
 import Organizadores from "@components/Organizadores.astro";
+
+const añoActual = new Date().getFullYear();
+
 ---
 
 <footer class="w-full h-auto m-auto flex flex-col justify-center place-items-center overflow-hidden relative">
@@ -63,7 +66,7 @@ import Organizadores from "@components/Organizadores.astro";
     <div class="my-2  text-base text-blanco flex flex-row justify-center place-items-center xs:flex-col sm:flex-col md:flex-row">
         <div class="flex flex-row justify-center place-items-center">
           <img  src="/img/licencia/cc.png" loading="lazy" class="w-5 h-auto mx-1" alt="Creative Comons"/>
-          <h3 class="ml-1 text-base text-blanco">2025 - IES Calvià Voley Tournament</h3>
+          <h3 class="ml-1 text-base text-blanco">{añoActual} - IES Calvià Voley Tournament</h3>
         </div>
       <span class=" mx-1 block
                 xs:hidden
