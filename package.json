@@ -19,7 +19,6 @@
     "@lucia-auth/adapter-drizzle": "^1.1.0",
     "@supabase/auth-helpers-react": "^0.5.0",
     "@supabase/supabase-js": "^2.46.1",
-    "@types/react-dom": "^19.1.2",
     "@vercel/analytics": "^1.4.1",
     "astro": "^4.16.14",
     "bcrypt": "^5.1.1",
@@ -47,7 +46,8 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/crypto-js": "^4.2.2",
     "@types/express": "^5.0.1",
-    "@types/react": "^19.1.1",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
     "parcel": "^2.6.2"
   }
 }

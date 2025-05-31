@@ -386,7 +386,7 @@ cerrar_user_menu.addEventListener('click', function() {
         </div>
     ) : (
         <div class="w-96 px-2 flex flex-row gap-2">
-            <a href="/iniciar-sesion" class="w-40 h-14 rounded-lg uppercase text-lg text-blanco flex items-center place-content-center bg-accent">Inicia Sessió</a>
+            <a href={`/iniciar-sesion?redirect="${normalizedPathName}"`} class="w-40 h-14 rounded-lg uppercase text-lg text-blanco flex items-center place-content-center bg-accent">Inicia Sessió</a>
             <a href="/registrarse" class="w-40 h-14 rounded-lg uppercase text-lg text-blanco flex items-center place-content-center bg-azul">Registrar-se</a>
         </div>
     )}

@@ -1,0 +1,407 @@
+---
+function habilitarEdicion(index: number) {
+throw new Error("Function not implemented.");
+}
+
+import { supabaseAdmin } from "src/lib/supabase";
+
+const { data: Torneos, error } = await supabaseAdmin
+        .from('Configuracion')
+        .select('id, id_torneo, nombre, fecha, estado, in_inicio, in_fin, vo_inicio, vo_fin, min_jugadores, max_jugadores, min_staff, max_staff, entrenador, profesor '); // Verifica acceso por email o rol
+
+    // console.log(Torneos)
+---
+<form id="ConfTorneo" method="POST" action="/api/conf-torneos" class="container mx-auto p-4">
+  <div class="w-max h-auto flex flex-row items-center gap-4">
+    <h2 class="text-2xl font-bold mb-4 text-blanco">Lista de torneos</h2>
+    <div class="px-2 py-1 bg-azul-suave hover:bg-gray-500 hover:text-gray-700 hover:cursor-not-allowed transition-all duration-300 text-blanco rounded-md flex items-center place-content-center font-semibold text-lg">
+      + Nuevo Torneo
+    </div>
+    <button class="px-2 py-1 bg-verde-claro text-verde rounded-md flex flex-row items-center gap-2 font-semibold text-lg">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" class="w-6 h-6 fill-verde">
+          <path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Zm-40-86v446-560 114Z"/>
+        </svg>
+      </span> Guardar
+    </button>
+  </div>
+  
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-gris border border-gray-700 rounded-lg shadow-md">
+      <thead>
+        <tr class="bg-gris-claro text-blanco uppercase text-sm leading-normal">
+          <th class="py-3 px-6 text-left">ID</th>
+          <th class="py-3 px-6 text-left">Nombre</th>
+          <th class="py-3 px-6 text-left">Fecha</th>
+          <th class="py-3 px-6 text-left">Estado</th>
+          <th class="py-3 px-6 text-left">Inicio Inscripción</th>
+          <th class="py-3 px-6 text-left">Fin Inscripción</th>
+          <th class="py-3 px-6 text-left">Inicio Voluntarios</th>
+          <th class="py-3 px-6 text-left">Fin Voluntarios</th>
+          <th class="py-3 px-6 text-left">Mínimo Jugadores</th>
+          <th class="py-3 px-6 text-left">Máximo Jugadores</th>
+          <th class="py-3 px-6 text-left">Mínimo Staff</th>
+          <th class="py-3 px-6 text-left">Máximo Staff</th>
+          <th class="py-3 px-6 text-left">Entrenador</th>
+          <th class="py-3 px-6 text-left">Profesor</th>
+          <th class="py-3 px-6 text-left">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="text-blanco text-sm font-light">
+        {Torneos?.map((torneo, index) => (
+          <tr class="border-b border-gray-700 hover:bg-gray-800">
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="text"  class="border min-w-10 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.id_torneo} disabled />
+              <input type="hidden" id={`id_torneo_${index}`} name={`id_torneo_${index}`} class="border min-w-10 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.id_torneo} />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="text" id={`nombre_${index}`} name={`nombre_${index}`} class="border min-w-44 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.nombre} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="date" id={`fecha_${index}`} name={`fecha_${index}`} class="border min-w-10 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.fecha ? torneo.fecha.split('T')[0] : ''} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <select id={`estado_${index}`} name={`estado_${index}`} class="border min-w-28 border-gray-600 rounded p-2 w-full bg-gris" value={["Finalizado", "Actual", "Programado"].includes(torneo.estado) ? torneo.estado : ""} disabled>
+                <option value="" disabled>Selecciona estado</option>
+                <option 
+                  class="px-1 py-2" 
+                  value="Finalizado" 
+                  selected={torneo.estado === "Finalizado"}>
+                  Finalizado
+                </option>
+                <option 
+                  class="px-1 py-2" 
+                  value="Actual" 
+                  selected={torneo.estado === "Actual"}>
+                  Actual
+                </option>
+                <option 
+                  class="px-1 py-2" 
+                  value="Programado" 
+                  selected={torneo.estado === "Programado"}>
+                  Programado
+                </option>
+              </select>
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="datetime-local" id={`in_inicio_${index}`} name={`in_inicio_${index}`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.in_inicio} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="datetime-local" id={`in_fin_${index}`} name={`in_fin_${index}`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.in_fin} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="datetime-local" id={`vo_inicio_${index}`} name={`vo_inicio_${index}`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.vo_inicio} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="datetime-local" id={`vo_fin_${index}`} name={`vo_fin_${index}`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.vo_fin} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="number" id={`min_jugadores_${index}`} name={`min_jugadores_${index}`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.min_jugadores} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="number" id={`max_jugadores_${index}`} name={`max_jugadores_${index}`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.max_jugadores} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="number" id={`min_staff_${index}`} name={`min_staff_${index}`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.min_staff} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="number" id={`max_staff_${index}`} name={`max_staff_${index}`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.max_staff} disabled />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <select  id={`entrenador_${index}`} name={`entrenador_${index}`} class="border min-w-28 border-gray-600 rounded p-2 w-full bg-gris" value={["Seleccionar","Permitido", "Denegado"].includes(torneo.entrenador) ? torneo.entrenador : ""} disabled >
+                <option value="" selected={torneo.entrenador != "Permitido" || torneo.entrenador != "Denegado"} disabled>Seleccionar</option>
+                <option value="Permitido" selected={torneo.entrenador === "Permitido"}>Permitido</option>
+                <option value="Denegado" selected={torneo.entrenador === "Denegado"}>Denegado</option>
+              </select>
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <select id={`profesor_${index}`} name={`profesor_${index}`} class="border min-w-28 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.profesor} disabled>
+                <option value="" selected={torneo.profesor != "Permitido" || torneo.profesor != "Denegado"} disabled>Seleccionar</option>
+                <option value="Permitido" selected={torneo.profesor === "Permitido"}>Permitido</option>
+                <option value="Denegado" selected={torneo.profesor === "Denegado"}>Denegado</option>
+                </select>
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <div
+              id={`habilitar_${index}`}
+              class="bg-accent text-blanco font-bold py-2 px-4 rounded hover:bg-blue-600 cursor-pointer"
+              data-index={index}
+            >
+              Habilitar
+            </div>
+            <div
+              id={`habilitado_${index}`}
+              class="bg-verde-claro text-blanco font-bold py-2 px-4 oculto rounded "
+              data-index={index}
+            >
+              Habilitado
+            </div>
+                
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</form>
+<div id="errorbox" class="absolute right-1 bottom-1 z-50">
+
+</div>
+
+<!-- <script>
+  const habilitarEdicion = (index: number) => {
+    const fields = [
+      // `id_torneo_${index}`,
+      `nombre_${index}`,
+      `fecha_${index}`,
+      `estado_${index}`,
+      `in_inicio_${index}`,
+      `in_fin_${index}`,
+      `vo_inicio_${index}`,
+      `vo_fin_${index}`,
+      `min_jugadores_${index}`,
+      `max_jugadores_${index}`,
+      `min_staff_${index}`,
+      `max_staff_${index}`,
+      `entrenador_${index}`,
+      `profesor_${index}`
+    ];
+    fields.forEach(fieldId => {
+      const field = document.getElementById(fieldId) as HTMLInputElement;
+      if (field) {
+        field.disabled = !field.disabled; // Alterna el estado
+      }
+    });
+
+    document.getElementById(`habilitar_${index}`)?.classList.add("oculto");
+    document.getElementById(`habilitado_${index}`)?.classList.remove("oculto");
+  };
+
+  // Esperar a que el DOM esté listo
+  document.addEventListener("DOMContentLoaded", () => {
+    // Obtener todos los botones de habilitar
+    const botones = document.querySelectorAll("[id^='habilitar_']");
+    botones.forEach(boton => {
+      boton.addEventListener("click", () => {
+        const index = boton.getAttribute("data-index");
+        habilitarEdicion(Number(index));
+      });
+    });
+  });
+</script> -->
+
+<!-- Errores -->
+<!-- <script>
+   const deshabilitarEdicion = (index: number) => {
+    const fields = [
+      `nombre_${index}`,
+      `fecha_${index}`,
+      `estado_${index}`,
+      `in_inicio_${index}`,
+      `in_fin_${index}`,
+      `vo_inicio_${index}`,
+      `vo_fin_${index}`,
+      `min_jugadores_${index}`,
+      `max_jugadores_${index}`,
+      `min_staff_${index}`,
+      `max_staff_${index}`,
+      `entrenador_${index}`,
+      `profesor_${index}`
+    ];
+    fields.forEach(fieldId => {
+      const field = document.getElementById(fieldId) as HTMLInputElement;
+      if (field) field.disabled = true;
+    });
+
+    document.getElementById(`habilitar_${index}`)?.classList.remove("oculto");
+    document.getElementById(`habilitado_${index}`)?.classList.add("oculto");
+  };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Script Errores cargado');
+    document.getElementById('ConfTorneo')?.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita el envío del formulario por defecto
+
+        const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+        const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+
+
+        const espera = document.getElementById('espera');
+        espera?.classList.add("fijo");
+        espera?.classList.remove("oculto");
+
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        });
+
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("text/html")) {
+            const html = await response.text();
+            document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+            // Desplazarse hacia el div de error
+            espera?.classList.remove("fijo");
+          espera?.classList.add("oculto");
+            document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+            const deshabilitarBotones = document.querySelectorAll("[id^='habilitado_']");
+
+            deshabilitarBotones.forEach(boton => {
+              boton.addEventListener("click", () => {
+                const index = boton.getAttribute("data-index");
+                deshabilitarEdicion(Number(index));
+              });
+            });
+
+
+              // Eliminar el div con id "respuesta" tras 15 segundos
+  setTimeout(() => {
+    const respuestaDiv = document.getElementById('respuesta');
+    if (respuestaDiv) {
+      respuestaDiv.remove();
+    }
+  }, 15000); // 15000 ms = 15 segundos
+        }
+    //     else if (contentType && contentType.includes("application/json")) {
+    //     const jsonResponse = await response.json();
+    //     if (jsonResponse.success) {
+    //         console.log("Código de la API finalizado");
+    //                // Limpiar los campos después de guardar
+       
+    //     } else {
+    //         console.log("Error en los datos");
+    //     }
+    // }
+    });
+});
+</script> -->
+
+
+
+<script>
+  const habilitarEdicion = (index: number) => {
+    const fields = [
+      `nombre_${index}`,
+      `fecha_${index}`,
+      `estado_${index}`,
+      `in_inicio_${index}`,
+      `in_fin_${index}`,
+      `vo_inicio_${index}`,
+      `vo_fin_${index}`,
+      `min_jugadores_${index}`,
+      `max_jugadores_${index}`,
+      `min_staff_${index}`,
+      `max_staff_${index}`,
+      `entrenador_${index}`,
+      `profesor_${index}`
+    ];
+    fields.forEach(fieldId => {
+      const field = document.getElementById(fieldId) as HTMLInputElement;
+      if (field) field.disabled = false;
+    });
+
+    document.getElementById(`habilitar_${index}`)?.classList.add("oculto");
+    document.getElementById(`habilitado_${index}`)?.classList.remove("oculto");
+  };
+
+  const deshabilitarEdicion = (index: number) => {
+    const fields = [
+      `nombre_${index}`,
+      `fecha_${index}`,
+      `estado_${index}`,
+      `in_inicio_${index}`,
+      `in_fin_${index}`,
+      `vo_inicio_${index}`,
+      `vo_fin_${index}`,
+      `min_jugadores_${index}`,
+      `max_jugadores_${index}`,
+      `min_staff_${index}`,
+      `max_staff_${index}`,
+      `entrenador_${index}`,
+      `profesor_${index}`
+    ];
+    fields.forEach(fieldId => {
+      const field = document.getElementById(fieldId) as HTMLInputElement;
+      if (field) field.disabled = true;
+    });
+
+    document.getElementById(`habilitar_${index}`)?.classList.remove("oculto");
+    document.getElementById(`habilitado_${index}`)?.classList.add("oculto");
+  };
+
+  const asociarEventos = () => {
+    // Botones para habilitar
+    const habilitarBotones = document.querySelectorAll("[id^='habilitar_']");
+    habilitarBotones.forEach(boton => {
+      boton.addEventListener("click", () => {
+        const index = boton.getAttribute("data-index");
+        habilitarEdicion(Number(index));
+      });
+    });
+
+    // Botones para deshabilitar (si existen)
+    const deshabilitarBotones = document.querySelectorAll("[id^='habilitado_']");
+    deshabilitarBotones.forEach(boton => {
+      boton.addEventListener("click", () => {
+        const index = boton.getAttribute("data-index");
+        deshabilitarEdicion(Number(index));
+      });
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('Script Errores cargado');
+
+    document.getElementById('ConfTorneo')?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const form = event.target as HTMLFormElement;
+      const formData = new FormData(form);
+
+      const espera = document.getElementById('espera');
+      espera?.classList.add("fijo");
+      espera?.classList.remove("oculto");
+
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("text/html")) {
+        const html = await response.text();
+        document.getElementById('errorbox')!.innerHTML = html;
+
+        espera?.classList.remove("fijo");
+        espera?.classList.add("oculto");
+        document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+
+        // Reasociar eventos a los nuevos botones después de insertar el HTML
+        asociarEventos();
+
+        // Eliminar el div de respuesta tras 15 segundos
+        setTimeout(() => {
+          const respuestaDiv = document.getElementById('respuesta');
+          if (respuestaDiv) {
+            respuestaDiv.remove();
+          }
+        }, 15000);
+      }
+    });
+
+    // Asociar eventos al cargar la página
+    asociarEventos();
+  });
+</script>
+
+ 
+</div>
+
+<style>
+  .oculto{
+    display: none;
+  }
+
+</style>
+
+</div>
+
