@@ -117,6 +117,22 @@ if (error) {
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         console.log('Script cargado');
+        // Obtener la cadena de consulta de la URL actual
+    const queryString = window.location.search; // Ejemplo: ?redirect="/torneo-navidad"
+    // Crear un objeto URLSearchParams para manejar los parámetros
+    const urlParams = new URLSearchParams(queryString);
+    // Obtener el valor del parámetro "redirect"
+    let redirect = urlParams.get('redirect');
+    if (redirect) {
+      // Eliminar las comillas dobles de inicio y fin si existen
+      redirect = redirect.replace(/^"(.*)"$/, '$1');
+      
+    //   console.log(redirect)
+    }
+    // Mostrar el valor en la página
+    //document.getElementById('redirectValue')!.textContent = redirect || '(no hay parámetro redirect)';
+
+
     document.getElementById('registro-form')?.addEventListener('submit', async (event) => {
         event.preventDefault(); // Evita el envío del formulario por defecto
 
@@ -136,7 +152,12 @@ if (error) {
             const jsonResponse = await response.json();
             if (jsonResponse.success) {
                 // Redirigir a la página principal
-                window.location.href = '/'; // Redirige al usuario
+                if(redirect){
+                    window.location.href = redirect; // Redirige al usuario
+                } else{
+                    window.location.href = '/'; // Redirige al usuario
+                }
+                
             } else {
                 // Manejo de errores si es necesario
                 document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;

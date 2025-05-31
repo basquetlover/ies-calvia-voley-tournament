@@ -156,7 +156,7 @@ const encrypted = encrypt(password);
             console.error("La contraseña de admin no es la misma que la de user");
             return new Response(
                 JSON.stringify({ success: true }), 
-                { status: 200, headers: { "Content-Type": "application/json" } }
+                { status: 400, headers: { "Content-Type": "application/json" } }
             );
             // return new Response(error.message, { status: 500 });
           }
@@ -175,12 +175,18 @@ const encrypted = encrypt(password);
 
 
 
-    // Redirigir a la página principal
+//     // Redirigir a la página principal
+//     return new Response(
+//       JSON.stringify({ success: true }), 
+//       { status: 200, headers: { "Content-Type": "application/json" } }
+//   );
     return new Response(
       JSON.stringify({ success: true }), 
       { status: 200, headers: { "Content-Type": "application/json" } }
   );
+
     }
+
     return new Response(
         `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">No s'han acceptat les cookies necessàries.</div>`, 
         { status: 400, headers: { "Content-Type": "text/html" } }
