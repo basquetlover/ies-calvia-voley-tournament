@@ -835,6 +835,7 @@ export const POST: APIRoute = async ({ request }) => {
     while (formData.has(`voluntario_nuevo_estado_${index}`)) {
         const probl_img = formData.get(`img-voluntario_${index}`)?.toString().trim();
         const id = formData.get(`voluntario_id_${index}`)?.toString().trim();
+        const id_torneo = formData.get(`voluntario_torneo_id_${index}`)?.toString().trim();
         const probl_player = formData.get(`probl_voluntario_${index}`)?.toString().trim();
         const nuevo_estado = formData.get(`voluntario_nuevo_estado_${index}`);
         const email = formData.get(`voluntario_email_${index}`)?.toString().trim() || "voley_tournament@iescalvia.com";
@@ -873,7 +874,7 @@ export const POST: APIRoute = async ({ request }) => {
                     );
         }
                 const { error: jugadorError } = await supabaseAdmin
-                .from('Voluntarios')
+                .from(`Voluntarios${id_torneo}`)
                 .update([
                     {   fecha_revision: currentDate,
                         estado: nuevo_estado,
@@ -957,7 +958,7 @@ export const POST: APIRoute = async ({ request }) => {
 
 
             
-            voluntarios.push({ id, probl_img, probl_player, numero, nuevo_estado, email });
+            voluntarios.push({ id, id_torneo, probl_img, probl_player, numero, nuevo_estado, email });
         }
 
         if(nuevo_estado){
@@ -993,7 +994,7 @@ export const POST: APIRoute = async ({ request }) => {
                     );
         }
                 const { error: jugadorError } = await supabaseAdmin
-                .from('Voluntarios')
+                .from(`Voluntarios${id_torneo}`)
                 .update([
                     {   fecha_revision: currentDate,
                         estado: nuevo_estado,
@@ -1073,7 +1074,7 @@ export const POST: APIRoute = async ({ request }) => {
                                   console.log("No se envian emails");
                               }
             
-            voluntarios.push({ id, probl_img, probl_player, numero, nuevo_estado, email });
+            voluntarios.push({ id, id_torneo, probl_img, probl_player, numero, nuevo_estado, email });
         }
     }
         

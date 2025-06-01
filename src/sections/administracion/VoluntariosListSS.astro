@@ -1,33 +1,97 @@
 ---
-
 import { supabaseAdmin } from '../../lib/supabase';
+
+interface Torneo {
+  id_torneo: string;
+  nombre: string;
+  voluntarios: Equipo[];
+}
+
 interface Equipo {
-  id_equipo: string;
-  nombre_equipo: string;
-  capitan: string;
-  entrenador: string;
-  escudo: string | null; // o string dependiendo de si puede ser nulo
-  inscrito: number;
-  estado: string | null;
-  aceptado: string | null;
+ estado: string | null;
+ nombre: string;
+ _1r_apellido: string;
+ _2n_apellido: string | null;
+ curso: string | null;
+ tipo: string | null;
+ email: string | null;
+ fecha_inscripcion: string | null;
+ img: string | null;
+ descripcion: string | null;
+ id: string | null;
+ observacion: string | null;
+ validar_img: string | null;
 }
-// Obtener los equipos de la base de datos
-const { data: voluntarios, error } = await supabaseAdmin
-  .from('Voluntarios')
-  .select('nombre, _1r_apellido, _2n_apellido, curso, tipo, email, estado, fecha_inscripcion, img, descripcion, id, observacion, validar_img ')
-  .order('id', { ascending: true });
+
+let torneosConEquipos: Torneo[] = [];
+
+const { data: torneos, error: errorTorneos } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .order('id', {ascending: false});
+
+if (errorTorneos) {
+  console.error('Error al obtener los torneos:', errorTorneos);
+} else if (torneos) {
+  for (const torneo of torneos) {
+    const tablaEquipos = `Voluntarios${torneo.id_torneo}`;
+    const { data: voluntarios, error: errorEquipos } = await supabaseAdmin
+      .from(tablaEquipos)
+      .select('nombre, _1r_apellido, _2n_apellido, curso, tipo, email, estado, fecha_inscripcion, img, descripcion, id, observacion, validar_img')
+      .order('id', { ascending: true });
+
+    if (errorEquipos) {
+      console.warn(`Error al obtener equipos del torneo ${torneo.nombre}:`, errorEquipos.message);
+    }
+
+    torneosConEquipos.push({
+      id_torneo: torneo.id_torneo,
+      nombre: torneo.nombre,
+      voluntarios: voluntarios || [],
+    });
+  }
+
+  // 👇 Mostrar el array completo en consola
+  console.dir(torneosConEquipos, { depth: null, colors: true });
+}
+// import { supabaseAdmin } from '../../lib/supabase';
+// interface Equipo {
+//   id_equipo: string;
+//   nombre_equipo: string;
+//   capitan: string;
+//   entrenador: string;
+//   escudo: string | null; // o string dependiendo de si puede ser nulo
+//   inscrito: number;
+//   estado: string | null;
+//   aceptado: string | null;
+// }
+// // Obtener los equipos de la base de datos
+// const { data: voluntarios, error } = await supabaseAdmin
+//   .from('VoluntariosSS')
+//   .select('nombre, _1r_apellido, _2n_apellido, curso, tipo, email, estado, fecha_inscripcion, img, descripcion, id, observacion, validar_img ')
+//   .order('id', { ascending: true });
 
 
-if (error) {
-  console.error('Error al obtener los voluntarios:', error);
-} else if (!voluntarios || voluntarios.length === 0) {
-  console.log('No se encontraron voluntarios');
-} else {
-  console.log(`Se encontraron ${voluntarios.length} voluntarios`);
-}
+// if (error) {
+//   console.error('Error al obtener los voluntarios:', error);
+// } else if (!voluntarios || voluntarios.length === 0) {
+//   console.log('No se encontraron voluntarios');
+// } else {
+//   console.log(`Se encontraron ${voluntarios.length} voluntarios`);
+// }
 
 ---
-{!voluntarios || voluntarios.length === 0  && (
+{torneosConEquipos.map((torneo, indexTorneo) => (
+  <section class="my-16">
+    <h2 class="ml-10 text-accent font-bold text-5xl">
+      Equipos {torneo.nombre}
+      <span class="text-amarillo">
+  {torneo.voluntarios.filter(e => e.estado === "Acceptat").length}
+  <span class="text-3xl"> / {torneo.voluntarios.length}</span>
+</span>
+    </h2>
+
+{!torneo.voluntarios || torneo.voluntarios.length === 0  && (
   <>
   <div class="w-full h-auto mt-10 flex items-center place-content-center">
   <section class="max-w-2xl w-full h-max p-0 mx-auto my-auto">
@@ -46,7 +110,7 @@ if (error) {
 <div class="max-w-7xl my-10 w-auto mx-auto flex flex-wrap gap-4 items-center relative place-content-center">
     <form id="equipo-form" class="w-full h-auto mx-auto flex flex-col items-center gap-y-4" method="POST" action="/api/usuario/evaluar-voluntario">
         <div id="errorbox" class="text-red-500 bg-gris rounded-lg px-3 py-2 text-center error-box"></div>
-    {voluntarios && voluntarios.map((voluntario, index) => (
+    {torneo.voluntarios && torneo.voluntarios.map((voluntario, index) => (
     <div class="w-[80%] h-auto  gap-2 p-4 relative rounded-lg bg-gris-claro">
       <div class="w-full h-auto  gap-2 p-4 relative rounded-lg  group transition-all duration-300">
         <div class="w-full h-full gap-4 flex flex-wrap">
@@ -79,41 +143,42 @@ if (error) {
             <p class="text-blanco bg-gris px-3 py-2 rounded-lg">Data inscripció: {voluntario.fecha_inscripcion}</p>
             <p class={`w-max h-max px-2 py-1 rounded-lg ${voluntario.estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${voluntario.estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${voluntario.estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{voluntario.estado}</p>
           </div>
-        <div id={`btn_evaluar_${index}`} class="group-hover:opacity-100 opacity-1 absolute -bottom-1 right-4 flex items-center place-content-center rounded-lg w-16 h-16 bg-azul-suave bg-opacity-60 transition-all cursor-pointer duration-300">
+        <div id={`btn_evaluar_${index + indexTorneo}`} class="group-hover:opacity-100 opacity-1 absolute -bottom-1 right-4 flex items-center place-content-center rounded-lg w-16 h-16 bg-azul-suave bg-opacity-60 transition-all cursor-pointer duration-300">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="#e8eaed" viewBox="0 -960 960 960">
                 <path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56-23t-24-57v-640q0-33 24-56t56-24h320l240 240v480q0 33-23 57t-57 23H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/>
             </svg>
         </div>
         </div>
 
-        <div id={`evaluar_${index}`} class="w-full ocultar h-auto  rounded-md mt-5 p-2 bg-gris">
-            <input type="hidden" name={`voluntario_id_${index}`} value={voluntario.id}/>
-            <input type="hidden" name={`voluntario_email_${index}`} value={voluntario.email}/>
-            <input type="hidden" name={`voluntario_nuevo_estado_${index}`} id={`voluntario_nuevo_estado_${index}`} />
-            <input type="hidden" name={`img-voluntario_${index}`} class="w-14" id={`img-voluntario_${index}`} value={voluntario.validar_img} value={`${voluntario.img ? (""): ("foto-denegada")}`}/>
+        <div id={`evaluar_${index + indexTorneo}`} class="w-full ocultar h-auto  rounded-md mt-5 p-2 bg-gris">
+            <input type="hidden" name={`voluntario_id_${index + indexTorneo}`} value={voluntario.id}/>
+            <input type="hidden" name={`voluntario_torneo_id${index + indexTorneo}`} value={torneo.id_torneo} />
+            <input type="hidden" name={`voluntario_email_${index + indexTorneo}`} value={voluntario.email}/>
+            <input type="hidden" name={`voluntario_nuevo_estado_${index + indexTorneo}`} id={`voluntario_nuevo_estado_${index + indexTorneo}`} />
+            <input type="hidden" name={`img-voluntario_${index + indexTorneo}`} class="w-14" id={`img-voluntario_${index + indexTorneo}`} value={voluntario.validar_img} value={`${voluntario.img ? (""): ("foto-denegada")}`}/>
             {/* Evaluar img */}
             <div class="w-full flex flex-wrap gap-2">
                 <div class="flex flex-col items-center place-content-center">
                     <p class="text-blanco">¿Imagen Valida?</p>
                     <div title={`${voluntario.img ? (""): ("IMG no valida")}`} class={`flex flex-row items-center gap-x-1 place-content-center ${voluntario.img ? ("cursor-pointer"): ("cursor-not-allowed  ")}`}>
                         
-                        <span id={`img-voluntario-si-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${voluntario.validar_img === "foto-aceptada" ? "si_foto" : ""} ${voluntario.img ? (""): ("pointer-events-none")}`}>Si</span>
-                        <span id={`img-voluntario-no-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${voluntario.validar_img === "foto-denegada" ? "no_foto" : ""} ${voluntario.img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
+                        <span id={`img-voluntario-si-${index + indexTorneo}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${voluntario.validar_img === "foto-aceptada" ? "si_foto" : ""} ${voluntario.img ? (""): ("pointer-events-none")}`}>Si</span>
+                        <span id={`img-voluntario-no-${index + indexTorneo}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${voluntario.validar_img === "foto-denegada" ? "no_foto" : ""} ${voluntario.img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
                 </div>
                 </div>
                 <div class="w-auto gap-4 flex flex-wrap px-4 text-xl items-center place-content-around mt-4">
-                    <span id={`aceptar_${index}`} class="w-max h-max px-2 py-1 rounded-xl bg-verde-claro text-verde text-base uppercase font-semibold cursor-pointer">Acceptar</span>
-                    <span id={`denegar_${index}`} class="w-max h-max px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-base uppercase font-semibold cursor-pointer">Denegar</span>
+                    <span id={`aceptar_${index + indexTorneo}`} class="w-max h-max px-2 py-1 rounded-xl bg-verde-claro text-verde text-base uppercase font-semibold cursor-pointer">Acceptar</span>
+                    <span id={`denegar_${index + indexTorneo}`} class="w-max h-max px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-base uppercase font-semibold cursor-pointer">Denegar</span>
                 </div>
                 {voluntario.observacion !== "" || voluntario.observacion === null  ? (<>
           <textarea disabled class="w-full bg-orange-500 rounded-md px-3 py-2 text-gris">{voluntario.observacion}</textarea>
           </>):(<></>)}
-                <div id={`probl-voluntario_${index}`} class="max-w-full w-full">
+                <div id={`probl-voluntario_${index + indexTorneo}`} class="max-w-full w-full">
                     <h3 class="text-2xl text-naranja font-semibold">¿Problemas en el Voluntario?</h3>
-                    <textarea name={`probl_voluntario_${index}`} class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
+                    <textarea name={`probl_voluntario_${index + indexTorneo}`} class="w-full bg-gris-claro rounded-md px-3 py-2 text-blanco" placeholder="Añadir información al jugador"></textarea>
                 </div>
                 
-                <div id={`boton_enviar_${index}`}  class="mx-auto ocultar">
+                <div id={`boton_enviar_${index + indexTorneo}`}  class="mx-auto ocultar">
                     <button class="px-3 my-auto py-2 flex flex-row items-center place-content-center font-semibold w-max h-auto fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-lg hover:scale-110  duration-300 transition-all transform">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" >
                         <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
@@ -124,13 +189,13 @@ if (error) {
             </div>
 
             {voluntario.estado !== "Revisant"?(<>
-    <div id={`advertencia_${index}`} class="w-full h-full bg-gris-claro absolute top-0 left-0 rounded-md">
+    <div id={`advertencia_${index + indexTorneo}`} class="w-full h-full bg-gris-claro absolute top-0 left-0 rounded-md">
       <h2 class="text-4xl text-amarillo font-bold text-center mt-4">⚠️ ADVERTENCIA ⚠️</h2>
       <p class="w-[80%] mx-auto mt-10 text-lg text-blanco text-center">El voluntario <span class="text-accent">{voluntario.email}</span> no ha realizado ningun cambio desde la ultima revision.</p>
       <p class="w-[80%] mx-auto mt-10 text-xl text-blanco text-center">¿Estas seguro que quieres continuar con una nueva revision?</p>
       <div class="w-[50%] mx-auto flex flex-wrap px-4 text-xl items-center place-content-around mt-4">
-        <span id={`advertencia-si_${index}`} class="w-14 h-14 px-2 py-1 rounded-xl bg-verde-claro text-verde text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">Si</span>
-        <span id={`advertencia-no_${index}`} class="w-14 h-14 px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">No</span>
+        <span id={`advertencia-si_${index + indexTorneo}`} class="w-14 h-14 px-2 py-1 rounded-xl bg-verde-claro text-verde text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">Si</span>
+        <span id={`advertencia-no_${index + indexTorneo}`} class="w-14 h-14 px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">No</span>
     </div>
     </div>
     </>):(
@@ -144,6 +209,8 @@ if (error) {
 
 </form>
   </div>
+  </section>
+))}
 <!-- Errores -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
