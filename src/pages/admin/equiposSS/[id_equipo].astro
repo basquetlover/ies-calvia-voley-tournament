@@ -10,6 +10,15 @@ type AdministradorProps = {
     nombre_equipo: string;
 };
 
+const { searchParams } = new URL(Astro.request.url);
+let torneoID = searchParams.get('torneoID');
+
+if (torneoID) {
+  // Eliminar comillas si las hubiera
+  torneoID = torneoID.replace(/^"(.*)"$/, '$1');
+  console.log('Torneo ID:', torneoID); // Aparece en consola del servidor
+}
+
 // Genera rutas dinámicas
 export async function getStaticPaths() {
   // Consulta a la base de datos para obtener user_email y rango
@@ -99,7 +108,7 @@ let Staff: Staff[] = [];
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: equipoData, error } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(`Equipos${torneoID}`)
     .select('nombre_equipo, id, capitan, escudo, inscrito, estado, aceptado, fecha_inscripcion, email_capitan, capitan_edit, probl_tit_logo')
     .eq('id_equipo', id_equipo)
     .single();
@@ -132,7 +141,7 @@ try {
     }
 
   const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${torneoID}`)
     .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'jugador')
@@ -146,7 +155,7 @@ try {
   }
 
   const {data: StaffData, error: StaffError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${torneoID}`)
     .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'cuerpo_tecnico')
@@ -159,7 +168,7 @@ try {
   }
 
   const {data: EntrenadorData, error: EntrenadorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${torneoID}`)
     .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'entrenador')
@@ -184,7 +193,7 @@ try {
 }
 
 const {data: ProfesorData, error: ProfesorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${torneoID}`)
     .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'profesor')
@@ -260,6 +269,8 @@ if(usuario){
   console.log("usuario:", usuario.email, usuario.nombre, usuario.curso)
 }
 
+
+
 ---
 <LayoutStaff title=`Equip ${nombre_equipo}`>
     <div class="max-w-4xl mx-auto my-10">
@@ -290,6 +301,7 @@ if(usuario){
           <input type="hidden" name="capitan_email" value={capitan_email}/>
           <input type="hidden" name="num_jugadores" value={num_jugadores} />
           <input type="hidden" name="num_staff" value={num_staff} />
+          <input type="hidden" name="torneoID" value={torneoID} />
           </>
 
 
@@ -369,8 +381,8 @@ if(usuario){
     
             <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               
-              <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
-                <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
+              <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[1fr] grid-rows-1 md:grid-cols-[1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[1fr] sm:grid-cols-1 sm:grid-rows-[1fr] gap-2 gap-y-8 place-items-center">
+                <!-- <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
                   {entrenador_img ? (
                     <img 
                         src={entrenador_img} 
@@ -383,16 +395,17 @@ if(usuario){
                     <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
                   </svg>
                   )}
-                  <input type="hidden" name="entrenador_id" value={entrenador_id}/>
-                  <input type="hidden" name="img-entrenador" class="w-14" id="img-entrenador" value={`${entrenador_img ? (""): ("foto-denegada")}`} required/>
+                  
                                   <div title={`${entrenador_img ? (""): ("IMG no valida")}`} class={`flex flex-row items-center gap-x-1 place-content-center ${entrenador_img ? ("cursor-pointer"): ("cursor-not-allowed  ")}`}>
                                         <span id="img-entrenador-si" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${entrenador_img ? (""): ("pointer-events-none")}`}>Si</span>
                                         <span id="img-entrenador-no" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${entrenador_img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
                                   </div>
-                  </div>
+                  </div> -->
                 
                   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               {/* Nombre */}
+              <input type="hidden" name="entrenador_id" value={entrenador_id}/>
+                <input type="hidden" name="img-entrenador" class="w-14" id="img-entrenador" value={`foto-denegada")}`} required/>
               <div class="flex flex-col relative">
                   <p class="form bg-gris-claro flex flex-row items-center place-content-center rounded-full px-3 py-1 text-blanco text-xl">
                       Nom
@@ -480,8 +493,8 @@ if(usuario){
              </div>
              </div>
       </div>
-      <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
-            <div class="w-20 min-h-20 h-auto overflow-hidden gap-1 flex flex-col items-center justify-center">
+      <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[1fr] grid-rows-1 md:grid-cols-[1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[1fr] sm:grid-cols-1 sm:grid-rows-[1fr] gap-2 gap-y-8 place-items-center">
+            {/* <div class="w-20 min-h-20 h-auto overflow-hidden gap-1 flex flex-col items-center justify-center">
               {jugador.img ? (
                   <img 
                       src={jugador.img} 
@@ -500,9 +513,10 @@ if(usuario){
                       <span id={`img-jugador-si-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${jugador.img ? (""): ("pointer-events-none")}`}>Si</span>
                       <span id={`img-jugador-no-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${jugador.img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
                 </div>
-            </div>
+            </div> */}
             <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
-              
+              <input type="hidden" name={`player_id_${index}`} value={jugador.id}/>
+                <input type="hidden" name={`img-jugador_${index}`} class="w-14" id={`img-jugador_${index}`} value={`foto-denegada`} required/>
               {/* Nombre */}
               <div class="flex flex-col relative">
                   <p class="form bg-gris-claro flex flex-row items-center place-content-center rounded-full px-3 py-1 text-blanco text-xl">
@@ -591,8 +605,8 @@ if(usuario){
     
             <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               
-              <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
-                <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
+              <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[1fr] grid-rows-1 md:grid-cols-[1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[1fr] sm:grid-cols-1 sm:grid-rows-[1fr] gap-2 gap-y-8 place-items-center">
+                <!-- <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
                   {profesor_img ? (
                     <img 
                         src={profesor_img} 
@@ -605,16 +619,19 @@ if(usuario){
                     <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
                   </svg>
                   )}
-                  <input type="hidden" name="profesor_id" value={profesor_id}/>
+                  Repetido:
                   <input type="hidden" name="img-profesor" class="w-14" id="img-profesor" value={`${profesor_img ? (""): ("foto-denegada")}`} required/>
+                  
                                   <div title={`${profesor_img ? (""): ("IMG no valida")}`} class={`flex flex-row items-center gap-x-1 place-content-center ${profesor_img ? ("cursor-pointer"): ("cursor-not-allowed  ")}`}>
                                         <span id="img-profesor-si" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${profesor_img ? (""): ("pointer-events-none")}`}>Si</span>
                                         <span id="img-profesor-no" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${profesor_img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
                                   </div>
-                  </div>
+                  </div> -->
                 
                   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               {/* Nombre */}
+              <input type="hidden" name="profesor_id" value={profesor_id}/>
+                  <input type="hidden" name="img-profesor" class="w-14" id="img-profesor" value={`foto-denegada"`} required/>
               <div class="flex flex-col relative">
                   <p class="form bg-gris-claro flex flex-row items-center place-content-center rounded-full px-3 py-1 text-blanco text-xl">
                       Nom
@@ -700,8 +717,8 @@ if(usuario){
    </div>
    </div>
 </div>
-<div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
-  <div class="w-20 min-h-20 h-auto overflow-hidden flex flex-col items-center justify-center">
+<div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[1fr] grid-rows-1 md:grid-cols-[1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[1fr] sm:grid-cols-1 sm:grid-rows-[1fr] gap-2 gap-y-8 place-items-center">
+  {/* <div class="w-20 min-h-20 h-auto overflow-hidden flex flex-col items-center justify-center">
     {jugador.img ? (
   <img 
       src={jugador.img} 
@@ -714,16 +731,17 @@ if(usuario){
   <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
 </svg>
 )}
-<input type="hidden" name={`staff_id_${index}`} value={jugador.id}/>
-<input type="hidden" name={`img-staff_${index}`} class="w-14" id={`img-staff_${index}`} value={`${jugador.img ? (""): ("foto-denegada")}`} required/>
+
                 <div title={`${jugador.img ? (""): ("IMG no valida")}`} class={`flex flex-row items-center gap-x-1 place-content-center ${jugador.img ? ("cursor-pointer"): ("cursor-not-allowed  ")}`}>
                       <span id={`img-staff-si-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${jugador.img ? (""): ("pointer-events-none")}`}>Si</span>
                       <span id={`img-staff-no-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${jugador.img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
                 </div>
-  </div>
+  </div> */}
   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
     
     {/* Nombre */}
+    <input type="hidden" name={`staff_id_${index}`} value={jugador.id}/>
+<input type="hidden" name={`img-staff_${index}`} class="w-14" id={`img-staff_${index}`} value={`foto-denegada`} required/>
     <div class="flex flex-col relative">
         <p class="form bg-gris-claro flex flex-row items-center place-content-center rounded-full px-3 py-1 text-blanco text-xl">
             Nom

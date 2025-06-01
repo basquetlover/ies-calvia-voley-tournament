@@ -10,6 +10,7 @@ export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
   const nuevo_estado = formData.get("nuevo_estado")?.toString().trim() || "";
   const equipo_id = formData.get("equipo_id")?.toString().trim() || "";
+  const torneoID = formData.get("torneoID")?.toString().trim() || "";
   const fecha_inscripcion = formData.get("fecha_inscripcion")?.toString().trim() || "";
   const nombre_equipo = formData.get("nombre_equipo")?.toString().trim() || "";
 
@@ -122,7 +123,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
         // const { data, error } = await supabaseAdmin
-        // .from('EquiposSS')
+        // .from(`Equipos${torneoID}`)
         // .update({ 
         //     fecha_revision: currentDate,
         //     estado: nuevo_estado,
@@ -133,7 +134,7 @@ export const POST: APIRoute = async ({ request }) => {
         // .select();
 
         const { data: Aceotado, error: Aceptado } = await supabaseAdmin
-        .from('EquiposSS')
+        .from(`Equipos${torneoID}`)
         .update({ 
             fecha_revision: currentDate,
             estado: nuevo_estado,
@@ -143,7 +144,7 @@ export const POST: APIRoute = async ({ request }) => {
         .select()
 
         const { error: jugadorError } = await supabaseAdmin
-              .from('JugadoresSS')
+              .from(`Jugadores${torneoID}`)
               .update([
                 {   
                     observaciones: probl_entrenador,
@@ -156,7 +157,7 @@ export const POST: APIRoute = async ({ request }) => {
                 // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
               }
               const { error: jugador2Error } = await supabaseAdmin
-              .from('JugadoresSS')
+              .from(`Jugadores${torneoID}`)
               .update([
                 {   
                     observaciones: probl_profesor,
@@ -171,7 +172,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         for (const jugador of jugadores) {
             const { error: jugadorError } = await supabaseAdmin
-              .from('JugadoresSS')
+              .from(`Jugadores${torneoID}`)
               .update([
                 {   
                     observaciones: jugador.probl_player,
@@ -188,7 +189,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         for (const jugador of staff) {
             const { error: jugadorError } = await supabaseAdmin
-              .from('JugadoresSS')
+              .from(`Jugadores${torneoID}`)
               .update([
                 {   
                     observaciones: jugador.probl_staff,
@@ -303,7 +304,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
         const { data, error } = await supabaseAdmin
-        .from('EquiposSS')
+        .from(`Equipos${torneoID}`)
         .update({ 
             fecha_revision: currentDate,
             estado: nuevo_estado,
@@ -314,7 +315,7 @@ export const POST: APIRoute = async ({ request }) => {
         .select();
 
         const { error: jugadorError } = await supabaseAdmin
-              .from('JugadoresSS')
+              .from(`Jugadores${torneoID}`)
               .update([
                 {   
                     observaciones: probl_entrenador,
@@ -327,7 +328,7 @@ export const POST: APIRoute = async ({ request }) => {
                 // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
               }
               const { error: jugador2Error } = await supabaseAdmin
-              .from('JugadoresSS')
+              .from(`Jugadores${torneoID}`)
               .update([
                 {   
                     observaciones: probl_profesor,
@@ -341,7 +342,7 @@ export const POST: APIRoute = async ({ request }) => {
               }
         for (const jugador of jugadores) {
             const { error: jugadorError } = await supabaseAdmin
-              .from('JugadoresSS')
+              .from(`Jugadores${torneoID}`)
               .update([
                 {   
                     observaciones: jugador.probl_player,
@@ -358,7 +359,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         for (const jugador of staff) {
             const { error: jugadorError } = await supabaseAdmin
-              .from('JugadoresSS')
+              .from(`Jugadores${torneoID}`)
               .update([
                 {   
                     observaciones: jugador.probl_staff,

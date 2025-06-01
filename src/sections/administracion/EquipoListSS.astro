@@ -73,7 +73,7 @@ if (errorTorneos) {
     ) : (
       <div class="max-w-7xl my-10 w-auto mx-auto flex flex-wrap gap-4 items-center place-content-center">
         {torneo.equipos.map((equipo) => (
-          <a href={`/admin/equipos${torneo.id_torneo}/${equipo.id_equipo}`} class="w-80 h-80 p-4 relative rounded-lg bg-azul-suave group transition-all duration-300">
+          <a href={`/admin/equiposSS/${equipo.id_equipo}?torneoID="${torneo.id_torneo}"`} class="w-80 h-80 p-4 relative rounded-lg bg-azul-suave group transition-all duration-300">
             <div class="w-full h-full grid grid-cols-1 grid-rows-[auto_1fr_auto_auto]">
               <p class="text-blanco text-lg font-semibold" translate="no">{equipo.nombre_equipo}</p>
               <div class="flex items-center justify-center w-full h-full">

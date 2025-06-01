@@ -7,8 +7,16 @@ import SinSession from '@sections/errores/SinSession.astro';
 import { supabaseAdmin } from "src/lib/supabase";
 const pathname = "/usuario/modificar";
 let accessibleBlocks = [];
-const fechaInicio = new Date('2025-3-10'); // Cambia esta fecha según tus necesidades
-const fechaFin = new Date('2025-3-31'); // Cambia esta fecha según tus necesidades
+
+
+const { data: torneo, error: errorTorneos } = await supabaseAdmin
+  .from('Configuracion')
+  .select('in_inicio, in_fin')
+  .eq('estado', 'Actual')
+  .single();
+
+// const fechaInicio = new Date('2025-3-10'); // Cambia esta fecha según tus necesidades
+// const fechaFin = new Date('2025-3-31'); // Cambia esta fecha según tus necesidades
 
 let RangoFechas = false;
 let YaInscrito = false;
@@ -57,19 +65,38 @@ if(error){
 
 const fechaActual = new Date();
 
+console.log(fechaActual, torneo?.in_inicio)
 // Compara la fecha actual con las fechas de inicio y fin
+const fechaInicio = new Date(torneo?.in_inicio);
+const fechaFin = new Date(torneo?.in_fin);
+
+const formatoFecha = (fecha: Date) => {
+  const dia = fecha.getDate().toString().padStart(2, '0');
+  const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // enero es 0
+  const año = fecha.getFullYear();
+  const hora = fecha.getHours().toString().padStart(2, '0');
+  const minutos = fecha.getMinutes().toString().padStart(2, '0');
+
+  return `${dia}/${mes}/${año} a les ${hora}:${minutos}`;
+};
+
+const fechaInicioTexto = formatoFecha(fechaInicio);
+const fechaFinTexto = formatoFecha(fechaFin);
+
 if (fechaActual < fechaInicio) {
-    RangoFechas = false;
-    console.log("Fuera del rango: antes de la fecha de inicio");
+  RangoFechas = false;
+  console.log("Fuera del rango: antes de la fecha de inicio");
 } else if (fechaActual > fechaFin) {
-    RangoFechas = false;
-    console.log("Fuera del rango: después de la fecha de fin");
+  RangoFechas = false;
+  console.log("Fuera del rango: después de la fecha de fin");
 } else {
-    RangoFechas = true;
-    console.log("Dentro del rango de fechas");
+  RangoFechas = true;
+  console.log("Dentro del rango de fechas");
 }
 
-
+console.log("Inicio:", torneo?.in_inicio);
+console.log("Fin:", torneo?.in_fin);
+console.log("Actual:", fechaActual.toISOString());
 
     let { data: Jugador, error: errorJ } = await supabaseAdmin
     .from('JugadoresSS')
@@ -137,11 +164,11 @@ if(usuario){
 
     
     //Ultra admin
-    if(usuario.email === "alemanytomaspere@gmail.com"){
-        RangoFechas = true;
-        YaInscrito = true;
-        Revisando = false;
-}
+//     if(usuario.email === "alemanytomaspere@gmail.com"){
+//         RangoFechas = true;
+//         YaInscrito = true;
+//         Revisando = false;
+// }
 
 }
 
@@ -191,7 +218,7 @@ if(usuario){
                       Actualment aquest apartat no es troba disponible. Si creus que es tracta d'un error, posa't en <a href="/contacto" class="hover:text-amarillo transition-all duration-300">contacte amb el Staff</a>.
                   </p>
                   <p class="text-amarillo text-xl text-center my-2">
-                      Terme d'inscripcions: 10/03/2025 fins a 31/03/2025
+                      Terme d'inscripcions: {fechaInicioTexto} fins a {fechaFinTexto}
                   </p>
                   
                       <a href="/" class="px-3 py-2 w-max mx-auto my-5 text-azul font-semibold bg-amarillo rounded-full text-xl hover:scale-110 duration-300 transition-all transform flex flex-row items-center place-content-center gap-1">

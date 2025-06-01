@@ -9,26 +9,75 @@ interface Equipo {
   ganador: string;
   escudo: string | null; // o string dependiendo de si puede ser nulo
 }
-// Obtener los equipos de la base de datos
-const { data: equipos, error } = await supabaseAdmin
-  .from('EquiposSS')
-  .select('id_equipo, nombre_equipo, capitan, entrenador, escudo, ganador')
-  .eq('aceptado', 'Inscrit')
-  .order('id', { ascending: true });
 
-
-if (error) {
-  console.error('Error al obtener los equipos:', error);
-} else if (!equipos || equipos.length === 0) {
-  console.log('No se encontraron equipos');
-} else {
-  console.log(`Se encontraron ${equipos.length} equipos`);
+interface Torneo {
+  id_torneo: string;
+  nombre: string;
+  equipos: Equipo[];
 }
-const equipo = {
-  ganador: "Ejemplo" // Cambia esto según tu lógica
-};
+
+let torneosConEquipos: Torneo[] = [];
+
+const { data: torneos, error: errorTorneos } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .order('id', { ascending: false });
+
+if (errorTorneos) {
+  console.error('Error al obtener los torneos:', errorTorneos);
+} else if (torneos) {
+  for (const torneo of torneos) {
+    const tablaEquipos = `Equipos${torneo.id_torneo}`;
+    const { data: equipos, error: errorEquipos } = await supabaseAdmin
+      .from(tablaEquipos)
+      .select('id_equipo, nombre_equipo, capitan, entrenador, escudo, ganador')
+      .eq('aceptado', 'Inscrit')
+      .order('id', { ascending: true });
+
+    if (errorEquipos) {
+      console.warn(`Error al obtener equipos del torneo ${torneo.nombre}:`, errorEquipos.message);
+      continue; // O puedes seguir y dejar equipos como array vacío si lo prefieres
+    }
+
+    if (equipos && equipos.length > 0) {
+      torneosConEquipos.push({
+        id_torneo: torneo.id_torneo,
+        nombre: torneo.nombre,
+        equipos,
+      });
+    }
+  }
+
+  // 👇 Mostrar el array completo en consola
+  //console.dir(torneosConEquipos, { depth: null, colors: true });
+
+}
+// // Obtener los equipos de la base de datos
+// const { data: equipos, error } = await supabaseAdmin
+//   .from('EquiposSS')
+//   .select('id_equipo, nombre_equipo, capitan, entrenador, escudo, ganador')
+//   .eq('aceptado', 'Inscrit')
+//   .order('id', { ascending: true });
+
+
+// if (error) {
+//   console.error('Error al obtener los equipos:', error);
+// } else if (!equipos || equipos.length === 0) {
+//   console.log('No se encontraron equipos');
+// } else {
+//   console.log(`Se encontraron ${equipos.length} equipos`);
+// }
+// const equipo = {
+//   ganador: "Ejemplo" // Cambia esto según tu lógica
+// };
 ---
-{!equipos || equipos.length === 0  ? (
+{torneosConEquipos.map((torneo) => (
+  <section class="my-16">
+    <h2 class="ml-10 text-accent font-bold text-5xl">
+      Equipos {torneo.nombre}
+
+    </h2>
+{!torneo.equipos || torneo.equipos.length === 0  ? (
   <>
   {/* <div class="w-full h-auto mt-10 flex items-center place-content-center">
   <section class="max-w-2xl w-full h-max p-0 mx-auto my-auto">
@@ -45,10 +94,10 @@ const equipo = {
   </>
   ):(<>
   <section class="max-w-[1600px] h-auto m-auto my-10 " id="inscritos">
-    <h3 class="text-accent text-4xl font-bold ">Equips Inscrits Torneig Setmana Santa</h3>
+    {/* <h3 class="text-accent text-4xl font-bold ">Equips Inscrits Torneig Setmana Santa</h3> */}
     <div class="max-w-[1600px] h-auto grid grid-cols-4 grid-rows-1 gap-20 mt-6 place-items-center xs:grid-cols-1 xs:grid-rows-1 sm:grid-cols-2 sm:grid-rows-1 md:grid-cols-3 md:grid-rows-1 ">
-        {equipos && equipos.map((equipo) => (
-        <a href={`/equiposSS/${equipo.id_equipo}`} class={`w-72 h-72 p-4 relative rounded-lg  hover:scale-105 transition-all duration-300 ${equipo.ganador && equipo.ganador.trim() !== "" ? 'bg-azul text-amarillo' : 'bg-amarillo text-azul'}`}>
+        {torneo.equipos && torneo.equipos.map((equipo) => (
+        <a href={`/equiposSS/${equipo.id_equipo}?torneoID="${torneo?.id_torneo}"`} class={`w-72 h-72 p-4 relative rounded-lg  hover:scale-105 transition-all duration-300 ${equipo.ganador && equipo.ganador.trim() !== "" ? 'bg-azul text-amarillo' : 'bg-amarillo text-azul'}`}>
           {equipo.ganador && equipo.ganador.trim() !== "" ? (
             <div class="corona w-[190px] h-[60px] flex items-center place-content-center mx-auto">
               <svg xmlns="http://www.w3.org/2000/svg" class="scale-y-50 scale-x-75" fill="none" viewBox="0 0 250 120">
@@ -85,7 +134,8 @@ const equipo = {
     </div>
 </section>
   </>)}
-
+  </section>
+))}
 
 <style>
   .corona{

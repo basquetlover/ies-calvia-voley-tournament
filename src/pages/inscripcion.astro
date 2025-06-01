@@ -7,10 +7,18 @@ import CountdownInscripcion from "@sections/inscripcion/CountdownInscripcion.ast
 
 
 import { verificarSesion } from "src/lib/session";
+import { supabaseAdmin } from "src/lib/supabase";
 
-const fechaInicio = new Date('2025-3-10'); // Cambia esta fecha según tus necesidades
-const fechaFin = new Date('2025-3-31'); // Cambia esta fecha según tus necesidades
+// const fechaInicio = new Date('2025-3-10'); // Cambia esta fecha según tus necesidades
+// const fechaFin = new Date('2025-3-31'); // Cambia esta fecha según tus necesidades
 
+const { data: torneo, error: errorTorneos } = await supabaseAdmin
+  .from('Configuracion')
+  .select('in_inicio, in_fin')
+  .eq('estado', 'Actual')
+  .single();
+
+  
 let RangoFechas = false;
 
 const fechaActual = new Date();
@@ -20,6 +28,8 @@ if(usuario){
     console.log("Usuario de inscripcion: ", usuario.email, usuario.curso, usuario.nombre);
 }
 
+const fechaInicio = new Date(torneo?.in_inicio);
+const fechaFin = new Date(torneo?.in_fin);
 // Compara la fecha actual con las fechas de inicio y fin
 if (fechaActual < fechaInicio) {
     RangoFechas = false;

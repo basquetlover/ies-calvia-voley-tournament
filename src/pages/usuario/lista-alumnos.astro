@@ -4,6 +4,12 @@ import LayoutUsuarioMenu from "@layouts/LayoutUsuarioMenu.astro";
 
 import { supabaseAdmin } from "../../lib/supabase";
 
+const { data: torneos, error: errorTorneos } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
+
 // Define una estructura para los usuarios con rango
 interface UserWithRango {
     email: string;
@@ -24,7 +30,7 @@ let Total3Eso = 0;
 let TotalFp = 0;
 let TotalProfesores = 0;
 const { data: Equipos, error: EquiposError } = await supabaseAdmin
-    .from("EquiposSS")
+    .from(`Equipos${torneos?.id_torneo}`)
     .select("id")
     .eq('aceptado', 'Inscrit')
     
@@ -43,6 +49,7 @@ const { data: ProfesoresData, error: fetchProfesoresError } = await supabaseAdmi
         .from("Administradores")
         .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
         .eq('curso', 'Professor')
+        .eq('lista', 'si')
         .order('curso', {ascending: true});;;
 if(ProfesoresData){
     TotalProfesores = ProfesoresData.length;
@@ -58,7 +65,7 @@ if(VoluntarioData){
     TotalVoluntarios2 = VoluntarioData.length;
 }
 const { data: Jugador2BatData, error: fetchJugador2BatError } = await supabaseAdmin
-        .from("JugadoresSS")
+        .from(`Jugadores${torneos?.id_torneo}`)
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E'])
         .in('pertenece_equipo', equipoIds)
@@ -77,7 +84,7 @@ if(Voluntario1Data){
     TotalVoluntarios1 = Voluntario1Data.length;
 }
 const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAdmin
-        .from("JugadoresSS")
+        .from(`Jugadores${torneos?.id_torneo}`)
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E'])
         .in('pertenece_equipo', equipoIds)
@@ -86,7 +93,7 @@ if(Jugador1BatData){
     Total1Bat = Jugador1BatData.length;
 }
 const { data: Jugador4ESOData, error: fetchJugador4ESOError } = await supabaseAdmin
-        .from("JugadoresSS")
+        .from(`Jugadores${torneos?.id_torneo}`)
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['4t ESO A', '4t ESO B', '4t ESO C', '4t ESO D', '4t ESO E', '4t ESO F', '4t ESO G', '4t ESO H'])
         .in('pertenece_equipo', equipoIds)
@@ -95,7 +102,7 @@ if(Jugador4ESOData){
     Total4Eso = Jugador4ESOData.length;
 }
 const { data: Jugador3ESOData, error: fetchJugador3ESOError } = await supabaseAdmin
-        .from("JugadoresSS")
+        .from(`Jugadores${torneos?.id_torneo}`)
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['3r ESO A', '3r ESO B', '3r ESO C', '3r ESO D', '3r ESO E', '3r ESO F', '3r ESO G', '3r ESO H'])
         .in('pertenece_equipo', equipoIds)
@@ -104,7 +111,7 @@ if(Jugador3ESOData){
     Total3Eso = Jugador3ESOData.length;
 }
 const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
-        .from("JugadoresSS")
+        .from(`Jugadores${torneos?.id_torneo}`)
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
         .in('curso', ['1r FPB Cuina i restauració', '2n FPB Cuina i restauració', '1r GM Cuina i gastronomia', '2n GM Cuina i gastronomia', '1r GM Serveis en restauració', '2n GM Serveis en restauració', '1r GM Gestió administrativa', '2n GM Gestió administrativa'])
         .in('pertenece_equipo', equipoIds)

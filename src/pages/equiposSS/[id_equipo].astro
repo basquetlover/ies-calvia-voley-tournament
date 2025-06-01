@@ -1,7 +1,14 @@
 ---
 import { supabaseAdmin } from "../../lib/supabase";
 
+const { searchParams } = new URL(Astro.request.url);
+let torneoID = searchParams.get('torneoID');
 
+if (torneoID) {
+  // Eliminar comillas si las hubiera
+  torneoID = torneoID.replace(/^"(.*)"$/, '$1');
+  //console.log('Torneo ID:', torneoID); // Aparece en consola del servidor
+}
 
 import LayoutMenu from "@layouts/LayoutMenu.astro";
 // Tipo explícito para las propiedades esperadas en `Astro.props`
@@ -67,7 +74,7 @@ let camposVacios: Jugador[] = [];
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: equipoData, error } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(`Equipos${torneoID}`)
     .select('nombre_equipo, id, capitan, entrenador, escudo')
     .eq('id_equipo', id_equipo)
     .single();
@@ -83,7 +90,7 @@ try {
   }
 
   const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${torneoID}`)
     .select('nombre, pertenece_equipo, curso, id, _1r_apellido')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'jugador')
@@ -99,7 +106,7 @@ try {
   }
 
   const {data: staffData, error: staffError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${torneoID}`)
     .select('nombre, pertenece_equipo, curso, id, _1r_apellido')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'cuerpo_tecnico')
@@ -115,7 +122,7 @@ try {
   }
 
   const {data: ProfesorData, error: ProfesorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${torneoID}`)
     .select('nombre, pertenece_equipo, curso, id, _1r_apellido')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'profesor')
