@@ -10,12 +10,21 @@ import FormSend from "@components/FormSend.astro";
 
 
 
+
+
 import { supabaseAdmin } from "src/lib/supabase";
 
 import __AstroComponent_ from "src/pages/404.astro";
 import ControlAccesVoluntarios from "@components/ControlAccesVoluntarios.astro";
 const pathname = "/usuario/modificar";
 let accessibleBlocks = [];
+
+const { data: ConfTorneo, error: EConfTorneo } = await supabaseAdmin
+  .from('Configuracion')
+  .select('nombre,id_torneo')
+  .eq('estado', 'Actual')
+  .single();
+
 
 type AdministradorProps = {
     id_equipo: string;
@@ -26,7 +35,7 @@ type AdministradorProps = {
 export async function getStaticPaths() {
   // Consulta a la base de datos para obtener user_email y rango
   const { data, error } = await supabaseAdmin
-    .from('Voluntarios')
+    .from(`Voluntarios${ConfTorneo?.id_torneo}`)
     .select('email, nombre');
 
   if (error) {
@@ -58,7 +67,7 @@ let voluntario_id = "";
 
 
 const { data, error } = await supabaseAdmin
-    .from('Voluntarios')
+    .from(`Voluntarios${ConfTorneo?.id_torneo}`)
     .select('id, email, nombre, _1r_apellido,genero,  _2n_apellido, curso, tipo, descripcion, estado, fecha_inscripcion, observacion ')
     .eq('email', email)
     .single();
@@ -112,7 +121,7 @@ const currentDate = getCurrentDateInCatalan();
               <input type="text" name="usuario_curso" class="bg-transparent w-auto h-max text-blanco" value={usuario.curso}/>
             </div> -->
             <input type="hidden" name="voluntario_id" class="bg-transparent w-auto h-max text-blanco" value={voluntario_id}/>
-            <h1 class="text-5xl text-accent text-center font-bold">Modificar Voluntari Torneig Setmana Santa</h1>
+            <h1 class="text-5xl text-accent text-center font-bold">Modificar Voluntari {ConfTorneo?.nombre}</h1>
         
             <div class="w-full h-auto flex flex-wrap items-center place-content-center text-lg text-blanco gap-14">
               <input type="hidden" required id="input-tipo" class="text-gris" name="tipo" />

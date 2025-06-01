@@ -6,13 +6,18 @@ import { verificarSesion } from "src/lib/session";
 
 import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
 import FormSend from "@components/FormSend.astro";
+import { supabaseAdmin } from "src/lib/supabase";
 
 const usuario = await verificarSesion(Astro.request);
 interface Jugador {
   nombre: string;
   curso: string;
 }
-
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('nombre, min_jugadores, max_jugadores, max_staff, entrenador, profesor')
+  .eq('estado', 'Actual')
+  .single();
 
 ---
 <!-- Preview IMG escudo -->
@@ -60,7 +65,7 @@ file.addEventListener('change', (e: Event) => {
       <input type="text" name="usuario_curso" class="bg-transparent w-auto h-max text-blanco" value={usuario.curso}/>
     </div>
 
-    <h1 class="text-5xl text-accent text-center font-bold">Sol·licitud Voluntari Torneig Setmana Santa</h1>
+    <h1 class="text-5xl text-accent text-center font-bold">Sol·licitud Voluntari {ConfTorneo?.nombre}</h1>
 
     <div class="w-full h-auto flex flex-wrap items-center place-content-center text-lg text-blanco gap-14">
       <input type="hidden" required id="input-tipo" class="text-gris" name="tipo" />

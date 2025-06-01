@@ -41,7 +41,7 @@ export const POST: APIRoute = async ({ request }) => {
   let acompañante_email = "";
 
   let acompañante = "";
-  const acompañante_foto = formData.get('entrenador_img')  as File;
+  //const acompañante_foto = formData.get('entrenador_img')  as File;
   acompañante_nombre = formData.get("entrenador_name")?.toString().trim() || "";
   if(acompañante_nombre !== "") {
    acompañante_curso = formData.get(`entrenador_curso`)?.toString().trim() || "";
@@ -115,7 +115,7 @@ let profesor_email = "";
 
 
 let profesor = "";
-const profesor_foto = formData.get('profesor_img')  as File;
+//const profesor_foto = formData.get('profesor_img')  as File;
 profesor_nombre = formData.get("profesor_name")?.toString().trim() || "";
 if(profesor_nombre !== "") {
  profesor_curso = formData.get(`profesor_curso`)?.toString().trim() || "";
@@ -218,7 +218,7 @@ if (!acompañante_genero) {
     const _2n_apellido = formData.get(`player_${index}_2n_apellido`)?.toString().trim();
     const genero = formData.get(`genero_${index}`)?.toString().trim();
     const email = formData.get(`player_${index}_email`)?.toString().trim();
-    const img = formData.get(`player_${index}_img`) as File;
+    //const img = formData.get(`player_${index}_img`) as File;
     const numero = index + 1;
     if (email) { 
       const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
@@ -263,7 +263,7 @@ if (!acompañante_genero) {
         );
       }
     }
-    jugadores.push({ nombre, img, curso, _1r_apellido, _2n_apellido, genero, email, numero });
+    jugadores.push({ nombre, curso, _1r_apellido, _2n_apellido, genero, email, numero });
     index++;
   }
 
@@ -278,7 +278,7 @@ if (!acompañante_genero) {
       const genero_extra = formData.get(`extra_genero_${index}`)?.toString().trim();
       const curso = formData.get(`extra_player_${index}_curso`)?.toString().trim();
       const email = formData.get(`extra_player_${index}_email`)?.toString().trim();
-      const img = formData.get(`extra_player_${index}_img`) as File;
+      //const img = formData.get(`extra_player_${index}_img`) as File;
       const numero = index + 7;
       if (email) { 
         const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
@@ -325,7 +325,7 @@ if (!acompañante_genero) {
         );
       }
     }
-      jugadores_extra.push({ nombre, img, curso, _1r_apellido, _2n_apellido, genero_extra, email, numero });
+      jugadores_extra.push({ nombre, curso, _1r_apellido, _2n_apellido, genero_extra, email, numero });
     }
     index++;
   }
@@ -342,7 +342,7 @@ if (!acompañante_genero) {
       const genero_staff = formData.get(`staff_genero_${index}`)?.toString().trim();
       const curso = formData.get(`staff_player_${index}_curso`)?.toString().trim();
       const email = formData.get(`staff_player_${index}_email`)?.toString().trim();
-      const img = formData.get(`staff_player_${index}_img`) as File;
+      //const img = formData.get(`staff_player_${index}_img`) as File;
       const numero = index + 1;
       if (email) { 
         const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
@@ -382,7 +382,7 @@ if (!acompañante_genero) {
         );
       }
     }
-    staff.push({ nombre, img, curso, _1r_apellido, _2n_apellido, genero_staff, email, numero });
+    staff.push({ nombre, curso, _1r_apellido, _2n_apellido, genero_staff, email, numero });
     }
     index++;
   }

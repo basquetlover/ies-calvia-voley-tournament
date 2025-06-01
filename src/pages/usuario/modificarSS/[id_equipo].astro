@@ -23,6 +23,11 @@ type AdministradorProps = {
     nombre_equipo: string;
 };
 
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, min_jugadores, max_jugadores, max_staff, entrenador, profesor')
+  .eq('estado', 'Actual')
+  .single();
 // Genera rutas dinámicas
 export async function getStaticPaths() {
   // Consulta a la base de datos para obtener user_email y rango
@@ -44,8 +49,8 @@ export async function getStaticPaths() {
   return { paths };
 }
 const id_equipo = Astro.url.pathname.split('/').pop();
-const totalJugadores = 9;
-const totalStaff = 5;
+const totalJugadores = ConfTorneo?.max_jugadores;
+const totalStaff = ConfTorneo?.max_staff;
 
 let nombre_equipo = 'Sin Nombre';
 let escudo = "";
@@ -118,7 +123,7 @@ let Staff_extra: Staff[] = [];
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: equipoData, error } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(`Equipos${ConfTorneo?.id_torneo}`)
     .select('nombre_equipo, id, capitan, escudo, inscrito, estado, aceptado, fecha_inscripcion, email_capitan, capitan_edit, probl_tit_logo')
     .eq('id_equipo', id_equipo)
     .single();
@@ -151,7 +156,7 @@ try {
     }
 
   const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'jugador')
@@ -169,7 +174,7 @@ try {
   }
 
   const {data: StaffData, error: StaffError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'cuerpo_tecnico')
@@ -185,7 +190,7 @@ try {
   }
 
   const {data: EntrenadorData, error: EntrenadorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'entrenador')
@@ -210,7 +215,7 @@ try {
 }
 
 const {data: ProfesorData, error: ProfesorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'profesor')
@@ -373,6 +378,8 @@ const handleCheckboxChange = (index: number) => {
       </div>
   
       <!-- Entrenador -->
+       {
+      ConfTorneo?.entrenador === "Permitido" ? (
       <div class="w-max flex flex-row gap-2">
         <div class="px-3 py-2 w-96 h-12 flex flex-row text-4xl text-amarillo border-none">
           <h4>Entrenador</h4>
@@ -545,7 +552,7 @@ const handleCheckboxChange = (index: number) => {
           
           </div>
   
-                  {/* Imagen cara */}
+                  {/* Imagen cara
                   <div class="flex flex-col relative">
                     <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                         Imatge Cara .webp
@@ -564,13 +571,16 @@ const handleCheckboxChange = (index: number) => {
                     accept=".webp"
                     />
                 
-                </div>
+                </div> */}
                 {entrenador_observaciones !== "" || entrenador_observaciones === null  ? (<>
           <textarea disabled class="w-full bg-naranja-claro rounded-md px-3 py-2 text-gris">{entrenador_observaciones}</textarea>
           </>):(<></>)}
         </div>
         
       </div>
+
+          ):(<></>)
+     }
       <div class="w-max flex flex-row gap-2">
         <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Alumnes Jugadors</h4></div>
       </div>
@@ -775,7 +785,7 @@ const handleCheckboxChange = (index: number) => {
           
           </div>
   
-          {/* Imagen cara */}
+          {/* Imagen cara
           <div class="flex flex-col relative">
               <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                   Imatge Cara .webp
@@ -796,7 +806,7 @@ const handleCheckboxChange = (index: number) => {
               
               />
           
-          </div>
+          </div> */}
           {jugador.observaciones !== "" ? (
               <><textarea disabled class="w-full bg-naranja-claro rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>): 
               (<></>) }
@@ -973,7 +983,7 @@ const handleCheckboxChange = (index: number) => {
           
           </div>
           
-          {/* Imagen cara */}
+          {/* Imagen cara
           <div class="flex flex-col relative">
               <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                   Imatge Cara .webp
@@ -994,11 +1004,13 @@ const handleCheckboxChange = (index: number) => {
               
               />
           
-          </div>
+          </div> */}
     </div>
   ))} 
   
   <!-- profesor -->
+   {
+      ConfTorneo?.profesor === "Permitido" ? (
   <div class="w-max flex flex-row gap-2 my-10">
     <div class="px-3 py-2 w-max h-12 flex flex-row text-4xl text-amarillo border-none">
       <h4>Professor Jugador</h4>
@@ -1142,7 +1154,7 @@ const handleCheckboxChange = (index: number) => {
       
       </div>
 
-              {/* Imagen cara */}
+              {/* Imagen cara
               <div class="flex flex-col relative">
                 <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                     Imatge Cara .webp
@@ -1161,14 +1173,15 @@ const handleCheckboxChange = (index: number) => {
                 accept=".webp"
                 />
             
-            </div>
+            </div> */}
             {profesor_observaciones !== "" || profesor_observaciones === null  ? (<>
       <textarea disabled class="w-full bg-naranja-claro rounded-md px-3 py-2 text-gris">{profesor_observaciones}</textarea>
       </>):(<></>)}
     </div>
     
   </div>
-  
+  ):(<></>)
+     }
   <!--Staff (Publico) -->
   <div class="w-max flex flex-row items-end gap-2">
     <div class="px-3 py-2 w-max h-12  text-4xl text-amarillo border-none"><h4>Tècnics d'equip</h4></div>
@@ -1370,7 +1383,7 @@ const handleCheckboxChange = (index: number) => {
           
           </div>
   
-          {/* Imagen cara */}
+          {/* Imagen cara
           <div class="flex flex-col relative">
               <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                   Imatge Cara .webp
@@ -1391,7 +1404,7 @@ const handleCheckboxChange = (index: number) => {
               
               />
           
-          </div>
+          </div> */}
           {jugador.observaciones !== "" ? (
               <><textarea disabled class="w-full bg-naranja-claro rounded-md px-3 py-2 text-gris">{jugador.observaciones}</textarea></>): 
               (<></>) }
@@ -1565,7 +1578,7 @@ const handleCheckboxChange = (index: number) => {
         
         </div>
         
-        {/* Imagen cara */}
+        {/* Imagen cara
         <div class="flex flex-col relative">
             <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                 Imatge Cara
@@ -1586,7 +1599,7 @@ const handleCheckboxChange = (index: number) => {
             
             />
         
-        </div>
+        </div> */}
   </div>
 ))} 
   

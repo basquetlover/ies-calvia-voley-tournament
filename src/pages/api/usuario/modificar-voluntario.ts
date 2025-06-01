@@ -5,6 +5,11 @@ import type { APIRoute } from "astro";
 import { supabase, supabaseAdmin } from "../../../lib/supabase";
 import { Resend } from 'resend';
 
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
 
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
@@ -70,7 +75,7 @@ export const POST: APIRoute = async ({ request }) => {
 }
 
 let { data: Usuarios, error } = await supabaseAdmin
-    .from('Voluntarios')
+    .from(`Voluntarios${ConfTorneo?.id_torneo}`)
     .select('email')
     
     if (Usuarios) {
@@ -81,7 +86,7 @@ let { data: Usuarios, error } = await supabaseAdmin
       console.log(userExistsByEmail);
       if (userExistsByEmail) {
         let { data: UsuariosID, error } = await supabaseAdmin
-        .from('Voluntarios')
+        .from(`Voluntarios${ConfTorneo?.id_torneo}`)
         .select('id')
         .eq('email', voluntario_email)
         .single();
@@ -233,7 +238,7 @@ console.log(currentDate);
     if(escudo.size <= 0){
           // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-   .from('Voluntarios')
+   .from(`Voluntarios${ConfTorneo?.id_torneo}`)
    .update([
        { nombre: voluntario_nombre ,
          _1r_apellido: voluntario_1r_apellido ,
@@ -262,7 +267,7 @@ console.log(currentDate);
     }else{
           // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-   .from('Voluntarios')
+   .from(`Voluntarios${ConfTorneo?.id_torneo}`)
    .update([
        { nombre: voluntario_nombre ,
          _1r_apellido: voluntario_1r_apellido ,

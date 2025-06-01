@@ -5,6 +5,11 @@ import type { APIRoute } from "astro";
 import { supabase, supabaseAdmin } from "../../../lib/supabase";
 import { Resend } from 'resend';
 
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
 
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
@@ -68,7 +73,7 @@ export const POST: APIRoute = async ({ request }) => {
 }
 
 let { data: Usuarios, error } = await supabaseAdmin
-    .from('Voluntarios')
+    .from(`Voluntarios${ConfTorneo?.id_torneo}`)
     .select('email')
     
     if (Usuarios) {
@@ -157,7 +162,7 @@ async function uploadFile(file: File, email: string) {
   // Extraer la extensión del archivo
   const extension = file.name.split('.').pop(); // Obtiene la extensión
   const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-  const filePath = `${uniqueFileName}`; // Define la ruta del archivo
+  const filePath = `voluntarios${ConfTorneo?.id_torneo}/${uniqueFileName}`; // Define la ruta del archivo
 
   const { data, error } = await supabaseAdmin.storage
       .from('JugadoresIMG')
@@ -208,7 +213,7 @@ console.log(currentDate);
 
   if(escudo.size <= 0){
     const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-    .from('Voluntarios')
+    .from(`Voluntarios${ConfTorneo?.id_torneo}`)
     .insert([
         { nombre: voluntario_nombre ,
           _1r_apellido: voluntario_1r_apellido ,
@@ -234,7 +239,7 @@ console.log(currentDate);
   } else{
     // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-   .from('Voluntarios')
+   .from(`Voluntarios${ConfTorneo?.id_torneo}`)
    .insert([
        { nombre: voluntario_nombre ,
          _1r_apellido: voluntario_1r_apellido ,

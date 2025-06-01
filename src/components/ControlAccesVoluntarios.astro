@@ -47,10 +47,10 @@ if(error){
         "Usuario sin cuenta de admin"
     )
 }
-// adminData?.rango === "Owner" || 
-// if(adminData){
-//     userHasAccess = true;
-// }
+//adminData?.rango === "Owner" || 
+if(adminData){
+    userHasAccess = true;
+}
 }
 
 
@@ -105,10 +105,10 @@ if(usuario){
         )
         }
         // adminData?.rango === "Owner" || 
-        if(adminData?.rango === "Owner" || adminData?.user_email === "s_bonavera@a.iescalvia.com" || adminData?.rango === "Staff"){
-            // RangoFechas = true;
-            // YaInscrito = true;
-            // Revisando = false;
+        if(adminData?.rango === "Owner" || adminData?.rango === "Co-Owner" || adminData?.user_email === "s_bonavera@a.iescalvia.com" || adminData?.rango === "Staff"){
+            RangoFechas = true;
+            YaInscrito = true;
+            Revisando = false;
 }       
         }
         
