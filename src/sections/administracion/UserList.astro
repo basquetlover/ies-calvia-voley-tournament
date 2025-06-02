@@ -63,7 +63,7 @@ const { data: SinRangoData, error: fetchSinRangoError } = await supabaseAdmin
                    OwnerData.map((user) => (
                 <tr >
                     <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
-                        {user.user_email}
+                        <a href={`/usuario/staff/${user.user_email}`} target="_blank">{user.user_email}</a>
                     </td>
                     
                     <td class="text-center">
@@ -98,7 +98,7 @@ const { data: SinRangoData, error: fetchSinRangoError } = await supabaseAdmin
                    CoOwnerData.map((user) => (
                 <tr >
                     <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
-                        {user.user_email}
+                        <a href={`/usuario/staff/${user.user_email}`} target="_blank">{user.user_email}</a>
                     </td>
                     
                     <td class="text-center">
@@ -133,7 +133,7 @@ const { data: SinRangoData, error: fetchSinRangoError } = await supabaseAdmin
                    StaffData.map((user) => (
                 <tr >
                     <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
-                        {user.user_email}
+                        <a href={`/usuario/staff/${user.user_email}`} target="_blank">{user.user_email}</a>
                     </td>
                     
                     <td class="text-center">
@@ -168,7 +168,7 @@ const { data: SinRangoData, error: fetchSinRangoError } = await supabaseAdmin
                    OfMesaData.map((user) => (
                 <tr >
                     <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
-                        {user.user_email}
+                        <a href={`/usuario/staff/${user.user_email}`} target="_blank">{user.user_email}</a>
                     </td>
                     
                     <td class="text-center">
@@ -203,7 +203,7 @@ const { data: SinRangoData, error: fetchSinRangoError } = await supabaseAdmin
                    ArbitrosData.map((user) => (
                 <tr >
                     <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
-                        {user.user_email}
+                        <a href={`/usuario/staff/${user.user_email}`} target="_blank">{user.user_email}</a>
                     </td>
                     
                     <td class="text-center">
@@ -238,7 +238,7 @@ const { data: SinRangoData, error: fetchSinRangoError } = await supabaseAdmin
                    ProfesorData.map((user) => (
                 <tr >
                     <td class="xs:max-w-[150px] sm:max-w-[150px] md:w-auto w-auto no-scrollbar overflow-x-auto" translate="no">
-                        {user.user_email}
+                        <a href={`/usuario/staff/${user.user_email}`} target="_blank">{user.user_email}</a>
                     </td>
                     
                     <td class="text-center">

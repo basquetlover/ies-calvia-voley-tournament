@@ -1,0 +1,60 @@
+---
+import { supabaseAdmin } from "../../../lib/supabase";
+
+
+import ControlStaff from "@components/ControlStaff.astro";
+import QRBotonReact from "@components/QRBoton";
+import LayoutUsuario from "@layouts/LayoutUsuario.astro";
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+
+// Tipo explícito para las propiedades esperadas en `Astro.props`
+type AdministradorProps = {
+    id_equipo: string;
+    nombre_equipo: string;
+};
+
+
+const email = Astro.url.pathname.split('/').pop();
+let { data: Staff, error } = await supabaseAdmin
+  .from('Administradores')
+  .select('*')
+  .eq('user_email', email)
+  .single();
+
+---
+<ControlStaff>
+<LayoutUsuario title=`Equip ${email}` descripcion=`Llista de l'equip ${email}`>
+<div class="max-w-xl h-auto mx-auto bg-gris-claro p-4 rounded">
+    <h2 class="text-4xl text-center text-accent font-semibold">{Staff?.nombre} {Staff?._1r_apellido} {Staff?._2n_apellido}</h2>
+    <div class="w-full grid grid-cols-[max-content_1fr] mt-5 gap-2 ">
+        <div>
+            {Staff?.img ?(
+                <img src={Staff?.img} alt="Imagen de administrador" class="w-28 h-28 object-cover rounded-md" />
+                ):(
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" fill="#e8eaed" viewBox="0 -960 960 960">
+                    <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                  </svg>
+                )}
+            
+        </div>
+        <div class="w-full text-lg text-blanco">
+            <p><span class="text-amarillo font-medium">Curs:</span> {Staff?.curso}</p>
+            <p><span class="text-amarillo font-medium">Email:</span> {Staff?.user_email}</p>
+            <p><span class="text-amarillo font-medium">Càrrec:</span> {Staff?.rango}</p>
+            <p><span class="text-amarillo font-medium">Accés:</span> {Staff?.acceso}</p>
+            <p><span class="text-amarillo font-medium">Permisos especials:</span> {Staff?.permisos}</p>
+        </div>
+    </div>
+    <div>
+        {
+            Staff?.rango === "Owner" || Staff?.rango === "Co-Owner" ? (<>
+                <QRBotonReact client:load />
+            </>):(<>
+            
+            </>)
+        }
+         
+    </div>
+</div>
+</LayoutUsuario>
+</ControlStaff>
