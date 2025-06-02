@@ -29,6 +29,7 @@
     "firebase": "^11.0.2",
     "lucia": "^3.2.2",
     "lucia-adapter-astrodb": "^0.2.0",
+    "qrcode": "^1.5.4",
     "quill": "^2.0.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -46,6 +47,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/crypto-js": "^4.2.2",
     "@types/express": "^5.0.1",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "parcel": "^2.6.2"

@@ -1,4 +1,6 @@
 ---
+import QRBotonReact from '@components/QRBoton';
+
 import { supabaseAdmin } from "../../../lib/supabase";
 import LayoutStaff from "@layouts/LayoutStaff.astro";
 import { verificarSesion } from "src/lib/session";
@@ -278,6 +280,7 @@ if(usuario){
         <p class={`w-max h-max px-2 py-1 rounded-xl ${estado ===  "Revisant" ? "bg-naranja-claro text-naranja text-base uppercase font-semibold" : ""} ${estado ===  "Acceptat" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""} ${estado ===  "Denegat" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""}`}>{estado}</p>
         <p class={`w-max h-max px-2 py-1 rounded-xl ${aceptado ===  "Llista d'espera" ? "bg-rojo-claro text-rojo text-base uppercase font-semibold" : ""} ${aceptado ===  "Inscrit" ? "bg-verde-claro text-verde text-base uppercase font-semibold" : ""}${aceptado === "Pendent" ? "text-blanco bg-gris-claro":""} `}>{aceptado}</p>
         <p class="text-blanco bg-gris-claro px-3 py-2 rounded-lg">Data inscripció: {fecha_inscripcion}</p>
+       <!-- <QRBotonReact client:load /> -->
       </div>
       
       <div id="encabezado" class="ocultar">
