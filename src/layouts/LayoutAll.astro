@@ -6,7 +6,7 @@ import Footer from '@sections/Footer.astro';
 import { verificarSesion } from "src/lib/session";
 import { supabase, supabaseAdmin } from "src/lib/supabase";
 
-
+import ControlStaff from "@components/ControlStaff.astro";
 interface Props {
 	title: string;
 }
@@ -54,7 +54,11 @@ import Analytics from '@vercel/analytics/astro'
 
 	<body class="bg-gris ">
 		<Analytics />
-		{user && (
+
+		{usuario ? (
+					<ControlStaff>
+				
+		
 		<div class="grid grid-cols-[max-content_1fr] grid-rows-1 gap-0">
 		
 		
@@ -68,10 +72,11 @@ import Analytics from '@vercel/analytics/astro'
 	</div>
 		
 			//<!-- <Footer /> -->
-		
-		)} 
-
-		<Signin />
+		</ControlStaff>
+		) : (
+					
+					<SinSession />
+				)}
     
 	
 		
