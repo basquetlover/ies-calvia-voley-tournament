@@ -22,8 +22,9 @@ let { data: Staff, error } = await supabaseAdmin
   .single();
 
 ---
-<ControlStaff>
+
 <LayoutUsuario title=`Equip ${email}` descripcion=`Llista de l'equip ${email}`>
+    <ControlStaff>
 <div class="max-w-xl h-auto mx-auto bg-gris-claro p-4 rounded">
     <h2 class="text-4xl text-center text-accent font-semibold">{Staff?.nombre} {Staff?._1r_apellido} {Staff?._2n_apellido}</h2>
     <div class="w-full grid grid-cols-[max-content_1fr] mt-5 gap-2 ">
@@ -56,5 +57,5 @@ let { data: Staff, error } = await supabaseAdmin
          
     </div>
 </div>
-</LayoutUsuario>
 </ControlStaff>
+</LayoutUsuario>
