@@ -1,5 +1,5 @@
 ---
-import {CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
+import {CURSO_2E, CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
 import { supabaseAdmin } from "src/lib/supabase";
 let jugadores: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }[] = [];
 let jugadores_extra: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }[] = [];
@@ -249,6 +249,12 @@ file.addEventListener('change', (e: Event) => {
           
         >
           <option value="" disabled selected>Selecciona un curso</option>
+          {CURSO_2E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
           {CURSO_3E.map(({ label }) => (
             <option value={label}>
               {label}
@@ -458,6 +464,12 @@ file.addEventListener('change', (e: Event) => {
           
         >
           <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
+            {CURSO_2E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
           {CURSO_3E.map(({ label }) => (
             <option value={label}>
               {label}
@@ -653,6 +665,12 @@ file.addEventListener('change', (e: Event) => {
           
         >
           <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
+{CURSO_2E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
           {CURSO_3E.map(({ label }) => (
             <option value={label}>
               {label}
@@ -1029,6 +1047,12 @@ file.addEventListener('change', (e: Event) => {
           
         >
           <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
+{CURSO_2E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
+          <hr class="border-accent" />
           {CURSO_3E.map(({ label }) => (
             <option value={label}>
               {label}
