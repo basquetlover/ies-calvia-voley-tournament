@@ -81,7 +81,7 @@ export const POST: APIRoute = async ({ request }) => {
   //  console.log("Entrenador no inscrito en otro equipo")
 //}
 let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(`JugadoresV`)
     .select('email')
 
     if (Usuarios) {
@@ -156,7 +156,7 @@ if (profesor_email) {
 //  console.log("Entrenador no inscrito en otro equipo")
 //}
 let { data: Usuarios, error } = await supabaseAdmin
-  .from(`Jugadores${ConfTorneo?.id_torneo}`)
+  .from(`JugadoresV`)
   .select('email')
 
   if (Usuarios) {
@@ -247,7 +247,7 @@ if (!acompañante_genero) {
       mujeres++;
     }
     let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(`JugadoresV`)
     .select('email')
 
     if (Usuarios) {
@@ -309,7 +309,7 @@ if (!acompañante_genero) {
         mujeres++;
       }
       let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(`JugadoresV`)
     .select('email')
 
     if (Usuarios) {
@@ -366,7 +366,7 @@ if (!acompañante_genero) {
       
       }
       let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(`JugadoresV`)
     .select('email')
 
     if (Usuarios) {
@@ -406,9 +406,9 @@ if (!acompañante_genero) {
   }
   
 
-  // Verificar si el equipo ya existe en la tabla `Equipos${ConfTorneo?.id_torneo}`
+  // Verificar si el equipo ya existe en la tabla `EquiposV`
   const { data: existingEquipo, error: checkError } = await supabaseAdmin
-  .from("`Equipos${ConfTorneo?.id_torneo}`")
+  .from("`EquiposV`")
   .select("id") // Seleccionar un campo mínimo
   .eq("nombre_equipo", nombre_equipo);
 
@@ -433,7 +433,7 @@ async function uploadFile(file: File, id_equipo: string) {
   // Extraer la extensión del archivo
   const extension = file.name.split('.').pop(); // Obtiene la extensión
   const uniqueFileName = `${id_equipo}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-  const filePath = `escudos${ConfTorneo?.id_torneo}/${uniqueFileName}`; // Define la ruta del archivo
+  const filePath = `escudosV/${uniqueFileName}`; // Define la ruta del archivo
 
   const { data, error } = await supabaseAdmin.storage
       .from('EquiposIMG')
@@ -528,7 +528,7 @@ console.log(currentDate);
     
   // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-    .from(`Equipos${ConfTorneo?.id_torneo}`)
+    .from(`EquiposV`)
     .insert([
         { nombre_equipo: nombre_equipo ,
           id_equipo: id_equipo ,
@@ -553,7 +553,7 @@ console.log(currentDate);
   }
 
   const { data: equipoData, error: busquedaError } = await supabaseAdmin
-    .from(`Equipos${ConfTorneo?.id_torneo}`)
+    .from(`EquiposV`)
     .select('id')
     .eq('nombre_equipo', nombre_equipo)
     .single();
@@ -591,7 +591,7 @@ console.log(currentDate);
   for (const jugador of jugadores) {
     //if(jugador.img.size <= 0){
       const { error: jugadorError } = await supabaseAdmin
-        .from(`Jugadores${ConfTorneo?.id_torneo}`)
+        .from(`JugadoresV`)
         .insert([
           {   nombre: jugador.nombre, 
               _1r_apellido: jugador._1r_apellido,
@@ -632,7 +632,7 @@ console.log(currentDate);
     // }
   
     //   const { error: jugadorError } = await supabaseAdmin
-    //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    //     .from(`JugadoresV`)
     //     .insert([
     //       {   nombre: jugador.nombre, 
     //           _1r_apellido: jugador._1r_apellido,
@@ -656,7 +656,7 @@ console.log(currentDate);
   for (const jugador of jugadores_extra) {
     //if(jugador.img.size <= 0){
       const { error: jugadorError } = await supabaseAdmin
-        .from(`Jugadores${ConfTorneo?.id_torneo}`)
+        .from(`JugadoresV`)
         .insert([
           {   nombre: jugador.nombre, 
               _1r_apellido: jugador._1r_apellido,
@@ -697,7 +697,7 @@ console.log(currentDate);
     // }
   
     //   const { error: jugadorError } = await supabaseAdmin
-    //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    //     .from(`JugadoresV`)
     //     .insert([
     //       {   nombre: jugador.nombre, 
     //           _1r_apellido: jugador._1r_apellido,
@@ -721,7 +721,7 @@ console.log(currentDate);
   for (const jugador of staff) {
    // if(jugador.img.size <= 0){
     const { error: jugadorError } = await supabaseAdmin
-      .from(`Jugadores${ConfTorneo?.id_torneo}`)
+      .from(`JugadoresV`)
       .insert([
         {   nombre: jugador.nombre, 
             _1r_apellido: jugador._1r_apellido,
@@ -762,7 +762,7 @@ console.log(currentDate);
   // }
 
   //   const { error: jugadorError } = await supabaseAdmin
-  //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+  //     .from(`JugadoresV`)
   //     .insert([
   //       {   nombre: jugador.nombre, 
   //           _1r_apellido: jugador._1r_apellido,
@@ -786,7 +786,7 @@ console.log(currentDate);
 
   //if(acompañante_foto.size <= 0){
     const { error: jugadorExtraError } = await supabaseAdmin
-      .from(`Jugadores${ConfTorneo?.id_torneo}`)
+      .from(`JugadoresV`)
       .insert([
         { nombre: acompañante_nombre, 
           _1r_apellido: acompañante_1r_apellido,
@@ -805,7 +805,7 @@ console.log(currentDate);
     }
   // } else {
   //   const { error: jugadorExtraError } = await supabaseAdmin
-  //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+  //     .from(`JugadoresV`)
   //     .insert([
   //       { nombre: acompañante_nombre, 
   //         _1r_apellido: acompañante_1r_apellido,
@@ -867,7 +867,7 @@ console.log(currentDate);
     //   }
 
   //     const { error: jugadorError } = await supabaseAdmin
-  //     .from(`Jugadores${ConfTorneo?.id_torneo}`)
+  //     .from(`JugadoresV`)
   //     .insert([
   //       {   nombre: profesor_nombre, 
   //         _1r_apellido: profesor_1r_apellido,
@@ -884,7 +884,7 @@ console.log(currentDate);
 
   // }else{
     const { error: jugadorError } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(`JugadoresV`)
     .insert([
       {   nombre: profesor_nombre, 
         _1r_apellido: profesor_1r_apellido,
