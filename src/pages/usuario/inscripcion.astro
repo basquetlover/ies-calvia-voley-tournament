@@ -2,14 +2,20 @@
 import ControlAcces from "@components/ControlAcces.astro";
 import LayoutMenu from "@layouts/LayoutMenu.astro";
 import LayoutUsuario from "@layouts/LayoutUsuario.astro";
-
+import { supabaseAdmin } from "src/lib/supabase";
 import CrearEquipoUser from "@sections/usuarios/CrearEquipoUser.astro";
 import { verificarSesion } from "src/lib/session";
 
-const fechaInicio = new Date('2025-3-10'); // Cambia esta fecha según tus necesidades
-const fechaFin = new Date('2025-3-31'); // Cambia esta fecha según tus necesidades
+const { data: torneo, error: errorTorneos } = await supabaseAdmin
+  .from('Configuracion')
+  .select('in_inicio, in_fin')
+  .eq('estado', 'Actual')
+  .single();
 
-import { supabaseAdmin } from "src/lib/supabase";
+// const fechaInicio = new Date('2025-3-10'); // Cambia esta fecha según tus necesidades
+// const fechaFin = new Date('2025-3-31'); //
+
+
 const pathname = Astro.url.pathname;
 let accessibleBlocks = [];
 let RangoFechas = false;
@@ -40,33 +46,41 @@ let userHasAccess = accessibleBlocks.includes(pathname);
 if(userHasAccess){
    
 
-    const fechaActual = new Date();
+const fechaActual = new Date();
 
-    // Compara la fecha actual con las fechas de inicio y fin
-    if (fechaActual < fechaInicio) {
-        // const { data: pageAccess, error } = await supabaseAdmin
-        // .from('AccesoUsuarios')
-        // .update({acceso: 'false'})
-        // .eq('pagina', '/usuario/inscripcion');
+console.log(fechaActual, torneo?.in_inicio)
+// Compara la fecha actual con las fechas de inicio y fin
+const fechaInicio = new Date(torneo?.in_inicio);
+const fechaFin = new Date(torneo?.in_fin);
 
-        RangoFechas = false;
-        
-    } else if (fechaActual > fechaFin) {
-        // const { data: pageAccess, error } = await supabaseAdmin
-        // .from('AccesoUsuarios')
-        // .update({acceso: 'false'})
-        // .eq('pagina', '/usuario/inscripcion');
+const formatoFecha = (fecha: Date) => {
+  const dia = fecha.getDate().toString().padStart(2, '0');
+  const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // enero es 0
+  const año = fecha.getFullYear();
+  const hora = fecha.getHours().toString().padStart(2, '0');
+  const minutos = fecha.getMinutes().toString().padStart(2, '0');
 
-        RangoFechas = false;
-        
-    } else {
-    RangoFechas = true;
-    }
+  return `${dia}/${mes}/${año} a les ${hora}:${minutos}`;
+};
+
+const fechaInicioTexto = formatoFecha(fechaInicio);
+const fechaFinTexto = formatoFecha(fechaFin);
+
+if (fechaActual < fechaInicio) {
+  RangoFechas = false;
+  console.log("Fuera del rango: antes de la fecha de inicio");
+} else if (fechaActual > fechaFin) {
+  RangoFechas = false;
+  console.log("Fuera del rango: después de la fecha de fin");
+} else {
+  RangoFechas = true;
+  console.log("Dentro del rango de fechas");
+}
     
 }
 const usuario = await verificarSesion(Astro.request);
 let { data: Usuarios, error } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from('JugadoresV')
     .select('email')
 if (Usuarios) {
   
@@ -127,7 +141,7 @@ if(adminData?.rango === "Owner" || adminData?.rango === "Co-Owner" || adminData?
                 Actualment aquest apartat no es troba disponible. Si creus que es tracta d'un error, posa't en <a href="/contacto" class="hover:text-amarillo transition-all duration-300">contacte amb el Staff</a>.
             </p>
             <p class="text-amarillo text-xl text-center my-2">
-                Terme d'inscripcions: 10/03/2025 fins a 31/03/2025
+                Terme d'inscripcions: {fechaInicioTexto} fins a {fechaFinTexto}
             </p>
             
                 <a href="/" class="px-3 py-2 w-max mx-auto my-5 text-azul font-semibold bg-amarillo rounded-full text-xl hover:scale-110 duration-300 transition-all transform flex flex-row items-center place-content-center gap-1">
