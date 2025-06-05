@@ -42,10 +42,6 @@ try {
 }
 // Verifica si el usuario tiene acceso a la página actual
 let userHasAccess = accessibleBlocks.includes(pathname);
-
-if(userHasAccess){
-   
-
 const fechaActual = new Date();
 
 console.log(fechaActual, torneo?.in_inicio)
@@ -76,6 +72,12 @@ if (fechaActual < fechaInicio) {
   RangoFechas = true;
   console.log("Dentro del rango de fechas");
 }
+if(userHasAccess){
+   
+
+
+
+
     
 }
 const usuario = await verificarSesion(Astro.request);
