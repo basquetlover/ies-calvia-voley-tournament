@@ -408,7 +408,7 @@ if (!acompañante_genero) {
 
   // Verificar si el equipo ya existe en la tabla "EquiposV"
   const { data: existingEquipo, error: checkError } = await supabaseAdmin
-  .from(""EquiposV"")
+  .from("EquiposV")
   .select("id") // Seleccionar un campo mínimo
   .eq("nombre_equipo", nombre_equipo);
 
