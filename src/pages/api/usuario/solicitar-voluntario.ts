@@ -73,7 +73,7 @@ export const POST: APIRoute = async ({ request }) => {
 }
 
 let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Voluntarios${ConfTorneo?.id_torneo}`)
+    .from("VoluntariosV")
     .select('email')
     
     if (Usuarios) {
@@ -213,7 +213,7 @@ console.log(currentDate);
 
   if(escudo.size <= 0){
     const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-    .from(`Voluntarios${ConfTorneo?.id_torneo}`)
+    .from("VoluntariosV")
     .insert([
         { nombre: voluntario_nombre ,
           _1r_apellido: voluntario_1r_apellido ,
@@ -239,7 +239,7 @@ console.log(currentDate);
   } else{
     // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-   .from(`Voluntarios${ConfTorneo?.id_torneo}`)
+   .from("VoluntariosV")
    .insert([
        { nombre: voluntario_nombre ,
          _1r_apellido: voluntario_1r_apellido ,
