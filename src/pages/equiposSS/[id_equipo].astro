@@ -8,6 +8,8 @@ if (torneoID) {
   // Eliminar comillas si las hubiera
   torneoID = torneoID.replace(/^"(.*)"$/, '$1');
   //console.log('Torneo ID:', torneoID); // Aparece en consola del servidor
+} else{
+  torneoID = "SS"
 }
 
 import LayoutMenu from "@layouts/LayoutMenu.astro";
