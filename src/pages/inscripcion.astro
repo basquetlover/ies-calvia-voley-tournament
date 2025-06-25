@@ -28,8 +28,13 @@ if(usuario){
     console.log("Usuario de inscripcion: ", usuario.email, usuario.curso, usuario.nombre);
 }
 
-const fechaInicio = new Date(torneo?.in_inicio);
-const fechaFin = new Date(torneo?.in_fin);
+let fechaInicio 
+let fechaFin 
+
+if(torneo){
+fechaInicio = new Date(torneo?.in_inicio);
+fechaFin = new Date(torneo?.in_fin);
+
 // Compara la fecha actual con las fechas de inicio y fin
 if (fechaActual < fechaInicio) {
     RangoFechas = false;
@@ -40,6 +45,10 @@ if (fechaActual < fechaInicio) {
 } else {
     RangoFechas = true;
     console.log("Dentro del rango de fechas");
+}
+
+
+
 }
 ---
 

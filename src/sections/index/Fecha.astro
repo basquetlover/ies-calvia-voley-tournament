@@ -19,14 +19,19 @@ const { data: torneo, error: errorTorneos } = await supabaseAdmin
   // Meses en catalán van en minúscula y la preposición "de" se incluye manualmente
   return `${dia} de ${mes}`;
 }
+let inicioFormateado = ""
+let finFormateado = ""
+let fechaFormateada =""
+if(torneo){
+inicioFormateado = formatarDataCatalan(torneo?.in_inicio);
+finFormateado = formatarDataCatalan(torneo?.in_fin);
+fechaFormateada = formatarDataCatalan(torneo?.fecha);
+}
 
-const inicioFormateado = formatarDataCatalan(torneo?.in_inicio);
-const finFormateado = formatarDataCatalan(torneo?.in_fin);
-const fechaFormateada = formatarDataCatalan(torneo?.fecha);
 ---
-
-<DescripcionSection>
- <h3 class="text-center text-blanco uppercase font-semibold text-5xl xs:text-3xl sm:text-4xl md:text-5xl">{fechaFormateada}</h3>
+{
+  fechaFormateada != "" ? (<>
+   <h3 class="text-center text-blanco uppercase font-semibold text-5xl xs:text-3xl sm:text-4xl md:text-5xl">{fechaFormateada}</h3>
     <a href="https://maps.app.goo.gl/VTPP4ENdYY8xfinr8" target="_blank" class="text-blanco   hover:text-amarillo duration-300 w-max my-2 group text-3xl xs:text-xl sm:text-xl md:text-3xl mx-auto text-center flex content-center items-center">
         <span class="w-5 h-5">
             <svg class="w-5 h-5 xs:w-4 xs:h-4 sm:w-4 sm:h-4 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 46">
@@ -35,6 +40,12 @@ const fechaFormateada = formatarDataCatalan(torneo?.fecha);
         </span>
         POLIESPORTIU GALATZO
     </a>
+  </>):(<>
+  
+  </>)
+}
+<DescripcionSection>
+
     <h1 class="text-center text-amarillo uppercase font-semibold text-5xl xs:text-3xl sm:text-4xl md:text-5xl">IES Calvià Voley Tournament</h1>
     <h2 class="text-accent  w-max my-2 group text-5xl xs:text-2xl sm:text-3xl md:text-5xl mx-auto text-center">Més que un simple torneig</h2>
 </DescripcionSection>
