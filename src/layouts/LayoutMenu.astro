@@ -47,6 +47,10 @@ import CookiesAlert from '@components/CookiesAlert.astro';
 import { verificarSesion } from 'src/lib/session';
 import { supabaseAdmin } from 'src/lib/supabase';
 
+  fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => console.log('IP del visitante:', data.ip))
+    .catch(err => console.error('Error al obtener la IP:', err));
 ---
 
 <!DOCTYPE html>
