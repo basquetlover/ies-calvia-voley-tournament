@@ -21,15 +21,31 @@ const images = [
   '/img/fondo2-enlaces.png',
 ];
 
+let anuncios = false
 const randomImage = images[Math.floor(Math.random() * images.length)];
 const usuario = await verificarSesion(Astro.request);
 if(usuario){
 	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
+
+	const { data: admin, error } = await supabaseAdmin
+    .from('Administradores')
+    .select('*')
+    .eq('user_email', usuario.email)
+    .single();
+
+	if(admin){
+		anuncios = true
+	}
+
 }
+
+
+
 
 import Analytics from '@vercel/analytics/astro'
 import CookiesAlert from '@components/CookiesAlert.astro';
 import { verificarSesion } from 'src/lib/session';
+import { supabaseAdmin } from 'src/lib/supabase';
 
 ---
 
@@ -113,6 +129,17 @@ import { verificarSesion } from 'src/lib/session';
   window.ezstandalone = window.ezstandalone || {};
   window.ezstandalone.cmd = window.ezstandalone.cmd || [];
 </script> -->
+<script>
+console.log(
+  "%cIES CALVIÀ VOLEY TOURNAMENT\n%c© Todos los derechos reservados\n%cWeb developer: Pere Alemany\n%cLenguajes usados: Astro + React",
+  "font-size: 24px; font-weight: bold; color: #0088cc;",
+  "font-size: 16px; color: gray;",
+  "font-size: 16px; color: #2b9348; font-weight: bold;",
+  "font-size: 16px; color: #f77f00;"
+);
+
+
+</script>
 
 	</head>
 	
@@ -126,12 +153,19 @@ import { verificarSesion } from 'src/lib/session';
 		<Loading />
 		<CookiesAlert />
 
-<!-- <script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/51238/98f06b322303df7742dd3487da2c8c739b7c0d4c/lib.js"></script>
+		{
+			anuncios === true ? (<>
+			
+			 <script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/51238/98f06b322303df7742dd3487da2c8c739b7c0d4c/lib.js"></script>
 <script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50323/d25da46a9d38b2a867f46bc12680e9246aa21f8a/lib.js"></script>
 <script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50322/53a18589b7c6dc5d334d5ed7f967977dec9b2d2b/lib.js"></script>
 <script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50469/72e5682117b00cba4aee4d650a5777233740d3b8/lib.js"></script>
 <script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50321/12b1635dceb3c49741b495a8161d826823cfdd3a/lib.js"></script>	
-<script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50319/5c88d32795ddf65bb48896d2658a5aaf8397d5e5/lib.js"></script> -->
+<script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50319/5c88d32795ddf65bb48896d2658a5aaf8397d5e5/lib.js"></script> 
+</>):(<></>)
+		}
+
+
 		
 <div class="grid min-h-dvh grid-rows-[auto_1fr_auto]">
 			<Header />
