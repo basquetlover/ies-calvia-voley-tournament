@@ -1,0 +1,13 @@
+---
+import LayoutAllSinMenu from '@layouts/LayoutAllSinMenu.astro';
+import ActaDigitalApp from "@pages/admin/acta-digital/ActaApp.jsx";
+
+const nombreEquipoLocal = "Team Teto";
+const nombreEquipoVisitante = "LOS PR";
+---
+<LayoutAllSinMenu title='Acta Digital'>
+
+  <ActaDigitalApp client:load nombreEquipoLocal={nombreEquipoLocal} nombreEquipoVisitante={nombreEquipoVisitante}/>
+
+    
+</LayoutAllSinMenu>

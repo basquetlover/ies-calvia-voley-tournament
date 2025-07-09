@@ -1,0 +1,58 @@
+
+    .puntos{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    /* -webkit-line-clamp: 2; */
+  }
+    .selected{
+        background-color: #1666ff;
+    }
+    .selected-tipo{
+        background-color: #0140B9;
+    }
+    .reloj-activo{
+        color: #FFC700;
+    }
+
+    .seleccionar_jugada{
+        background-color: #FFC700;
+    }
+
+    .modificar_jugada{
+        background-color: #0140B9;
+    }
+
+    .ocultar{
+        display: none;
+    }
+    .scrollbar-fina::-webkit-scrollbar {
+    width: 8px; /* Ancho de la barra de desplazamiento vertical */
+    height: 8px; /* Altura de la barra de desplazamiento horizontal */
+}
+
+.scrollbar-fina::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* Color de la parte que se arrastra */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.scrollbar-fina::-webkit-scrollbar-track {
+    background: transparent; /* Color de la pista */
+}
+
+/* Para Firefox */
+.scrollbar-fina {
+    scrollbar-width: thin; /* Hacer la barra de desplazamiento más fina */
+    scrollbar-color: #1666ff; /* Color del thumb y de la pista */
+}
+
+/* Para Internet Explorer y Edge */
+.scrollbar-fina {
+    -ms-overflow-style: -ms-autohiding-scrollbar; /* Estilo de scrollbar autohide */
+}
+
+.modificando {
+    -webkit-box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+-moz-box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+box-shadow: inset 0px 0px 15px 7px rgba(250,3,3,1);
+}

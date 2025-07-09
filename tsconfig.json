@@ -12,6 +12,9 @@
       "@sections/*": [
         "src/sections/*"
       ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
       "@const/*": [
         "src/const/*"
       ],
