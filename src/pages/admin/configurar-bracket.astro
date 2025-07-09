@@ -1,57 +1,14 @@
 ---
 import LayoutAll from "@layouts/LayoutAll.astro";
-import SinPermisos from "@components/admin/SinPermisos.astro"
 
-import { supabaseAdmin } from "../../lib/supabase";
 import ConfWinBracket from "@sections/administracion/ConfWinBracket.astro";
 
 import ConfConsolacion from "@sections/administracion/ConfConsolacion.astro";
+import RolSecurity from "@components/admin/RolSecurity.astro";
 
 
 
-// Verifica si hay un usuario autenticado
-const user = Astro.locals.StaffUser;
-const pathname = Astro.url.pathname;
-let userWithRango = {
-    email: user?.email || "Desconocido",
-    rango: "Sin rango"
-};
 
-try {
-    // Obtén el rango del usuario autenticado
-    if (user?.email) {
-        const { data: adminData, error } = await supabaseAdmin
-            .from("Administradores")
-            .select("rango")
-            .eq("user_email", user.email)
-            .single(); // Obtiene un único registro
-
-        if (error) {
-            console.error("Error al obtener rango:", error.message);
-        } else if (adminData) {
-            userWithRango.rango = adminData.rango || "Sin rango";
-        }
-    }
-} catch (err) {
-    console.error("Error al obtener datos del usuario:", err);
-}
-
-let accessibleBlocks = [];
-
-try {
-    const { data: pageAccess, error } = await supabaseAdmin
-        .from('Whitlist')
-        .select('*')
-        .or(`nombre.eq.${userWithRango.email},role.eq.${userWithRango.rango}`); // Verifica acceso por email o rol
-
-    if (pageAccess) {
-        accessibleBlocks = pageAccess.map(item => item.pagina); // Extrae las páginas a las que tiene acceso
-    }
-} catch (err) {
-    console.error("Error al obtener acceso:", err);
-}
-
-const userHasAccess = accessibleBlocks.includes(pathname);
 
 ---
 <script>
@@ -87,9 +44,9 @@ const userHasAccess = accessibleBlocks.includes(pathname);
 
 <LayoutAll title="Insertar Resultados">  
         
-    {userHasAccess ? (
+    
         
-    <>
+    <RolSecurity>
     <div class="w-max ml-5 h-auto flex flex-row gap-x-2 px-4 pt-2 mt-5 rounded-tr-md rounded-tl-md bg-azul">
         <div id="btn-eliminatoria" class="text-center py-2 px-3 rounded-tr-md rounded-tl-md text-amarillo text-2xl cursor-pointer seleccionado">Eliminatoria</div>
         <div id="btn-consolacion" class="text-center py-2 px-3 rounded-tr-md rounded-tl-md text-amarillo text-2xl cursor-pointer">Consolación</div>
@@ -100,10 +57,8 @@ const userHasAccess = accessibleBlocks.includes(pathname);
     <div id="consolacion" class="desactivado">
         <ConfConsolacion />
     </div>
-</>
-) : (
-    <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
-)}
+</RolSecurity>
+
 </LayoutAll>
 
 <style>

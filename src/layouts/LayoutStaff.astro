@@ -2,6 +2,10 @@
 import Signin from '@components/admin/signin.astro';
 import AdminHeader from '@sections/administracion/AdminHeader.astro';
 
+const usuario = await verificarSesion(Astro.request);
+if(usuario){
+	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
+}
 
 interface Props {
 	title: string;
@@ -9,42 +13,40 @@ interface Props {
 
 const { title } = Astro.props;
 
-const user = Astro.locals.StaffUser
-// console.log(user)
+// const usuario = Astro.locals.Staffusuario
+// console.log(usuario)
 
 import { supabaseAdmin } from "../lib/supabase";
 import ControlStaff from '@components/ControlStaff.astro';
 import SinSession from '@sections/errores/SinSession.astro';
 import { verificarSesion } from 'src/lib/session';
 
-let userWithRango = {
-    email: user?.email || "Desconocido",
+let usuarioWithRango = {
+    email: usuario?.email || "Desconocido",
     rango: "Sin rango"
 };
 
 try {
     // Obtén el rango del usuario autenticado
-    if (user?.email) {
+    if (usuario?.email) {
         const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
             .select("rango")
-            .eq("user_email", user.email)
+            .eq("user_email", usuario.email)
             .single(); // Obtiene un único registro
 
         if (error) {
             console.error("Error al obtener rango:", error.message);
         } else if (adminData) {
-            userWithRango.rango = adminData.rango || "Sin rango";
-        }
+            usuarioWithRango.rango = adminData.rango || "Sin rango";
+			
+		}
     }
 } catch (err) {
     console.error("Error al obtener datos del usuario:", err);
 }
 
-const usuario = await verificarSesion(Astro.request);
-if(usuario){
-	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
-}
+
 
 ---
 <!DOCTYPE html>
@@ -89,12 +91,12 @@ if(usuario){
 		
 
 		<main class=" h-screen p-0 overflow-x-hidden">
-			{(userWithRango.rango === "Owner" || userWithRango.rango === "Co-Owner" || userWithRango.rango === "Staff") && (
+			{(usuarioWithRango.rango === "Owner" || usuarioWithRango.rango === "Co-Owner" || usuarioWithRango.rango === "Staff") && (
                 <>
 			        <slot />
                 </>
             )}
-			{(userWithRango.rango === "Oficial de Mesa" || userWithRango.rango === "Arbitro" || userWithRango.rango === "Sin rango") && (
+			{(usuarioWithRango.rango === "Oficial de Mesa" || usuarioWithRango.rango === "Arbitro" || usuarioWithRango.rango === "Sin rango") && (
                 <>
                 <div class="w-full h-screen flex items-center place-content-center">
                 <section class="max-w-2xl w-full h-max p-10 mx-auto my-auto">

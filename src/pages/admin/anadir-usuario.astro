@@ -3,60 +3,16 @@
 import CrearUsuarios from "@sections/administracion/CrearUsuarios.astro";
 import LayoutAll from "@layouts/LayoutAll.astro";
 
-import { supabaseAdmin } from "../../lib/supabase";
-import SinPermisos from "@components/admin/SinPermisos.astro";
+import RolSecurity from "@components/admin/RolSecurity.astro";
 
-// Verifica si hay un usuario autenticado
-const user = Astro.locals.StaffUser;
-const pathname = Astro.url.pathname;
-let userWithRango = {
-    email: user?.email || "Desconocido",
-    rango: "Sin rango"
-};
 
-try {
-    // Obtén el rango del usuario autenticado
-    if (user?.email) {
-        const { data: adminData, error } = await supabaseAdmin
-            .from("Administradores")
-            .select("rango")
-            .eq("user_email", user.email)
-            .single(); // Obtiene un único registro
-
-        if (error) {
-            console.error("Error al obtener rango:", error.message);
-        } else if (adminData) {
-            userWithRango.rango = adminData.rango || "Sin rango";
-        }
-    }
-} catch (err) {
-    console.error("Error al obtener datos del usuario:", err);
-}
-
-let accessibleBlocks = [];
-
-try {
-    const { data: pageAccess, error } = await supabaseAdmin
-        .from('Whitlist')
-        .select('*')
-        .or(`nombre.eq.${userWithRango.email},role.eq.${userWithRango.rango}`); // Verifica acceso por email o rol
-
-    if (pageAccess) {
-        accessibleBlocks = pageAccess.map(item => item.pagina); // Extrae las páginas a las que tiene acceso
-    }
-} catch (err) {
-    console.error("Error al obtener acceso:", err);
-}
-const userHasAccess = accessibleBlocks.includes(pathname);
 ---
 <LayoutAll title="Añadir Usuario">
-{userHasAccess ? (
-    <>
+
+    <RolSecurity>
     <CrearUsuarios />
-    </>
-) : (
-    <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
-)}
+    </RolSecurity>
+
 </LayoutAll>
 
  

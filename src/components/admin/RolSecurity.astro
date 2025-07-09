@@ -1,0 +1,61 @@
+---
+import { verificarSesion } from "src/lib/session";
+import { supabaseAdmin } from "src/lib/supabase";
+import SinPermisos from "@components/admin/SinPermisos.astro";
+
+const usuario = await verificarSesion(Astro.request);
+
+if(usuario){
+	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
+}
+
+const pathname = Astro.url.pathname;
+let usuarioWithRango = {
+    email: usuario?.email || "Desconocido",
+    rango: "Sin rango"
+};
+
+try {
+    // Obtén el rango del usuario autenticado
+    if (usuario?.email) {
+        const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango")
+            .eq("user_email", usuario.email)
+            .single(); // Obtiene un único registro
+
+        if (error) {
+            console.error("Error al obtener rango:", error.message);
+        } else if (adminData) {
+            usuarioWithRango.rango = adminData.rango || "Sin rango";
+        }
+    }
+} catch (err) {
+    console.error("Error al obtener datos del usuario:", err);
+}
+
+let accessibleBlocks = [];
+
+try {
+    const { data: pageAccess, error } = await supabaseAdmin
+        .from('Whitlist')
+        .select('*')
+        .or(`nombre.eq.${usuarioWithRango.email},role.eq.${usuarioWithRango.rango}`); // Verifica acceso por email o rol
+
+    if (pageAccess) {
+        accessibleBlocks = pageAccess.map(item => item.pagina); // Extrae las páginas a las que tiene acceso
+    }
+} catch (err) {
+    console.error("Error al obtener acceso:", err);
+}
+const userHasAccess = accessibleBlocks.includes(pathname);
+
+---
+
+ {userHasAccess ? (
+    <>
+    <slot />
+    </>
+    ) : (
+    <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
+)}

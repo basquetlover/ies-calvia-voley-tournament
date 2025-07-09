@@ -6,50 +6,10 @@ import EquiposListSS from "@sections/administracion/EquipoListSS.astro";
 import LayoutAll from "@layouts/LayoutAll.astro";
 
 import { supabaseAdmin } from "../../lib/supabase";
-import SinPermisos from "@components/admin/SinPermisos.astro";
 
-// Verifica si hay un usuario autenticado
-const user = Astro.locals.StaffUser;
-const pathname = Astro.url.pathname;
-let userWithRango = {
-    email: user?.email || "Desconocido",
-    rango: "Sin rango"
-};
+import RolSecurity from "@components/admin/RolSecurity.astro";
 
-try {
-    // Obtén el rango del usuario autenticado
-    if (user?.email) {
-        const { data: adminData, error } = await supabaseAdmin
-            .from("Administradores")
-            .select("rango")
-            .eq("user_email", user.email)
-            .single(); // Obtiene un único registro
 
-        if (error) {
-            console.error("Error al obtener rango:", error.message);
-        } else if (adminData) {
-            userWithRango.rango = adminData.rango || "Sin rango";
-        }
-    }
-} catch (err) {
-    console.error("Error al obtener datos del usuario:", err);
-}
-
-let accessibleBlocks = [];
-
-try {
-    const { data: pageAccess, error } = await supabaseAdmin
-        .from('Whitlist')
-        .select('*')
-        .or(`nombre.eq.${userWithRango.email},role.eq.${userWithRango.rango}`); // Verifica acceso por email o rol
-
-    if (pageAccess) {
-        accessibleBlocks = pageAccess.map(item => item.pagina); // Extrae las páginas a las que tiene acceso
-    }
-} catch (err) {
-    console.error("Error al obtener acceso:", err);
-}
-const userHasAccess = accessibleBlocks.includes(pathname);
 
 let equiposSS = 0;
 let equipossTotal = 0;
@@ -79,9 +39,9 @@ const { data: equiposNumero, error: errorNumero } = await supabaseAdmin
   }
 ---
 <LayoutAll title="Gestionar Equipos">
-    {userHasAccess ? (
+    
 
-    <>
+    <RolSecurity>
         <div class="max-w-4xl w-full h-auto p-10 mx-auto my-auto mt-10 flex flex-wrap  gap-10 items-center place-content-center">
             <a href="/admin/anadir-equipos" class="w-72 h-16 bg-accent rounded-xl flex flex-row items-center place-content-center gap-4 text-xl text-amarillo font-bold hover:scale-105 duration-300 transform">
                 Añadir Equipo
@@ -101,8 +61,6 @@ const { data: equiposNumero, error: errorNumero } = await supabaseAdmin
           Equipos Navidad
         </h2>
         <EquiposList />
-      </>
-) : (
-    <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
-)}
+      </RolSecurity>
+
 </LayoutAll>

@@ -1,12 +1,13 @@
 ---
 import LayoutAll from "@layouts/LayoutAll.astro";
+import { verificarSesion } from "src/lib/session";
 import { supabaseAdmin } from "src/lib/supabase";
-const user = Astro.locals.StaffUser;
 
-let userWithRango = {
-    email: user?.email || "Desconocido",
-    rango: "Sin rango"
-};
+const usuario = await verificarSesion(Astro.request);
+
+if(usuario){
+	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
+}
 
 interface Equipo {
   nombre_equipo: string;
@@ -30,7 +31,7 @@ let escudosMappartidos_designados: Record<string, string> = {}; // Mapa para gua
 let { data: Administradores, error } = await supabaseAdmin
   .from('Administradores')
   .select('nombre')
-  .eq('user_email', userWithRango.email)
+  .eq('user_email', usuario.email)
   .single();
 
 try {

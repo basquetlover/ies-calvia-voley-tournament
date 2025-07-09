@@ -6,6 +6,7 @@ import LayoutAll from "@layouts/LayoutAll.astro";
 
 import { supabaseAdmin } from "../../lib/supabase";
 import SinPermisos from '@components/admin/SinPermisos.astro';
+import RolSecurity from '@components/admin/RolSecurity.astro';
 
 // Verifica si hay un usuario autenticado
 const user = Astro.locals.StaffUser;
@@ -51,8 +52,8 @@ try {
 const userHasAccess = accessibleBlocks.includes(pathname);
 ---
 <LayoutAll title='Usuarios'>
-{userHasAccess ? (
-    <>
+
+    <RolSecurity>
             {/* <!-- <AddRango />
             <CrearUsuarios /> -->
             <!--
@@ -74,9 +75,7 @@ const userHasAccess = accessibleBlocks.includes(pathname);
                 </a>
             </div>
             <UserList />
-        </>
-) : (
-    <SinPermisos /> // Renderiza el componente NoAccess si no tiene acceso
-)}
+        </RolSecurity>
+
     
 </LayoutAll>
