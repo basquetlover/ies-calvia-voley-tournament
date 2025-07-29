@@ -24,6 +24,7 @@ const images = [
 let anuncios = false
 const randomImage = images[Math.floor(Math.random() * images.length)];
 const usuario = await verificarSesion(Astro.request);
+
 if(usuario){
 	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
 
@@ -36,21 +37,19 @@ if(usuario){
 	if(admin){
 		anuncios = true
 	}
-
+// console.log(usuario)
 }
-
-
-
 
 import Analytics from '@vercel/analytics/astro'
 import CookiesAlert from '@components/CookiesAlert.astro';
 import { verificarSesion } from 'src/lib/session';
 import { supabaseAdmin } from 'src/lib/supabase';
+import ActualizarCurso from '@components/ActualizarCurso.astro';
 
-  fetch('https://api.ipify.org?format=json')
-    .then(res => res.json())
-    .then(data => console.log('IP del visitante:', data.ip))
-    .catch(err => console.error('Error al obtener la IP:', err));
+//   fetch('https://api.ipify.org?format=json')
+//     .then(res => res.json())
+//     .then(data => console.log('IP del visitante:', data.ip))
+//     .catch(err => console.error('Error al obtener la IP:', err));
 ---
 
 <!DOCTYPE html>
@@ -154,52 +153,13 @@ console.log(
 	
 
 	<body class="bg-gris ">
-		<!--Anuncios 1 -->
-<!-- <script type="text/partytown">
-(function(qjej){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = qjej || {};
-s.src = "\/\/idioticleadership.com\/c.DE9i6Hbc2\/5glwSxWBQI9FN\/j\/QE1fNOzcgg2TN\/C_0Y2\/NsDFUZ3EOQDtYk1h";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
-</script>
-
-Anuncios 2
- <script type="text/partytown">
-(function(iwmk){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = iwmk || {};
-s.src = "\/\/popular-tea.com\/biXrVzs.dJG\/lX0WYRWTcP\/remmx9mutZbUTllknPHTSYS0uN\/TPc\/4ENkzDIntJN\/jBQm1_NwzEgV3iM\/wf";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
-</script> -->
-		<!-- Ezoic - top_of_page - top_of_page -->
-<!-- <div id="ezoic-pub-ad-placeholder-101"></div> -->
-<!-- End Ezoic - top_of_page - top_of_page -->
 		
 		<Analytics />
 		<Loading />
 		<CookiesAlert />
+		<ActualizarCurso />
 
-		<!-- {
-			anuncios === true ? (<>
-			
-			 <script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/51238/98f06b322303df7742dd3487da2c8c739b7c0d4c/lib.js"></script>
-<script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50323/d25da46a9d38b2a867f46bc12680e9246aa21f8a/lib.js"></script>
-<script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50322/53a18589b7c6dc5d334d5ed7f967977dec9b2d2b/lib.js"></script>
-<script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50469/72e5682117b00cba4aee4d650a5777233740d3b8/lib.js"></script>
-<script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50321/12b1635dceb3c49741b495a8161d826823cfdd3a/lib.js"></script>	
-<script type="text/javascript" src="https://cdn.diclotrans.com/sdk/v1/50319/5c88d32795ddf65bb48896d2658a5aaf8397d5e5/lib.js"></script> 
-</>):(<></>)
-		} -->
+
 
 
 		
@@ -211,13 +171,7 @@ l.parentNode.insertBefore(s, l);
 
 			<Footer />
 		</div>
-		<a href="https://hilltopads.com/es?ref=324204"><img src="//static.hilltopads.com/other/banners/pub/huge_income/300x250.gif?v=1750948924"></a>
-<!--
-		
-		 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9271106,document.createElement('script'))</script>
-		<script src="https://ligheechoagool.com/88/tag.min.js" data-zone="144766" async data-cfasync="false"></script> 
-		<script src="https://aiharsoreersu.net/act/files/tag.min.js?z=9270544" data-cfasync="false" async></script> 
-		-->
+
 
 </body>
 

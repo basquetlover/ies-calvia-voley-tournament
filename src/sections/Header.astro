@@ -222,7 +222,7 @@ cerrar_user_menu.addEventListener('click', function() {
 
                     <a
                         href={page.href}
-                        class={` ${page.isActive ? 'actual' : 'hover:text-amarillo'} group relative flex flex-col items-center w-max text-center text-xl text-white transition-all ${!page.href ? 'pointer-events-none' : ''}`}
+                        class={` ${page.isActive ? 'actual' : 'hover:text-amarillo'} group relative flex flex-col items-center w-max text-center text-base text-white transition-all ${!page.href ? 'pointer-events-none' : ''}`}
                         title={`Página ${page.name.toLowerCase()}`}
                         >
                         {page.name}
@@ -287,7 +287,7 @@ cerrar_user_menu.addEventListener('click', function() {
                 paginas_secundarias.map(({ name, href, isActive }) => (
                   <a
                     href={href}
-                    class={`redirect ${isActive ? 'actual' : 'hover:text-amarillo'} group relative flex flex-col items-center w-max text-center text-xl text-white transition-all ${!href ? 'pointer-events-none' : ''}`}
+                    class={`redirect ${isActive ? 'actual' : 'hover:text-amarillo'} group relative flex flex-col items-center w-max text-center text-base text-white transition-all ${!href ? 'pointer-events-none' : ''}`}
                     title={`Página ${name.toLowerCase()}`}
                   >
                     {name}
@@ -361,7 +361,7 @@ cerrar_user_menu.addEventListener('click', function() {
 <div class="menu hidden flex-col gap-3 bg-gris w-full h-full fixed overflow-y-auto barra-overflow z-50 grid-cols-1 grid-rows-[100px_1fr_1fr]  place-items-center m-0 py-10" id="menu-content">
     
   <div class="w-[95%] py-3 h-auto flex flex-row justify-around content-center">
-    <h4 class="text-center my-auto text-blanco text-xl">MENÚ</h4>
+    <h4 class="text-center my-auto text-blanco text-base">MENÚ</h4>
     <a href="/" title="Pàgina de inicio" class="w-16 h-16 flex place-content-center justify-center cursor-pointer group">
       <img src="/img/logo_torneo.png" alt="logo web" class="w-16 h-16 group-hover:scale-125 transform transition-transform duration-300" />
     </a>
