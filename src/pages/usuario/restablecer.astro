@@ -1,0 +1,220 @@
+---
+import LayoutVacio from "@layouts/LayoutVacio.astro";
+import { supabaseAdmin } from "src/lib/supabase";
+
+const { searchParams } = new URL(Astro.request.url);
+let UserReference = searchParams.get('UserReference');
+
+if (UserReference) {
+  // Eliminar comillas si las hubiera
+  UserReference = UserReference.replace(/^"(.*)"$/, '$1');
+}
+const { data: Usuario } = await supabaseAdmin
+    .from('Usuarios')
+    .select("*")
+    .eq('reestablecer_id', UserReference)
+    .single();
+
+---
+<LayoutVacio title="Recupera Contrasenya | IES Calvià Voley Tournament" descripcion="Proces de recuperar contrasenya">
+<section class="w-full h-screen flex flex-col items-center place-content-center relative xs:scale-90 sm:scale-90 md:scale-100 scale-100">
+    <h2 class="z-50 text-center text-amarillo font-bold text-3xl">Restableix Contrasenya</h2>
+    
+    
+    <div class="formulario">
+        <form id="contrasena-olvidada" class="w-96 rounded-xl h-auto  bg-gris-claro mx-auto mt-10 py-4 px-2" method="POST" action="/api/sesiones/restablecer-contrasena">
+            <div id="errorbox" class="text-red-500"></div>
+            <div class="mx-auto my-auto w-full h-full p-4 flex flex-col gap-y-3">
+                
+                <div class="flex flex-col gap-y-10 relative">
+                    <!-- <input type="hidden" name="nombre" value={usuario.nombre} /> -->
+                    <div class="w-max mx-auto relative text-blanco">
+                        <p>Usuari: {Usuario?.nombre}</p>
+                        <p>Email: {Usuario?.email}</p>
+                        <input type="hidden" name="referencia_id" value={UserReference} />
+                    </div>
+
+                    <div class="flex flex-col relative">
+                        <div class="w-max mx-auto relative">
+                            <label for="nueva_password" class="form bg-gris z-10 rounded-full px-3 py-1 text-blanco text-xl">Nova Contrasenya</label>
+                            <div class="w-72 h-12 relative">
+                                <input type="password" id="nueva_password" name="nueva_password" placeholder="Introdueix una contrasenya" class="px-3 py-2 w-72 h-12 bg-gris rounded-full text-base text-blanco border-none" />
+                                <div class="absolute w-6 h-6 right-2 top-3 cursor-pointer select-none" id="nuevo_estado">
+                                    <span class="block" id="nuevo_oculto">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                            <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 35-12t37-4q75 0 128 53t52 127q0 20-4 38t-12 34Zm128 126-58-56q38-29 68-63t50-79q-50-101-143-160t-209-60q-29 0-57 4t-55 12l-62-62q41-17 84-25t90-9q151 0 269 84t171 216q-23 59-60 110t-88 88Zm20 246L624-222q-35 11-70 17t-74 5q-151 0-269-83T40-500q21-53 53-98t73-82L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 144 161t208 59q20 0 39-2t39-6l-36-38-21 5q-10 2-21 1-75 0-127-52t-53-128q0-11 2-21t4-21l-84-82Zm319 93Zm-151 75Z"/>
+                                          </svg>
+                                    </span>
+                                    <span class="hidden" id="nuevo_visible">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                            <path d="M480-320q75 0 128-52t52-128q0-75-52-127t-128-53q-75 0-127 53t-53 127q0 75 53 128t127 52Zm0-72q-45 0-76-31t-32-77q0-45 32-76t76-32q45 0 77 32t31 76q0 45-31 77t-77 31Zm0 192q-146 0-266-81T40-500q54-137 174-218t266-82q146 0 266 82t174 218q-54 137-174 219t-266 81Zm0-300Zm0 220q113 0 208-59t144-161q-50-101-144-160t-208-60q-113 0-207 60T128-500q50 101 145 161t207 59Z"/>
+                                          </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col relative">
+                        <div class="w-max mx-auto relative">
+                            <label for="confirmar_password" class="form bg-gris z-10 rounded-full px-2 py-1 text-blanco text-xl">Confirmar Contrasenya</label>
+                            <div class="w-72 h-12 relative">
+                                <input type="password" id="confirmar_password" name="confirmar_password" placeholder="Introdueix una contrasenya" class="px-3 py-2 w-72 h-12 bg-gris rounded-full text-base text-blanco border-none" />
+                                <div class="absolute w-6 h-6 right-2 top-3 cursor-pointer select-none" id="confirmar_estado">
+                                    <span class="block" id="confirmar_oculto">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                            <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 35-12t37-4q75 0 128 53t52 127q0 20-4 38t-12 34Zm128 126-58-56q38-29 68-63t50-79q-50-101-143-160t-209-60q-29 0-57 4t-55 12l-62-62q41-17 84-25t90-9q151 0 269 84t171 216q-23 59-60 110t-88 88Zm20 246L624-222q-35 11-70 17t-74 5q-151 0-269-83T40-500q21-53 53-98t73-82L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 144 161t208 59q20 0 39-2t39-6l-36-38-21 5q-10 2-21 1-75 0-127-52t-53-128q0-11 2-21t4-21l-84-82Zm319 93Zm-151 75Z"/>
+                                          </svg>
+                                    </span>
+                                    <span class="hidden" id="confirmar_visible">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#e8eaed" class="w-6 h-6" viewBox="0 -960 960 960">
+                                            <path d="M480-320q75 0 128-52t52-128q0-75-52-127t-128-53q-75 0-127 53t-53 127q0 75 53 128t127 52Zm0-72q-45 0-76-31t-32-77q0-45 32-76t76-32q45 0 77 32t31 76q0 45-31 77t-77 31Zm0 192q-146 0-266-81T40-500q54-137 174-218t266-82q146 0 266 82t174 218q-54 137-174 219t-266 81Zm0-300Zm0 220q113 0 208-59t144-161q-50-101-144-160t-208-60q-113 0-207 60T128-500q50 101 145 161t207 59Z"/>
+                                          </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full h-auto">
+                    
+                    <div class="w-full h-auto flex flex-row items-center place-content-around">
+                        <a href="/" rel="noreferrer" class="px-3 py-2 text-blanco font-semibold bg-cancelar rounded-full text-base hover:scale-110 duration-300 transition-all transform"> Cancela </a>
+                        <button id="comprobacion" type="submit" class="px-3 py-2 cursor-pointer text-blanco font-semibold bg-aceptar rounded-full text-base hover:scale-110 duration-300 transition-all transform">Restablir Contrasenya</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<style>
+    .centrar {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .ojo{
+        position: absolute;
+        right: 4px;
+    }
+    .formulario {
+        z-index: 10000;
+    }
+    .form {
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+</style>
+<script>
+
+
+let nuevo_ojo = true
+const nuevo_estado = document.getElementById("nuevo_estado")!;
+const nuevo_oculto = document.getElementById("nuevo_oculto")!;
+const nuevo_visible = document.getElementById("nuevo_visible")!;
+const nueva_password = document.getElementById("nueva_password")! as HTMLInputElement;
+nuevo_estado.addEventListener('click',  function(){
+if(nuevo_ojo){
+    nueva_password.type = "text";
+    nuevo_oculto.classList.remove("block");
+    nuevo_oculto.classList.add("hidden");
+    nuevo_visible.classList.add("block");
+    nuevo_visible.classList.remove("hidden");  
+    nuevo_ojo = false
+} else{
+    nueva_password.type = "password";
+    nuevo_oculto.classList.add("block");
+    nuevo_oculto.classList.remove("hidden");
+    nuevo_visible.classList.remove("block");
+    nuevo_visible.classList.add("hidden");
+    nuevo_ojo = true  
+}
+});
+
+let confirmar_ojo = true
+const confirmar_estado = document.getElementById("confirmar_estado")!;
+const confirmar_oculto = document.getElementById("confirmar_oculto")!;
+const confirmar_visible = document.getElementById("confirmar_visible")!;
+const confirmar_password = document.getElementById("confirmar_password")! as HTMLInputElement;
+confirmar_estado.addEventListener('click',  function(){
+if(confirmar_ojo){
+    confirmar_password.type = "text";
+    confirmar_oculto.classList.remove("block");
+    confirmar_oculto.classList.add("hidden");
+    confirmar_visible.classList.add("block");
+    confirmar_visible.classList.remove("hidden");  
+    confirmar_ojo = false
+} else{
+    confirmar_password.type = "password";
+    confirmar_oculto.classList.add("block");
+    confirmar_oculto.classList.remove("hidden");
+    confirmar_visible.classList.remove("block");
+    confirmar_visible.classList.add("hidden");
+    confirmar_ojo = true  
+}
+});
+</script>
+</LayoutVacio>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Script Errores Form cargado');
+    document.getElementById('contrasena-olvidada')?.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita el envío del formulario por defecto
+
+        const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+        // const form = "/api/usuario/anadir-equipo"
+        const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        });
+        
+        
+
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("text/html")) {
+            const html = await response.text();
+            document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+            // Desplazarse hacia el div de error
+           
+            document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+        } else if (contentType && contentType.includes("application/json")) {
+            const jsonResponse = await response.json();
+            if (jsonResponse.success) {
+                // Redirigir a la página principal
+                
+            
+                const html = `
+                 <div class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#046419] bg-[#34a844] bg-opacity-100 text-sm font-semibold">
+                        <span>
+                    <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#046419] w-10 h-10" viewBox="0 -960 960 960">
+                        <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                    </svg>
+
+                        </span>
+                        <p class="text-[#046419]">Contrasenya Actualizada</p>
+                        </div>
+                `;
+
+                document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+            // Desplazarse hacia el div de error
+           
+            document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+             window.location.href = '/iniciar-sesion'; // Redirige al usuario
+            } else {
+                // Manejo de errores si es necesario
+                document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
+            }
+        }
+    });
+});
+</script>

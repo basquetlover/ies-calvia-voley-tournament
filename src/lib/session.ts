@@ -13,7 +13,7 @@ export async function verificarSesion(request: Request) {
     });
   }
 
-  const sessionId = cookies.get('session_id');
+   const sessionId = cookies.get('session_id');
 
   
   if (!sessionId) {

@@ -1,0 +1,109 @@
+---
+import LayoutMenu from "@layouts/LayoutMenu.astro";
+
+export const prerender = false; // Necesario para SSR
+const { cookies } = Astro;
+const ProcesoEmpezado = cookies.get('Contrasena_Olvidada')?.value;
+let autorizado = false;
+let minutosRestants = null;
+
+if(!ProcesoEmpezado){
+    autorizado = true
+    console.log("Proceso ya iniciado")
+    
+} else{
+     const expiracionTimestamp = parseInt(ProcesoEmpezado, 10);
+        const ahora = Date.now();
+        const diferenciaMs = expiracionTimestamp - ahora;
+        minutosRestants = Math.ceil(diferenciaMs / (60 * 1000));
+}
+---
+<LayoutMenu title="Contrasenya Oblidada  | IES Calvià Voley Tournament" descripcion="Recuperar contrasenya d'usuari">
+    {
+        autorizado === true ? (<>
+            <form id="contrasena-olvidada" method="POST" action="/api/sesiones/contrasena-olvidada" class="w-80 h-auto mx-auto bg-gris-claro rounded-lg p-2">
+                <h1 class="text-center text-amarillo text-2xl font-semibold mt-5">Restableix la contrasenya</h1>
+                <p class=" text-blanco text-sm mt-3">T'enviarem un correu electrònic per restablir la contrasenya.</p>
+                <input type="email" class="bg-gris bg-opacity-60 text-sm p-1 rounded-md mt-3" name="email" placeholder="email@email.com" />
+                <button class="mt-5 bg-azul-suave text-blanco px-3 py-2 rounded-lg">
+                    Restablir Contrasenya
+                </button>
+                <div id="errorbox" class="mt-5">
+                
+                </div>
+            </form>
+        </>):(<>
+            <div class="w-80 h-auto mx-auto bg-gris-claro rounded-lg p-2">
+                <h1 class="text-center text-amarillo text-2xl font-semibold mt-5">Restableix la contrasenya</h1>
+                <h2 class="text-center text-accent text-xl mt-3">Procés iniciat</h2>
+                <p class=" text-blanco text-sm mt-3">La teva sol·licitud ja s'ha iniciat correctament.</p>
+                <p class=" text-blanco text-sm mt-3">Si us plau, espera <span class="font-semibold text-amarillo">{minutosRestants} minuts</span> abans de tornar-ho a intentar o realitzar una nova acció.</p>
+                
+                <button class="mt-5 mb-2 bg-azul-suave text-blanco px-3 py-2 rounded-lg cursor-not-allowed">
+                    ⏳ Estem treballant-hi!
+                </button>
+                
+            </div>
+        </>)
+    }
+    
+</LayoutMenu>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Script Errores Form cargado');
+    document.getElementById('contrasena-olvidada')?.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita el envío del formulario por defecto
+
+        const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+        // const form = "/api/usuario/anadir-equipo"
+        const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
+
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        });
+        
+        
+
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("text/html")) {
+            const html = await response.text();
+            document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+            // Desplazarse hacia el div de error
+           
+            document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+        } else if (contentType && contentType.includes("application/json")) {
+            const jsonResponse = await response.json();
+            if (jsonResponse.success) {
+                // Redirigir a la página principal
+                // window.location.href = '/usuario'; // Redirige al usuario
+                const minutos = 15;
+                const ahora = Date.now();
+                const expiracion = ahora + minutos * 60 * 1000;
+                document.cookie = `Contrasena_Olvidada=${expiracion}; path=/; expires=${new Date(expiracion).toUTCString()}`;
+
+                const html = `
+                 <div class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#046419] bg-[#34a844] bg-opacity-100 text-sm font-semibold">
+                        <span>
+                    <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#046419] w-10 h-10" viewBox="0 -960 960 960">
+                        <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                    </svg>
+
+                        </span>
+                        <p class="text-[#046419]">Email enviat</p>
+                        </div>
+                `;
+
+                document.getElementById('errorbox')!.innerHTML = html; // Usa el operador de aserción no nula
+            // Desplazarse hacia el div de error
+           
+            document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // Manejo de errores si es necesario
+                document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
+            }
+        }
+    });
+});
+</script>
