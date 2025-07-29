@@ -63,6 +63,28 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     // Esperar el resultado de hashPassword
     const hashedPassword = await hashPassword(password);
 
+    function obtenerAñosEscolares(fecha = new Date()) {
+      const año = fecha.getFullYear();
+      const mes = fecha.getMonth(); // enero = 0, diciembre = 11
+
+      let inicio;
+      if (mes >= 8) {
+        // Si estamos en septiembre (8) o después, el curso actual empieza este año
+        inicio = año;
+      } else {
+        // Si estamos antes de septiembre, el curso actual empezó el año anterior
+        inicio = año - 1;
+      }
+
+      const actual = `${inicio}-${inicio + 1}`;
+
+      return actual;
+    }
+
+// Ejemplo de uso
+
+const anyo_actual = obtenerAñosEscolares();
+
     let { data: Usuarios, error } = await supabaseAdmin
     .from('Usuarios')
     .select('nombre,email')
@@ -94,7 +116,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const { data, error: ERRenviar } = await supabaseAdmin
     .from('Usuarios')
     .insert([
-      { nombre: nombre, email: email, contraseña: hashedPassword, curso: curso },
+      { nombre: nombre, email: email, contraseña: hashedPassword, curso: curso, anyo: anyo_actual },
     ])
 
     if (ERRenviar) {

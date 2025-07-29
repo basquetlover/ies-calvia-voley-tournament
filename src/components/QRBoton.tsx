@@ -1,7 +1,11 @@
 import React, { useRef } from 'react';
 import QRCode from 'qrcode';
 
-const QRBotonReact = () => {
+interface QRBotonProps {
+  NombreAdmin: string;
+}
+
+const QRBotonReact = ({ NombreAdmin }: QRBotonProps) => {
   const imgRef = useRef<HTMLImageElement>(null);
 
   const generarQR = async () => {
@@ -15,7 +19,7 @@ const QRBotonReact = () => {
         // Descargar automáticamente
         const link = document.createElement('a');
         link.href = dataUrl;
-        link.download = 'codigo_qr.png';
+        link.download = `QR_${NombreAdmin}.png`;
         link.click();
       }
     } catch (err) {

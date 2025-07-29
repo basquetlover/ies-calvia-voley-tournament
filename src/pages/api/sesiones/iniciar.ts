@@ -16,9 +16,9 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
 
     if(politica_cookies){
         const formData = await request.formData();
-    const nombre = formData.get("nombre")?.toString();
-    const password = formData.get("password")?.toString();
-    let id_session = "";
+        const nombre = formData.get("nombre")?.toString(); // <input name="nombre" id="4584" />
+        const password = formData.get("password")?.toString(); // <input name="password" id="4684" />
+        let id_session = "";
      
 
     // Validar que se proporcionen nombre y contraseña
