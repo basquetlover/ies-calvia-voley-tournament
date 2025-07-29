@@ -1,4 +1,6 @@
 ---
+import { verificarSesion } from 'src/lib/session';
+
 import { supabaseAdmin } from "../../../lib/supabase";
 
 
@@ -14,13 +16,36 @@ type AdministradorProps = {
 };
 
 
+let NombreCompleto: string = "Sin_Nombre";
 const email = Astro.url.pathname.split('/').pop();
 let { data: Staff, error } = await supabaseAdmin
   .from('Administradores')
   .select('*')
   .eq('user_email', email)
   .single();
+if(Staff){
+    NombreCompleto = `${Staff?.nombre}_${Staff?._1r_apellido}_${Staff?._2n_apellido}`
+}
+const usuario = await verificarSesion(Astro.request);
+let QRDescarga = false;
+if(usuario){
+	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
 
+	const { data: admin, error } = await supabaseAdmin
+    .from('Administradores')
+    .select('*')
+    .eq('user_email', usuario.email)
+    .single();
+
+    if(admin){
+        if(admin.rango === "Owner" || admin.rango === "Co-Owner"){
+            QRDescarga = true
+        }
+    }
+
+
+// console.log(usuario)
+}
 ---
 
 <LayoutUsuario title=`Equip ${email}` descripcion=`Llista de l'equip ${email}`>
@@ -48,8 +73,8 @@ let { data: Staff, error } = await supabaseAdmin
     </div>
     <div>
         {
-            Staff?.rango === "Owner" || Staff?.rango === "Co-Owner" ? (<>
-                <QRBotonReact client:load />
+            QRDescarga === true ? (<>
+                <QRBotonReact client:load NombreAdmin={NombreCompleto}/>
             </>):(<>
             
             </>)
