@@ -8,7 +8,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     const formData = await request.formData();
     const nombre = formData.get("nombre")?.toString();
-    const email = formData.get("email")?.toString();
+    let nombre_real = formData.get("nombre_real")
+    let apellidos = formData.get("apellidos")
+    let email = formData.get("email");
     const password = formData.get("password")?.toString();
     const curso = formData.get("curso")?.toString();
 
@@ -20,16 +22,49 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       );
   }
 
-  if (email === "" || !email) {
-      console.log("Es necesario un email de usuario");
+  if(!nombre_real || nombre_real ===""){
+     const nombre_google = formData.get("nombre_google");
+
+     if(!nombre_google || nombre_google ===""){
       return new Response(
-        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">És requereix un email de contacte</div>`, 
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Es requereix el nom de l'usuari</div>`, 
         { status: 400, headers: { "Content-Type": "text/html" } }
       );
+     } else{
+      nombre_real = nombre_google
+     }
+  }
+
+  if(!apellidos || apellidos ===""){
+     const apellidos_google = formData.get("apellidos_google");
+
+     if(!apellidos_google || apellidos_google ===""){
+      return new Response(
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">Es requereix els llinatges de l'usuari</div>`, 
+        { status: 400, headers: { "Content-Type": "text/html" } }
+      );
+     } else{
+      apellidos = apellidos_google
+     }
+  }
+
+  if (email === "" || !email) {
+    const email_google = formData.get("email_google");
+
+    if(!email_google || email_google ===""){
+      console.log("Es necesario un email de usuario");
+        return new Response(
+          `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">És requereix un email de contacte</div>`, 
+          { status: 400, headers: { "Content-Type": "text/html" } }
+        );
+    } else{
+      email = email_google
+    }
+      
   }
   // Validar el formato del email
   const emailPattern = /^(.*@iescalvia.com|.*@a\.iescalvia.com)$/;
-  if (!emailPattern.test(email)) {
+  if (!emailPattern.test(String((email)))) {
       console.log("El email debe ser del centro: @iescalvia.com o @a.iescalvia.com");
       return new Response(
         `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'email ha de ser del centre @iescalvia o @a.iescalvia</div>`, 
@@ -116,7 +151,7 @@ const anyo_actual = obtenerAñosEscolares();
     const { data, error: ERRenviar } = await supabaseAdmin
     .from('Usuarios')
     .insert([
-      { nombre: nombre, email: email, contraseña: hashedPassword, curso: curso, anyo: anyo_actual },
+      { nombre: nombre, email: email, contraseña: hashedPassword, curso: curso, anyo: anyo_actual, nombre_real: nombre_real, apellidos: apellidos },
     ])
 
     if (ERRenviar) {

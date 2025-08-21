@@ -1,0 +1,55 @@
+<!-- ---
+// src/components/LoginGoogle.astro
+
+const CLIENT_ID = import.meta.env.CLIENT_ID_OAUTH;
+---
+<div id="g_id_onload"
+     data-client_id={CLIENT_ID}
+     data-callback="handleCredentialResponse"
+     data-auto_prompt="false">
+</div>
+
+<div class="g_id_signin"
+     data-type="standard"
+     data-shape="pill"
+     data-theme="outline"
+     data-text="signin_with"
+     data-size="large"
+     data-logo_alignment="left">
+</div>
+<script src="https://accounts.google.com/gsi/client" async defer lang="ca"></script>
+
+<script>
+    console.log("Registro con Google")
+     declare global {
+    interface Window {
+      handleCredentialResponse: (response: any) => void;
+    }
+  }
+  window.handleCredentialResponse = async (response: { credential: any; }) => {
+    // El token JWT del usuario (contiene nombre y email)
+    const jwt = response.credential;
+
+    // Decodificar el token para extraer la info del usuario
+    const base64Url = jwt.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    const payload = JSON.parse(jsonPayload);
+    const name = payload.name;
+    const email = payload.email;
+
+    console.log("Usuario:", name, email);
+
+    // Enviar al backend
+    // await fetch('/api/login-google', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ name, email })
+    // });
+
+    alert(`Bienvenido/a, ${name}`);
+  };
+</script> -->
