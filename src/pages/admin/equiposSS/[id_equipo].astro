@@ -385,7 +385,7 @@ if(usuario){
             <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               
               <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[1fr] grid-rows-1 md:grid-cols-[1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[1fr] sm:grid-cols-1 sm:grid-rows-[1fr] gap-2 gap-y-8 place-items-center">
-                <!-- <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
+                <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
                   {entrenador_img ? (
                     <img 
                         src={entrenador_img} 
@@ -403,7 +403,7 @@ if(usuario){
                                         <span id="img-entrenador-si" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${entrenador_img ? (""): ("pointer-events-none")}`}>Si</span>
                                         <span id="img-entrenador-no" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${entrenador_img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
                                   </div>
-                  </div> -->
+                  </div>
                 
                   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               {/* Nombre */}
@@ -497,7 +497,7 @@ if(usuario){
              </div>
       </div>
       <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[1fr] grid-rows-1 md:grid-cols-[1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[1fr] sm:grid-cols-1 sm:grid-rows-[1fr] gap-2 gap-y-8 place-items-center">
-            {/* <div class="w-20 min-h-20 h-auto overflow-hidden gap-1 flex flex-col items-center justify-center">
+             <div class="w-20 min-h-20 h-auto overflow-hidden gap-1 flex flex-col items-center justify-center">
               {jugador.img ? (
                   <img 
                       src={jugador.img} 
@@ -516,7 +516,7 @@ if(usuario){
                       <span id={`img-jugador-si-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${jugador.img ? (""): ("pointer-events-none")}`}>Si</span>
                       <span id={`img-jugador-no-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${jugador.img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
                 </div>
-            </div> */}
+            </div> 
             <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               <input type="hidden" name={`player_id_${index}`} value={jugador.id}/>
                 <input type="hidden" name={`img-jugador_${index}`} class="w-14" id={`img-jugador_${index}`} value={`foto-denegada`} required/>
@@ -609,7 +609,7 @@ if(usuario){
             <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               
               <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[1fr] grid-rows-1 md:grid-cols-[1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[1fr] sm:grid-cols-1 sm:grid-rows-[1fr] gap-2 gap-y-8 place-items-center">
-                <!-- <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
+                <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
                   {profesor_img ? (
                     <img 
                         src={profesor_img} 
@@ -629,7 +629,7 @@ if(usuario){
                                         <span id="img-profesor-si" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${profesor_img ? (""): ("pointer-events-none")}`}>Si</span>
                                         <span id="img-profesor-no" class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${profesor_img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
                                   </div>
-                  </div> -->
+                  </div>
                 
                   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               {/* Nombre */}
@@ -721,7 +721,7 @@ if(usuario){
    </div>
 </div>
 <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[1fr] grid-rows-1 md:grid-cols-[1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[1fr] sm:grid-cols-1 sm:grid-rows-[1fr] gap-2 gap-y-8 place-items-center">
-  {/* <div class="w-20 min-h-20 h-auto overflow-hidden flex flex-col items-center justify-center">
+   <div class="w-20 min-h-20 h-auto overflow-hidden flex flex-col items-center justify-center">
     {jugador.img ? (
   <img 
       src={jugador.img} 
@@ -739,7 +739,7 @@ if(usuario){
                       <span id={`img-staff-si-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco bg-gris-claro bg-opacity-60 ${jugador.img ? (""): ("pointer-events-none")}`}>Si</span>
                       <span id={`img-staff-no-${index}`} class={` w-8 h-8 rounded-md flex items-center place-content-center text-blanco ${jugador.img ? ("bg-gris-claro bg-opacity-60"): ("no_foto pointer-events-none")}`}>No</span>
                 </div>
-  </div> */}
+  </div> 
   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
     
     {/* Nombre */}

@@ -26,10 +26,11 @@ export const POST: APIRoute = async ({ request }) => {
     const min_staff = formData.get(`min_staff_${index}`);
     const max_staff = formData.get(`max_staff_${index}`);
     const entrenador = formData.get(`entrenador_${index}`)?.toString().trim();
+    const foto = formData.get(`foto_${index}`)?.toString().trim();
     const profesor = formData.get(`profesor_${index}`)?.toString().trim();
     
     if (nombre?.trim()) {
-    configuraciones.push({ id_torneo, nombre, fecha, estado, in_inicio, in_fin, vo_inicio, vo_fin, min_jugadores, max_jugadores, min_staff, max_staff, entrenador, profesor });
+    configuraciones.push({ id_torneo, nombre, fecha, estado, in_inicio, in_fin, vo_inicio, vo_fin, min_jugadores, max_jugadores, min_staff, max_staff, entrenador, profesor,foto });
   }
     
     
@@ -55,7 +56,8 @@ const { data, error } = await supabaseAdmin
     min_staff: configuracion.min_staff,
     max_staff: configuracion.max_staff,
     entrenador: configuracion.entrenador,
-    profesor: configuracion.profesor
+    profesor: configuracion.profesor,
+    foto: configuracion.foto
 
 
 })

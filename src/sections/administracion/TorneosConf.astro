@@ -7,7 +7,8 @@ import { supabaseAdmin } from "src/lib/supabase";
 
 const { data: Torneos, error } = await supabaseAdmin
         .from('Configuracion')
-        .select('id, id_torneo, nombre, fecha, estado, in_inicio, in_fin, vo_inicio, vo_fin, min_jugadores, max_jugadores, min_staff, max_staff, entrenador, profesor '); // Verifica acceso por email o rol
+        .select('id, id_torneo, nombre, fecha, estado, in_inicio, in_fin, vo_inicio, vo_fin, min_jugadores, max_jugadores, min_staff, max_staff, entrenador, profesor, foto ') // Verifica acceso por email o rol
+        .order('id', {ascending: true});
 
     // console.log(Torneos)
 ---
@@ -44,6 +45,8 @@ const { data: Torneos, error } = await supabaseAdmin
           <th class="py-3 px-6 text-left">Máximo Staff</th>
           <th class="py-3 px-6 text-left">Entrenador</th>
           <th class="py-3 px-6 text-left">Profesor</th>
+          <th class="py-3 px-6 text-left">Foto</th>
+          <th class="py-3 px-6 text-left">Cursos</th>
           <th class="py-3 px-6 text-left">Acciones</th>
         </tr>
       </thead>
@@ -120,6 +123,61 @@ const { data: Torneos, error } = await supabaseAdmin
                 <option value="Permitido" selected={torneo.profesor === "Permitido"}>Permitido</option>
                 <option value="Denegado" selected={torneo.profesor === "Denegado"}>Denegado</option>
                 </select>
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <select id={`foto_${index}`} name={`foto_${index}`} class="border min-w-28 border-gray-600 rounded p-2 w-full bg-gris" value={torneo.foto} disabled>
+                <option value="" selected={torneo.foto != "Permitido" || torneo.foto != "Denegado"} disabled>Seleccionar</option>
+                <option value="Permitido" selected={torneo.foto === "Permitido"}>Permitido</option>
+                <option value="Denegado" selected={torneo.foto === "Denegado"}>Denegado</option>
+                </select>
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              
+              {/* <select id={`cursos_${index}`} name={`cursos_${index}`} class="border min-w-28 h-9 border-gray-600 rounded p-2 w-full hover:h-14 bg-gris" multiple size="7" disabled >
+                <option value="CURSO_1E">CURSO_1E</option>
+                 <option value="CURSO_2E">CURSO_2E</option>
+                 <option value="CURSO_3E">CURSO_3E</option>
+                 <option value="CURSO_4E">CURSO_4E</option>
+                 <option value="CURSO_1b">CURSO_1b</option>
+                 <option value="CURSO_2B">CURSO_2B</option>
+                 <option value="CURSO_FP">CURSO_FP</option>
+                </select> */}
+                <div class="border min-w-28 h-9 border-gray-600 rounded p-2 w-full hover:h-28 overflow-y-auto bg-gris">
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos_${index}[]`} value="CURSO_1E"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_1E</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos_${index}[]`} value="CURSO_2E"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_2E</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos_${index}[]`} value="CURSO_3E"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_3E</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos_${index}[]`} value="CURSO_4E"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_4E</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos_${index}[]`} value="CURSO_1B"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_1B</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos_${index}[]`} value="CURSO_2B"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_2B</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos_${index}[]`} value="CURSO_FP"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_FP</span>
+                    </label>
+                </div>
             </td>
             <td class="py-3 px-6 border-b border-gray-700">
               <div
@@ -292,7 +350,9 @@ const { data: Torneos, error } = await supabaseAdmin
       `min_staff_${index}`,
       `max_staff_${index}`,
       `entrenador_${index}`,
-      `profesor_${index}`
+      `profesor_${index}`,
+      `foto_${index}`,
+      `cursos_${index}`
     ];
     fields.forEach(fieldId => {
       const field = document.getElementById(fieldId) as HTMLInputElement;
@@ -317,7 +377,8 @@ const { data: Torneos, error } = await supabaseAdmin
       `min_staff_${index}`,
       `max_staff_${index}`,
       `entrenador_${index}`,
-      `profesor_${index}`
+      `profesor_${index}`,
+      `cursos_${index}`
     ];
     fields.forEach(fieldId => {
       const field = document.getElementById(fieldId) as HTMLInputElement;
@@ -399,6 +460,11 @@ const { data: Torneos, error } = await supabaseAdmin
 <style>
   .oculto{
     display: none;
+  }
+
+    select[multiple] option:checked {
+    background-color: #2563eb; /* bg-blue-600 */
+    color: white;
   }
 
 </style>

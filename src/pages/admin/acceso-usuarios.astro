@@ -7,6 +7,7 @@ import ControlUsuarios from '@sections/administracion/control-usuarios.astro';
 import AnadirPagina from '@sections/administracion/AñadirPagina.astro';
 import ListaUsuarios from '@sections/administracion/ListaUsuarios.astro';
 import RolSecurity from "@components/admin/RolSecurity.astro";
+import ListaUsuariosRegistrados from "@sections/administracion/ListaUsuariosRegistrados.tsx";
 
 
 ---
@@ -15,6 +16,8 @@ import RolSecurity from "@components/admin/RolSecurity.astro";
     <RolSecurity>
     {/* // <section class="w-full gap-5 flex flex-wrap items-center place-content-center">
     //     <div> */}
+    <!-- <ListaUsuariosRegistrados /> -->
+     <ListaUsuarios />
             <AnadirPagina />
             <ControlUsuarios />
         {/* // </div>

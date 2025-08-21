@@ -1,106 +1,152 @@
 ---
 import { supabaseAdmin } from "src/lib/supabase";
 
+// Obtén parámetros de la URL
+const url = new URL(Astro.request.url);
+const countParam = url.searchParams.get('count');
+const count = countParam ? parseInt(countParam) : 10; // Número inicial
+const minimo = count - 10;
+
+// Filtros
+const filtroNombre = url.searchParams.get('nombre') || '';
+const filtroCurso = url.searchParams.get('curso') || '';
+const filtroEmail = url.searchParams.get('email') || '';
+
+// Consulta a la DB aplicando filtros
 let { data: Usuarios, error } = await supabaseAdmin
   .from('Usuarios')
-  .select('nombre, curso, email')
+  .select('nombre, curso, email, anyo, estado')
+  .ilike('nombre', `%${filtroNombre}%`)
+  .ilike('curso', `%${filtroCurso}%`)
+  .ilike('email', `%${filtroEmail}%`)
   .order('id', { ascending: false });
 
-  // Verifica que Usuarios no sea null
+// Verifica que Usuarios no sea null
 if (!Usuarios) {
     return console.log("no hay usuarios")
 }
 
-// Define el número inicial de usuarios a mostrar
-const initialCount = 10;
+// Paginación
 const totalUsuarios = Usuarios.length;
-
-// Obtén el número de usuarios a mostrar desde la URL
-const url = new URL(Astro.request.url);
-const countParam = url.searchParams.get('count');
-const count = countParam ? parseInt(countParam) : initialCount; // Maneja el caso de null
-const minimo = count - 10
-// Calcula los usuarios a mostrar
 const usuariosToShow = Usuarios.slice(minimo, count);
 ---
-<div class="max-w-2xl w-auto mx-auto h-auto content-center mb-10">
+<div class="max-w-5xl w-auto mx-auto h-auto content-center mb-10">
     <div class="flex flex-col relative w-full mx-auto ">
         <h3 class="text-amarillo text-center text-3xl my-5">Lista Usuarios</h3>
-        <div class="w-full h-[500px] rounded-lg p-4 text-blanco text-lg bg-gris-claro overflow-x-scroll flex flex-col items-center ">
-            
-                <table class="w-full font-normal gap-2">
-                    <tr class="w-full text-amarillo">
-                        <th><p>Nombre</p></th>
-                        <th><p>Curso</p></th>
-                        <th><p>Email</p></th>
-                    </tr>
-                    <tbody>
-                        {usuariosToShow.map((usuario) => (
-                            <tr class="font-normal text-center gap-y-2" >
-                                        <td><p>{usuario.nombre}</p></td>
-                                        <td><p>{usuario.curso}</p></td>
-                                        <td><p>{usuario.email}</p></td>
-                                        <td>
-                                        <a href={`/admin/usuario/${usuario.email}`} class="group">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 group-hover:fill-amarillo" fill="none" viewBox="0 0 60 60">
-                                                <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
-                                                <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
+        <!-- Menú de filtros -->
+        <div class="w-full mb-4 flex flex-col sm:flex-row gap-3 justify-center">
+            <input
+                type="text"
+                id="filtroNombre"
+                placeholder="Filtrar por nombre"
+                class="p-2 rounded-lg bg-gris-claro text-blanco placeholder:text-blanco focus:outline-none"
+                value={filtroNombre}
+            />
+            <input
+                type="text"
+                id="filtroCurso"
+                placeholder="Filtrar por curso"
+                class="p-2 rounded-lg bg-gris-claro text-blanco placeholder:text-blanco focus:outline-none"
+                value={filtroCurso}
+            />
+            <input
+                type="text"
+                id="filtroEmail"
+                placeholder="Filtrar por email"
+                class="p-2 rounded-lg bg-gris-claro text-blanco placeholder:text-blanco focus:outline-none"
+                value={filtroEmail}
+            />
+<button
+id="btn_filtrar"
+  
+  class="p-2 rounded-lg bg-amarillo text-gris-claro"
+>
+  Filtrar
+</button>
+        </div>
+
+        <div class="w-full h-[650px] rounded-lg p-4 text-blanco text-lg bg-gris-claro overflow-x-scroll grid grid-rows-[1fr_max-content] ">
+            <table id="tablaUsuarios" class="w-full h-max font-normal gap-2">
+                <tr class="w-full text-amarillo">
+                    <th></th>
+                    <th><p>Nombre Usuario</p></th>
+                    <th><p>Curso</p></th>
+                    <th><p>Anyo</p></th>
+                    <th><p>Email</p></th>
+                </tr>
+                <tbody>
+                    {usuariosToShow.map((usuario, index) => (
+                        <tr class="font-normal text-center gap-y-2" >
+                            <td><a href={`/admin/usuario/${usuario.email}`}>{totalUsuarios - index}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.nombre}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.curso}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.anyo}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.email}</a></td>
+                            <td>
+                                {
+                                    usuario.estado === "activa" ? (
+                                        <>
+                                            <div class="w-8 h-8 bg-verde-claro fill-verde rounded-lg">
+                                                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" >
+                                                    <path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                                                </svg>
+                                            </div>
+                                        </>
+                                    ):(
+                                        <>
+                                        <div class="w-8 h-8 bg-rojo-claro fill-rojo rounded-lg">
+                                            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" >
+                                                <path d="M280-440h400v-80H280v80ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
                                             </svg>
-                                        </a>
-                                    </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <div class="w-full flex flex-row items-center place-content-around">
-                {count !== 10 && ( // Mostrar botón si hay más usuarios
-                    <a href={`?count=${count - 10}`} class="mt-6 mx-auto w-max h-max bg-accent px-3 py-3 rounded-full">
+                                        </div>
+                                        </>
+                                    )
+                                }
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            <div class="w-full flex flex-row items-center place-content-around">
+                
+                    <a href={`?count=${count - 10}${filtroNombre ? `&nombre=${filtroNombre}` : ''}${filtroCurso ? `&curso=${filtroCurso}` : ''}${filtroEmail ? `&email=${filtroEmail}` : ''}`} class={`mt-6 mx-auto w-max h-max  px-3 py-3 rounded-full ${count !== 10 ? 'bg-accent':'bg-gray-700 pointer-events-none'}`}>
                         Anterior
                     </a>
-                )}
-                {count < totalUsuarios && ( // Mostrar botón si hay más usuarios
-                    <a href={`?count=${count + 10}`} class="mt-6 mx-auto w-max h-max bg-accent px-3 py-3 rounded-full">
+                
+                
+                    <a href={`?count=${count + 10}${filtroNombre ? `&nombre=${filtroNombre}` : ''}${filtroCurso ? `&curso=${filtroCurso}` : ''}${filtroEmail ? `&email=${filtroEmail}` : ''}`} class={`mt-6 mx-auto w-max h-max  px-3 py-3 rounded-full ${count < totalUsuarios ? 'bg-accent': 'bg-gray-700 pointer-events-none'}`}>
                         Siguiente
                     </a>
-                )}
-                </div>
-            
+                
+            </div>
         </div>
     </div>
 </div>
 
 
+<script>
+    const filtrar = document.getElementById("btn_filtrar")!;
 
+    filtrar?.addEventListener('click', function() {
+    const params = new URLSearchParams(window.location.search);
+    const nombre = (document.getElementById('filtroNombre') as HTMLInputElement).value;
+    const curso = (document.getElementById('filtroCurso') as HTMLInputElement).value;
+    const email = (document.getElementById('filtroEmail') as HTMLInputElement).value;
 
-<!-- <table class="w-full font-normal gap-2">
-    <tr class="w-full text-amarillo">
-        <th><p>Nombre</p></th>
-        <th><p>Curso</p></th>
-        <th><p>Email</p></th>
-    </tr>
-    {Usuarios ? (
-        Usuarios.map((usuario) => (
-            <tr class="font-normal text-center gap-y-2" >
-                <td><p>{usuario.nombre}</p></td>
-                <td><p>{usuario.curso}</p></td>
-                <td><p>{usuario.email}</p></td>
-                <td>
-                <a href={`/admin/usuario/${usuario.email}`} class="group">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 group-hover:fill-amarillo" fill="none" viewBox="0 0 60 60">
-                        <circle cx="30" cy="30" r="27.5" stroke="#1666FF" stroke-width="5"/>
-                        <path fill="#1666FF" d="M20 40h2l14-14-2-2-14 14v2Zm-3 3v-6l19-19h1l1-1 1 1h1l2 2v1a3 3 0 0 1 0 2v1L23 43h-6Zm18-18-1-1 2 2-1-1Z"/>
-                    </svg>
-                </a>
-            </td>
-            </tr>
-        ))
-    ) : (
-        <tr>
-            <td class="text-center">No hay usuarios disponibles</td>
-        </tr>
-        
-    )}
-</table> -->
+    if (nombre) params.set('nombre', nombre);
+    else params.delete('nombre');
+
+    if (curso) params.set('curso', curso);
+    else params.delete('curso');
+
+    if (email) params.set('email', email);
+    else params.delete('email');
+
+    params.set('count', '10'); // Reinicia paginación al filtrar
+    window.location.href = `?${params.toString()}`;
+  })
+</script>
 <style>
     .centrar {
         z-index: 0;

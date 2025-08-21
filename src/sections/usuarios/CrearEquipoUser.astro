@@ -4,10 +4,10 @@ import { supabaseAdmin } from "src/lib/supabase";
 let jugadores: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }[] = [];
 let jugadores_extra: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }[] = [];
 let staff: { nombre: string | number | string[] | null | undefined; curso: string | number | string[] | null | undefined; }[] = [];
-
+let foto = false;
 const { data: ConfTorneo, error } = await supabaseAdmin
   .from('Configuracion')
-  .select('min_jugadores, max_jugadores, max_staff, entrenador, profesor')
+  .select('min_jugadores, max_jugadores, max_staff, entrenador, profesor, foto')
   .eq('estado', 'Actual')
   .single();
 
@@ -15,7 +15,9 @@ if (ConfTorneo) {
   const min_jugadores = ConfTorneo.min_jugadores;
   const max_jugadores = ConfTorneo.max_jugadores;
   const max_staff = ConfTorneo.max_staff;
-
+  if(ConfTorneo.foto === "Permitido"){
+    foto = true
+  } 
   jugadores = Array.from({ length: min_jugadores }, () => ({ nombre: "", curso: "" }));
   jugadores_extra = Array.from({ length: max_jugadores - min_jugadores }, () => ({ nombre: "", curso: "" }));
   staff = Array.from({ length: max_staff }, () => ({ nombre: "", curso: "" }));
@@ -63,13 +65,14 @@ file.addEventListener('change', (e: Event) => {
 <!--Cartel Creando Equipo -->
 <div id="espera" class=" oculto  w-full h-full bg-gris bg-opacity-60 overflow-hidden">
   <div class="bg-gris-claro rounded-xl relative max-w-2xl w-full h-96 flex flex-col items-center place-content-center">
-    <div class="absolute top-0 left-0 w-full p-2 grid grid-cols-4 gap-4">
+    <div class="absolute top-0 left-0 w-full p-2 grid grid-cols-5 gap-4">
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
       <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
       <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
       <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
+      <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
     </div>
-    <p class="text-4xl font-semibold text-amarillo text-center absolute top-10">1/4</p>
+    <p class="text-4xl font-semibold text-amarillo text-center absolute top-10">1/5</p>
     <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-20">Creant Equip</h2>
     <FormSend />
     <p class="text-blanco text-center absolute bottom-5">Estem treballant per enviar-te tota la informació necessària sobre la inscripció. Actualment, estem processant les dades i t'agraïm la teva paciència.
@@ -80,13 +83,14 @@ file.addEventListener('change', (e: Event) => {
   <!--Cartel Inscribiendo Entrenador Y Profesor -->
 <div id="espera2" class=" oculto  w-full h-full bg-gris bg-opacity-60 overflow-hidden">
   <div class="bg-gris-claro rounded-xl relative max-w-2xl w-full h-96 flex flex-col items-center place-content-center">
-    <div class="absolute top-0 left-0 w-full p-2 grid grid-cols-4 gap-4">
+    <div class="absolute top-0 left-0 w-full p-2 grid grid-cols-5 gap-4">
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
+      <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
       <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
       <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
     </div>
-    <p class="text-4xl font-semibold text-amarillo text-center absolute top-10">2/4</p>
+    <p class="text-4xl font-semibold text-amarillo text-center absolute top-10">2/5</p>
     <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-20">Inscrivint Entrenador i Professor</h2>
     <FormSend />
     <p class="text-blanco text-center absolute bottom-5">Estem treballant per enviar-te tota la informació necessària sobre la inscripció. Actualment, estem processant les dades i t'agraïm la teva paciència.
@@ -94,16 +98,17 @@ file.addEventListener('change', (e: Event) => {
   </div>
   </div>
 
-  <!--Cartel Creando Equipo -->
+  <!--Cartel Inscribiendo Jugadores -->
 <div id="espera3" class=" oculto  w-full h-full bg-gris bg-opacity-60 overflow-hidden">
   <div class="bg-gris-claro rounded-xl relative max-w-2xl w-full h-96 flex flex-col items-center place-content-center">
-    <div class="absolute top-0 left-0 w-full p-2 grid grid-cols-4 gap-4">
+    <div class="absolute top-0 left-0 w-full p-2 grid grid-cols-5 gap-4">
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
       <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
+      <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
     </div>
-    <p class="text-4xl font-semibold text-amarillo text-center absolute top-10">3/4</p>
+    <p class="text-4xl font-semibold text-amarillo text-center absolute top-10">3/5</p>
     <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-20">Inscrivint Jugadors</h2>
     <FormSend />
     <p class="text-blanco text-center absolute bottom-5">Estem treballant per enviar-te tota la informació necessària sobre la inscripció. Actualment, estem processant les dades i t'agraïm la teva paciència.
@@ -111,17 +116,34 @@ file.addEventListener('change', (e: Event) => {
   </div>
   </div>
 
-  <!--Cartel Creando Equipo -->
-<div id="espera4" class=" fijo  w-full h-full bg-gris bg-opacity-60 overflow-hidden">
+  <!--Cartel Inscribiendo Staff -->
+<div id="espera4" class=" oculto  w-full h-full bg-gris bg-opacity-60 overflow-hidden">
   <div class="bg-gris-claro rounded-xl relative max-w-2xl w-full h-96 flex flex-col items-center place-content-center">
-    <div class="absolute top-0 left-0 w-full p-2 grid grid-cols-4 gap-4">
+    <div class="absolute top-0 left-0 w-full p-2 grid grid-cols-5 gap-4">
+      <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
+      <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
+      <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
+      <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
+      <span class="w-full h-2 rounded bg-gray-500">&nbsp;</span>
+    </div>
+    <p class="text-4xl font-semibold text-amarillo text-center absolute top-10">4/5</p>
+    <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-20">Inscrivint Tècnics d'equip</h2>
+    <FormSend />
+    <p class="text-blanco text-center absolute bottom-5">Estem treballant per enviar-te tota la informació necessària sobre la inscripció. Actualment, estem processant les dades i t'agraïm la teva paciència.
+      </p>
+  </div>
+  </div>
+  <div id="espera5" class=" oculto  w-full h-full bg-gris bg-opacity-60 overflow-hidden">
+  <div class="bg-gris-claro rounded-xl relative max-w-2xl w-full h-96 flex flex-col items-center place-content-center">
+    <div class="absolute top-0 left-0 w-full p-2 grid grid-cols-5 gap-4">
+      <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
       <span class="w-full h-2 rounded bg-accent">&nbsp;</span>
     </div>
-    <p class="text-4xl font-semibold text-amarillo text-center absolute top-10">4/4</p>
-    <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-20">Inscrivint Tècnics d'equip</h2>
+    <p class="text-4xl font-semibold text-amarillo text-center absolute top-10">5/5</p>
+    <h2 class="text-4xl font-semibold text-amarillo text-center absolute top-20">Confirmant Inscripció</h2>
     <FormSend />
     <p class="text-blanco text-center absolute bottom-5">Estem treballant per enviar-te tota la informació necessària sobre la inscripció. Actualment, estem processant les dades i t'agraïm la teva paciència.
       </p>
@@ -130,15 +152,19 @@ file.addEventListener('change', (e: Event) => {
 
 <!-- action="/api/usuario/anadir-equipo" -->
 <div class="max-w-5xl w-full h-max py-2  overflow-hidden mx-auto my-10 ">
-  <form id="equipo-form" method="POST" class="space-y-4" action="/api/usuario/anadir-equipo"  enctype="multipart/form-data">
+  <form id="equipo-form" method="POST" class="space-y-4"   enctype="multipart/form-data">
     <div id="errorbox" class="text-red-500 bg-gris rounded-lg px-3 py-2 text-center error-box"></div>
     <!-- Datos usuario -->
-    <div class="w-full hidden">
+    <div class="w-full ">
       <input type="text" name="usuario_id" class="bg-transparent w-auto h-max text-blanco" value={usuario.id}/>
       <input type="text" name="usuario_nombre" class="bg-transparent w-auto h-max text-blanco" value={usuario.nombre}/>
       <input type="text" name="usuario_email" class="bg-transparent w-auto h-max text-blanco" value={usuario.email}/>
       <input type="text" name="usuario_curso" class="bg-transparent w-auto h-max text-blanco" value={usuario.curso}/>
     </div>
+
+    <!-- id="condiciones" -->
+    <input type="hidden"  name="condiciones" id="condiciones" />
+
     <!-- Datos Equipo -->
     <div class="mx-auto w-max">
       <input
@@ -146,7 +172,7 @@ file.addEventListener('change', (e: Event) => {
         id="nombre_equipo"
         name="nombre_equipo"
         placeholder="Nom de l'equipo"
-        required
+        
         class="mx-auto text-4xl xs:text-3xl sm:text-3xl md:text-4xl text-center border-none bg-transparent rounded text-accent py-1 px-2 w-auto"
       />
     </div>
@@ -154,7 +180,7 @@ file.addEventListener('change', (e: Event) => {
     <!--Imagen Escudo -->
     <div class="w-60  h-60 p-10 border-8 rounded-xl border-[#787777] relative mx-auto">
       <img src="/img/Vector.png" class="w-full h-full" alt="avatar" id="img" />
-      <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="escudo" id="foto" accept="image/*" />
+      <input class="centrar w-full h-full cursor-pointer text-transparent select-none bg-transparent" type="file" name="foto" id="foto" accept="image/*" />
       <label class="hidden" for="escudo"></label>
     </div>
 
@@ -362,8 +388,9 @@ file.addEventListener('change', (e: Event) => {
             />
         
         </div>
-
-                <!-- {/* Imagen cara */}
+        {
+          foto === true ? (<>
+          {/* Imagen cara */}
                 <div class="flex flex-col relative">
                   <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                       Imatge Cara
@@ -379,10 +406,15 @@ file.addEventListener('change', (e: Event) => {
                   name={`entrenador_img`}
                   placeholder="Email del jugador"
                   class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
-                  accept=".png, .jpg, .jpeg, .webp"
+                  //accept=".png, .jpg, .jpeg, .webp"
                   />
               
-              </div> -->
+              </div>
+          
+          </>):(<>
+          </>)
+        }
+                
               
       </div>
       
@@ -419,7 +451,7 @@ file.addEventListener('change', (e: Event) => {
                     id={`genero_${index}`}
                     type="hidden"
                     name={`genero_${index}`}
-                    required 
+                     
                     value="" 
                     class="w-10" 
                 />
@@ -454,7 +486,7 @@ file.addEventListener('change', (e: Event) => {
             name={`player_${index}_name`}
             placeholder="Nom del jugador"
             class="px-2 py-1 w-40 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-            required
+            
             value={jugador.nombre}
             
             />
@@ -476,7 +508,7 @@ file.addEventListener('change', (e: Event) => {
             id={`player_${index}_1r_apellido`}
             placeholder="Cognom del jugador"
             class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-            required
+            
             value={jugador.nombre}
             />
         </div>
@@ -508,7 +540,7 @@ file.addEventListener('change', (e: Event) => {
         <select
           name={`player_${index}_curso`}
           class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-          required
+          
           value={jugador.curso}
           
         >
@@ -558,13 +590,14 @@ file.addEventListener('change', (e: Event) => {
             name={`player_${index}_email`}
             placeholder="Email del jugador"
             class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
-            required
+            
             value={jugador.nombre}
             />
         
         </div>
-
-        {/* Imagen cara
+        {
+          foto === true ? (<>
+          {/* Imagen cara */}
         <div class="flex flex-col relative">
             <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                 Imatge Cara .webp
@@ -581,11 +614,16 @@ file.addEventListener('change', (e: Event) => {
             placeholder="Email del jugador"
             class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
             
-            accept="image/webp"
+            accept=".webp, .png, .jpg"
+            
             value={jugador.nombre}
             />
         
-        </div> */}
+        </div>
+          </>):(<></>)
+        }
+
+        
       </div>
     ))} 
 
@@ -754,8 +792,9 @@ file.addEventListener('change', (e: Event) => {
             />
         
         </div>
-        
-        {/* Imagen cara
+        {
+          foto === true ? (<>
+          {/* Imagen cara */}
         <div class="flex flex-col relative">
             <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                 Imatge Cara .webp
@@ -771,12 +810,16 @@ file.addEventListener('change', (e: Event) => {
             name={`extra_player_${index}_img`}
             placeholder="Email del jugador"
             class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
-            accept=".webp"
+            accept=".webp, .png, .jpg"
             
             value={jugador.nombre}
             />
         
-        </div> */}
+        </div>
+          </>):(<>
+          </>)
+        }
+        
   </div>
 ))} 
 
@@ -928,8 +971,9 @@ file.addEventListener('change', (e: Event) => {
           />
       
       </div>
-
-              <!-- {/* Imagen cara */}
+      {
+        foto === true ? (<>
+          {/* Imagen cara */}
               <div class="flex flex-col relative">
                 <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                     Imatge Cara .webp
@@ -945,10 +989,13 @@ file.addEventListener('change', (e: Event) => {
                 name={`profesor_img`}
                 placeholder="Email del jugador"
                 class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
-                accept=".webp"
+                accept=".webp, .png, .jpg"
                 />
             
-            </div> -->
+            </div></>):(<></>)
+      }
+
+             
            
     </div>
     
@@ -1126,8 +1173,9 @@ file.addEventListener('change', (e: Event) => {
             />
         
         </div>
-        
-        {/* Imagen cara
+        {
+          foto === true ? (<>
+          {/* Imagen cara */}
         <div class="flex flex-col relative">
             <label for="nombre" class="form bg-gris-claro flex flex-row items-center place-content-center gap-1 rounded-full px-3 py-1 text-blanco text-xl">
                 Imatge Cara
@@ -1143,12 +1191,15 @@ file.addEventListener('change', (e: Event) => {
             name={`staff_player_${index}_img`}
             placeholder="Email del jugador"
             class="px-2 py-3 w-72 overflow-hidden h-12 bg-gris-claro flex items-center :bg-aceptar place-content-center rounded-full text-base text-blanco border-none"
-            accept=".webp"
+            accept=".webp, .png, .jpg"
             
             value={jugador.nombre}
             />
         
-        </div> */}
+        </div>
+          </>):(<></>)
+        }
+        
   </div>
 ))} 
 </>
@@ -1179,11 +1230,14 @@ file.addEventListener('change', (e: Event) => {
     </label>
 </div>
 </div>
+
 <div class="w-max flex flex-row gap-2 px-6">
   <!-- <div class="px-3 py-2 w-96 h-12  text-4xl text-amarillo border-none"><h4>Alumnes Jugadors</h4></div> -->
+   
   <div class="checkbox-wrapper-12">
+    
     <div class="cbx">
-      <input id="cbx-12" name="condiciones" type="checkbox"/>
+      <input id="cbx-12" name="condiciones2" type="checkbox"/>
       <label for="cbx-12"></label>
       <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
         <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -1467,14 +1521,171 @@ const hombre_profesor = document.getElementById(`hombre_profesor`)!;
       });
 })
 </script>
-<!-- Errores -->
+
 <script>
+  const btn_condiciones = document.getElementById("cbx-12")!;
+  const condiciones = document.getElementById("condiciones") as HTMLInputElement;
+  
+  btn_condiciones.addEventListener('click', function(){
+    condiciones.value = "aceptadas"
+
+    const condiciones_error = document.getElementById("condiciones_error")!;
+    if(condiciones_error){
+       condiciones_error.remove();
+    }
+  })
+</script>
+<!-- Errores -->
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Script Errores cargado');
+const condiciones = document.getElementById("condiciones") as HTMLInputElement;
+  
+      document.getElementById('equipo-form')?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if(condiciones.value !== "aceptadas"){
+       const  htmlerror =
+            `
+            <div id="condiciones_error" class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#640404] bg-[#A83434] bg-opacity-100 text-sm font-semibold">
+              <span>
+            <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#640404] w-10 h-10" viewBox="0 -960 960 960">
+              <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
+            </svg>
+              </span>
+              <p class="text-[#640404]">És necessari acceptar les condicions d'inscripció, l'avís legal i la política de privacitat per continuar amb el procés.</p>
+              </div>
+            `;
+            document.getElementById('errorbox')!.innerHTML = htmlerror;
+            document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+             return false;
+            
+    } else{
+      
+
+        const form = event.target as HTMLFormElement;
+
+        // Recolectamos los datos del formulario
+        const datos = Object.fromEntries(new FormData(form).entries());
+
+        // Función para mostrar y ocultar cada espera
+        const mostrarEspera = (id: string) => {
+            document.querySelectorAll('.espera').forEach(div => {
+                div.classList.add("oculto");
+                div.classList.remove("fijo");
+            });
+            const e = document.getElementById(id);
+            e?.classList.add("fijo");
+            e?.classList.remove("oculto");
+        };
+
+        try {
+            // 1️⃣ Crear equipo
+            mostrarEspera("espera");
+            let fd1 = new FormData(form);
+            // fd1.append("nombre_equipo", datos.nombre_equipo);
+            // fd1.append("categoria", datos.categoria);
+            let res1 = await fetch("/api/inscripcion/crear-equipo", { method: 'POST', body: fd1 });
+            if (!(await procesarRespuesta(res1, "crear equipo"))) return;
+
+            // 2️⃣ Entrenador / Profesor
+            mostrarEspera("espera2");
+            let fd2 = new FormData(form);
+            // fd2.append("nombre_entrenador", datos.nombre_entrenador);
+            // fd2.append("apellido_entrenador", datos.apellido_entrenador);
+            // fd2.append("profesor_responsable", datos.profesor_responsable);
+            let res2 = await fetch("/api/inscripcion/entrenador-profesor", { method: 'POST', body: fd2 });
+            if (!(await procesarRespuesta(res2, "entrenador / profesor"))) return;
+
+            // 3️⃣ Jugadores
+            mostrarEspera("espera3");
+            let fd3 = new FormData(form);
+            // Aquí añadirías solo los campos de jugadores
+            Object.keys(datos).forEach(key => {
+                if (key.startsWith("jugador")) fd3.append(key, datos[key]);
+            });
+            let res3 = await fetch("/api/inscripcion/jugadores", { method: 'POST', body: fd3 });
+            if (!(await procesarRespuesta(res3, "jugadores"))) return;
+
+            // 4️⃣ Cuerpo técnico
+            mostrarEspera("espera4");
+            let fd4 = new FormData(form);
+            Object.keys(datos).forEach(key => {
+                if (key.startsWith("cuerpo")) fd4.append(key, datos[key]);
+            });
+            let res4 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4 });
+            if (!(await procesarRespuesta(res4, "cuerpo técnico"))) return;
+
+            // 5️⃣ Enviar Eamil
+            mostrarEspera("espera5");
+            let fd5 = new FormData(form);
+            Object.keys(datos).forEach(key => {
+                if (key.startsWith("cuerpo")) fd4.append(key, datos[key]);
+            });
+            let res5 = await fetch("/api/inscripcion/GeneradorEmailE", { method: 'POST', body: fd5 });
+            if (!(await procesarRespuesta(res5, "cuerpo técnico"))) return;
+
+            // ✅ Si todo fue bien
+            window.location.href = '/usuario';
+
+        } catch (error) {
+            mostrarError(`Error en el envío: ${error}`);
+        }
+    }
+        
+    });
+    
+    
+
+    // Funciones auxiliares
+    function mostrarError(mensaje: string) {
+        document.getElementById('errorbox')!.innerHTML = `
+            <div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">
+                ${mensaje}
+            </div>`;
+    }
+
+    async function procesarRespuesta(response: Response, paso: string) {
+        const contentType = response.headers.get("Content-Type");
+
+        if (contentType?.includes("text/html")) {
+            const html = await response.text();
+            document.getElementById('errorbox')!.innerHTML = html;
+            document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+            const elementos = document.querySelectorAll<HTMLElement>('[id^="espera"]');
+
+            elementos.forEach(el => {
+              if (el.classList.contains("fijo")) {
+                el.classList.remove("fijo");
+                el.classList.add("oculto");
+              }
+            });
+
+            return false;
+        } 
+        else if (contentType?.includes("application/json")) {
+            const jsonResponse = await response.json();
+            if (!jsonResponse.success) {
+                mostrarError(`Error en ${paso}`);
+                return false;
+            }
+        } 
+        else {
+            mostrarError(`Respuesta inesperada en ${paso}`);
+            return false;
+        }
+        return true;
+    }
+});
+</script>
+
+<!-- <script>
     document.addEventListener('DOMContentLoaded', () => {
         console.log('Script Errores cargado');
     document.getElementById('equipo-form')?.addEventListener('submit', async (event) => {
         event.preventDefault(); // Evita el envío del formulario por defecto
 
         const form = event.target as HTMLFormElement; // Asegúrate de que sea un HTMLFormElement
+        // const form = "/api/usuario/anadir-equipo"
         const formData = new FormData(form); // Ahora TypeScript sabe que 'form' es un HTMLFormElement
 
 
@@ -1507,7 +1718,7 @@ const hombre_profesor = document.getElementById(`hombre_profesor`)!;
         }
     });
 });
-</script>
+</script> -->
 
 <style>
   input[type="file"]::file-selector-button {

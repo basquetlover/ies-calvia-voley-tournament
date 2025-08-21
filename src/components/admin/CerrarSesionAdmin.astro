@@ -1,0 +1,14 @@
+---
+const { usuario_id } = Astro.props;
+
+
+---
+<form method="POST" action="" class="w-max">
+    <button class="text-center text-base text-blanco hover:text-amarillo duration-300 transition-all group my-4 flex flex-row items-center place-content-center gap-1">
+        <input type="hidden" value={usuario_id} />
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 30 31">
+                    <path class="fill-blanco group-hover:fill-amarillo duration-300 transition-all"  d="m27 1 2 1 1 2v24l-1 2-2 1H15v-3h12V4H15V1h12ZM8 8l3 2-5 4h14v4H6l5 4-3 2-8-8 8-8Z"/>
+                </svg>
+                Cerrar Sesión
+    </button>
+</form>
