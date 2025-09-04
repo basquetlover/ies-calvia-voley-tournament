@@ -155,7 +155,7 @@ file.addEventListener('change', (e: Event) => {
   <form id="equipo-form" method="POST" class="space-y-4"   enctype="multipart/form-data">
     <div id="errorbox" class="text-red-500 bg-gris rounded-lg px-3 py-2 text-center error-box"></div>
     <!-- Datos usuario -->
-    <div class="w-full ">
+    <div class="w-full hidden">
       <input type="text" name="usuario_id" class="bg-transparent w-auto h-max text-blanco" value={usuario.id}/>
       <input type="text" name="usuario_nombre" class="bg-transparent w-auto h-max text-blanco" value={usuario.nombre}/>
       <input type="text" name="usuario_email" class="bg-transparent w-auto h-max text-blanco" value={usuario.email}/>
@@ -1578,48 +1578,67 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
             e?.classList.remove("oculto");
         };
 
+        let paso1 ="";
+        let paso2 ="";
+        let paso3 ="";
+        let paso4 ="";
+        
+
+
         try {
             // 1️⃣ Crear equipo
-            mostrarEspera("espera");
-            let fd1 = new FormData(form);
-            // fd1.append("nombre_equipo", datos.nombre_equipo);
-            // fd1.append("categoria", datos.categoria);
-            let res1 = await fetch("/api/inscripcion/crear-equipo", { method: 'POST', body: fd1 });
-            if (!(await procesarRespuesta(res1, "crear equipo"))) return;
-
+            if(paso1 !== "Completado"){
+              mostrarEspera("espera");
+              let fd1 = new FormData(form);
+              // fd1.append("nombre_equipo", datos.nombre_equipo);
+              // fd1.append("categoria", datos.categoria);
+              let res1 = await fetch("/api/inscripcion/crear-equipo", { method: 'POST', body: fd1 });
+              if (!(await procesarRespuesta(res1, "crear equipo"))) return;
+              paso1 = "Completado"
+            }
+            
             // 2️⃣ Entrenador / Profesor
-            mostrarEspera("espera2");
-            let fd2 = new FormData(form);
-            // fd2.append("nombre_entrenador", datos.nombre_entrenador);
-            // fd2.append("apellido_entrenador", datos.apellido_entrenador);
-            // fd2.append("profesor_responsable", datos.profesor_responsable);
-            let res2 = await fetch("/api/inscripcion/entrenador-profesor", { method: 'POST', body: fd2 });
-            if (!(await procesarRespuesta(res2, "entrenador / profesor"))) return;
-
+            if(paso2 !== "Completado"){
+              mostrarEspera("espera2");
+              let fd2 = new FormData(form);
+              // fd2.append("nombre_entrenador", datos.nombre_entrenador);
+              // fd2.append("apellido_entrenador", datos.apellido_entrenador);
+              // fd2.append("profesor_responsable", datos.profesor_responsable);
+              let res2 = await fetch("/api/inscripcion/entrenador-profesor", { method: 'POST', body: fd2 });
+              if (!(await procesarRespuesta(res2, "entrenador / profesor"))) return;
+              paso2 = "Completado"
+            }
+            
             // 3️⃣ Jugadores
-            mostrarEspera("espera3");
-            let fd3 = new FormData(form);
-            // Aquí añadirías solo los campos de jugadores
-            Object.keys(datos).forEach(key => {
-                if (key.startsWith("jugador")) fd3.append(key, datos[key]);
-            });
-            let res3 = await fetch("/api/inscripcion/jugadores", { method: 'POST', body: fd3 });
-            if (!(await procesarRespuesta(res3, "jugadores"))) return;
-
+            if(paso3 !== "Completado"){
+              mostrarEspera("espera3");
+              let fd3 = new FormData(form);
+              // Aquí añadirías solo los campos de jugadores
+              Object.keys(datos).forEach(key => {
+                  if (key.startsWith("jugador")) fd3.append(key, datos[key]);
+              });
+              let res3 = await fetch("/api/inscripcion/jugadores", { method: 'POST', body: fd3 });
+              if (!(await procesarRespuesta(res3, "jugadores"))) return;
+              paso3 = "Completado"
+            }
+            
             // 4️⃣ Cuerpo técnico
-            mostrarEspera("espera4");
-            let fd4 = new FormData(form);
-            Object.keys(datos).forEach(key => {
-                if (key.startsWith("cuerpo")) fd4.append(key, datos[key]);
-            });
-            let res4 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4 });
-            if (!(await procesarRespuesta(res4, "cuerpo técnico"))) return;
-
+            if(paso4 !== "Completado"){
+              mostrarEspera("espera4");
+              let fd4 = new FormData(form);
+              Object.keys(datos).forEach(key => {
+                  if (key.startsWith("cuerpo")) fd4.append(key, datos[key]);
+              });
+              let res4 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4 });
+              if (!(await procesarRespuesta(res4, "cuerpo técnico"))) return;
+              paso4 = "Completado"
+            }
+            
             // 5️⃣ Enviar Eamil
             mostrarEspera("espera5");
             let fd5 = new FormData(form);
             Object.keys(datos).forEach(key => {
-                if (key.startsWith("cuerpo")) fd4.append(key, datos[key]);
+                if (key.startsWith("cuerpo")) fd5.append(key, datos[key]);
             });
             let res5 = await fetch("/api/inscripcion/GeneradorEmailE", { method: 'POST', body: fd5 });
             if (!(await procesarRespuesta(res5, "cuerpo técnico"))) return;
