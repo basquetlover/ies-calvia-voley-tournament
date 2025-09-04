@@ -1,13 +1,187 @@
 ---
 import LayoutAllSinMenu from '@layouts/LayoutAllSinMenu.astro';
 import ActaDigitalApp from "@pages/admin/acta-digital/ActaApp.jsx";
+import { supabaseAdmin } from 'src/lib/supabase';
 
-const nombreEquipoLocal = "Team Teto";
-const nombreEquipoVisitante = "LOS PR";
+
+
+type Jugador = {
+    nombre: string;
+    _1r_apellido: string;
+    img: string;
+};
+
+const { searchParams } = new URL(Astro.request.url);
+let id_partido = searchParams.get('partidoID');
+
+if (id_partido) {
+  // Eliminar comillas si las hubiera
+  id_partido = id_partido.replace(/^"(.*)"$/, '$1');
+  //console.log('Torneo ID:', id_partido); // Aparece en consola del servidor
+}
+
+let estado = "";
+
+let nombre_equipo_local = "";
+let nombre_equipo_visitante = "";
+let pista = "";
+let arbitro = "";
+let oficial_1 = "";
+let oficial_2 = "";
+
+let jugadoresLocal: Jugador[] = [];
+let id_equipo_local = "";
+let escudo_equipo_local = "";
+let referencia_EL = "";
+
+let jugadoresVisitante: Jugador[] = [];
+let id_equipo_visitante = "";
+let escudo_equipo_visitante = "";
+let referencia_EV = "";
+const { data, error } = await supabaseAdmin
+    .from('PartidosSS')
+    .select('equipo_local, equipo_visitante, pista, estado, id_partido, arbitro, oficial_1, oficial_2')
+    .eq('id_partido', id_partido)
+    .maybeSingle();
+
+  if (error) {
+    console.error(`Error al buscar partido 1`, error.message);
+  } else if(data) {
+    nombre_equipo_local = data.equipo_local;
+    nombre_equipo_visitante = data.equipo_visitante;
+    pista = data.pista
+    arbitro = data.arbitro;
+    oficial_1 = data.oficial_1;
+    oficial_2 = data.oficial_2;
+    estado = data.estado;
+  }
+
+  if(estado === "Per Jugar"){
+    const { data: EquipoLocale, error: EquipoLocaleError } = await supabaseAdmin
+    .from('PartidosSS')
+    .update({
+        estado: "En Directe"
+    })
+    .eq('id_partido', id_partido)
+    .maybeSingle();
+    
+  }
+  let { data: EquipoLocale, error: EquipoLocaleError } = await supabaseAdmin
+    .from('EquiposSS')
+    .select('id, escudo')
+    .eq('nombre_equipo', nombre_equipo_local)
+    .maybeSingle();
+    if(EquipoLocale){
+        id_equipo_local = EquipoLocale.id;
+        escudo_equipo_local = EquipoLocale.escudo;
+        referencia_EL = EquipoLocale.id;
+    }
+    
+    let { data: JugadoresLocales, error: JugadoresLocalesError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .in('ficha', ['jugador'])
+    .eq('pertenece_equipo', id_equipo_local)
+    .order('id', { ascending: true });
+
+if (JugadoresLocales) {
+    // Filtrar jugadores con nombre no nulo o vacío
+    JugadoresLocales.forEach(jugador => {
+        if (jugador.nombre && jugador.nombre.trim() !== '') {
+            jugadoresLocal.push(jugador);
+        }
+    });
+ 
+}
+
+if (JugadoresLocalesError) {
+    console.log(JugadoresLocalesError);
+}
+
+// Buscar entrenador
+let { data: Entrenador, error: EntrenadorError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .eq('ficha', 'profesor')
+    .eq('pertenece_equipo', id_equipo_local)
+    .maybeSingle(); // Asumiendo que solo hay un entrenador
+
+if (Entrenador) {
+    // Verificar si el nombre del entrenador no es nulo o vacío
+    if (Entrenador.nombre && Entrenador.nombre.trim() !== '') {
+        jugadoresLocal.push(Entrenador);
+    }
+   // console.log(Entrenador);
+}
+
+if (EntrenadorError) {
+    console.log(EntrenadorError);
+}
+    
+    let { data: EquipoVisitante, error: EquipoVisitanteError } = await supabaseAdmin
+    .from('EquiposSS')
+    .select('id, escudo')
+    .eq('nombre_equipo', nombre_equipo_visitante)
+    .maybeSingle();
+    if(EquipoVisitante){
+        id_equipo_visitante = EquipoVisitante.id;
+        escudo_equipo_visitante = EquipoVisitante.escudo;
+        referencia_EV = EquipoVisitante.id;
+    }
+    
+    let { data: JugadoresVisitantes, error: JugadoresVisitantesError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .in('ficha', ['jugador']) // Solo buscamos jugadores primero
+    .eq('pertenece_equipo', id_equipo_visitante)
+    .order('id', { ascending: true });
+
+if (JugadoresVisitantes) {
+    // Filtrar jugadores con nombre no nulo o vacío
+    JugadoresVisitantes.forEach(jugador => {
+        if (jugador.nombre && jugador.nombre.trim() !== '') {
+            jugadoresVisitante.push(jugador);
+        }
+    });
+  
+}
+
+if (JugadoresVisitantesError) {
+    console.log(JugadoresVisitantesError);
+}
+
+// Buscar entrenador
+let { data: EntrenadorVisitante, error: EntrenadorVisitanteError } = await supabaseAdmin
+    .from('JugadoresSS')
+    .select('nombre, _1r_apellido, img')
+    .eq('ficha', 'profesor') // Buscamos al entrenador
+    .eq('pertenece_equipo', id_equipo_visitante)
+    .maybeSingle(); // Asumiendo que solo hay un entrenador
+
+if (EntrenadorVisitante) {
+    // Verificar si el nombre del entrenador no es nulo o vacío
+    if (EntrenadorVisitante.nombre && EntrenadorVisitante.nombre.trim() !== '') {
+        jugadoresVisitante.push(EntrenadorVisitante);
+    }
+//     console.log(EntrenadorVisitante);
+ }
+
 ---
 <LayoutAllSinMenu title='Acta Digital'>
 
-  <ActaDigitalApp client:load nombreEquipoLocal={nombreEquipoLocal} nombreEquipoVisitante={nombreEquipoVisitante}/>
+  <ActaDigitalApp client:load 
+    nombreEquipoLocal={nombre_equipo_local} 
+    nombreEquipoVisitante={nombre_equipo_visitante} 
+    jugadoresLocal={jugadoresLocal} 
+    jugadoresVisitante={jugadoresVisitante} 
+    escudo_equipo_local={escudo_equipo_local} 
+    escudo_equipo_visitante={escudo_equipo_visitante}
+    pista={pista}
+    arbitro={arbitro}
+    oficial_1={oficial_1}
+    oficial_2={oficial_2}
+    id_partido={id_partido}
+    />
 
     
 </LayoutAllSinMenu>

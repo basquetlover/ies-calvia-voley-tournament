@@ -5,7 +5,7 @@
     -webkit-box-orient: vertical;
     /* -webkit-line-clamp: 2; */
   }
-    .selected{
+    .selected-player{
         background-color: #1666ff;
     }
     .selected-tipo{

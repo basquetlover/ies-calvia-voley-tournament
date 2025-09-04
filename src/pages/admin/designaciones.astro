@@ -118,7 +118,7 @@ try {
           {
             partido.estado !== "Finalitzat" ?
             (<>
-            <a href={`/admin/acta-digital/${partido.id_partido}`} class={`w-max h-max px-2 py-2 rounded-md bg-azul-suave text-blanco mb-1 `}>
+            <a href={`/admin/acta-digital/app?partidoID="${partido.id_partido}"`} class={`w-max h-max px-2 py-2 rounded-md bg-azul-suave text-blanco mb-1 `}>
             Acta Digital
           </a>
             </>):(<>
@@ -242,7 +242,7 @@ try {
           if (jsonResponse.success) {
             
               // Redirigir a la página principal
-              window.location.href = `/admin/acta-digital/${id_partido.value}`; // Redirige al usuario
+              window.location.href = `/admin/acta-digital/app?partidoID="${id_partido.value}"`; // Redirige al usuario
           } else {
               // Manejo de errores si es necesario
               document.getElementById('errorbox')!.innerHTML = `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center">Error al iniciar sesión</div>`;
