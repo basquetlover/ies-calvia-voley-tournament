@@ -7,1225 +7,1021 @@ import { supabaseAdmin } from "src/lib/supabase";
 
 let recargar = "off";
 
-let pista_p1 = 'Sin Pista';
-let partido1_e1 = "";
-let partido1_e1_e = "";
-let partido1_e2 = "";
-let partido1_e2_e = "";
-let partido1_ra = "-";
-let partido1_rb = "-";
-let estado_p1 = "";
+let pista_octavo_1= 'Sin Pista';
+let octavo_1e1 = "";
+let octavo_1e1_e = "";
+let octavo_1e2 = "";
+let octavo_1e2_e = "";
+let octavo_1ra = "-";
+let octavo_1rb = "-";
+let estado_octavo_1= "";
+let octavo_1_numero ="";
 
-let pista_p2 = 'Sin Pista';
-let partido2_e1 = "";
-let partido2_e1_e = "";
-let partido2_e2 = "";
-let partido2_e2_e = "";
-let partido2_ra = "-";
-let partido2_rb = "-";
-let estado_p2 = "";
+let pista_octavo_2= 'Sin Pista';
+let octavo_2e1 = "";
+let octavo_2e1_e = "";
+let octavo_2e2 = "";
+let octavo_2e2_e = "";
+let octavo_2ra = "-";
+let octavo_2rb = "-";
+let estado_octavo_2= "";
+let octavo_2_numero ="";
 
-let pista_p3 = 'Sin Pista';
-let partido3_e1 = "";
-let partido3_e1_e = "";
-let partido3_e2 = "";
-let partido3_e2_e = "";
-let partido3_ra = "-";
-let partido3_rb = "-";
-let estado_p3 = "";
+let pista_octavos_3 = 'Sin Pista';
+let octavos_3e1 = "";
+let octavos_3e1_e = "";
+let octavos_3e2 = "";
+let octavos_3e2_e = "";
+let octavos_3ra = "-";
+let octavos_3rb = "-";
+let estado_octavos_3 = "";
+let octavos_3_numero ="";
 
-let pista_p4 = 'Sin Pista';
-let partido4_e1 = "";
-let partido4_e1_e = "";
-let partido4_e2 = "";
-let partido4_e2_e = "";
-let partido4_ra = "-";
-let partido4_rb = "-";
-let estado_p4 = "";
+let pista_octavos_4 = 'Sin Pista';
+let octavos_4e1 = "";
+let octavos_4e1_e = "";
+let octavos_4e2 = "";
+let octavos_4e2_e = "";
+let octavos_4ra = "-";
+let octavos_4rb = "-";
+let estado_octavos_4 = "";
+let octavos_4_numero ="";
 
-let pista_p5 = 'Sin Pista';
-let partido5_e1 = "";
-let partido5_e1_e = "";
-let partido5_e2 = "";
-let partido5_e2_e = "";
-let partido5_ra = "-";
-let partido5_rb = "-";
-let estado_p5 = "";
+let pista_octavos_5 = 'Sin Pista';
+let octavos_5e1 = "";
+let octavos_5e1_e = "";
+let octavos_5e2 = "";
+let octavos_5e2_e = "";
+let octavos_5ra = "-";
+let octavos_5rb = "-";
+let estado_octavos_5 = "";
+let octavos_5_numero ="";
 
-let pista_p6 = 'Sin Pista';
-let partido6_e1 = "";
-let partido6_e1_e = "";
-let partido6_e2 = "";
-let partido6_e2_e = "";
-let partido6_ra = "-";
-let partido6_rb = "-";
-let estado_p6 = "";
+let pista_octavos_6= 'Sin Pista';
+let octavos_6e1 = "";
+let octavos_6e1_e = "";
+let octavos_6e2 = "";
+let octavos_6e2_e = "";
+let octavos_6ra = "-";
+let octavos_6rb = "-";
+let estado_octavos_6= "";
+let octavos_6_numero ="";
 
-let pista_p7 = 'Sin Pista';
-let partido7_e1 = "";
-let partido7_e1_e = "";
-let partido7_e2 = "";
-let partido7_e2_e = "";
-let partido7_ra = "-";
-let partido7_rb = "-";
-let estado_p7 = "";
+let pista_octavos_7 = 'Sin Pista';
+let octavos_7e1 = "";
+let octavos_7e1_e = "";
+let octavos_7e2 = "";
+let octavos_7e2_e = "";
+let octavos_7ra = "-";
+let octavos_7rb = "-";
+let estado_octavos_7 = "";
+let octavos_7_numero ="";
 
-let pista_p8 = 'Sin Pista';
-let partido8_e1 = "";
-let partido8_e1_e = "";
-let partido8_e2 = "";
-let partido8_e2_e = "";
-let partido8_ra = "-";
-let partido8_rb = "-";
-let estado_p8 = "";
+let pista_octavos_8 = 'Sin Pista';
+let octavos_8_e1 = "";
+let octavos_8_e1_e = "";
+let octavos_8_e2 = "";
+let octavos_8_e2_e = "";
+let octavos_8_ra = "-";
+let octavos_8_rb = "-";
+let estado_octavos_8 = "";
+let octavos_8_numero ="";
 
-let pista_p9 = 'Sin Pista';
-let partido9_e1 = "";
-let partido9_e1_e = "";
-let partido9_e2 = "";
-let partido9_e2_e = "";
-let partido9_ra = "-";
-let partido9_rb = "-";
-let estado_p9 = "";
+let pista_quartos_1 = 'Sin Pista';
+let quartos_1_e1 = "";
+let quartos_1_e1_e = "";
+let quartos_1_e2 = "";
+let quartos_1_e2_e = "";
+let quartos_1_ra = "-";
+let quartos_1_rb = "-";
+let estado_quartos_1 = "";
+let quartos_1_numero ="";
 
-let pista_p10 = 'Sin Pista';
-let partido10_e1 = "";
-let partido10_e1_e = "";
-let partido10_e2 = "";
-let partido10_e2_e = "";
-let partido10_ra = "-";
-let partido10_rb = "-";
-let estado_p10 = "";
+let pista_quartos_2 = 'Sin Pista';
+let quartos_2_e1 = "";
+let quartos_2_e1_e = "";
+let quartos_2_e2 = "";
+let quartos_2_e2_e = "";
+let quartos_2_ra = "-";
+let quartos_2_rb = "-";
+let estado_quartos_2 = "";
+let quartos_2_numero ="";
 
-let pista_p11 = 'Sin Pista';
-let partido11_e1 = "";
-let partido11_e1_e = "";
-let partido11_e2 = "";
-let partido11_e2_e = "";
-let partido11_ra = "-";
-let partido11_rb = "-";
-let estado_p11 = "";
+let pista_quartos_3 = 'Sin Pista';
+let quartos_3_e1 = "";
+let quartos_3_e1_e = "";
+let quartos_3_e2 = "";
+let quartos_3_e2_e = "";
+let quartos_3_ra = "-";
+let quartos_3_rb = "-";
+let estado_quartos_3 = "";
+let quartos_3_numero ="";
 
-let pista_p12 = 'Sin Pista';
-let partido12_e1 = "";
-let partido12_e1_e = "";
-let partido12_e2 = "";
-let partido12_e2_e = "";
-let partido12_ra = "-";
-let partido12_rb = "-";
-let estado_p12 = "";
+let pista_quartos_4 = 'Sin Pista';
+let quartos_4_e1 = "";
+let quartos_4_e1_e = "";
+let quartos_4_e2 = "";
+let quartos_4_e2_e = "";
+let quartos_4_ra = "-";
+let quartos_4_rb = "-";
+let estado_quartos_4 = "Por Jugar";
+let quartos_4_numero ="";
 
-let pista_p13 = 'Sin Pista';
-let partido13_e1 = "";
-let partido13_e1_e = "";
-let partido13_e2 = "";
-let partido13_e2_e = "";
-let partido13_ra = "-";
-let partido13_rb = "-";
-let estado_p13 = "Por Jugar";
+let pista_semi_1 = 'Sin Pista';
+let semi_1_e1 = "";
+let semi_1_e1_e = "";
+let semi_1_e2 = "";
+let semi_1_e2_e = "";
+let semi_1_ra = "-";
+let semi_1_rb = "-";
+let estado_semi_1 = "Por Jugar";
+let semi_1_numero ="";
 
-let pista_p14 = 'Sin Pista';
-let partido14_e1 = "";
-let partido14_e1_e = "";
-let partido14_e2 = "";
-let partido14_e2_e = "";
-let partido14_ra = "-";
-let partido14_rb = "-";
-let estado_p14 = "Por Jugar";
+let pista_semi_2 = 'Sin Pista';
+let semi_2_e1 = "";
+let semi_2_e1_e = "";
+let semi_2_e2 = "";
+let semi_2_e2_e = "";
+let semi_2_ra = "-";
+let semi_2_rb = "-";
+let estado_semi_2 = "Por Jugar";
+let semi_2_numero ="";
 
-let pista_p15 = 'Sin Pista';
-let partido15_e1 = "";
-let partido15_e1_e = "";
-let partido15_e2 = "";
-let partido15_e2_e = "";
-let partido15_ra = "-";
-let partido15_rb = "-";
-let estado_p15 = "Por Jugar";
+let pista_tercer_quarto = 'Sin Pista';
+let tercer_quarto_e1 = "";
+let tercer_quarto_e1_e = "";
+let tercer_quarto_e2 = "";
+let tercer_quarto_e2_e = "";
+let tercer_quarto_ra = "-";
+let tercer_quarto_rb = "-";
+let estado_tercer_quarto = "Por Jugar";
+let tercer_quarto_numero = "";
 
-let pista_p16 = 'Sin Pista';
-let partido16_e1 = "";
-let partido16_e1_e = "";
-let partido16_e2 = "";
-let partido16_e2_e = "";
-let partido16_ra = "-";
-let partido16_rb = "-";
-let estado_p16 = "Por Jugar";
+let pista_final = 'Sin Pista';
+let final_e1 = "";
+let final_e1_e = "";
+let final_e2 = "";
+let final_e2_e = "";
+let final_ra = "-";
+let final_rb = "-";
+let estado_final = "Por Jugar";
+let final_numero = "";
 
-let pista_p17 = 'Sin Pista';
-let partido17_e1 = "";
-let partido17_e1_e = "";
-let partido17_e2 = "";
-let partido17_e2_e = "";
-let partido17_ra = "-";
-let partido17_rb = "-";
-let estado_p17 = "Por Jugar";
+const partidos_perdedores = [];
 
-let pista_p18 = 'Sin Pista';
-let partido18_e1 = "";
-let partido18_e1_e = "";
-let partido18_e2 = "";
-let partido18_e2_e = "";
-let partido18_ra = "-";
-let partido18_rb = "-";
-let estado_p18 = "Por Jugar";
-
-let pista_p19 = 'Sin Pista';
-let partido19_e1 = "";
-let partido19_e1_e = "";
-let partido19_e2 = "";
-let partido19_e2_e = "";
-let partido19_ra = "-";
-let partido19_rb = "-";
-let estado_p19 = "Por Jugar";
-
-let pista_p20 = 'Sin Pista';
-let partido20_e1 = "";
-let partido20_e1_e = "";
-let partido20_e2 = "";
-let partido20_e2_e = "";
-let partido20_ra = "-";
-let partido20_rb = "-";
-let estado_p20 = "Por Jugar";
-
-let pista_p21 = 'Sin Pista';
-let partido21_e1 = "";
-let partido21_e1_e = "";
-let partido21_e2 = "";
-let partido21_e2_e = "";
-let partido21_ra = "-";
-let partido21_rb = "-";
-let estado_p21 = "Por Jugar";
-
-let pista_p22 = 'Sin Pista';
-let partido22_e1 = "";
-let partido22_e1_e = "";
-let partido22_e2 = "";
-let partido22_e2_e = "";
-let partido22_ra = "-";
-let partido22_rb = "-";
-let estado_p22 = "Por Jugar";
+function traducirPartido(str: string) {
+  // Busca el primer bloque de números en el string
+  const match = str.match(/\d+$/);
+  const numero = match ? match[0] : "";
+  return `Partit ${numero}`;
+}
 {
+    //octavo 1
     try {
     // Buscar el rango correspondiente al email en la tabla Administradores
     const { data: partido1, error } = await supabaseAdmin
         .from('PartidosSS')
-        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-        .eq('id_partido', 'partido_1')
+        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+        .eq('bracket', 'octavos_1')
         .single();
 
     if (error) {
         
     } else if (partido1) {
-        pista_p1 = partido1.pista;
-        partido1_e1 = partido1.equipo_local;
-        if (partido1_e1){
+        pista_octavo_1= partido1.pista;
+        octavo_1e1 = partido1.equipo_local;
+        if (octavo_1e1){
             const { data: escudo_e1_p1, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido1_e1)
+            .eq('nombre_equipo', octavo_1e1)
             .single();
 
             if (escudo_e1_p1){
-                partido1_e1_e = escudo_e1_p1.escudo;
+                octavo_1e1_e = escudo_e1_p1.escudo;
             }if (error){
             
             
         }
         }
-        partido1_e2 = partido1.equipo_visitante;
-        if (partido1_e2){
+        octavo_1e2 = partido1.equipo_visitante;
+        if (octavo_1e2){
             const { data: escud_e2_p1, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido1_e2)
+            .eq('nombre_equipo', octavo_1e2)
             .single();
 
             if (escud_e2_p1){
-                partido1_e2_e = escud_e2_p1.escudo;
+                octavo_1e2_e = escud_e2_p1.escudo;
             }if (error){
             
             
         }
         }
-        partido1_ra = partido1.LocGlobal;
-        partido1_rb = partido1.VisGlobal;
-        estado_p1 = partido1.estado;
+        octavo_1ra = partido1.LocGlobal;
+        octavo_1rb = partido1.VisGlobal;
+        estado_octavo_1= partido1.estado;
+        octavo_1_numero = traducirPartido(partido1.id_partido)
+    }
+    } catch (err) {
+        console.error('Error al obtener rango:', err);
+    }
+//Octavo 2
+    try {
+    // Buscar el rango correspondiente al email en la tabla Administradores
+    const { data: partido1, error } = await supabaseAdmin
+        .from('PartidosSS')
+        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+        .eq('bracket', 'octavo_2')
+        .single();
+
+    if (error) {
+        
+    } else if (partido1) {
+        pista_octavo_2= partido1.pista;
+        octavo_2e1 = partido1.equipo_local;
+        if (octavo_2e1){
+            const { data: escudo_e1_p1, error } = await supabaseAdmin
+            .from('EquiposSS')
+            .select('escudo')
+            .eq('nombre_equipo', octavo_2e1)
+            .single();
+
+            if (escudo_e1_p1){
+                octavo_2e1_e = escudo_e1_p1.escudo;
+            }if (error){
+            
+            
+        }
+        }
+        octavo_2e2 = partido1.equipo_visitante;
+        if (octavo_2e2){
+            const { data: escud_e2_p1, error } = await supabaseAdmin
+            .from('EquiposSS')
+            .select('escudo')
+            .eq('nombre_equipo', octavo_2e2)
+            .single();
+
+            if (escud_e2_p1){
+                octavo_2e2_e = escud_e2_p1.escudo;
+            }if (error){
+            
+            
+        }
+        }
+        octavo_2ra = partido1.LocGlobal;
+        octavo_2rb = partido1.VisGlobal;
+        estado_octavo_2= partido1.estado;
+        octavo_2_numero = traducirPartido(partido1.id_partido)
     }
     } catch (err) {
         console.error('Error al obtener rango:', err);
     }
 
-    try {
-    //P2
-    const { data: partido2, error } = await supabaseAdmin
-        .from('PartidosSS')
-        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-        .eq('id_partido', 'partido_2')
-        .single();
-
-    if (error) {
-        
-    } else if (partido2) {
-        pista_p2 = partido2.pista;
-        partido2_e1 = partido2.equipo_local;
-        if (partido2_e1){
-            const { data: escudo_e1_p2, error } = await supabaseAdmin
-            .from('EquiposSS')
-            .select('escudo')
-            .eq('nombre_equipo', partido2_e1)
-            .single();
-
-            if (escudo_e1_p2){
-                partido2_e1_e = escudo_e1_p2.escudo;
-            }if (error){
-            
-            
-        }
-        }
-        partido2_e2 = partido2.equipo_visitante;
-        if (partido2_e2){
-            const { data: escud_e2_p2, error } = await supabaseAdmin
-            .from('EquiposSS')
-            .select('escudo')
-            .eq('nombre_equipo', partido2_e2)
-            .single();
-
-            if (escud_e2_p2){
-                partido2_e2_e = escud_e2_p2.escudo;
-            }if (error){
-            
-            
-        }
-        }
-        partido2_ra = partido2.LocGlobal;
-        partido2_rb = partido2.VisGlobal;
-        estado_p2 = partido2.estado;
-    }
-
-    } catch (err) {
-    console.error('Error al obtener rango:', err);
-    }
-
+//Octavo 3
     try {
     //P3
     const { data: partido3, error } = await supabaseAdmin
         .from('PartidosSS')
-        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-        .eq('id_partido', 'partido_3')
+        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+        .eq('bracket', 'octavos_3')
         .single();
 
     if (error) {
         
     } else if (partido3) {
-        pista_p3 = partido3.pista;
-        partido3_e1 = partido3.equipo_local;
-        if (partido3_e1){
+        pista_octavos_3 = partido3.pista;
+        octavos_3e1 = partido3.equipo_local;
+        if (octavos_3e1){
             const { data: escudo_e1_p3, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido3_e1)
+            .eq('nombre_equipo', octavos_3e1)
             .single();
 
             if (escudo_e1_p3){
-                partido3_e1_e = escudo_e1_p3.escudo;
+                octavos_3e1_e = escudo_e1_p3.escudo;
             }if (error){
             
             
         }
         }
-        partido3_e2 = partido3.equipo_visitante;
-        if (partido3_e2){
+        octavos_3e2 = partido3.equipo_visitante;
+        if (octavos_3e2){
             const { data: escud_e2_p3, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido3_e2)
+            .eq('nombre_equipo', octavos_3e2)
             .single();
 
             if (escud_e2_p3){
-                partido3_e2_e = escud_e2_p3.escudo;
+                octavos_3e2_e = escud_e2_p3.escudo;
             }if (error){
             
             
         }
         }
-        partido3_ra = partido3.LocGlobal;
-        partido3_rb = partido3.VisGlobal;
-        estado_p3 = partido3.estado;
+        octavos_3ra = partido3.LocGlobal;
+        octavos_3rb = partido3.VisGlobal;
+        estado_octavos_3 = partido3.estado;
+        octavos_3_numero = traducirPartido(partido3.id_partido)
     }
 
     } catch (err) {
     console.error('Error al obtener rango:', err);
     }
 
-    try {
-    //P4
-    const { data: partido4, error } = await supabaseAdmin
-        .from('PartidosSS')
-        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-        .eq('id_partido', 'partido_4')
-        .single();
-
-    if (error) {
-        
-    } else if (partido4) {
-        pista_p4 = partido4.pista;
-        partido4_e1 = partido4.equipo_local;
-        if (partido4_e1){
-            const { data: escudo_e1_p4, error } = await supabaseAdmin
-            .from('EquiposSS')
-            .select('escudo')
-            .eq('nombre_equipo', partido4_e1)
-            .single();
-
-            if (escudo_e1_p4){
-                partido4_e1_e = escudo_e1_p4.escudo;
-            }if (error){
-            
-            
-        }
-        }
-        partido4_e2 = partido4.equipo_visitante;
-        if (partido4_e2){
-            const { data: escud_e2_p4, error } = await supabaseAdmin
-            .from('EquiposSS')
-            .select('escudo')
-            .eq('nombre_equipo', partido4_e2)
-            .single();
-
-            if (escud_e2_p4){
-                partido4_e2_e = escud_e2_p4.escudo;
-            }if (error){
-            
-            
-        }
-        }
-        partido4_ra = partido4.LocGlobal;
-        partido4_rb = partido4.VisGlobal;
-        estado_p4 = partido4.estado;
-    }
-
-    } catch (err) {
-    console.error('Error al obtener rango:', err);
-    }
-    //P5
+    //Octavo 4
     try {
     
     const { data: partido5, error } = await supabaseAdmin
         .from('PartidosSS')
-        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-        .eq('id_partido', 'partido_5')
+        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+        .eq('bracket', 'octavos_4')
         .single();
 
     if (error) {
         
     } else if (partido5) {
-        pista_p5 = partido5.pista;
-        partido5_e1 = partido5.equipo_local;
-        if (partido5_e1){
+        pista_octavos_4 = partido5.pista;
+        octavos_4e1 = partido5.equipo_local;
+        if (octavos_4e1){
             const { data: escudo_e1_p5, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido5_e1)
+            .eq('nombre_equipo', octavos_4e1)
             .single();
 
             if (escudo_e1_p5){
-                partido5_e1_e = escudo_e1_p5.escudo;
+                octavos_4e1_e = escudo_e1_p5.escudo;
             }if (error){
             
             
         }
         }
-        partido5_e2 = partido5.equipo_visitante;
-        if (partido5_e2){
+        octavos_4e2 = partido5.equipo_visitante;
+        if (octavos_4e2){
             const { data: escud_e2_p5, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido5_e2)
+            .eq('nombre_equipo', octavos_4e2)
             .single();
 
             if (escud_e2_p5){
-                partido5_e2_e = escud_e2_p5.escudo;
+                octavos_4e2_e = escud_e2_p5.escudo;
             }
             if(error){
                 
             }
         }
-        partido5_ra = partido5.LocGlobal;
-        partido5_rb = partido5.VisGlobal;
-        estado_p5 = partido5.estado;
+        octavos_4ra = partido5.LocGlobal;
+        octavos_4rb = partido5.VisGlobal;
+        estado_octavos_4 = partido5.estado;
+        octavos_4_numero = traducirPartido(partido5.id_partido)
     }
 
     } catch (err) {
     console.error('Error al obtener rango:', err);
     }
-    //P6
-    try {
 
-    const { data: partido6, error } = await supabaseAdmin
+    //Octavo 5
+    try {
+    
+    const { data: partido5, error } = await supabaseAdmin
         .from('PartidosSS')
-        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-        .eq('id_partido', 'partido_6')
+        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+        .eq('bracket', 'octavos_5')
         .single();
 
     if (error) {
         
-    } else if (partido6) {
-        pista_p6 = partido6.pista;
-        partido6_e1 = partido6.equipo_local;
-        if (partido6_e1){
+    } else if (partido5) {
+        pista_octavos_5 = partido5.pista;
+        octavos_5e1 = partido5.equipo_local;
+        if (octavos_5e1){
+            const { data: escudo_e1_p5, error } = await supabaseAdmin
+            .from('EquiposSS')
+            .select('escudo')
+            .eq('nombre_equipo', octavos_5e1)
+            .single();
+
+            if (escudo_e1_p5){
+                octavos_5e1_e = escudo_e1_p5.escudo;
+            }if (error){
+            
+            
+        }
+        }
+        octavos_5e2 = partido5.equipo_visitante;
+        if (octavos_5e2){
+            const { data: escud_e2_p5, error } = await supabaseAdmin
+            .from('EquiposSS')
+            .select('escudo')
+            .eq('nombre_equipo', octavos_5e2)
+            .single();
+
+            if (escud_e2_p5){
+                octavos_5e2_e = escud_e2_p5.escudo;
+            }
+            if(error){
+                
+            }
+        }
+        octavos_5ra = partido5.LocGlobal;
+        octavos_5rb = partido5.VisGlobal;
+        estado_octavos_5 = partido5.estado;
+        octavos_5_numero = traducirPartido(partido5.id_partido)
+    }
+
+    } catch (err) {
+    console.error('Error al obtener rango:', err);
+    }
+
+    //Octavo 6
+    try {
+    //P2
+    const { data: partido2, error } = await supabaseAdmin
+        .from('PartidosSS')
+        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+        .eq('bracket', 'octavos_6')
+        .single();
+
+    if (error) {
+        
+    } else if (partido2) {
+        pista_octavos_6= partido2.pista;
+        octavos_6e1 = partido2.equipo_local;
+        if (octavos_6e1){
+            const { data: escudo_e1_p2, error } = await supabaseAdmin
+            .from('EquiposSS')
+            .select('escudo')
+            .eq('nombre_equipo', octavos_6e1)
+            .single();
+
+            if (escudo_e1_p2){
+                octavos_6e1_e = escudo_e1_p2.escudo;
+            }if (error){
+            
+            
+        }
+        }
+        octavos_6e2 = partido2.equipo_visitante;
+        if (octavos_6e2){
+            const { data: escud_e2_p2, error } = await supabaseAdmin
+            .from('EquiposSS')
+            .select('escudo')
+            .eq('nombre_equipo', octavos_6e2)
+            .single();
+
+            if (escud_e2_p2){
+                octavos_6e2_e = escud_e2_p2.escudo;
+            }if (error){
+            
+            
+        }
+        }
+        octavos_6ra = partido2.LocGlobal;
+        octavos_6rb = partido2.VisGlobal;
+        estado_octavos_6= partido2.estado;
+        octavos_6_numero = traducirPartido(partido2.id_partido)
+    }
+
+    } catch (err) {
+    console.error('Error al obtener rango:', err);
+    }
+
+    //Octavo 7
+    try {
+    //P4
+    const { data: partido4, error } = await supabaseAdmin
+        .from('PartidosSS')
+        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+        .eq('bracket', 'octavos_7')
+        .single();
+
+    if (error) {
+        
+    } else if (partido4) {
+        pista_octavos_7 = partido4.pista;
+        octavos_7e1 = partido4.equipo_local;
+        if (octavos_7e1){
+            const { data: escudo_e1_p4, error } = await supabaseAdmin
+            .from('EquiposSS')
+            .select('escudo')
+            .eq('nombre_equipo', octavos_7e1)
+            .single();
+
+            if (escudo_e1_p4){
+                octavos_7e1_e = escudo_e1_p4.escudo;
+            }if (error){
+            
+            
+        }
+        }
+        octavos_7e2 = partido4.equipo_visitante;
+        if (octavos_7e2){
+            const { data: escud_e2_p4, error } = await supabaseAdmin
+            .from('EquiposSS')
+            .select('escudo')
+            .eq('nombre_equipo', octavos_7e2)
+            .single();
+
+            if (escud_e2_p4){
+                octavos_7e2_e = escud_e2_p4.escudo;
+            }if (error){
+            
+            
+        }
+        }
+        octavos_7ra = partido4.LocGlobal;
+        octavos_7rb = partido4.VisGlobal;
+        estado_octavos_7 = partido4.estado;
+        octavos_7_numero = traducirPartido(partido4.id_partido)
+    }
+
+    } catch (err) {
+    console.error('Error al obtener rango:', err);
+    }
+
+    //Octavo 8
+    try {
+
+    const { data: octavos_8, error } = await supabaseAdmin
+        .from('PartidosSS')
+        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+        .eq('bracket', 'octavos_8')
+        .single();
+
+    if (error) {
+        
+    } else if (octavos_8) {
+        pista_octavos_8 = octavos_8.pista;
+        octavos_8_e1 = octavos_8.equipo_local;
+        if (octavos_8_e1){
             const { data: escudo_e1_p6, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido6_e1)
+            .eq('nombre_equipo', octavos_8_e1)
             .single();
 
             if (escudo_e1_p6){
-                partido6_e1_e = escudo_e1_p6.escudo;
+                octavos_8_e1_e = escudo_e1_p6.escudo;
             }
         }
-        partido6_e2 = partido6.equipo_visitante;
-        if (partido6_e2){
+        octavos_8_e2 = octavos_8.equipo_visitante;
+        if (octavos_8_e2){
             const { data: escud_e2_p6, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido6_e2)
+            .eq('nombre_equipo', octavos_8_e2)
             .single();
 
             if (escud_e2_p6){
-                partido6_e2_e = escud_e2_p6.escudo;
+                octavos_8_e2_e = escud_e2_p6.escudo;
             }
         }
-        partido6_ra = partido6.LocGlobal;
-        partido6_rb = partido6.VisGlobal;
-        estado_p6 = partido6.estado;
+        octavos_8_ra = octavos_8.LocGlobal;
+        octavos_8_rb = octavos_8.VisGlobal;
+        estado_octavos_8 = octavos_8.estado;
+        octavos_8_numero = traducirPartido(octavos_8.id_partido)
     }
 
     } catch (err) {
     console.error('Error al obtener rango:', err);
     }
-    //P7
+    //Quartos 1
     try {
     
-    const { data: partido7, error } = await supabaseAdmin
+    const { data: quartos_1, error } = await supabaseAdmin
         .from('PartidosSS')
-        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-        .eq('id_partido', 'partido_7')
+        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+        .eq('bracket', 'quartos_1')
         .single();
 
     if (error) {
         
-    } else if (partido7) {
-        pista_p7 = partido7.pista;
-        partido7_e1 = partido7.equipo_local;
-        if (partido7_e1){
+    } else if (quartos_1) {
+        pista_quartos_1 = quartos_1.pista;
+        quartos_1_e1 = quartos_1.equipo_local;
+        if (quartos_1_e1){
             const { data: escudo_e1_p7, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido7_e1)
+            .eq('nombre_equipo', quartos_1_e1)
             .single();
 
             if (escudo_e1_p7){
-                partido7_e1_e = escudo_e1_p7.escudo;
+                quartos_1_e1_e = escudo_e1_p7.escudo;
             }
         }
-        partido7_e2 = partido7.equipo_visitante;
-        if (partido7_e2){
+        quartos_1_e2 = quartos_1.equipo_visitante;
+        if (quartos_1_e2){
             const { data: escud_e2_p7, error } = await supabaseAdmin
             .from('EquiposSS')
             .select('escudo')
-            .eq('nombre_equipo', partido7_e2)
+            .eq('nombre_equipo', quartos_1_e2)
             .single();
 
             if (escud_e2_p7){
-                partido7_e2_e = escud_e2_p7.escudo;
+                quartos_1_e2_e = escud_e2_p7.escudo;
             }
         }
-        partido7_ra = partido7.LocGlobal;
-        partido7_rb = partido7.VisGlobal;
-        estado_p7 = partido7.estado;
+        quartos_1_ra = quartos_1.LocGlobal;
+        quartos_1_rb = quartos_1.VisGlobal;
+        estado_quartos_1 = quartos_1.estado;
+        quartos_1_numero = traducirPartido(quartos_1.id_partido)
     }
 
     } catch (err) {
     console.error('Error al obtener rango:', err);
     }
-    //P8
+    
+
+    //Quartos 2
     try {
     
-    const { data: partido8, error } = await supabaseAdmin
-        .from('PartidosSS')
-        .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-        .eq('id_partido', 'partido_8')
-        .single();
-
-    if (error) {
-        
-    } else if (partido8) {
-        pista_p8 = partido8.pista;
-        partido8_e1 = partido8.equipo_local;
-        if (partido8_e1){
-            const { data: escudo_e1_p8, error } = await supabaseAdmin
-            .from('EquiposSS')
-            .select('escudo')
-            .eq('nombre_equipo', partido8_e1)
-            .single();
-
-            if (escudo_e1_p8){
-                partido8_e1_e = escudo_e1_p8.escudo;
-            }
-        }
-        partido8_e2 = partido8.equipo_visitante;
-        if (partido8_e2){
-            const { data: escud_e2_p8, error } = await supabaseAdmin
-            .from('EquiposSS')
-            .select('escudo')
-            .eq('nombre_equipo', partido8_e2)
-            .single();
-
-            if (escud_e2_p8){
-                partido8_e2_e = escud_e2_p8.escudo;
-            }
-        }
-        partido8_ra = partido8.LocGlobal;
-        partido8_rb = partido8.VisGlobal;
-        estado_p8 = partido8.estado;
-    }
-
-    } catch (err) {
-    console.error('Error al obtener rango:', err);
-    }
-
-    //P9
-    try {
-    
-    const { data: partido9, error } = await supabaseAdmin
+    const { data: quartos_2, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_9')
+    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+    .eq('bracket', 'quartos_2')
     .single();
 
     if (error) {
     
-    } else if (partido9) {
-    pista_p9 = partido9.pista;
-    partido9_e1 = partido9.equipo_local;
-    if (partido9_e1){
+    } else if (quartos_2) {
+    pista_quartos_2 = quartos_2.pista;
+    quartos_2_e1 = quartos_2.equipo_local;
+    if (quartos_2_e1){
         const { data: escudo_e1_p9, error } = await supabaseAdmin
         .from('EquiposSS')
         .select('escudo')
-        .eq('nombre_equipo', partido9_e1)
+        .eq('nombre_equipo', quartos_2_e1)
         .single();
 
         if (escudo_e1_p9){
-            partido9_e1_e = escudo_e1_p9.escudo;
+            quartos_2_e1_e = escudo_e1_p9.escudo;
         }
     }
-    partido9_e2 = partido9.equipo_visitante;
-    if (partido9_e2){
+    quartos_2_e2 = quartos_2.equipo_visitante;
+    if (quartos_2_e2){
         const { data: escud_e2_p9, error } = await supabaseAdmin
         .from('EquiposSS')
         .select('escudo')
-        .eq('nombre_equipo', partido9_e2)
+        .eq('nombre_equipo', quartos_2_e2)
         .single();
 
         if (escud_e2_p9){
-            partido9_e2_e = escud_e2_p9.escudo;
+            quartos_2_e2_e = escud_e2_p9.escudo;
         }
     }
-    partido9_ra = partido9.LocGlobal;
-    partido9_rb = partido9.VisGlobal;
-    estado_p9 = partido9.estado;
+    quartos_2_ra = quartos_2.LocGlobal;
+    quartos_2_rb = quartos_2.VisGlobal;
+    estado_quartos_2 = quartos_2.estado;
+    quartos_2_numero = traducirPartido(quartos_2.id_partido)
     }
 
     } catch (err) {
     console.error('Error al obtener rango:', err);
     }
 
-    //P10
+
+    //Quartos 3
     try {
     
-    const { data: partido10, error } = await supabaseAdmin
+    const { data: quartos_3, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_10')
+    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+    .eq('bracket', 'quartos_3')
     .single();
 
     if (error) {
     
-    } else if (partido10) {
-    pista_p10 = partido10.pista;
-    partido10_e1 = partido10.equipo_local;
-    if (partido10_e1){
-        const { data: escudo_e1_p10, error } = await supabaseAdmin
-        .from('EquiposSS')
-        .select('escudo')
-        .eq('nombre_equipo', partido10_e1)
-        .single();
-
-        if (escudo_e1_p10){
-            partido10_e1_e = escudo_e1_p10.escudo;
-        }
-    }
-    partido10_e2 = partido10.equipo_visitante;
-    if (partido10_e2){
-        const { data: escud_e2_p10, error } = await supabaseAdmin
-        .from('EquiposSS')
-        .select('escudo')
-        .eq('nombre_equipo', partido10_e2)
-        .single();
-
-        if (escud_e2_p10){
-            partido10_e2_e = escud_e2_p10.escudo;
-        }
-    }
-    partido10_ra = partido10.LocGlobal;
-    partido10_rb = partido10.VisGlobal;
-    estado_p10 = partido10.estado;
-    }
-
-    } catch (err) {
-    console.error('Error al obtener rango:', err);
-    }
-
-    //P11
-    try {
-    
-    const { data: partido11, error } = await supabaseAdmin
-    .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_11')
-    .single();
-
-    if (error) {
-    
-    } else if (partido11) {
-    pista_p11 = partido11.pista;
-    partido11_e1 = partido11.equipo_local;
-    if (partido11_e1){
+    } else if (quartos_3) {
+    pista_quartos_3 = quartos_3.pista;
+    quartos_3_e1 = quartos_3.equipo_local;
+    if (quartos_3_e1){
         const { data: escudo_e1_p11, error } = await supabaseAdmin
         .from('EquiposSS')
         .select('escudo')
-        .eq('nombre_equipo', partido11_e1)
+        .eq('nombre_equipo', quartos_3_e1)
         .single();
 
         if (escudo_e1_p11){
-            partido11_e1_e = escudo_e1_p11.escudo;
+            quartos_3_e1_e = escudo_e1_p11.escudo;
         }
     }
-    partido11_e2 = partido11.equipo_visitante;
-    if (partido11_e2){
+    quartos_3_e2 = quartos_3.equipo_visitante;
+    if (quartos_3_e2){
         const { data: escud_e2_p11, error } = await supabaseAdmin
         .from('EquiposSS')
         .select('escudo')
-        .eq('nombre_equipo', partido11_e2)
+        .eq('nombre_equipo', quartos_3_e2)
         .single();
 
         if (escud_e2_p11){
-            partido11_e2_e = escud_e2_p11.escudo;
+            quartos_3_e2_e = escud_e2_p11.escudo;
         }
     }
-    partido11_ra = partido11.LocGlobal;
-    partido11_rb = partido11.VisGlobal;
-    estado_p11 = partido11.estado;
+    quartos_3_ra = quartos_3.LocGlobal;
+    quartos_3_rb = quartos_3.VisGlobal;
+    estado_quartos_3 = quartos_3.estado;
+    quartos_3_numero = traducirPartido(quartos_3.id_partido)
     }
 
     } catch (err) {
     console.error('Error al obtener rango:', err);
     }
 
-    //P12
-    try {
-    
-    const { data: partido12, error } = await supabaseAdmin
-    .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_12')
-    .single();
-
-    if (error) {
-    
-    } else if (partido12) {
-    pista_p12 = partido12.pista;
-    partido12_e1 = partido12.equipo_local;
-    if (partido12_e1){
-        const { data: escudo_e1_p12, error } = await supabaseAdmin
-        .from('EquiposSS')
-        .select('escudo')
-        .eq('nombre_equipo', partido12_e1)
-        .single();
-
-        if (escudo_e1_p12){
-            partido12_e1_e = escudo_e1_p12.escudo;
-        } 
-    }
-    partido12_e2 = partido12.equipo_visitante;
-    if (partido12_e2){
-        const { data: escud_e2_p12, error } = await supabaseAdmin
-        .from('EquiposSS')
-        .select('escudo')
-        .eq('nombre_equipo', partido12_e2)
-        .single();
-
-        if (escud_e2_p12){
-            partido12_e2_e = escud_e2_p12.escudo;
-        }
-    }
-    partido12_ra = partido12.LocGlobal;
-    partido12_rb = partido12.VisGlobal;
-    estado_p12 = partido12.estado;
-    }
-
-    } catch (err) {
-    console.error('Error al obtener rango:', err);
-    }
-
-//P13
+   
+//Quartos 4
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
-  const { data: partido13, error } = await supabaseAdmin
+  const { data: quartos_4, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_13')
+    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+    .eq('bracket', 'quartos_4')
     .single();
 
   if (error) {
     
-  } else if (partido13) {
-    pista_p13 = partido13.pista;
-    partido13_e1 = partido13.equipo_local;
-    if (partido13_e1){
+  } else if (quartos_4) {
+    pista_quartos_4 = quartos_4.pista;
+    quartos_4_e1 = quartos_4.equipo_local;
+    if (quartos_4_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido13_e1)
+       .eq('nombre_equipo', quartos_4_e1)
        .single();
 
        if (escudo_e1_p12){
-           partido13_e1_e = escudo_e1_p12.escudo;
+           quartos_4_e1_e = escudo_e1_p12.escudo;
        } 
    }
-    partido13_e2 = partido13.equipo_visitante;
-    if (partido13_e2){
+    quartos_4_e2 = quartos_4.equipo_visitante;
+    if (quartos_4_e2){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido13_e2)
+       .eq('nombre_equipo', quartos_4_e2)
        .single();
 
        if (escudo_e1_p12){
-           partido13_e2_e = escudo_e1_p12.escudo;
+           quartos_4_e2_e = escudo_e1_p12.escudo;
        } 
    }
-    partido13_ra = partido13.LocGlobal;
-    partido13_rb = partido13.VisGlobal;
-    estado_p13 = partido13.estado;
+    quartos_4_ra = quartos_4.LocGlobal;
+    quartos_4_rb = quartos_4.VisGlobal;
+    estado_quartos_4 = quartos_4.estado;
+    quartos_4_numero = traducirPartido(quartos_4.id_partido)
   }
 
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
- //P14
-try {
-  const { data: partido14, error } = await supabaseAdmin
-    .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_14')
-    .single();
 
-  if (error) {
-    
-  } else if (partido14) {
-    pista_p14 = partido14.pista;
-    partido14_e1 = partido14.equipo_local;
-    if (partido14_e1){
-       const { data: escudo_e1_p14, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido14_e1)
-       .single();
-
-       if (escudo_e1_p14){
-           partido14_e1_e = escudo_e1_p14.escudo;
-       } 
-   }
-    partido14_e2 = partido14.equipo_visitante;
-    if (partido14_e2){
-       const { data: escudo_e2_p14, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido14_e2)
-       .single();
-
-       if (escudo_e2_p14){
-           partido14_e2_e = escudo_e2_p14.escudo;
-       } 
-   }
-    partido14_ra = partido14.LocGlobal;
-    partido14_rb = partido14.VisGlobal;
-    estado_p14 = partido14.estado;
-  }
-
-} catch (err) {
-  console.error('Error al obtener rango:', err);
-}
- //P15
-try {
-  const { data: partido15, error } = await supabaseAdmin
-    .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_15')
-    .single();
-
-  if (error) {
-    
-  } else if (partido15) {
-    pista_p15 = partido15.pista;
-    partido15_e1 = partido15.equipo_local;
-    if (partido15_e1){
-       const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido15_e1)
-       .single();
-
-       if (escudo_e1_p12){
-           partido15_e1_e = escudo_e1_p12.escudo;
-       } 
-   }
-    partido15_e2 = partido15.equipo_visitante;
-    if (partido15_e2){
-       const { data: escudo_e2_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido15_e2)
-       .single();
-
-       if (escudo_e2_p12){
-           partido15_e2_e = escudo_e2_p12.escudo;
-       } 
-   }
-    partido15_ra = partido15.LocGlobal;
-    partido15_rb = partido15.VisGlobal;
-    estado_p15 = partido15.estado;
-  }
-
-} catch (err) {
-  console.error('Error al obtener rango:', err);
-}
- //P16
-try {
-  const { data: partido16, error } = await supabaseAdmin
-    .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_16')
-    .single();
-
-  if (error) {
-    
-  } else if (partido16) {
-    pista_p16 = partido16.pista;
-    partido16_e1 = partido16.equipo_local;
-    if (partido16_e1){
-       const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido16_e1)
-       .single();
-
-       if (escudo_e1_p12){
-           partido16_e1_e = escudo_e1_p12.escudo;
-       } 
-   }
-    partido16_e2 = partido16.equipo_visitante;
-    if (partido16_e2){
-       const { data: escudo_e2_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido16_e2)
-       .single();
-
-       if (escudo_e2_p12){
-           partido16_e2_e = escudo_e2_p12.escudo;
-       } 
-   }
-    partido16_ra = partido16.LocGlobal;
-    partido16_rb = partido16.VisGlobal;
-    estado_p16 = partido16.estado;
-  }
-
-} catch (err) {
-  console.error('Error al obtener rango:', err);
-}
-//P17
+//Semi 1
 try {
  
-  const { data: partido17, error } = await supabaseAdmin
+  const { data: semi_1, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_17')
+    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+    .eq('bracket', 'semi_1')
     .single();
 
   if (error) {
     
-  } else if (partido17) {
-    pista_p17 = partido17.pista;
-    partido17_e1 = partido17.equipo_local;
-    if (partido17_e1){
+  } else if (semi_1) {
+    pista_semi_1 = semi_1.pista;
+    semi_1_e1 = semi_1.equipo_local;
+    if (semi_1_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido17_e1)
+       .eq('nombre_equipo', semi_1_e1)
        .single();
 
        if (escudo_e1_p12){
-           partido17_e1_e = escudo_e1_p12.escudo;
+           semi_1_e1_e = escudo_e1_p12.escudo;
        } 
    }
-    partido17_e2 = partido17.equipo_visitante;
-    if (partido17_e2){
+    semi_1_e2 = semi_1.equipo_visitante;
+    if (semi_1_e2){
        const { data: escudo_e2_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido17_e2)
+       .eq('nombre_equipo', semi_1_e2)
        .single();
 
        if (escudo_e2_p12){
-           partido17_e2_e = escudo_e2_p12.escudo;
+           semi_1_e2_e = escudo_e2_p12.escudo;
        } 
    }
-    partido17_ra = partido17.LocGlobal;
-    partido17_rb = partido17.VisGlobal;
-    estado_p17 = partido17.estado;
+    semi_1_ra = semi_1.LocGlobal;
+    semi_1_rb = semi_1.VisGlobal;
+    estado_semi_1 = semi_1.estado;
+    semi_1_numero = "Semi 1";
   }
 
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
- //P18
+ //Semi 2
 try {
 
-  const { data: partido18, error } = await supabaseAdmin
+  const { data: semi_2, error } = await supabaseAdmin
     .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_18')
+    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+    .eq('bracket', 'semi_2')
     .single();
 
   if (error) {
     
-  } else if (partido18) {
-    pista_p18 = partido18.pista;
-    partido18_e1 = partido18.equipo_local;
-    if (partido18_e1){
+  } else if (semi_2) {
+    pista_semi_2 = semi_2.pista;
+    semi_2_e1 = semi_2.equipo_local;
+    if (semi_2_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido18_e1)
+       .eq('nombre_equipo', semi_2_e1)
        .single();
 
        if (escudo_e1_p12){
-           partido18_e1_e = escudo_e1_p12.escudo;
+           semi_2_e1_e = escudo_e1_p12.escudo;
        } 
    }
-    partido18_e2 = partido18.equipo_visitante;
-    if (partido18_e2){
+    semi_2_e2 = semi_2.equipo_visitante;
+    if (semi_2_e2){
        const { data: escudo_e2_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido18_e2)
+       .eq('nombre_equipo', semi_2_e2)
        .single();
 
        if (escudo_e2_p12){
-           partido18_e2_e = escudo_e2_p12.escudo;
+           semi_2_e2_e = escudo_e2_p12.escudo;
        } 
    }
-    partido18_ra = partido18.LocGlobal;
-    partido18_rb = partido18.VisGlobal;
-    estado_p18 = partido18.estado;
+    semi_2_ra = semi_2.LocGlobal;
+    semi_2_rb = semi_2.VisGlobal;
+    estado_semi_2 = semi_2.estado;
+    semi_2_numero = "Semi 2";
   }
 
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
-//P19
-try {
- 
-  const { data: partido19, error } = await supabaseAdmin
-    .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_19')
-    .single();
 
-  if (error) {
-    
-  } else if (partido19) {
-    pista_p19 = partido19.pista;
-    partido19_e1 = partido19.equipo_local;
-    if (partido19_e1){
-       const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido19_e1)
-       .single();
 
-       if (escudo_e1_p12){
-           partido19_e1_e = escudo_e1_p12.escudo;
-       } 
-   }
-    partido19_e2 = partido19.equipo_visitante;
-    if (partido19_e2){
-       const { data: escudo_e2_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido19_e2)
-       .single();
-
-       if (escudo_e2_p12){
-           partido19_e2_e = escudo_e2_p12.escudo;
-       } 
-   }
-    partido19_ra = partido19.LocGlobal;
-    partido19_rb = partido19.VisGlobal;
-    estado_p19 = partido19.estado;
-  }
-
-} catch (err) {
-  console.error('Error al obtener rango:', err);
-}
-//P20
+//3/4 Puesto
 try {
  
-  const { data: partido20, error } = await supabaseAdmin
-    .from('PartidosSS')
-    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-    .eq('id_partido', 'partido_20')
-    .single();
-
-  if (error) {
-    
-  } else if (partido20) {
-    pista_p20 = partido20.pista;
-    partido20_e1 = partido20.equipo_local;
-    if (partido20_e1){
-       const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido20_e1)
-       .single();
-
-       if (escudo_e1_p12){
-           partido20_e1_e = escudo_e1_p12.escudo;
-       } 
-   }
-    partido20_e2 = partido20.equipo_visitante;
-    if (partido20_e2){
-       const { data: escudo_e2_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
-       .select('escudo')
-       .eq('nombre_equipo', partido20_e2)
-       .single();
-
-       if (escudo_e2_p12){
-           partido20_e2_e = escudo_e2_p12.escudo;
-       } 
-   }
-    partido20_ra = partido20.LocGlobal;
-    partido20_rb = partido20.VisGlobal;
-    estado_p20 = partido20.estado;
-  }
-
-} catch (err) {
-  console.error('Error al obtener rango:', err);
-}
-
-//P21
-try {
- 
- const { data: partido21, error } = await supabaseAdmin
+ const { data: tercer_quarto, error } = await supabaseAdmin
    .from('PartidosSS')
-   .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-   .eq('id_partido', 'partido_21')
+   .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+   .eq('bracket', 'tercer_quarto')
    .single();
 
  if (error) {
    
- } else if (partido21) {
-   pista_p21 = partido21.pista;
-   partido21_e1 = partido21.equipo_local;
-   if (partido21_e1){
+ } else if (tercer_quarto) {
+   pista_tercer_quarto = tercer_quarto.pista;
+   tercer_quarto_e1 = tercer_quarto.equipo_local;
+   if (tercer_quarto_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido21_e1)
+       .eq('nombre_equipo', tercer_quarto_e1)
        .single();
 
        if (escudo_e1_p12){
-           partido21_e1_e = escudo_e1_p12.escudo;
+           tercer_quarto_e1_e = escudo_e1_p12.escudo;
        } 
    }
-   partido21_e2 = partido21.equipo_visitante;
-   if (partido21_e2){
+   tercer_quarto_e2 = tercer_quarto.equipo_visitante;
+   if (tercer_quarto_e2){
        const { data: escudo_e2_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido21_e2)
+       .eq('nombre_equipo', tercer_quarto_e2)
        .single();
 
        if (escudo_e2_p12){
-           partido21_e2_e = escudo_e2_p12.escudo;
+           tercer_quarto_e2_e = escudo_e2_p12.escudo;
        } 
    }
-   partido21_ra = partido21.LocGlobal;
-   partido21_rb = partido21.VisGlobal;
-   estado_p21 = partido21.estado;
+   tercer_quarto_ra = tercer_quarto.LocGlobal;
+   tercer_quarto_rb = tercer_quarto.VisGlobal;
+   estado_tercer_quarto = tercer_quarto.estado;
+   tercer_quarto_numero = "3/4 Puesto";
  }
 
 } catch (err) {
  console.error('Error al obtener rango:', err);
 }
 
-//P22
+//Final
 try {
  
- const { data: partido22, error } = await supabaseAdmin
+ const { data: final, error } = await supabaseAdmin
    .from('PartidosSS')
-   .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
-   .eq('id_partido', 'partido_22')
+   .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
+   .eq('bracket', 'final')
    .single();
 
  if (error) {
    
- } else if (partido22) {
-   pista_p22 = partido22.pista;
-   partido22_e1 = partido22.equipo_local;
-   if (partido22_e1){
+ } else if (final) {
+   pista_final = final.pista;
+   final_e1 = final.equipo_local;
+   if (final_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido22_e1)
+       .eq('nombre_equipo', final_e1)
        .single();
 
        if (escudo_e1_p12){
-           partido22_e1_e = escudo_e1_p12.escudo;
+           final_e1_e = escudo_e1_p12.escudo;
        } 
    }
-   partido22_e2 = partido22.equipo_visitante;
-   if (partido22_e2){
+   final_e2 = final.equipo_visitante;
+   if (final_e2){
        const { data: escudo_e2_p12, error } = await supabaseAdmin
        .from('EquiposSS')
        .select('escudo')
-       .eq('nombre_equipo', partido22_e2)
+       .eq('nombre_equipo', final_e2)
        .single();
 
        if (escudo_e2_p12){
-           partido22_e2_e = escudo_e2_p12.escudo;
+           final_e2_e = escudo_e2_p12.escudo;
        } 
    }
-   partido22_ra = partido22.LocGlobal;
-   partido22_rb = partido22.VisGlobal;
-   estado_p22 = partido22.estado;
+   final_ra = final.LocGlobal;
+   final_rb = final.VisGlobal;
+   estado_final = final.estado;
+   final_numero = "Final";
  }
 
 } catch (err) {
  console.error('Error al obtener rango:', err);
+}
+
+try {
+  const { data, error } = await supabaseAdmin
+    .from("PartidosSS")
+    .select("pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido")
+    .eq("bracket", "perdedores"); // o el bracket que quieras
+
+  if (!error && data) {
+    for (const fila of data) {
+      let pista   = fila.pista ?? "Sin Pista";
+      let equipo1 = fila.equipo_local ?? "";
+      let escudo1 = "";
+      let equipo2 = fila.equipo_visitante ?? "";
+      let escudo2 = "";
+      let resA    = fila.LocGlobal ?? "-";
+      let resB    = fila.VisGlobal ?? "-";
+      let estado  = fila.estado ?? "Por Jugar";
+      let numero  = traducirPartido(fila.id_partido);
+
+      // Escudo equipo 1
+      if (equipo1) {
+        const { data: e1, error: err1 } = await supabaseAdmin
+          .from("EquiposSS")
+          .select("escudo")
+          .eq("nombre_equipo", equipo1)
+          .single();
+        if (!err1 && e1) escudo1 = e1.escudo;
+      }
+
+      // Escudo equipo 2
+      if (equipo2) {
+        const { data: e2, error: err2 } = await supabaseAdmin
+          .from("EquiposSS")
+          .select("escudo")
+          .eq("nombre_equipo", equipo2)
+          .single();
+        if (!err2 && e2) escudo2 = e2.escudo;
+      }
+
+      partidos_perdedores.push({
+        pista,
+        equipo1,
+        escudo1,
+        equipo2,
+        escudo2,
+        resultadoA: resA,
+        resultadoB: resB,
+        estado,
+        numero
+      });
+    }
+  }
+} catch (err) {
+  console.error("Error al obtener partidos perdedores:", err);
 }
 
 }
@@ -1234,23 +1030,23 @@ try {
     
 
         
-<section class="w-[1500px] mx-auto  min-h-screen overflow-x-auto h-auto z-0 flex flex-col place-content-center items-center rounded-md bg-gris-claro">
+<section class="w-[1500px] mx-auto  min-h-screen overflow-x-auto h-auto z-0 pt-2 flex flex-col place-content-center items-center rounded-md bg-gris-claro">
 <!-- /<div class="overflow-x-auto no-scrollbar h-auto w-max b"> -->
 <div class="grid grid-cols-6 grid-rows-4 gap-4  w-[1400px] mx-auto place-items-center ">
-
-<!-- Partido 1  -->
-<div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 col-start-1 row-start-2">
+<!-- Octavo 1  -->
+ {octavo_1_numero !== "" && (
+<div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
     <!-- Equipo 1  -->
     <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 1</h4>
-        <h5 class={`text-gray-500 text-xs  ${estado_p1 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p1}</h5>
-        <h4 id="pista_p1" class="text-sm">{pista_p1}</h4>
+        <h4 class="text-sm">{octavo_1_numero}</h4>
+        <h5 class={`text-gray-500 text-xs  ${estado_octavo_1=== "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavo_1}</h5>
+        <h4 id="pista_p1" class="text-sm">{pista_octavo_1}</h4>
     </div>
     <EquipoBox>
         <div class="w-full h-full flex items-center place-content-center">
             {
-                partido1_e1_e ? (
-                <img id="partido1_e1_e" src={partido1_e1_e} alt={`Escudo ${partido1_e1}`} class="w-10 h-10 rounded-sm" />
+                octavo_1e1_e ? (
+                <img id="octavo_1e1_e" src={octavo_1e1_e} alt={`Escudo ${octavo_1e1}`} class="w-10 h-10 rounded-sm" />
                 ): (
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1260,9 +1056,9 @@ try {
             }
             
         </div>
-        <p class="text-blanco text-base text-center">{partido1_e1}</p>
+        <p class="text-blanco text-base text-center">{octavo_1e1}</p>
         <div>
-            <p id="partido1_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido1_ra}</p>
+            <p id="octavo_1ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavo_1ra}</p>
         </div>
     </EquipoBox>
 
@@ -1270,8 +1066,8 @@ try {
     <EquipoBox>
         <div class="w-full h-full flex items-center place-content-center">
             {
-                partido1_e2_e ? (
-                <img id="partido1_e1_e" src={partido1_e2_e} alt={`Escudo ${partido1_e2}`} class="w-10 h-10 rounded-sm" />
+                octavo_1e2_e ? (
+                <img id="octavo_1e1_e" src={octavo_1e2_e} alt={`Escudo ${octavo_1e2}`} class="w-10 h-10 rounded-sm" />
                 ): (
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1280,28 +1076,83 @@ try {
                 )
             }
         </div>
-        <p class="text-blanco text-base text-center">{partido1_e2}</p>
+        <p class="text-blanco text-base text-center">{octavo_1e2}</p>
         <div>
             <div>
-                <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido1_rb}</p>
+                <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavo_1rb}</p>
             </div>
         </div>
     </EquipoBox>
 </div>
-<!-- Partido 3  -->
+)}
+
+<!-- Octavo 2  -->
+ {octavo_2_numero !== "" && (
+<div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 col-start-1 row-start-2">
+    {/* <!-- Equipo 1  --> */}
+    <div class="grid grid-cols-3 place-items-center text-blanco">
+        <h4 class="text-sm">{octavo_2_numero}</h4>
+        <h5 class={`text-gray-500 text-xs  ${estado_octavo_2=== "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavo_2}</h5>
+        <h4 id="pista_p1" class="text-sm">{pista_octavo_2}</h4>
+    </div>
+    <EquipoBox>
+        <div class="w-full h-full flex items-center place-content-center">
+            {
+                octavo_2e1_e ? (
+                <img id="octavo_2e1_e" src={octavo_2e1_e} alt={`Escudo ${octavo_2e1}`} class="w-10 h-10 rounded-sm" />
+                ): (
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                    <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
+                                    <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
+                                </svg>
+                )
+            }
+            
+        </div>
+        <p class="text-blanco text-base text-center">{octavo_2e1}</p>
+        <div>
+            <p id="octavo_2ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavo_2ra}</p>
+        </div>
+    </EquipoBox>
+
+    {/* <!-- Equipo 2  --> */}
+    <EquipoBox>
+        <div class="w-full h-full flex items-center place-content-center">
+            {
+                octavo_2e2_e ? (
+                <img id="octavo_2e1_e" src={octavo_2e2_e} alt={`Escudo ${octavo_2e2}`} class="w-10 h-10 rounded-sm" />
+                ): (
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                    <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
+                                    <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
+                                </svg>
+                )
+            }
+        </div>
+        <p class="text-blanco text-base text-center">{octavo_2e2}</p>
+        <div>
+            <div>
+                <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavo_2rb}</p>
+            </div>
+        </div>
+    </EquipoBox>
+</div>
+)}
+<!-- Octavo 3  -->
+{octavos_3_numero !== "" && (
 <div class="col-start-1 row-start-3"> 
 <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
-    <!-- Equipo 1  -->
+    {/* <!-- Equipo 1  --> */}
     <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 3</h4>
-        <h5 class={`text-gray-500 text-xs  ${estado_p3 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p3}</h5>
-        <h4 id="pista_p3" class="text-sm">{pista_p3}</h4>
+        <h4 class="text-sm">{octavos_3_numero}</h4>
+        <h5 class={`text-gray-500 text-xs  ${estado_octavos_3 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_3}</h5>
+        <h4 id="pista_octavos_3" class="text-sm">{pista_octavos_3}</h4>
     </div>
     <EquipoBox>
         <div class="w-full h-full flex items-center place-content-center">
             {
-                partido3_e1_e ? (
-                <img id="partido3_e1_e" src={partido3_e1_e} alt={`Escudo ${partido3_e1}`} class="w-10 h-10 rounded-sm" />
+                octavos_3e1_e ? (
+                <img id="octavos_3e1_e" src={octavos_3e1_e} alt={`Escudo ${octavos_3e1}`} class="w-10 h-10 rounded-sm" />
                 ): (
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1311,18 +1162,18 @@ try {
             }
             
         </div>
-        <p class="text-blanco text-base text-center">{partido3_e1}</p>
+        <p class="text-blanco text-base text-center">{octavos_3e1}</p>
         <div>
-            <p id="partido3_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido3_ra}</p>
+            <p id="octavos_3ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_3ra}</p>
         </div>
     </EquipoBox>
 
-    <!-- Equipo 2  -->
+    {/* <!-- Equipo 2  --> */}
     <EquipoBox>
         <div class="w-full h-full flex items-center place-content-center">
             {
-                partido3_e2_e ? (
-                <img id="partido3_e1_e" src={partido3_e2_e} alt={`Escudo ${partido3_e2}`} class="w-10 h-10 rounded-sm" />
+                octavos_3e2_e ? (
+                <img id="octavos_3e1_e" src={octavos_3e2_e} alt={`Escudo ${octavos_3e2}`} class="w-10 h-10 rounded-sm" />
                 ): (
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1331,29 +1182,31 @@ try {
                 )
             }
         </div>
-        <p class="text-blanco text-base text-center">{partido3_e2}</p>
+        <p class="text-blanco text-base text-center">{octavos_3e2}</p>
         <div>
             <div>
-                <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido3_rb}</p>
+                <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_3rb}</p>
             </div>
         </div>
     </EquipoBox>
 </div>
 </div>
-<!-- Partido 5  -->
+)}
+<!-- Octavo 4  -->
+{octavos_4_numero !== "" && (
 <div class="col-start-1 row-start-4">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
-        <!-- Equipo 1  -->
+        {/* <!-- Equipo 1  --> */}
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Partit 5</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p5 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p5}</h5>
-            <h4 id="pista_p5" class="text-sm">{pista_p5}</h4>
+            <h4 class="text-sm">{octavos_4_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_octavos_4 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_4}</h5>
+            <h4 id="pista_octavos_4" class="text-sm">{pista_octavos_4}</h4>
         </div>
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
-                    partido5_e1_e ? (
-                    <img id="partido5_e1_e" src={partido5_e1_e} alt={`Escudo ${partido5_e1}`} class="w-10 h-10 rounded-sm" />
+                    octavos_4e1_e ? (
+                    <img id="octavos_4e1_e" src={octavos_4e1_e} alt={`Escudo ${octavos_4e1}`} class="w-10 h-10 rounded-sm" />
                     ): (
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1363,18 +1216,18 @@ try {
                 }
                 
             </div>
-            <p class="text-blanco text-base text-center">{partido5_e1}</p>
+            <p class="text-blanco text-base text-center">{octavos_4e1}</p>
             <div>
-                <p id="partido5_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido5_ra}</p>
+                <p id="octavos_4ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_4ra}</p>
             </div>
         </EquipoBox>
     
-        <!-- Equipo 2  -->
+        {/* <!-- Equipo 2  --> */}
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
-                    partido5_e2_e ? (
-                    <img id="partido5_e1_e" src={partido5_e2_e} alt={`Escudo ${partido5_e2}`} class="w-10 h-10 rounded-sm" />
+                    octavos_4e2_e ? (
+                    <img id="octavos_4e1_e" src={octavos_4e2_e} alt={`Escudo ${octavos_4e2}`} class="w-10 h-10 rounded-sm" />
                     ): (
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1383,32 +1236,82 @@ try {
                     )
                 }
             </div>
-            <p class="text-blanco text-base text-center">{partido5_e2}</p>
+            <p class="text-blanco text-base text-center">{octavos_4e2}</p>
             <div>
                 <div>
-                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido5_rb}</p>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_4rb}</p>
                 </div>
             </div>
         </EquipoBox>
     </div>
 </div>
-<!-- Partido 2  -->
+)}
+{octavos_5_numero !== "" && (
+<div class="col-start-6 row-start-1">
+     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+        <div class="grid grid-cols-3 place-items-center text-blanco">
+            <h4 class="text-sm">{octavos_5_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_octavos_5=== "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_5}</h5>
+            <h4 class="text-sm">{pista_octavos_5}</h4>
+        </div>
+        <!--Ganador P7 -->
+        <EquipoBoxDer>
+            <div>
+                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_5ra}</p>
+            </div>
+            <p class="text-blanco text-base text-center">{octavos_5e1}</p>
+            <div>
+                {octavos_5e1_e && octavos_5e1_e.trim() !== "" ?  (
+                    <img src={octavos_5e1_e} class="w-10 h-10 rounded-sm" alt={octavos_5e1} />
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
+                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
+                            </svg>
+                    )}
+            </div>
+        </EquipoBoxDer>
+
+        <!--Ganador P8 -->
+        <EquipoBoxDer>
+            <div>
+                <div>
+                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_5rb}</p>
+                </div>
+            </div>
+            <p class="text-blanco text-base text-center">{octavos_5e2}</p>
+            <div>
+                {octavos_5e2_e && octavos_5e2_e.trim() !== "" ?  (
+                    <img src={octavos_5e2_e} class="w-10 h-10 rounded-sm" alt={octavos_5e2} />
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
+                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
+                            </svg>
+                    )}
+            </div>
+        </EquipoBoxDer>
+    </div>
+</div>
+)}
+<!-- Octavo 6  -->
+ {octavos_6_numero !== "" && (
 <div class="col-start-6 row-start-2">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Partit 2</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p2 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p2}</h5>
-            <h4 class="text-sm">{pista_p2}</h4>
+            <h4 class="text-sm">{octavos_6_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_octavos_6=== "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_6}</h5>
+            <h4 class="text-sm">{pista_octavos_8}</h4>
         </div>
         <!--Ganador P7 -->
         <EquipoBoxDer>
             <div>
-                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido2_ra}</p>
+                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_6ra}</p>
             </div>
-            <p class="text-blanco text-base text-center">{partido2_e1}</p>
+            <p class="text-blanco text-base text-center">{octavos_6e1}</p>
             <div>
-                {partido2_e1_e && partido2_e1_e.trim() !== "" ?  (
-                    <img src={partido2_e1_e} class="w-10 h-10 rounded-sm" alt={partido2_e1} />
+                {octavos_6e1_e && octavos_6e1_e.trim() !== "" ?  (
+                    <img src={octavos_6e1_e} class="w-10 h-10 rounded-sm" alt={octavos_6e1} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1422,13 +1325,13 @@ try {
         <EquipoBoxDer>
             <div>
                 <div>
-                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido2_rb}</p>
+                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_6rb}</p>
                 </div>
             </div>
-            <p class="text-blanco text-base text-center">{partido2_e2}</p>
+            <p class="text-blanco text-base text-center">{octavos_6e2}</p>
             <div>
-                {partido2_e2_e && partido2_e2_e.trim() !== "" ?  (
-                    <img src={partido2_e2_e} class="w-10 h-10 rounded-sm" alt={partido2_e2} />
+                {octavos_6e2_e && octavos_6e2_e.trim() !== "" ?  (
+                    <img src={octavos_6e2_e} class="w-10 h-10 rounded-sm" alt={octavos_6e2} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1439,24 +1342,26 @@ try {
         </EquipoBoxDer>
     </div>
 </div>
+)}
 
-<!-- Partido 4  -->
+<!-- Octavo 7  -->
+ {octavos_7_numero !== "" && (
 <div class="col-start-6 row-start-3">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Partit 4</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p4 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p4}</h5>
-            <h4 class="text-sm">{pista_p4}</h4>
+            <h4 class="text-sm">{octavos_7_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_octavos_7 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_7}</h5>
+            <h4 class="text-sm">{pista_octavos_7}</h4>
         </div>
         <!--Ganador P7 -->
         <EquipoBoxDer>
             <div>
-                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido4_ra}</p>
+                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_7ra}</p>
             </div>
-            <p class="text-blanco text-base text-center">{partido4_e1}</p>
+            <p class="text-blanco text-base text-center">{octavos_7e1}</p>
             <div>
-                {partido4_e1_e && partido4_e1_e.trim() !== "" ?  (
-                    <img src={partido4_e1_e} class="w-10 h-10 rounded-sm" alt={partido4_e1} />
+                {octavos_7e1_e && octavos_7e1_e.trim() !== "" ?  (
+                    <img src={octavos_7e1_e} class="w-10 h-10 rounded-sm" alt={octavos_7e1} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1470,13 +1375,13 @@ try {
         <EquipoBoxDer>
             <div>
                 <div>
-                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido4_rb}</p>
+                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_7rb}</p>
                 </div>
             </div>
-            <p class="text-blanco text-base text-center">{partido4_e2}</p>
+            <p class="text-blanco text-base text-center">{octavos_7e2}</p>
             <div>
-                {partido4_e2_e && partido4_e2_e.trim() !== "" ?  (
-                    <img src={partido4_e2_e} class="w-10 h-10 rounded-sm" alt={partido4_e2} />
+                {octavos_7e2_e && octavos_7e2_e.trim() !== "" ?  (
+                    <img src={octavos_7e2_e} class="w-10 h-10 rounded-sm" alt={octavos_7e2} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1487,23 +1392,25 @@ try {
         </EquipoBoxDer>
     </div>
 </div>
-<!-- Partido 6  -->
+)}
+<!-- Octavo 8  -->
+ {octavos_8_numero !== "" && (
 <div class="col-start-6 row-start-4">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Partit 6</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p6 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p6}</h5>
-            <h4 class="text-sm">{pista_p6}</h4>
+            <h4 class="text-sm">{octavos_8_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_octavos_8 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_8}</h5>
+            <h4 class="text-sm">{pista_octavos_8}</h4>
         </div>
         <!--Ganador P7 -->
         <EquipoBoxDer>
             <div>
-                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido6_ra}</p>
+                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_8_ra}</p>
             </div>
-            <p class="text-blanco text-base text-center">{partido6_e1}</p>
+            <p class="text-blanco text-base text-center">{octavos_8_e1}</p>
             <div>
-                {partido6_e1_e && partido6_e1_e.trim() !== "" ?  (
-                    <img src={partido6_e1_e} class="w-10 h-10 rounded-sm" alt={partido6_e1} />
+                {octavos_8_e1_e && octavos_8_e1_e.trim() !== "" ?  (
+                    <img src={octavos_8_e1_e} class="w-10 h-10 rounded-sm" alt={octavos_8_e1} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1517,13 +1424,13 @@ try {
         <EquipoBoxDer>
             <div>
                 <div>
-                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido6_rb}</p>
+                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_8_rb}</p>
                 </div>
             </div>
-            <p class="text-blanco text-base text-center">{partido6_e2}</p>
+            <p class="text-blanco text-base text-center">{octavos_8_e2}</p>
             <div>
-                {partido6_e2_e && partido6_e2_e.trim() !== "" ?  (
-                    <img src={partido6_e2_e} class="w-10 h-10 rounded-sm" alt={partido6_e2} />
+                {octavos_8_e2_e && octavos_8_e2_e.trim() !== "" ?  (
+                    <img src={octavos_8_e2_e} class="w-10 h-10 rounded-sm" alt={octavos_8_e2} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1534,21 +1441,23 @@ try {
         </EquipoBoxDer>
     </div>
 </div>
+)}
 
-<!-- Partido 7  -->
+<!-- Quartos 1  -->
+ {quartos_1_numero !== "" && (
 <div class="row-span-2 col-start-2 row-start-1">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
         <!-- Equipo 1  -->
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Partit 7</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p7 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p7}</h5>
-            <h4 id="pista_p7" class="text-sm">{pista_p7}</h4>
+            <h4 class="text-sm">{quartos_1_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_quartos_1 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_quartos_1}</h5>
+            <h4 id="pista_quartos_1" class="text-sm">{pista_quartos_1}</h4>
         </div>
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
-                    partido7_e1_e ? (
-                    <img id="partido7_e1_e" src={partido7_e1_e} alt={`Escudo ${partido7_e1}`} class="w-10 h-10 rounded-sm" />
+                    quartos_1_e1_e ? (
+                    <img id="quartos_1_e1_e" src={quartos_1_e1_e} alt={`Escudo ${quartos_1_e1}`} class="w-10 h-10 rounded-sm" />
                     ): (
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1558,9 +1467,9 @@ try {
                 }
                 
             </div>
-            <p class="text-blanco text-base text-center">{partido7_e1}</p>
+            <p class="text-blanco text-base text-center">{quartos_1_e1}</p>
             <div>
-                <p id="partido7_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido7_ra}</p>
+                <p id="quartos_1_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_1_ra}</p>
             </div>
         </EquipoBox>
     
@@ -1568,8 +1477,8 @@ try {
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
-                    partido7_e2_e ? (
-                    <img id="partido7_e1_e" src={partido7_e2_e} alt={`Escudo ${partido7_e2}`} class="w-10 h-10 rounded-sm" />
+                    quartos_1_e2_e ? (
+                    <img id="quartos_1_e1_e" src={quartos_1_e2_e} alt={`Escudo ${quartos_1_e2}`} class="w-10 h-10 rounded-sm" />
                     ): (
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1578,30 +1487,32 @@ try {
                     )
                 }
             </div>
-            <p class="text-blanco text-base text-center">{partido7_e2}</p>
+            <p class="text-blanco text-base text-center">{quartos_1_e2}</p>
             <div>
                 <div>
-                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido7_rb}</p>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_1_rb}</p>
                 </div>
             </div>
         </EquipoBox>
     </div>
 </div>
+)}
 
-<!-- Partido 9 -->
+<!-- Quartos 2 -->
+ {quartos_2_numero !== "" && (
 <div class="row-span-2 col-start-2 row-start-3">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
         <!-- Equipo 1  -->
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Partit 9</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p9 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p9}</h5>
-            <h4 id="pista_p9" class="text-sm">{pista_p9}</h4>
+            <h4 class="text-sm">{quartos_2_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_quartos_2 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_quartos_2}</h5>
+            <h4 id="pista_quartos_2" class="text-sm">{pista_quartos_2}</h4>
         </div>
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
-                    partido9_e1_e ? (
-                    <img id="partido9_e1_e" src={partido9_e1_e} alt={`Escudo ${partido9_e1}`} class="w-10 h-10 rounded-sm" />
+                    quartos_2_e1_e ? (
+                    <img id="quartos_2_e1_e" src={quartos_2_e1_e} alt={`Escudo ${quartos_2_e1}`} class="w-10 h-10 rounded-sm" />
                     ): (
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1611,9 +1522,9 @@ try {
                 }
                 
             </div>
-            <p class="text-blanco text-base text-center">{partido9_e1}</p>
+            <p class="text-blanco text-base text-center">{quartos_2_e1}</p>
             <div>
-                <p id="partido9_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido9_ra}</p>
+                <p id="quartos_2_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_2_ra}</p>
             </div>
         </EquipoBox>
     
@@ -1621,8 +1532,8 @@ try {
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
-                    partido9_e2_e ? (
-                    <img id="partido9_e1_e" src={partido9_e2_e} alt={`Escudo ${partido9_e2}`} class="w-10 h-10 rounded-sm" />
+                    quartos_2_e2_e ? (
+                    <img id="quartos_2_e1_e" src={quartos_2_e2_e} alt={`Escudo ${quartos_2_e2}`} class="w-10 h-10 rounded-sm" />
                     ): (
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1631,33 +1542,35 @@ try {
                     )
                 }
             </div>
-            <p class="text-blanco text-base text-center">{partido9_e2}</p>
+            <p class="text-blanco text-base text-center">{quartos_2_e2}</p>
             <div>
                 <div>
-                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido9_rb}</p>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_2_rb}</p>
                 </div>
             </div>
         </EquipoBox>
     </div>
 </div>
+)}
 
-<!-- Partido 11 -->
+<!-- Quartos 3 -->
+ {quartos_3_numero !== "" && (
 <div class="row-span-2 col-start-5 row-start-1">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Partit 11</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p11 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p11}</h5>
-            <h4 class="text-sm">{pista_p11}</h4>
+            <h4 class="text-sm">{quartos_3_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_quartos_3 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_quartos_3}</h5>
+            <h4 class="text-sm">{pista_quartos_3}</h4>
         </div>
         <!--Ganador P7 -->
         <EquipoBoxDer>
             <div>
-                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido11_ra}</p>
+                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_3_ra}</p>
             </div>
-            <p class="text-blanco text-base text-center">{partido11_e1}</p>
+            <p class="text-blanco text-base text-center">{quartos_3_e1}</p>
             <div>
-                {partido11_e1_e && partido11_e1_e.trim() !== "" ?  (
-                    <img src={partido11_e1_e} class="w-10 h-10 rounded-sm" alt={partido11_e1} />
+                {quartos_3_e1_e && quartos_3_e1_e.trim() !== "" ?  (
+                    <img src={quartos_3_e1_e} class="w-10 h-10 rounded-sm" alt={quartos_3_e1} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1671,13 +1584,13 @@ try {
         <EquipoBoxDer>
             <div>
                 <div>
-                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido11_rb}</p>
+                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_3_rb}</p>
                 </div>
             </div>
-            <p class="text-blanco text-base text-center">{partido11_e2}</p>
+            <p class="text-blanco text-base text-center">{quartos_3_e2}</p>
             <div>
-                {partido11_e2_e && partido11_e2_e.trim() !== "" ?  (
-                    <img src={partido11_e2_e} class="w-10 h-10 rounded-sm" alt={partido11_e2} />
+                {quartos_3_e2_e && quartos_3_e2_e.trim() !== "" ?  (
+                    <img src={quartos_3_e2_e} class="w-10 h-10 rounded-sm" alt={quartos_3_e2} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1688,24 +1601,26 @@ try {
         </EquipoBoxDer>
     </div>
 </div>
+)}
 
-<!-- Partido 13 -->
+<!-- Quartos 4 -->
+ {quartos_4_numero !== "" && (
 <div class="row-span-2 col-start-5 row-start-3">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Partit 13</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p13 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p13}</h5>
-            <h4 class="text-sm">{pista_p13}</h4>
+            <h4 class="text-sm">{quartos_4_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_quartos_4 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_quartos_4}</h5>
+            <h4 class="text-sm">{pista_quartos_4}</h4>
         </div>
         <!--Ganador P7 -->
         <EquipoBoxDer>
             <div>
-                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido13_ra}</p>
+                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_4_ra}</p>
             </div>
-            <p class="text-blanco text-base text-center">{partido13_e1}</p>
+            <p class="text-blanco text-base text-center">{quartos_4_e1}</p>
             <div>
-                {partido13_e1_e && partido13_e1_e.trim() !== "" ?  (
-                    <img src={partido13_e1_e} class="w-10 h-10 rounded-sm" alt={partido13_e1} />
+                {quartos_4_e1_e && quartos_4_e1_e.trim() !== "" ?  (
+                    <img src={quartos_4_e1_e} class="w-10 h-10 rounded-sm" alt={quartos_4_e1} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1719,13 +1634,13 @@ try {
         <EquipoBoxDer>
             <div>
                 <div>
-                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido13_rb}</p>
+                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_4_rb}</p>
                 </div>
             </div>
-            <p class="text-blanco text-base text-center">{partido13_e2}</p>
+            <p class="text-blanco text-base text-center">{quartos_4_e2}</p>
             <div>
-                {partido13_e2_e && partido13_e2_e.trim() !== "" ?  (
-                    <img src={partido13_e2_e} class="w-10 h-10 rounded-sm" alt={partido13_e2} />
+                {quartos_4_e2_e && quartos_4_e2_e.trim() !== "" ?  (
+                    <img src={quartos_4_e2_e} class="w-10 h-10 rounded-sm" alt={quartos_4_e2} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1736,21 +1651,23 @@ try {
         </EquipoBoxDer>
     </div>
 </div>
+)}
 
-<!-- Partido 17 (Semi 1) -->
+<!-- Semi 1 -->
+ {semi_1_numero !== "" && (
 <div class="row-span-2 col-start-3 row-start-2">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
         <!-- Equipo 1  -->
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Semi 1</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p17 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p17}</h5>
-            <h4 id="pista_p17" class="text-sm">{pista_p17}</h4>
+            <h4 class="text-sm">{semi_1_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_semi_1 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_semi_1}</h5>
+            <h4 id="pista_semi_1" class="text-sm">{pista_semi_1}</h4>
         </div>
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
-                    partido17_e1_e ? (
-                    <img id="partido17_e1_e" src={partido17_e1_e} alt={`Escudo ${partido17_e1}`} class="w-10 h-10 rounded-sm" />
+                    semi_1_e1_e ? (
+                    <img id="semi_1_e1_e" src={semi_1_e1_e} alt={`Escudo ${semi_1_e1}`} class="w-10 h-10 rounded-sm" />
                     ): (
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1760,9 +1677,9 @@ try {
                 }
                 
             </div>
-            <p class="text-blanco text-base text-center">{partido17_e1}</p>
+            <p class="text-blanco text-base text-center">{semi_1_e1}</p>
             <div>
-                <p id="partido17_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido17_ra}</p>
+                <p id="semi_1_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{semi_1_ra}</p>
             </div>
         </EquipoBox>
     
@@ -1770,8 +1687,8 @@ try {
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
-                    partido17_e2_e ? (
-                    <img id="partido17_e1_e" src={partido17_e2_e} alt={`Escudo ${partido17_e2}`} class="w-10 h-10 rounded-sm" />
+                    semi_1_e2_e ? (
+                    <img id="semi_1_e1_e" src={semi_1_e2_e} alt={`Escudo ${semi_1_e2}`} class="w-10 h-10 rounded-sm" />
                     ): (
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1780,33 +1697,35 @@ try {
                     )
                 }
             </div>
-            <p class="text-blanco text-base text-center">{partido17_e2}</p>
+            <p class="text-blanco text-base text-center">{semi_1_e2}</p>
             <div>
                 <div>
-                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido17_rb}</p>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{semi_1_rb}</p>
                 </div>
             </div>
         </EquipoBox>
     </div>
 </div>
+)}
 
-<!-- Partido 18 (Semi 2) -->
+<!-- Semi 2 -->
+ {semi_2_numero !== "" && (
 <div class="row-span-2 col-start-4 row-start-2">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">Semi 2</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p18 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p18}</h5>
-            <h4 class="text-sm">{pista_p18}</h4>
+            <h4 class="text-sm">{semi_2_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_semi_2 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_semi_2}</h5>
+            <h4 class="text-sm">{pista_semi_2}</h4>
         </div>
         <!--Ganador P7 -->
         <EquipoBoxDer>
             <div>
-                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido18_ra}</p>
+                <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{semi_2_ra}</p>
             </div>
-            <p class="text-blanco text-base text-center">{partido18_e1}</p>
+            <p class="text-blanco text-base text-center">{semi_2_e1}</p>
             <div>
-                {partido18_e1_e && partido18_e1_e.trim() !== "" ?  (
-                    <img src={partido18_e1_e} class="w-10 h-10 rounded-sm" alt={partido18_e1} />
+                {semi_2_e1_e && semi_2_e1_e.trim() !== "" ?  (
+                    <img src={semi_2_e1_e} class="w-10 h-10 rounded-sm" alt={semi_2_e1} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1820,13 +1739,13 @@ try {
         <EquipoBoxDer>
             <div>
                 <div>
-                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{partido18_rb}</p>
+                    <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{semi_2_rb}</p>
                 </div>
             </div>
-            <p class="text-blanco text-base text-center">{partido18_e2}</p>
+            <p class="text-blanco text-base text-center">{semi_2_e2}</p>
             <div>
-                {partido18_e2_e && partido18_e2_e.trim() !== "" ?  (
-                    <img src={partido18_e2_e} class="w-10 h-10 rounded-sm" alt={partido18_e2} />
+                {semi_2_e2_e && semi_2_e2_e.trim() !== "" ?  (
+                    <img src={semi_2_e2_e} class="w-10 h-10 rounded-sm" alt={semi_2_e2} />
                         ) : (
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                 <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1837,21 +1756,23 @@ try {
         </EquipoBoxDer>
     </div>
 </div>
+)}
 
-<!-- Partido 22 (Final) -->
+<!-- Final -->
+ {final_numero !== "" && (
 <div class="col-span-2 col-start-3 row-start-1">
     <div class="w-max flex flex-col gap-2 bg-gold rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-gris">
-            <h4 class="text-sm">Final</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p22 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p22}</h5>
-            <h4 class="text-sm">{pista_p22}</h4>
+            <h4 class="text-sm">{final_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_final === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_final}</h5>
+            <h4 class="text-sm">{pista_final}</h4>
         </div>
-        <!--Ganador P1 -->
+        <!--Ganador octavo_2-->
         <div class="flex flex-row gap-2">
             <EquipoBox>
                 <div>
-                    {partido22_e1_e && partido22_e1_e.trim() !== "" ?  (
-                        <img src={partido22_e1_e} class="w-10 h-10 rounded-sm" alt={partido22_e1} />
+                    {final_e1_e && final_e1_e.trim() !== "" ?  (
+                        <img src={final_e1_e} class="w-10 h-10 rounded-sm" alt={final_e1} />
                             ) : (
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1859,9 +1780,9 @@ try {
                                 </svg>
                         )}
                 </div>
-                <p class="text-blanco text-base text-center">{partido22_e1}</p>
+                <p class="text-blanco text-base text-center">{final_e1}</p>
                 <div>
-                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{partido22_ra}</p>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{final_ra}</p>
                 </div>
             </EquipoBox>
 
@@ -1869,13 +1790,13 @@ try {
             <EquipoBoxDer>
                 <div>
                     <div>
-                        <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{partido22_rb}</p>
+                        <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{final_rb}</p>
                     </div>
                 </div>
-                <p class="text-blanco text-base text-center">{partido22_e2}</p>
+                <p class="text-blanco text-base text-center">{final_e2}</p>
                 <div>
-                    {partido22_e2_e && partido22_e2_e.trim() !== "" ?  (
-                        <img src={partido22_e2_e} class="w-10 h-10 rounded-sm" alt={partido22_e2} />
+                    {final_e2_e && final_e2_e.trim() !== "" ?  (
+                        <img src={final_e2_e} class="w-10 h-10 rounded-sm" alt={final_e2} />
                             ) : (
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1887,21 +1808,23 @@ try {
         </div>
     </div>
 </div>
+)}
 
-<!-- Partido 21 (3/4 puesto) -->
+<!-- 3/4 puesto -->
+ {tercer_quarto_numero !== "" && (
 <div class="col-span-2 col-start-3 row-start-4">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
-            <h4 class="text-sm">3/4 Puesto</h4>
-            <h5 class={`text-gray-500 text-xs  ${estado_p21 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p21}</h5>
-            <h4 class="text-sm">{pista_p21}</h4>
+            <h4 class="text-sm">{tercer_quarto_numero}</h4>
+            <h5 class={`text-gray-500 text-xs  ${estado_tercer_quarto === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_tercer_quarto}</h5>
+            <h4 class="text-sm">{pista_tercer_quarto}</h4>
         </div>
-        <!--Ganador P1 -->
+        <!--Ganador octavo_2-->
         <div class="flex flex-row gap-2">
             <EquipoBox>
                 <div>
-                    {partido21_e1_e && partido21_e1_e.trim() !== "" ?  (
-                        <img src={partido21_e1_e} class="w-10 h-10 rounded-sm" alt={partido21_e1} />
+                    {tercer_quarto_e1_e && tercer_quarto_e1_e.trim() !== "" ?  (
+                        <img src={tercer_quarto_e1_e} class="w-10 h-10 rounded-sm" alt={tercer_quarto_e1} />
                             ) : (
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1909,9 +1832,9 @@ try {
                                 </svg>
                         )}
                 </div>
-                <p class="text-blanco text-base text-center">{partido21_e1}</p>
+                <p class="text-blanco text-base text-center">{tercer_quarto_e1}</p>
                 <div>
-                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{partido21_ra}</p>
+                    <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{tercer_quarto_ra}</p>
                 </div>
             </EquipoBox>
 
@@ -1919,13 +1842,13 @@ try {
             <EquipoBoxDer>
                 <div>
                     <div>
-                        <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{partido21_rb}</p>
+                        <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{tercer_quarto_rb}</p>
                     </div>
                 </div>
-                <p class="text-blanco text-base text-center">{partido21_e2}</p>
+                <p class="text-blanco text-base text-center">{tercer_quarto_e2}</p>
                 <div>
-                    {partido21_e2_e && partido21_e2_e.trim() !== "" ?  (
-                        <img src={partido21_e2_e} class="w-10 h-10 rounded-sm" alt={partido21_e2} />
+                    {tercer_quarto_e2_e && tercer_quarto_e2_e.trim() !== "" ?  (
+                        <img src={tercer_quarto_e2_e} class="w-10 h-10 rounded-sm" alt={tercer_quarto_e2} />
                             ) : (
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
                                     <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
@@ -1937,388 +1860,61 @@ try {
         </div>
     </div>
 </div>
+)}
 </div>
 <!-- /</div> -->
 
 <div class="w-[95%] h-[1px] bg-accent mx-auto rounded-full my-5"></div>
 <!--Partidos Consolacion -->
 <div class="w-[1500px] mx-auto flex h-auto flex-wrap place-content-around gap-4 mb-5">
- <!-- Partido 8 -->
- <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-    <!--Equipo 1 -->
+    {partidos_perdedores.map((p, idx) => (
+  <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+    {/* <!-- Cabecera --> */}
     <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 8</h4>
-        
-        <h5 class={`text-gray-500 text-xs  ${estado_p8 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p8}</h5>
-        <h4 class="text-sm">{pista_p8}</h4>
+      <h4 class="text-sm">{p.numero}</h4>
+      <h5 class={`text-gray-500 text-xs ${p.estado === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center" : ""}`}>
+        {p.estado}
+      </h5>
+      <h4 class="text-sm">{p.pista}</h4>
     </div>
+
+    {/* <!-- Equipo 1 --> */}
     <EquipoBox>
-        <div>
-            {partido8_e1_e && partido8_e1_e.trim() !== "" ?  (
-                <img src={partido8_e1_e} class="w-10 h-10 rounded-sm" alt={partido8_e1} />
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                        </svg>
-                )}
-        </div>
-        <p class="text-blanco text-base text-center">{partido8_e1}</p>
-        
-        <div>
-            <input name="partido8_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido8_ra} placeholder="0" />
-        </div>
+      <div>
+        {p.escudo1 && p.escudo1.trim() !== "" ? (
+          <img src={p.escudo1} class="w-10 h-10 rounded-sm" alt={p.equipo1} />
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20" />
+            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10" />
+          </svg>
+        )}
+      </div>
+      <p class="text-blanco text-base text-center">{p.equipo1}</p>
+      <div>
+        <input name={`partido${idx}_ra`} class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={p.resultadoA} placeholder="0" />
+      </div>
     </EquipoBox>
 
-        <!--Equipo 2 -->
-        <EquipoBox>
-            <div>
-                {partido8_e2_e && partido8_e2_e.trim() !== "" ?  (
-                    <img src={partido8_e2_e} class="w-10 h-10 rounded-sm" alt={partido8_e2} />
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                            </svg>
-                    )}
-            </div>
-            <p class="text-blanco text-base text-center">{partido8_e2}</p>
-            <div>
-                <div>
-                    <input name="partido8_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido8_rb} placeholder="0" />
-                </div>
-            </div>
-        </EquipoBox>
-</div>
-
- <!-- Partido 10 -->
- <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-    <!--Equipo 1 -->
-    <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 10</h4>
-        <h5 class={`text-gray-500 text-xs  ${estado_p10 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p10}</h5>
-        <h4 class="text-sm">{pista_p10}</h4>
-    </div>
+    {/* <!-- Equipo 2 --> */}
     <EquipoBox>
-        <div>
-            {partido10_e1_e && partido10_e1_e.trim() !== "" ?  (
-                <img src={partido10_e1_e} class="w-10 h-10 rounded-sm" alt={partido10_e1} />
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                        </svg>
-                )}
-        </div>
-        <p class="text-blanco text-base text-center">{partido10_e1}</p>
-        
-        <div>
-            <input name="partido10_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido10_ra} placeholder="0" />
-        </div>
+      <div>
+        {p.escudo2 && p.escudo2.trim() !== "" ? (
+          <img src={p.escudo2} class="w-10 h-10 rounded-sm" alt={p.equipo2} />
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20" />
+            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10" />
+          </svg>
+        )}
+      </div>
+      <p class="text-blanco text-base text-center">{p.equipo2}</p>
+      <div>
+        <input name={`partido${idx}_rb`} class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={p.resultadoB} placeholder="0" />
+      </div>
     </EquipoBox>
-
-        <!--Equipo 2 -->
-        <EquipoBox>
-            <div>
-                {partido10_e2_e && partido10_e2_e.trim() !== "" ?  (
-                    <img src={partido10_e2_e} class="w-10 h-10 rounded-sm" alt={partido10_e2} />
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                            </svg>
-                    )}
-            </div>
-            <p class="text-blanco text-base text-center">{partido10_e2}</p>
-            <div>
-                <div>
-                    <input name="partido10_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido10_rb} placeholder="0" />
-                </div>
-            </div>
-        </EquipoBox>
-</div>
-
- <!-- Partido 12 -->
- <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-    <!--Equipo 1 -->
-    <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 12</h4>
-        <h5 class={`text-gray-500 text-xs  ${estado_p12 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p12}</h5>
-        <h4 class="text-sm">{pista_p12}</h4>
-    </div>
-    <EquipoBox>
-        <div>
-            {partido12_e1_e && partido12_e1_e.trim() !== "" ?  (
-                <img src={partido12_e1_e} class="w-10 h-10 rounded-sm" alt={partido12_e1} />
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                        </svg>
-                )}
-        </div>
-        <p class="text-blanco text-base text-center">{partido12_e1}</p>
-        
-        <div>
-            <input name="partido12_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido12_ra} placeholder="0" />
-        </div>
-    </EquipoBox>
-
-        <!--Equipo 2 -->
-        <EquipoBox>
-            <div>
-                {partido12_e2_e && partido12_e2_e.trim() !== "" ?  (
-                    <img src={partido12_e2_e} class="w-10 h-10 rounded-sm" alt={partido12_e2} />
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                            </svg>
-                    )}
-            </div>
-            <p class="text-blanco text-base text-center">{partido12_e2}</p>
-            <div>
-                <div>
-                    <input name="partido12_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido12_rb} placeholder="0" />
-                </div>
-            </div>
-        </EquipoBox>
-</div>
-
- <!-- Partido 14 -->
- <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-    <!--Equipo 1 -->
-    <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 14</h4>
-        <h5 class={`text-gray-500 text-xs  ${estado_p14 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p14}</h5>
-        <h4 class="text-sm">{pista_p14}</h4>
-    </div>
-    <EquipoBox>
-        <div>
-            {partido14_e1_e && partido14_e1_e.trim() !== "" ?  (
-                <img src={partido14_e1_e} class="w-10 h-10 rounded-sm" alt={partido14_e1} />
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                        </svg>
-                )}
-        </div>
-        <p class="text-blanco text-base text-center">{partido14_e1}</p>
-        
-        <div>
-            <input name="partido14_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido14_ra} placeholder="0" />
-        </div>
-    </EquipoBox>
-
-        <!--Equipo 2 -->
-        <EquipoBox>
-            <div>
-                {partido14_e2_e && partido14_e2_e.trim() !== "" ?  (
-                    <img src={partido14_e2_e} class="w-10 h-10 rounded-sm" alt={partido14_e2} />
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                            </svg>
-                    )}
-            </div>
-            <p class="text-blanco text-base text-center">{partido14_e2}</p>
-            <div>
-                <div>
-                    <input name="partido14_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido14_rb} placeholder="0" />
-                </div>
-            </div>
-        </EquipoBox>
-</div>
-
- <!-- Partido 15 -->
- <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-    <!--Equipo 1 -->
-    <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 15</h4>
-        <h5 class={`text-gray-500 text-xs  ${estado_p15 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p15}</h5>
-        <h4 class="text-sm">{pista_p15}</h4>
-    </div>
-    <EquipoBox>
-        <div>
-            {partido15_e1_e && partido15_e1_e.trim() !== "" ?  (
-                <img src={partido15_e1_e} class="w-10 h-10 rounded-sm" alt={partido15_e1} />
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                        </svg>
-                )}
-        </div>
-        <p class="text-blanco text-base text-center">{partido15_e1}</p>
-        
-        <div>
-            <input name="partido15_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido15_ra} placeholder="0" />
-        </div>
-    </EquipoBox>
-
-        <!--Equipo 2 -->
-        <EquipoBox>
-            <div>
-                {partido15_e2_e && partido15_e2_e.trim() !== "" ?  (
-                    <img src={partido15_e2_e} class="w-10 h-10 rounded-sm" alt={partido15_e2} />
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                            </svg>
-                    )}
-            </div>
-            <p class="text-blanco text-base text-center">{partido15_e2}</p>
-            <div>
-                <div>
-                    <input name="partido15_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido15_rb} placeholder="0" />
-                </div>
-            </div>
-        </EquipoBox>
-</div>
-
- <!-- Partido 16 -->
- <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-    <!--Equipo 1 -->
-    <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 16</h4>
-        <h5 class={`text-gray-500 text-xs  ${estado_p16 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p16}</h5>
-        <h4 class="text-sm">{pista_p16}</h4>
-    </div>
-    <EquipoBox>
-        <div>
-            {partido16_e1_e && partido16_e1_e.trim() !== "" ?  (
-                <img src={partido16_e1_e} class="w-10 h-10 rounded-sm" alt={partido16_e1} />
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                        </svg>
-                )}
-        </div>
-        <p class="text-blanco text-base text-center">{partido16_e1}</p>
-        
-        <div>
-            <input name="partido16_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido16_ra} placeholder="0" />
-        </div>
-    </EquipoBox>
-
-        <!--Equipo 2 -->
-        <EquipoBox>
-            <div>
-                {partido16_e2_e && partido16_e2_e.trim() !== "" ?  (
-                    <img src={partido16_e2_e} class="w-10 h-10 rounded-sm" alt={partido16_e2} />
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                            </svg>
-                    )}
-            </div>
-            <p class="text-blanco text-base text-center">{partido16_e2}</p>
-            <div>
-                <div>
-                    <input name="partido16_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido16_rb} placeholder="0" />
-                </div>
-            </div>
-        </EquipoBox>
-</div>
-
- <!-- Partido 19 -->
- <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-    <!--Equipo 1 -->
-    <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 19</h4>
-        <h5 class={`text-gray-500 text-xs  ${estado_p19 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p19}</h5>
-        <h4 class="text-sm">{pista_p19}</h4>
-    </div>
-    <EquipoBox>
-        <div>
-            {partido19_e1_e && partido19_e1_e.trim() !== "" ?  (
-                <img src={partido19_e1_e} class="w-10 h-10 rounded-sm" alt={partido19_e1} />
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                        </svg>
-                )}
-        </div>
-        <p class="text-blanco text-base text-center">{partido19_e1}</p>
-        
-        <div>
-            <input name="partido19_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido19_ra} placeholder="0" />
-        </div>
-    </EquipoBox>
-
-        <!--Equipo 2 -->
-        <EquipoBox>
-            <div>
-                {partido19_e2_e && partido19_e2_e.trim() !== "" ?  (
-                    <img src={partido19_e2_e} class="w-10 h-10 rounded-sm" alt={partido19_e2} />
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                            </svg>
-                    )}
-            </div>
-            <p class="text-blanco text-base text-center">{partido19_e2}</p>
-            <div>
-                <div>
-                    <input name="partido19_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido19_rb} placeholder="0" />
-                </div>
-            </div>
-        </EquipoBox>
-</div>
-
- <!-- Partido 20 -->
- <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-    <!--Equipo 1 -->
-    <div class="grid grid-cols-3 place-items-center text-blanco">
-        <h4 class="text-sm">Partit 20</h4>
-        <h5 class={`text-gray-500 text-xs  ${estado_p20 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_p20}</h5>
-        <h4 class="text-sm">{pista_p20}</h4>
-    </div>
-    <EquipoBox>
-        <div>
-            {partido20_e1_e && partido20_e1_e.trim() !== "" ?  (
-                <img src={partido20_e1_e} class="w-10 h-10 rounded-sm" alt={partido20_e1} />
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                        </svg>
-                )}
-        </div>
-        <p class="text-blanco text-base text-center">{partido20_e1}</p>
-        
-        <div>
-            <input name="partido20_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido20_ra} placeholder="0" />
-        </div>
-    </EquipoBox>
-
-        <!--Equipo 2 -->
-        <EquipoBox>
-            <div>
-                {partido20_e2_e && partido20_e2_e.trim() !== "" ?  (
-                    <img src={partido20_e2_e} class="w-10 h-10 rounded-sm" alt={partido20_e2} />
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
-                                <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20"/>
-                                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10"/>
-                            </svg>
-                    )}
-            </div>
-            <p class="text-blanco text-base text-center">{partido20_e2}</p>
-            <div>
-                <div>
-                    <input name="partido20_rb" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={partido20_rb} placeholder="0" />
-                </div>
-            </div>
-        </EquipoBox>
-</div>
+  </div>
+))}
 
 </div>
 </section>
