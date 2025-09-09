@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 declare global {
   interface Window {
@@ -15,7 +15,8 @@ const allowedEmailsOrDomains = [
   "alemanytomaspere@gmail.com",
 ];
 
-export default function SignInGoogle() {
+export default function SignInGoogle(  ) {
+
   const handleCredentialResponse = (response: any) => {
     const jwt = response.credential;
      const payload = JSON.parse(atob(jwt.split('.')[1]));
@@ -36,9 +37,21 @@ export default function SignInGoogle() {
       alert('Cuenta no permitida. Usa un correo válido.');
       return;
     }
+    let ruta = "";
+    if (typeof window !== "undefined") {
+      ruta = window.location.pathname;
+    }
 
     // console.log('Usuario:', jwt);
-    const redireccion = `/registrarse?credential="${jwt}"`;
+    let redireccion = ""
+    if(ruta || ruta !== ""){
+      
+      if(ruta === "/registrarse" || ruta==="registrarse"){
+         redireccion = `/registrarse?credential="${jwt}"`;
+      }
+
+    }
+    
     window.location.href = redireccion;
   };
 
