@@ -22,7 +22,7 @@ function obtenerAñosEscolares(fecha = new Date()) {
 //   const pasado = `${inicio - 1}-${inicio}`;
   const proximo = `${inicio + 1}-${inicio + 2}`;
 
-  return proximo;
+  return actual;
 }
 
 // Ejemplo de uso
@@ -30,7 +30,7 @@ let actualizar = false
 const anyo_actual = obtenerAñosEscolares();
 if(usuario){
     const anyo_usuario = usuario.anyo;
-
+    
     if(anyo_actual !== anyo_usuario){
         actualizar = true
     }
