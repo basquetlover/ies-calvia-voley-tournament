@@ -2,9 +2,9 @@ import { supabaseAdmin } from "src/lib/supabase";
 
 
 export async function POST({ request }: { request: Request }) {
-  const { jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3 } = await request.json();
+  const { jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet } = await request.json();
 
-  console.log(jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3)
+  console.log(jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet)
   //const { data, error } = await supabaseAdmin
     // .from('jugadas')
     // .insert([{ id_partido, ...jugada }]);
@@ -40,6 +40,8 @@ const { data: GuardarHistorial, error: ErrorGuardarHistorial } = await supabaseA
       const { data, error } = await supabaseAdmin
         .from('PartidosSS')
         .update({ 
+          LocGlobal: nuevoLocSet,
+          VisGlobal: nuevoVisSet,
           LocSet1: nuevoLocSet1,
           VisSet1: nuevoVisSet1,
           LocSet2: nuevoLocSet2,

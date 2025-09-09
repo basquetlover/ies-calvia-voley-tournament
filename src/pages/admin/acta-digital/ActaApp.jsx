@@ -496,13 +496,13 @@ useEffect(() => {
     let nuevoLocSet = LocSets;
     let nuevoVisSet = VisSets;
     let FinSet = false
-    let nuevoLocSet1 = 0;
-    let nuevoLocSet2 = 0;
-    let nuevoLocSet3 = 0;
+    let nuevoLocSet1 = LocSet1;
+    let nuevoLocSet2 = LocSet2;
+    let nuevoLocSet3 = LocSet3;
 
-    let nuevoVisSet1 = 0;
-    let nuevoVisSet2 = 0;
-    let nuevoVisSet3 = 0;
+    let nuevoVisSet1 = VisSet1;
+    let nuevoVisSet2 = VisSet2;
+    let nuevoVisSet3 = VisSet3;
 
      const jugada = {
             tipo,
@@ -516,7 +516,7 @@ useEffect(() => {
             nuevoVisSet,
             estado: "Error",
     };
-    const nueva = await GuardarJugada(jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3);
+    const nueva = await GuardarJugada(jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet);
     // Mostrar confirmación usando el mensaje de la API
     const horaActual = new Date().toLocaleTimeString();
     setConfirmaciones((prev) => [
@@ -561,7 +561,7 @@ useEffect(() => {
                             // asignarOrden()
                             // ModificarHasta = Number(orden.value);
                             // //console.log(ModificarHasta);
-                            // GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3);
+                            // GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet);
                            
 
                             if(FinSet) {
@@ -578,7 +578,7 @@ useEffect(() => {
                                 };
                                 
 
-                                const nueva = await GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3);
+                                const nueva = await GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet);
 
                                 setConfirmaciones((prev) => [
                                     ...prev,
@@ -635,7 +635,7 @@ useEffect(() => {
                                     nuevoVisSet
                                 };
                                 
-                                const nueva = await GuardarJugada(jugadaFinSet, id_partido);
+                                const nueva = await GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet);
 
                                 setConfirmaciones((prev) => [
                                     ...prev,
@@ -676,7 +676,7 @@ useEffect(() => {
                             // asignarOrden()
                             // ModificarHasta = Number(orden.value);
                             // //console.log(ModificarHasta);
-                            // GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3);
+                            // GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet);
                            
 
                             if(FinSet === true){
@@ -691,7 +691,7 @@ useEffect(() => {
                                     nuevoVis: 0,
                                     nuevoVisSet
                             };
-                            const nueva = await GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3);
+                            const nueva = await GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet);
                             // Mostrar confirmación usando el mensaje de la API
                             const horaActual = new Date().toLocaleTimeString();
                             
@@ -729,7 +729,7 @@ useEffect(() => {
                             // asignarOrden()
                             // ModificarHasta = Number(orden.value);
                             // //console.log(ModificarHasta);
-                            // GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3);
+                            // GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet);
                            
 
                             if(FinSet) {
@@ -745,7 +745,7 @@ useEffect(() => {
                                         nuevoVisSet
                                     };
 
-                                    const nueva = await GuardarJugada(jugadaFinSet, id_partido);
+                                    const nueva = await GuardarJugada(jugadaFinSet, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet);
                                     
 
                                     setConfirmaciones((prev) => [

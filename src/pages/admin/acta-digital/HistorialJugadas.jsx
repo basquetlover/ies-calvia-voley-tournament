@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import './ActaApp.css';
 
-export default async function GuardarJugada(jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3) {
+export default async function GuardarJugada(jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet) {
     console.log(jugada)
     // Recuperar historial actual
     let localStorageGuardado = false;
@@ -28,7 +28,7 @@ export default async function GuardarJugada(jugada, id_partido, nuevoLocSet1, nu
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3 })
+      body: JSON.stringify({ jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet })
     });
 
     if (!response.ok) {
