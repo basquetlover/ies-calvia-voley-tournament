@@ -40,67 +40,117 @@ if(usuario){
 {
     actualizar === true ? (
         <>
+     
         <div id="formulario_curso" class="w-full h-full bg-gris-claro bg-opacity-75 fixed z-50 flex items-center place-content-center">
-            <form id="actualizar-curso" class="w-96 h-96 bg-gris rounded-lg p-2" method="POST" action="/api/sesiones/actualizar-curso">
+            <form id="actualizar-curso" class="max-w-4xl h-auto bg-gris rounded-lg p-2" method="POST" action="/api/sesiones/actualizar-curso">
                 <h2 class="text-center text-amarillo text-3xl mt-5 font-bold">Nou curs escolar iniciat!</h2>
                 <h3 class="text-center text-accent text-xl mt-2 font-semibold">Ha començat el curs {anyo_actual}.</h3>
                 <p class="text-blanco text-center mt-1">Si us plau, assegura’t d’actualitzar la teva classe actual per mantenir les dades al dia.</p>
 
-                <div class="flex flex-col relative">
-                    <input type="hidden" name="anyo_actual" value={anyo_actual} />
-                    <input type="hidden" name="id_usuario" value={usuario.id} />
-                    <select
-                    name={`nuevo_curso`}
-                    class="px-3 py-2 w-44 h-12 mx-auto mt-5 bg-gris-claro rounded-full text-base text-blanco border-none" 
-                    >
-                        <option selected disabled>
-                            Seleccioni Curs
-                            </option>
-                        <hr class="border-accent" />
-                        {CURSO_1E.map(({ label }) => (
-                            <option value={label}>
-                            {label}
-                            </option>
-                        ))}
-                        <hr class="border-accent" />
-                        {CURSO_2E.map(({ label }) => (
-                            <option value={label}>
-                            {label}
-                            </option>
-                        ))}
-                        <hr class="border-accent" />
-                        {CURSO_3E.map(({ label }) => (
-                            <option value={label}>
-                            {label}
-                            </option>
-                        ))}
-                        <hr class="border-accent" />
-                        {CURSO_4E.map(({ label }) => (
-                            <option value={label}>
-                            {label}
-                            </option>
-                        ))}
-                        <hr class="border-accent" />
-                        {CURSO_1B.map(({ label }) => (
-                            <option value={label}>
-                            {label}
-                            </option>
-                        ))}
-                        <hr class="border-accent" />
-                        {CURSO_2B.map(({ label }) => (
-                            <option value={label}>
-                            {label}
-                            </option>
-                        ))}
-                        <hr class="border-accent" />
-                        {CURSO_FP.map(({ label }) => (
-                            <option value={label}>
-                            {label}
-                            </option>
-                        ))}
-                    
-                    </select>
-                </div>
+                   <div class="flex flex-wrap mt-10 place-items-center mx-auto my-auto gap-x-2 gap-y-6  w-[90%] h-full">
+                            <div class="flex  flex-col relative  ">
+                                <label for="nombre" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl w-max">Usuari</label>
+                                <input type="text"
+                                id="nombre"
+                                name="nombre"
+                                placeholder="Nom d'usuari"
+                                disabled
+                                class={`px-3 py-2 w-64 h-12 bg-gris-claro rounded-full text-base text-blanco border-none ${usuario.nombre ? 'text-gray-500':''}`}
+                                value={usuario.nombre}
+                                />
+                            </div>
+                            <div class="flex  flex-col relative  ">
+                                <label for="nombre_real" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl w-max">Nom</label>
+                                <input type="text"
+                                id="nombre_real"
+                                name="nombre_real"
+                                placeholder="Nom"
+                                class={`px-3 py-2 w-64 h-12 bg-gris-claro rounded-full text-base text-blanco border-none `}
+                                value={usuario.nombre_real}
+                                />
+                                
+                            </div>
+                            <div class="flex  flex-col relative  ">
+                                <label for="apellidos" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl w-max">Llinatges</label>
+                                <input type="text"
+                                id="apellidos"
+                                name="apellidos"
+                                placeholder="Llinatges"
+                                class={`px-3 py-2 w-64 h-12 bg-gris-claro rounded-full text-base text-blanco border-none `}
+                               value={usuario.apellidos}
+                                />
+                                
+                            </div>
+                            <div class="flex flex-col relative  ">
+                                <label for="email" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl w-max">Email</label>
+                                <input type="email"
+                                id="email"
+                                name="email_usuario"
+                                placeholder="Adreça de Gmail"
+                                class={`px-3 py-2 w-64 h-12 bg-gris-claro rounded-full text-base text-blanco border-none ${usuario.email ? 'text-gray-500':''}`}
+                                value={usuario.email}
+                                disabled={!!usuario.email}
+                                />
+                                <input type="hidden" name="email" value={usuario.email} />
+                            </div>
+                            
+                            
+                            <div class="flex flex-col relative  ">
+                                <label for="nuevo_curso" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl w-max">Curs</label>
+                                
+                                <select
+                                id="nuevo_curso"
+                                name="nuevo_curso"
+                                
+                                class="px-3 py-2 w-64 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
+                                    >
+                                    <option value="" disabled selected>Selecciona un curso</option>
+                                    {CURSO_1E.map(({ label }) => (
+                                        <option value={label}>
+                                        {label}
+                                        </option>
+                                    ))}
+                                    <hr class="border-accent">
+                                    {CURSO_2E.map(({ label }) => (
+                                        <option value={label}>
+                                        {label}
+                                        </option>
+                                    ))}
+                                    <hr class="border-accent">
+                                    {CURSO_3E.map(({ label }) => (
+                                        <option value={label}>
+                                        {label}
+                                        </option>
+                                    ))}
+                                    <hr class="border-accent">
+                                    {CURSO_4E.map(({ label }) => (
+                                        <option value={label}>
+                                        {label}
+                                        </option>
+                                    ))}
+                                    <hr class="border-accent">
+                                    {CURSO_1B.map(({ label }) => (
+                                        <option value={label}>
+                                        {label}
+                                        </option>
+                                    ))}
+                                    <hr class="border-accent">
+                                    {CURSO_2B.map(({ label }) => (
+                                        <option value={label}>
+                                        {label}
+                                        </option>
+                                    ))}
+                                    <hr class="border-accent">
+                                    {CURSO_FP.map(({ label }) => (
+                                        <option value={label}>
+                                        {label}
+                                        </option>
+                                    ))}
+
+                                </select>
+                            </div>
+                           
+                    </div>
 
                 <button class="px-3 py-2 flex flex-row items-center place-content-center font-semibold w-max h-max fill-blanco text-blanco bg-aceptar cursor-pointer rounded-full text-lg hover:scale-110 mx-auto mt-5 duration-300 transition-all transform">
                     Actualitzar Perfil
@@ -115,7 +165,6 @@ if(usuario){
                 </div>
                 
             </form>
-
             
         </div>
         </>
@@ -162,3 +211,24 @@ if(usuario){
     });
 });
 </script>
+<style>
+    .centrar {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    /* .formulario{
+        z-index: 10000;
+    } */
+    .form{
+        
+        position: absolute;
+        top: -20px;
+        left: 20px;
+    }
+  </style>
