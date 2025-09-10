@@ -72,16 +72,22 @@ if(usuario){
             profesor = true;
         }
     }
+
+    const { data: ConfTorneo, error: ErrorConf } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, min_jugadores, max_jugadores, max_staff, entrenador, profesor')
+  .eq('estado', 'Actual')
+  .single();
     
 
     let { data: Jugador, error: errorJ } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${ConfTorneo?.id_torneo}`)
     .select('pertenece_equipo')
     .eq('email', usuario_email)
     .single(); // Use .single() to get a single record
 
     let { data: Voluntarios, error: errorV } = await supabaseAdmin
-    .from('Voluntarios')
+    .from(`Voluntarios${ConfTorneo?.id_torneo}`)
     .select('tipo, estado')
     .eq('email', usuario_email)
     .single(); // Use .single() to get a single record
@@ -116,16 +122,17 @@ if(usuario){
         }
     } else {
     let { data: Equipos, error: errorE } = await supabaseAdmin
-        .from('EquiposSS')
+        .from(`Equipos${ConfTorneo?.id_torneo}`)
         .select('nombre_equipo, escudo, id_equipo, inscrito, estado, capitan, aceptado, email_capitan, capitan_edit')
         .eq('id', Jugador.pertenece_equipo)
         .single(); // Use .single() to get a single record
 
     if (errorE) {
-        // console.error('Error fetching Equipos:', errorE);
+        console.error('Error fetching Equipos:', errorE);
         // Handle the error appropriately
     }
     if(Equipos){
+        console.log(Equipos)
         let { data: Administradores, error } = await supabaseAdmin
         .from('Administradores')
         .select('rango')
@@ -145,7 +152,7 @@ if(usuario){
         capitan = Equipos.capitan;
         estado = Equipos.estado;
         aceptado = Equipos.aceptado;
-        
+        console.log("Inscrito por", Equipos.inscrito)
         if(Equipos.inscrito === usuario.id){
             modificar = true;
         }

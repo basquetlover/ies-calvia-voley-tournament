@@ -11,7 +11,7 @@ let accessibleBlocks = [];
 
 const { data: torneo, error: errorTorneos } = await supabaseAdmin
   .from('Configuracion')
-  .select('in_inicio, in_fin')
+  .select('in_inicio, in_fin, id_torneo')
   .eq('estado', 'Actual')
   .single();
 
@@ -99,7 +99,7 @@ console.log("Fin:", torneo?.in_fin);
 console.log("Actual:", fechaActual.toISOString());
 
     let { data: Jugador, error: errorJ } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(`Jugadores${torneo?.id_torneo}`)
     .select('pertenece_equipo')
     .eq('email', usuario.email)
     .single(); // Use .single() to get a single record
@@ -110,7 +110,7 @@ console.log("Actual:", fechaActual.toISOString());
     }
 if(Jugador){
   let { data: Equipos, error: errorE } = await supabaseAdmin
-        .from('EquiposSS')
+        .from(`Equipos${torneo?.id_torneo}`)
         .select('nombre_equipo, escudo, id_equipo, inscrito, estado, email_capitan, capitan_edit')
         .eq('id', Jugador.pertenece_equipo)
         .single(); // Use .single() to get a single record
