@@ -1,0 +1,141 @@
+---
+import { supabaseAdmin } from "src/lib/supabase";
+
+let partidos = [];
+
+// 1. Buscar el torneo actual
+const { data: torneo, error: errorTorneo } = await supabaseAdmin
+  .from("Configuracion")
+  .select("id_torneo, nombre")
+  .eq("estado", "Actual")
+  .single();
+
+if (errorTorneo) {
+  //console.error("Error obteniendo torneo actual:", errorTorneo);
+} else if (torneo) {
+  // 2. Construir el nombre dinámico de la tabla de partidos
+  const TablaPartidos = `Partidos${torneo.id_torneo}`;
+
+  // 3. Buscar los partidos de ese torneo
+  const { data: partidosdb, error: errorPartidos } = await supabaseAdmin
+    .from(TablaPartidos)
+    .select("*")
+    .order("id", { ascending: false });
+
+  if (errorPartidos) {
+   // console.error(`Error obteniendo partidos de ${TablaPartidos}:`, errorPartidos);
+  } else if (partidosdb) {
+    partidos = partidosdb;
+  }
+}
+
+// Debug en consola
+console.log("Partidos cargados:", partidos);
+
+
+// Simulación: lista de equipos (puedes traerla de tu Supabase)
+const equipos = [
+  { id: 1, nombre: "Las Barbies" },
+  { id: 2, nombre: "Team Teto" },
+  { id: 3, nombre: "Los Pumas" },
+  { id: 4, nombre: "Volley Stars" }
+];
+
+// Opciones para pista, estado y bracket
+const pistas = ["Pista 1", "Pista 2"];
+const estados = ["Por Jugar", "En Directo", "Finalizado"];
+const brackets = ["Cuartos", "Semifinal", "Final"];
+---
+
+
+<form class="max-w-lg mx-auto bg-white shadow-md rounded-xl p-6 space-y-4">
+  <!-- Número de partido -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Número de partido</label>
+    <input 
+      type="number" 
+      name="numero" 
+      class="w-full border rounded-md p-2"
+      placeholder="Ej: 5"
+      required 
+    />
+  </div>
+
+  <!-- Equipo Local -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Equipo Local</label>
+    <select name="equipo_local" class="w-full border rounded-md p-2 mb-2">
+      <option value="">Seleccionar equipo</option>
+      {equipos.map((eq) => (
+        <option value={eq.id}>{eq.nombre}</option>
+      ))}
+      <option value="ganador">Guanyador P...</option>
+      <option value="perdedor">Perdedor P...</option>
+    </select>
+    <input 
+      type="number" 
+      name="equipo_local_ref" 
+      class="w-full border rounded-md p-2"
+      placeholder="Número de partido (si es ganador o perdedor)"
+    />
+  </div>
+
+  <!-- Equipo Visitante -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Equipo Visitante</label>
+    <select name="equipo_visitante" class="w-full border rounded-md p-2 mb-2">
+      <option value="">Seleccionar equipo</option>
+      {equipos.map((eq) => (
+        <option value={eq.id}>{eq.nombre}</option>
+      ))}
+      <option value="ganador">Guanyador P...</option>
+      <option value="perdedor">Perdedor P...</option>
+    </select>
+    <input 
+      type="number" 
+      name="equipo_visitante_ref" 
+      class="w-full border rounded-md p-2"
+      placeholder="Número de partido (si es ganador o perdedor)"
+    />
+  </div>
+
+  <!-- Pista -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Pista</label>
+    <select name="pista" class="w-full border rounded-md p-2">
+      {pistas.map((p) => (
+        <option value={p}>{p}</option>
+      ))}
+    </select>
+  </div>
+
+  <!-- Estado -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Estado</label>
+    <select name="estado" class="w-full border rounded-md p-2">
+      {estados.map((e) => (
+        <option value={e}>{e}</option>
+      ))}
+    </select>
+  </div>
+
+  <!-- Bracket -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Bracket</label>
+    <select name="bracket" class="w-full border rounded-md p-2">
+      {brackets.map((b) => (
+        <option value={b}>{b}</option>
+      ))}
+    </select>
+  </div>
+
+  <!-- Botón -->
+  <div class="text-center">
+    <button 
+      type="submit"
+      class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+    >
+      Crear Partido
+    </button>
+  </div>
+</form>

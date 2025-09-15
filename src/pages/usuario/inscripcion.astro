@@ -8,7 +8,7 @@ import { verificarSesion } from "src/lib/session";
 
 const { data: torneo, error: errorTorneos } = await supabaseAdmin
   .from('Configuracion')
-  .select('in_inicio, in_fin')
+  .select('in_inicio, in_fin, id_torneo')
   .eq('estado', 'Actual')
   .single();
 
@@ -81,9 +81,12 @@ if(userHasAccess){
     
 }
 const usuario = await verificarSesion(Astro.request);
+const TablaJugadores = `Jugadores${torneo?.id_torneo}`;
 let { data: Usuarios, error } = await supabaseAdmin
-    .from('JugadoresV')
+    .from(TablaJugadores)
     .select('email')
+
+    
 if (Usuarios) {
   
 

@@ -1,0 +1,19 @@
+---
+import LayoutAll from "@layouts/LayoutAll.astro";
+
+import PermisoList from "@sections/administracion/PermisoList.astro";
+import RolSecurity from "@components/admin/RolSecurity.astro";
+import CrearPartidos from "@sections/administracion/GestionarPartidos/CrearPartidos.jsx";
+
+
+---
+<LayoutAll title="Gestionar Permisos">
+   
+    <RolSecurity>
+    <h1 class="text-3xl font-bold mb-6">Gestionar Partidos</h1>
+    <!-- <CrearPartidos/> -->
+    <CrearPartidos client:load />
+{/* <!-- <UserList /> --> */}
+</RolSecurity>
+
+</LayoutAll>
