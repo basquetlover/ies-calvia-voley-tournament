@@ -57,15 +57,16 @@ useEffect(() => {
 }, []);
 
   let pantalla = PANTALLAS[indice];
+  //pantalla = "logo"; // FORZAR PANTALLA PARA TESTING
   
   
  
 
     return(
-        <div>
+        <div className="w-[1920px] h-[1080px] bg-lime-400 margin-y-auto relative">
             {/* Pantalla Logo */}
 
-        <div className={`w-full absolute top-0 left-0 min-h-screen flex gap-x-10 items-center justify-center ${
+        <div className={`w-[1920px] h-[1080px]  top-0 left-0 min-h-screen flex gap-x-10 items-center justify-center ${
           pantalla === "logo" ? "flex" : "hidden"
         }`} >
             <img src="/img/team-teto.png" class="max-w-2xl h-auto w-auto" />
@@ -75,25 +76,25 @@ useEffect(() => {
 
         {/* Distribución de pistas */}
           <div
-        className={`w-full absolute top-0 left-0 min-h-screen flex items-center justify-center ${
+        className={`w-[1920px] h-[1080px]  flex items-center justify-center ${
           pantalla === "pistas" ? "flex" : "hidden"
         }`}
       >
-            <img src="/img/distribucion-pistas.png" alt="Distribucion Pistas" class="h-screen w-auto" />
+            <img src="/img/distribucion-pistas.png" alt="Distribucion Pistas" class="w-[1920px] h-[1080px]" />
         </div>
 
         {/* Clasificación */}
       <div
-        className={`w-full absolute top-0 left-0 min-h-screen flex flex-col bg-gris-claro items-center justify-center ${
+        className={`w-[1920px] h-[1080px] bg-red-500 flex flex-col  items-center justify-center ${
           pantalla === "clasificacion" ? "flex" : "hidden"
         }`}
       >
-        <h1 className="text-7xl uppercase font-bold text-accent">Classificació</h1>
+        {/* <h1 className="text-7xl uppercase font-bold text-accent">Classificació</h1> */}
             <ClasificacionReact />
         </div>
         {/* Marcador */}
         <div
-            className={`w-full absolute top-0 left-0 min-h-screen flex flex-col items-center justify-center ${
+            className={`w-[1920px] h-[1080px]  top-0 left-0 min-h-screen flex flex-col items-center justify-center ${
             pantalla === "marcador" ? "flex" : "hidden"
             }`}
         >
@@ -102,7 +103,7 @@ useEffect(() => {
         </div>
         {/* Despues */}
         <div
-            className={`w-full absolute top-0 left-0 min-h-screen flex flex-col items-center justify-center ${
+            className={`w-[1920px] h-[1080px]  top-0 left-0 min-h-screen flex flex-col items-center justify-center ${
             pantalla === "despues" ? "flex" : "hidden"
             }`}
         >

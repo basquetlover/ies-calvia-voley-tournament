@@ -59,7 +59,7 @@ useEffect(() => {
 
   return (
 
-     <div class="grid grid-cols-6 grid-rows-4 gap-4  w-[1400px] mx-auto place-items-center ">
+     <div class="grid grid-cols-6 grid-rows-4  w-[1920px] bg-cyan-400 mx-auto place-items-center ">
 {/* <!-- Octavo 1 --> */}
  {partidosObj["octavos_1"] && (
 <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
