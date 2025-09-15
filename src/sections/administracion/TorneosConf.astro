@@ -15,7 +15,7 @@ const { data: Torneos, error } = await supabaseAdmin
 <form id="ConfTorneo" method="POST" action="/api/conf-torneos" class="container mx-auto p-4 xs:p-0 sm:p-0 md:p-4 ">
   <div class="w-max h-auto flex flex-row items-center gap-4 sm:gap-0 xs:gap-0 md:gap-4">
     <h2 class="text-2xl font-bold mb-4 text-blanco">Lista de torneos</h2>
-    <div class="px-2 py-1 bg-azul-suave hover:bg-gray-500 hover:text-gray-700 hover:cursor-not-allowed transition-all duration-300 text-blanco rounded-md flex items-center place-content-center font-semibold text-lg">
+    <div id="nuevo_torneo" class="px-2 py-1 bg-azul-suave hover:bg-gray-500 hover:text-gray-700 hover:cursor-not-allowed transition-all duration-300 text-blanco rounded-md flex items-center place-content-center font-semibold text-lg">
       + Nuevo Torneo
     </div>
     <button class="px-2 py-1 bg-verde-claro text-verde rounded-md flex flex-row items-center gap-2 font-semibold text-lg">
@@ -205,6 +205,177 @@ const { data: Torneos, error } = await supabaseAdmin
 <div id="errorbox" class="absolute right-1 bottom-1 z-50">
 
 </div>
+<form id="crear_torneo"  method="POST" action="/api/nuevo-torneo" class="container oculto mx-auto p-4 xs:p-0 sm:p-0 md:p-4">
+<div class="overflow-x-auto">
+    <table class="min-w-full bg-gris border border-gray-700 rounded-lg shadow-md">
+      <thead>
+        <tr class="bg-gris-claro text-blanco uppercase text-sm leading-normal">
+          <th class="py-3 px-6 text-left">ID</th>
+          <th class="py-3 px-6 text-left">Nombre</th>
+          <th class="py-3 px-6 text-left">Fecha</th>
+          <th class="py-3 px-6 text-left">Estado</th>
+          <th class="py-3 px-6 text-left">Inicio Inscripción</th>
+          <th class="py-3 px-6 text-left">Fin Inscripción</th>
+          <th class="py-3 px-6 text-left">Inicio Voluntarios</th>
+          <th class="py-3 px-6 text-left">Fin Voluntarios</th>
+          <th class="py-3 px-6 text-left">Mínimo Jugadores</th>
+          <th class="py-3 px-6 text-left">Máximo Jugadores</th>
+          <th class="py-3 px-6 text-left">Mínimo Staff</th>
+          <th class="py-3 px-6 text-left">Máximo Staff</th>
+          <th class="py-3 px-6 text-left">Entrenador</th>
+          <th class="py-3 px-6 text-left">Profesor</th>
+          <th class="py-3 px-6 text-left">Foto</th>
+          <th class="py-3 px-6 text-left">Cursos</th>
+          <th class="py-3 px-6 text-left">Acciones</th>
+          
+          
+        </tr>
+      </thead>
+      <tbody class="text-blanco text-sm font-light">
+       
+          <tr class="border-b border-gray-700 hover:bg-gray-800">
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="text"  class="border min-w-10 border-gray-600 rounded p-2 w-full bg-gris"  />
+              <input type="hidden" id={`id_torneo`} name={`id_torneo`} class="border min-w-10 border-gray-600 rounded p-2 w-full bg-gris"  />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="text" id={`nombre`} name={`nombre`} class="border min-w-44 border-gray-600 rounded p-2 w-full bg-gris"  />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="date" id={`fecha`} name={`fecha`} class="border min-w-10 border-gray-600 rounded p-2 w-full bg-gris"  />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <select id={`estado`} name={`estado`} class="border min-w-28 border-gray-600 rounded p-2 w-full bg-gris" >
+                <option value="" disabled>Selecciona estado</option>
+                <option 
+                  class="px-1 py-2" 
+                  value="Finalizado" 
+                  >
+                  Finalizado
+                </option>
+                <option 
+                  class="px-1 py-2" 
+                  value="Actual" 
+                  >
+                  Actual
+                </option>
+                <option 
+                  class="px-1 py-2" 
+                  value="Programado" 
+                  >
+                  Programado
+                </option>
+              </select>
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="datetime-local" id={`in_inicio`} name={`in_inicio`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris"  />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="datetime-local" id={`in_fin`} name={`in_fin`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris"  />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="datetime-local" id={`vo_inicio`} name={`vo_inicio`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris"  />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="datetime-local" id={`vo_fin`} name={`vo_fin`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="number" id={`min_jugadores`} name={`min_jugadores`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="number" id={`max_jugadores`} name={`max_jugadores`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris" />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="number" id={`min_staff`} name={`min_staff`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris"   />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <input type="number" id={`max_staff`} name={`max_staff`} class="border min-w-16 border-gray-600 rounded p-2 w-full bg-gris"   />
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <select  id={`entrenador`} name={`entrenador`} class="border min-w-28 border-gray-600 rounded p-2 w-full bg-gris">
+                <option value="" >Seleccionar</option>
+                <option value="Permitido">Permitido</option>
+                <option value="Denegado" >Denegado</option>
+              </select>
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <select id={`profesor`} name={`profesor`} class="border min-w-28 border-gray-600 rounded p-2 w-full bg-gris" >
+                <option value=""  disabled>Seleccionar</option>
+                <option value="Permitido">Permitido</option>
+                <option value="Denegado">Denegado</option>
+                </select>
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              <select id={`foto`} name={`foto`} class="border min-w-28 border-gray-600 rounded p-2 w-full bg-gris" >
+                <option value="">Seleccionar</option>
+                <option value="Permitido">Permitido</option>
+                <option value="Denegado" >Denegado</option>
+                </select>
+            </td>
+            <td class="py-3 px-6 border-b border-gray-700">
+              
+              {/* <select id={`cursos`} name={`cursos`} class="border min-w-28 h-9 border-gray-600 rounded p-2 w-full hover:h-14 bg-gris" multiple size="7" disabled >
+                <option value="CURSO_1E">CURSO_1E</option>
+                 <option value="CURSO_2E">CURSO_2E</option>
+                 <option value="CURSO_3E">CURSO_3E</option>
+                 <option value="CURSO_4E">CURSO_4E</option>
+                 <option value="CURSO_1b">CURSO_1b</option>
+                 <option value="CURSO_2B">CURSO_2B</option>
+                 <option value="CURSO_FP">CURSO_FP</option>
+                </select> */}
+                <div class="border min-w-28 h-9 border-gray-600 rounded p-2 w-full hover:h-28 overflow-y-auto bg-gris">
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos[]`} value="CURSO_1E"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_1E</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos[]`} value="CURSO_2E"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_2E</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos[]`} value="CURSO_3E"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_3E</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos[]`} value="CURSO_4E"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_4E</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos[]`} value="CURSO_1B"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_1B</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos[]`} value="CURSO_2B"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_2B</span>
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" name={`cursos[]`} value="CURSO_FP"  class="peer hidden" />
+                      <span class="peer-checked:text-accent">CURSO_FP</span>
+                    </label>
+                </div>
+            </td>
+            <td>
+              <button class="px-2 py-1 bg-verde-claro text-verde rounded-md flex flex-row items-center gap-2 font-semibold text-lg">
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960" class="w-6 h-6 fill-verde">
+                    <path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Zm-40-86v446-560 114Z"/>
+                  </svg>
+                </span> Crear
+              </button>
+            </td>
+
+          </tr>
+     
+      </tbody>
+    </table>
+  </div>
+</form>
 
 <!-- <script>
   const habilitarEdicion = (index: number) => {
@@ -332,7 +503,13 @@ const { data: Torneos, error } = await supabaseAdmin
     });
 });
 </script> -->
-
+<script>
+  const crearTorneo = document.getElementById('nuevo_torneo');
+  crearTorneo?.addEventListener('click', () => {
+    document.getElementById('crear_torneo')?.classList.remove('oculto');
+    
+  });
+</script>
 
 
 <script>
@@ -454,6 +631,48 @@ const { data: Torneos, error } = await supabaseAdmin
   });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    console.log('Script Errores cargado');
+
+    document.getElementById('crear_torneo')?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const form = event.target as HTMLFormElement;
+      const formData = new FormData(form);
+
+      const espera = document.getElementById('espera');
+      espera?.classList.add("fijo");
+      espera?.classList.remove("oculto");
+
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("text/html")) {
+        const html = await response.text();
+        document.getElementById('errorbox')!.innerHTML = html;
+
+        espera?.classList.remove("fijo");
+        espera?.classList.add("oculto");
+        document.getElementById('errorbox')?.scrollIntoView({ behavior: 'smooth' });
+
+        // Reasociar eventos a los nuevos botones después de insertar el HTML
+       // asociarEventos();
+
+        // Eliminar el div de respuesta tras 15 segundos
+        setTimeout(() => {
+          const respuestaDiv = document.getElementById('respuesta');
+          if (respuestaDiv) {
+            respuestaDiv.remove();
+          }
+        }, 15000);
+      }
+    });
+});
+</script>
  
 </div>
 
