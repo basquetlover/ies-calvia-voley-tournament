@@ -82,16 +82,17 @@ if(usuario){
                                 
                             </div>
                             <div class="flex flex-col relative  ">
-                                <label for="email" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl w-max">Email</label>
+                                <label for="email" class="form bg-gris-claro rounded-full px-3 py-1 text-blanco text-xl w-max">Outlook</label>
                                 <input type="email"
                                 id="email"
-                                name="email_usuario"
-                                placeholder="Adreça de Gmail"
+                                name="email_microsoft"
+                                placeholder="Exemple: outlook@alu.ibeducacio.eu"
                                 class={`px-3 py-2 w-64 h-12 bg-gris-claro rounded-full text-base text-blanco border-none ${usuario.email ? 'text-gray-500':''}`}
-                                value={usuario.email}
-                                disabled={!!usuario.email}
+                                value={usuario.email_microsoft}
+                                disabled={!!usuario.email_microsoft}
                                 />
                                 <input type="hidden" name="email" value={usuario.email} />
+                                <p class="text-sm text-blanco">Email antic: {usuario.email}</p>
                             </div>
                             
                             

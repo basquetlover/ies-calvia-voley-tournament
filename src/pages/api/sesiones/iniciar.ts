@@ -41,7 +41,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
         const { data: UsuariosPorEmail, error: errorEmail } = await supabaseAdmin
                 .from('Usuarios')
                 .select('*')
-                .eq('email', nombre) // Usamos el nombre como email
+                .or(`email.eq.${nombre},email_microsoft.eq.${nombre}`) // Usamos el nombre como email
                 .single();
 
             if (errorEmail || !UsuariosPorEmail) {

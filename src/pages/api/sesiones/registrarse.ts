@@ -63,11 +63,11 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       
   }
   // Validar el formato del email
-  const emailPattern = /^(.*@iescalvia.com|.*@a\.iescalvia.com)$/;
+  const emailPattern = /^(.*@ibeducacio.eu|.*@alu\.ibeducacio.eu)$/;
   if (!emailPattern.test(String((email)))) {
-      console.log("El email debe ser del centro: @iescalvia.com o @a.iescalvia.com");
+      console.log("El email debe ser del centro: @ibeducacio.eu o @alu.ibeducacio.eu");
       return new Response(
-        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'email ha de ser del centre @iescalvia o @a.iescalvia</div>`, 
+        `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">L'email ha de ser del centre @ibeducacio.eu o @alu.ibeducacio.eu</div>`, 
         { status: 400, headers: { "Content-Type": "text/html" } }
       );
   }
@@ -122,7 +122,7 @@ const anyo_actual = obtenerAñosEscolares();
 
     let { data: Usuarios, error } = await supabaseAdmin
     .from('Usuarios')
-    .select('nombre,email')
+    .select('nombre,email_microsoft')
 
     if (Usuarios) {
       // Verificar si ya existe un usuario con el mismo nombre
@@ -136,7 +136,7 @@ const anyo_actual = obtenerAñosEscolares();
       }
     
       // Verificar si ya existe un usuario con el mismo email
-      const userExistsByEmail = Usuarios.some(usuario => usuario.email === email);
+      const userExistsByEmail = Usuarios.some(usuario => usuario.email_microsoft === email);
       
       if (userExistsByEmail) {
         return new Response(
@@ -151,7 +151,7 @@ const anyo_actual = obtenerAñosEscolares();
     const { data, error: ERRenviar } = await supabaseAdmin
     .from('Usuarios')
     .insert([
-      { nombre: nombre, email: email, contraseña: hashedPassword, curso: curso, anyo: anyo_actual, nombre_real: nombre_real, apellidos: apellidos },
+      { nombre: nombre, email_microsoft: email, contraseña: hashedPassword, curso: curso, anyo: anyo_actual, nombre_real: nombre_real, apellidos: apellidos },
     ])
 
     if (ERRenviar) {
