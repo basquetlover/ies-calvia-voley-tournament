@@ -27,6 +27,21 @@ export const POST: APIRoute = async ({ request }) => {
     const foto = formData.get(`foto`)?.toString().trim();
     const profesor = formData.get(`profesor`)?.toString().trim();
 
+    console.log("id_torneo:", id_torneo);
+    console.log("nombre:", nombre);
+    console.log("fecha:", fecha);
+    console.log("estado:", estado);
+    console.log("in_inicio:", in_inicio);
+    console.log("in_fin:", in_fin);
+    console.log("vo_inicio:", vo_inicio);
+    console.log("vo_fin:", vo_fin);
+    console.log("min_jugadores:", min_jugadores);
+    console.log("max_jugadores:", max_jugadores);
+    console.log("min_staff:", min_staff);
+    console.log("max_staff:", max_staff);
+    console.log("entrenador:", entrenador);
+    console.log("profesor:", profesor);
+    console.log("foto:", foto);
  
 const { data, error } = await supabaseAdmin
   .from('Configuracion')
@@ -49,10 +64,27 @@ const { data, error } = await supabaseAdmin
 
 
 })
-  
   .select()
    if(error){
     console.log(error)
+ }
+
+ if(data){
+    const { data, error } = await supabase.rpc("create_equipos_tables", {
+    torneoid: id_torneo, // 👈 el parámetro debe coincidir con el de la función
+  });
+      const { data: a, error: b } = await supabase.rpc("create_historial_tables", {
+    torneoid: id_torneo, // 👈 el parámetro debe coincidir con el de la función
+  });
+      const { data: ab, error: bb } = await supabase.rpc("create_jugadores_tables", {
+    torneoid: id_torneo, // 👈 el parámetro debe coincidir con el de la función
+  });
+      const { data: ac, error:bc } = await supabase.rpc("create_partidos_tables", {
+    torneoid: id_torneo, // 👈 el parámetro debe coincidir con el de la función
+  });
+      const { data: ad, error: bd } = await supabase.rpc("create_partidos_tables", {
+    torneoid: id_torneo, // 👈 el parámetro debe coincidir con el de la función
+  });
  }
  
 
