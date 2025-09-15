@@ -59,10 +59,10 @@ useEffect(() => {
 
   return (
 
-     <div class="grid grid-cols-6 grid-rows-4  w-[1920px] bg-cyan-400 mx-auto place-items-center ">
+     <div class="grid grid-cols-6 grid-rows-4 transform gap-4 h-[1080px]  w-[1920px]  mx-auto place-items-center ">
 {/* <!-- Octavo 1 --> */}
  {partidosObj["octavos_1"] && (
-<div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+<div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2">
     {/* <!-- Equipo 1 --> */}
     <div class="grid grid-cols-3 place-items-center text-blanco">
         <h4 class="text-sm">{partidosObj["octavos_1"]?.numero}</h4>
@@ -115,7 +115,7 @@ useEffect(() => {
 
 {/* <!-- Octavo 2 --> */}
  {partidosObj["octavo_2"] && (
-<div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 col-start-1 row-start-2">
+<div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2 col-start-1 row-start-2">
     {/* {/* <!-- Equipo 1 --> */} 
     <div class="grid grid-cols-3 place-items-center text-blanco">
         <h4 class="text-sm">{partidosObj["octavo_2"]?.numero}</h4>
@@ -168,7 +168,7 @@ useEffect(() => {
 {/* <!-- Octavo 3 --> */}
 {partidosObj["octavos_3"] && (
 <div class="col-start-1 row-start-3"> 
-<div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
+<div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2 ">
     {/* {/* <!-- Equipo 1 --> */} 
     <div class="grid grid-cols-3 place-items-center text-blanco">
         <h4 class="text-sm">{partidosObj["octavos_3"]?.numero}</h4>
@@ -222,7 +222,7 @@ useEffect(() => {
 {/* <!-- Octavo 4 --> */}
 {partidosObj["octavos_4"] && (
 <div class="col-start-1 row-start-4">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2 ">
         {/* {/* <!-- Equipo 1 --> */} 
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["octavos_4"]?.numero}</h4>
@@ -275,7 +275,7 @@ useEffect(() => {
 )}
 {partidosObj["octavos_5"] && (
 <div class="col-start-6 row-start-1">
-     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+     <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["octavos_5"]?.numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${partidosObj["octavos_5"]?.estado=== "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{partidosObj["octavos_5"]?.estado}</h5>
@@ -324,7 +324,7 @@ useEffect(() => {
 {/* <!-- Octavo 6 --> */}
  {partidosObj["octavos_6"] && (
 <div class="col-start-6 row-start-2">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["octavos_6"]?.numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${partidosObj["octavos_6"]?.estado=== "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{partidosObj["octavos_6"]?.estado}</h5>
@@ -374,7 +374,7 @@ useEffect(() => {
 {/* <!-- Octavo 7 --> */}
  {partidosObj["octavos_7"] && (
 <div class="col-start-6 row-start-3">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["octavos_7"]?.numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${partidosObj["octavos_7"]?.estado === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{partidosObj["octavos_7"]?.estado}</h5>
@@ -423,7 +423,7 @@ useEffect(() => {
 {/* <!-- Octavo 8 --> */}
  {partidosObj["octavos_8"] && (
 <div class="col-start-6 row-start-4">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["octavos_8"]?.numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${partidosObj["octavos_8"]?.estado === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{partidosObj["octavos_8"]?.estado}</h5>
@@ -473,7 +473,7 @@ useEffect(() => {
 {/* <!-- Quartos 1 --> */}
  {partidosObj["quartos_1"] && (
 <div class="row-span-2 col-start-2 row-start-1">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2 ">
         {/* <!-- Equipo 1 --> */}
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["quartos_1"]?.numero}</h4>
@@ -528,7 +528,7 @@ useEffect(() => {
 {/* <!-- Quartos 2--> */}
  {partidosObj["quartos_2"] && (
 <div class="row-span-2 col-start-2 row-start-3">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2 ">
         {/* <!-- Equipo 1 --> */}
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["quartos_2"]?.numero}</h4>
@@ -583,7 +583,7 @@ useEffect(() => {
 {/* <!-- Quartos 3--> */}
  {partidosObj["quartos_3"] && (
 <div class="row-span-2 col-start-5 row-start-1">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["quartos_3"]?.numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${partidosObj["quartos_3"]?.estado === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{partidosObj["quartos_3"]?.estado}</h5>
@@ -633,7 +633,7 @@ useEffect(() => {
 {/* <!-- Quartos 4--> */}
  {partidosObj["quartos_4"] && (
 <div class="row-span-2 col-start-5 row-start-3">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["quartos_4"]?.numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${partidosObj["quartos_4"]?.estado === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{partidosObj["quartos_4"]?.estado}</h5>
@@ -683,7 +683,7 @@ useEffect(() => {
 {/* <!-- Semi 1--> */}
  {partidosObj["semi_1"] && (
 <div class="row-span-2 col-start-3 row-start-2">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2 ">
         {/* <!-- Equipo 1 --> */}
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["semi_1"]?.numero}</h4>
@@ -738,7 +738,7 @@ useEffect(() => {
 {/*  <!-- Semi 2--> */} 
  {partidosObj["semi_2"] && (
 <div class="row-span-2 col-start-4 row-start-2">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["semi_2"]?.numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${partidosObj["semi_2"]?.estado === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{partidosObj["semi_2"]?.estado}</h5>
@@ -788,7 +788,7 @@ useEffect(() => {
 {/* {/* <!-- Final--> */} 
  {partidosObj["final"] && (
 <div class="col-span-2 col-start-3 row-start-1">
-    <div class="w-max flex flex-col gap-2 bg-gold rounded-lg p-2">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gold rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-gris">
             <h4 class="text-sm">{partidosObj["final"]?.numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${partidosObj["final"]?.estado === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{partidosObj["final"]?.estado}</h5>
@@ -840,7 +840,7 @@ useEffect(() => {
 {/* {/* <!-- 3/4 puesto--> */} 
  {partidosObj["tercer_quarto"] && (
 <div class="col-span-2 col-start-3 row-start-4">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+    <div class="w-max flex flex-col gap-2 transform scale-[1.4] bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{partidosObj["tercer_quarto"]?.numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${partidosObj["tercer_quarto"]?.estado === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{partidosObj["tercer_quarto"]?.estado}</h5>

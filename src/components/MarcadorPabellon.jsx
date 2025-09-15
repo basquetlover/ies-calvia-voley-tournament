@@ -44,7 +44,7 @@ useEffect(() => {
 
   return (
 
-   <div className="grid grid-flow-col gap-20">
+   <div className="grid grid-flow-col absolute top-48 transform scale-[1.5] gap-20">
     {/* <div className="w-max flex flex-col items-center">
         <h2 className="text-7xl uppercase font-bold text-amarillo">Pista 1</h2>
             <div class="w-full grid grid-cols-1 place-items-center mt-8">

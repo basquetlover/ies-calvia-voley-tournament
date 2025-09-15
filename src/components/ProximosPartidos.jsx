@@ -45,10 +45,10 @@ useEffect(() => {
 
   return (
     
-   <div className="grid grid-flow-col gap-20 ">
+   <div className="grid grid-flow-col transform scale-150 mt-10 gap-20 ">
     {partidos.map((p) => (
   <div key={p.id_partido} className={`w-max flex flex-col items-center gap-5 ${p.enDirecte === null ? "hidden":""}`}>
-    <h2 className="text-5xl uppercase font-bold text-amarillo">
+    <h2 className="text-6xl uppercase font-bold text-amarillo">
       {p.pista}
     </h2>
     {p.enDirecte?.id_partido && (
@@ -56,7 +56,7 @@ useEffect(() => {
       className={`max-w-[500px] transform scale-105 w-full flex flex-col items-center place-content-center border-2 border-blanco rounded-md p-2 ${p.enDirecte?.estado === "En Directe" ? "border-rojo bg-rojo bg-opacity-10" : " hidden"
       }`}
     >
-      <div className="w-full h-auto grid grid-cols-3 place-items-center text-base text-blanco">
+      <div className="w-full h-auto grid grid-cols-3 place-items-center text-lg text-blanco">
         <p>{p.enDirecte.id_partido}</p>
         <p
           className={`${
@@ -81,9 +81,9 @@ useEffect(() => {
           )}
         </div>
         <p>{p.enDirecte.equipo_local}</p>
-     <p className="text-2xl font-semibold">{p.enDirecte.marcador.global.local}</p>
+     <p className="text-3xl font-semibold">{p.enDirecte.marcador.global.local}</p>
         <p>VS</p>
-        <p className="text-2xl font-semibold">{p.enDirecte.marcador.global.visitante}</p>
+        <p className="text-3xl font-semibold">{p.enDirecte.marcador.global.visitante}</p>
         <p>{p.enDirecte.equipo_visitante}</p>
         <div>
           {p.enDirecte.escudo_equipo_visitante?.trim() ? (
