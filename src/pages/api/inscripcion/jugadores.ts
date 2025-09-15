@@ -55,7 +55,7 @@ export const POST: APIRoute = async ({ request }) => {
         if (email) { 
           const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
           const dominioConArroba = '@' + dominio;
-          if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+          if (dominioConArroba !== "@alu.ibeducacio.eu" && dominioConArroba !== "@ibeducacio.eu") {
             console.log(`El email del ${index + 1}. Jugador ha de ser del centre`)
             return new Response(
                   `<div class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#640404] bg-[#A83434] bg-opacity-100 text-sm font-semibold">
@@ -136,7 +136,7 @@ export const POST: APIRoute = async ({ request }) => {
               if (email) { 
                 const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
                 const dominioConArroba = '@' + dominio;
-                if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+                if (dominioConArroba !== "@alu.ibeducacio.eu" && dominioConArroba !== "@ibeducacio.eu") {
                   console.log(`El email del ${index + 7}. Jugador ha de ser del centre`)
                   return new Response(
                         `<div class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#640404] bg-[#A83434] bg-opacity-100 text-sm font-semibold">
