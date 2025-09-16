@@ -12,6 +12,7 @@ const { data: ConfTorneo, error } = await supabaseAdmin
   .single();
 
 export const POST: APIRoute = async ({ request }) => {
+  const TablaVoluntarios = `Voluntarios${ConfTorneo?.id_torneo}`;
   const formData = await request.formData();
   const tipo = formData.get("tipo")?.toString().trim() || "";
   const usuario_nombre = formData.get("usuario_nombre")?.toString().trim() || "";
@@ -60,7 +61,7 @@ export const POST: APIRoute = async ({ request }) => {
   if (voluntario_email) { 
     const dominio = voluntario_email.split('@')[1]; // Esto te dará 'gmail.com'
     const dominioConArroba = '@' + dominio;
-    if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+    if (dominioConArroba !== "@alu.ibeducacio.eu" && dominioConArroba !== "@ibeducacio.eu") {
       console.log(`El email de l'entrenador ha de ser del centre`)
       return new Response(
             `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email de l'entrenador ha de ser del centre</div>`, 
@@ -73,7 +74,7 @@ export const POST: APIRoute = async ({ request }) => {
 }
 
 let { data: Usuarios, error } = await supabaseAdmin
-    .from("VoluntariosV")
+    .from(TablaVoluntarios)
     .select('email')
     
     if (Usuarios) {
@@ -176,11 +177,10 @@ async function uploadFile(file: File, email: string) {
   console.log("Imagen subida correctamente:", data.path);
   return filePath; // Devuelve la ruta del archivo
 }
+if(escudo?.size > 0){
+  const escudoPath = await uploadFile(escudo, voluntario_email);
 
-// Llama a la función para subir el escudo
-const escudoPath = await uploadFile(escudo, voluntario_email);
-
-//Obtener la URL pública del escudo subido
+  //Obtener la URL pública del escudo subido
 const { data: urlData } = supabaseAdmin.storage
     .from('JugadoresIMG')
     .getPublicUrl(escudoPath); // Usa el escudoPath que se generó al subir el archivo
@@ -196,6 +196,11 @@ if (!urlData || !urlData.publicUrl) {
 if (urlData) {
   publicUrl = urlData.publicUrl;
 }
+}
+// Llama a la función para subir el escudo
+
+
+
 
 
 // Ahora puedes usar urlData.publicUrl para insertar en la base de datos
@@ -213,7 +218,7 @@ console.log(currentDate);
 
   if(escudo.size <= 0){
     const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-    .from("VoluntariosV")
+    .from(TablaVoluntarios)
     .insert([
         { nombre: voluntario_nombre ,
           _1r_apellido: voluntario_1r_apellido ,
@@ -239,7 +244,7 @@ console.log(currentDate);
   } else{
     // Insertar los datos en la tabla 'administradores'
    const { data: datosEquipos, error: equipoError } = await supabaseAdmin
-   .from("VoluntariosV")
+   .from(TablaVoluntarios)
    .insert([
        { nombre: voluntario_nombre ,
          _1r_apellido: voluntario_1r_apellido ,
@@ -629,7 +634,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:580px">
                    <table cellpadding="0" cellspacing="0" role="presentation" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Aquest és un correu generat automàticament, per la qual cosa no podem respondre els missatges enviats a aquesta adreça. Si necessiteu ajuda o teniu algun dubte, si us plau, poseu-vos en contacte amb nosaltres a través del correu voley_tournament@iescalvia.com.</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">Aquest és un correu generat automàticament, per la qual cosa no podem respondre els missatges enviats a aquesta adreça. Si necessiteu ajuda o teniu algun dubte, si us plau, poseu-vos en contacte amb nosaltres a través del correu voley_tournament@ibeducacio.eu.</p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -710,7 +715,7 @@ a[x-apple-data-detectors],
 `;
 
 //Realizador Inscripcion
-const organizadores = "voley_tournament@iescalvia.com";
+const organizadores = "voley_tournament@ibeducacio.eu";
 try {
   const { data, error } = await resend.emails.send({
     from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',

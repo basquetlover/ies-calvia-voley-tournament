@@ -12,7 +12,7 @@ import { verificarSesion } from "src/lib/session";
 import { supabaseAdmin } from "src/lib/supabase";
 const { data: torneo, error: errorTorneos } = await supabaseAdmin
   .from('Configuracion')
-  .select('in_inicio, in_fin')
+  .select('in_inicio, in_fin, id_torneo')
   .eq('estado', 'Actual')
   .single();
 
@@ -76,9 +76,13 @@ if (fechaActual < fechaInicio) {
 
 
 const usuario = await verificarSesion(Astro.request);
+const TablaVOLUNTARIOS = `Voluntarios${torneo?.id_torneo}`;
 let { data: Usuarios, error } = await supabaseAdmin
-    .from('VoluntariosV')
+    .from(TablaVOLUNTARIOS)
     .select('email')
+    if(error){
+        console.log(error)
+    }
 if (Usuarios) {
   
 
