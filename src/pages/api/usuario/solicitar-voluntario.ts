@@ -715,7 +715,7 @@ a[x-apple-data-detectors],
 `;
 
 //Realizador Inscripcion
-const organizadores = "voley_tournament@ibeducacio.eu";
+const organizadores = "voley_tournament@iescalvia.com";
 try {
   const { data, error } = await resend.emails.send({
     from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
