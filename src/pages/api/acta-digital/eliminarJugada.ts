@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { supabaseAdmin } from "src/lib/supabase";
-
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
+  let TablaHistorial = `Historial${ConfTorneo?.id_torneo}`;
 export async function POST({ request }: { request: Request }) {
   const { jugadaModificar, id_partido } = await request.json();
 
   const { data: EliminarJugada, error: ErrorEliminarJugada } = await supabaseAdmin
-    .from('HistorialV')
+    .from(TablaHistorial)
     .select('*')
     .eq('id_partido', id_partido)
     .select()
@@ -30,7 +35,7 @@ console.log("Datos jugada a eliminar",jugadaAEliminar)
 
           // Aquí puedes hacer la actualización en la base de datos si es necesario
           const { error: updateError } = await supabaseAdmin
-              .from('HistorialV')
+              .from(TablaHistorial)
               .update({ locPuntos: jugada.locPuntos })
               .eq('id_partido', jugada.id_partido)
               .eq('orden', jugada.orden);
@@ -46,7 +51,7 @@ console.log("Datos jugada a eliminar",jugadaAEliminar)
 
         // Aquí puedes hacer la actualización en la base de datos si es necesario
         const { error: updateError } = await supabaseAdmin
-            .from('HistorialV')
+            .from(TablaHistorial)
             .update({ visPuntos: jugada.visPuntos })
             .eq('id_partido', jugada.id_partido)
             .eq('orden', jugada.orden);
@@ -67,7 +72,7 @@ console.log("Datos jugada a eliminar",jugadaAEliminar)
 
         // Aquí puedes hacer la actualización en la base de datos si es necesario
         const { error: updateError } = await supabaseAdmin
-            .from('HistorialV')
+            .from(TablaHistorial)
             .update({ visPuntos: jugada.visPuntos })
             .eq('id_partido', jugada.id_partido)
             .eq('orden', jugada.orden);
@@ -83,7 +88,7 @@ console.log("Datos jugada a eliminar",jugadaAEliminar)
 
       // Aquí puedes hacer la actualización en la base de datos si es necesario
       const { error: updateError } = await supabaseAdmin
-          .from('HistorialV')
+          .from(TablaHistorial)
           .update({ locPuntos: jugada.locPuntos })
           .eq('id_partido', jugada.id_partido)
           .eq('orden', jugada.orden);
@@ -126,7 +131,7 @@ console.log("Datos jugada a eliminar",jugadaAEliminar)
          }
 
     const { data,error } = await supabaseAdmin
-    .from('HistorialV')
+    .from(TablaHistorial)
     .delete()
     .eq('id_partido', id_partido)
     .eq('orden', jugadaModificar)

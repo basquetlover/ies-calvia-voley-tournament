@@ -1,5 +1,12 @@
 import { supabaseAdmin } from "src/lib/supabase";
 
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
+  let TablaHistorial = `Historial${ConfTorneo?.id_torneo}`;
+  let TablaPartidos = `Partidos${ConfTorneo?.id_torneo}`;
 
 export async function POST({ request }: { request: Request }) {
   const { jugada, id_partido, nuevoLocSet1, nuevoLocSet2, nuevoLocSet3, nuevoVisSet1, nuevoVisSet2, nuevoVisSet3, nuevoLocSet, nuevoVisSet } = await request.json();
@@ -14,7 +21,7 @@ export async function POST({ request }: { request: Request }) {
 //   }
 
 const { data: GuardarHistorial, error: ErrorGuardarHistorial } = await supabaseAdmin
-    .from('HistorialV')
+    .from(TablaHistorial)
     .insert([
     { id_partido: id_partido, 
       id_equipo: jugada.idEquipo,
@@ -38,7 +45,7 @@ const { data: GuardarHistorial, error: ErrorGuardarHistorial } = await supabaseA
 
     if(jugada.tipo === "FinSet"){
       const { data, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .update({ 
           LocGlobal: nuevoLocSet,
           VisGlobal: nuevoVisSet,

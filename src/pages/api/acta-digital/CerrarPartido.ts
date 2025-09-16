@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { supabaseAdmin } from "src/lib/supabase";
 
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
+
+  let TablaPartidos = `Partidos${ConfTorneo?.id_torneo}`; 
 export async function POST({ request }: { request: Request }) {
   const {id_partido, nombreEquipoLocal, nombreEquipoVisitante, LocSets, VisSets } = await request.json();
     console.log(id_partido, nombreEquipoLocal, nombreEquipoVisitante, LocSets, VisSets)
@@ -34,26 +41,26 @@ export async function POST({ request }: { request: Request }) {
     console.log(equipoGanadorBuscado, equipoPerdedorBuscado)
     //Actualizar CLasificacion Equipo Ganador
     const { data: GanadorLocal, error: EGanadorLocal } = await supabaseAdmin
-        .from('PartidosSS') 
+        .from(TablaPartidos) 
         .select('id_partido') 
         .eq('equipo_local', equipoGanadorBuscado)
         .single();
         if(GanadorLocal){
             const { data: a, error: e } = await supabaseAdmin
-            .from('PartidosSS')
+            .from(TablaPartidos)
             .update({ 
               equipo_local: id_equipoG })
             .eq('id_partido', GanadorLocal.id_partido)
             .select()
         }
     const { data: GanadorVisitante, error: EGanadorVisitante } = await supabaseAdmin
-        .from('PartidosSS') 
+        .from(TablaPartidos) 
         .select('id_partido') 
         .eq('equipo_visitante', equipoGanadorBuscado)
         .single();
         if(GanadorVisitante){
             const { data: a, error: e } = await supabaseAdmin
-            .from('PartidosSS')
+            .from(TablaPartidos)
             .update({ 
               equipo_visitante: id_equipoG })
             .eq('id_partido', GanadorVisitante.id_partido)
@@ -62,26 +69,26 @@ export async function POST({ request }: { request: Request }) {
 
         //Actualizar CLasificacion Equipo Perdedor
     const { data: PerdedorLocal, error: EPerdedorLocal } = await supabaseAdmin
-        .from('PartidosSS') 
+        .from(TablaPartidos) 
         .select('id_partido') 
         .eq('equipo_local', equipoPerdedorBuscado)
         .single();
         if(PerdedorLocal){
             const { data: a, error: e } = await supabaseAdmin
-            .from('PartidosSS')
+            .from(TablaPartidos)
             .update({ 
               equipo_local: id_equipoP })
             .eq('id_partido', PerdedorLocal.id_partido)
             .select()
         }
     const { data: PerdedorVisitante, error: EPerdedorVisitante } = await supabaseAdmin
-        .from('PartidosSS') 
+        .from(TablaPartidos) 
         .select('id_partido') 
         .eq('equipo_visitante', equipoPerdedorBuscado)
         .single();
         if(PerdedorVisitante){
             const { data: a, error: e } = await supabaseAdmin
-            .from('PartidosSS')
+            .from(TablaPartidos)
             .update({ 
               equipo_visitante: id_equipoP })
             .eq('id_partido', PerdedorVisitante.id_partido)
@@ -89,7 +96,7 @@ export async function POST({ request }: { request: Request }) {
         }
     
                 const { data, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .update({ 
           estado: 'Finalitzat',
           LocGlobal: LocSets,

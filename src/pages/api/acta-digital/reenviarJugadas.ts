@@ -1,11 +1,16 @@
 import { supabaseAdmin } from "src/lib/supabase";
-
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
+  let TablaHistorial = `Historial${ConfTorneo?.id_torneo}`;
 export async function POST({ request }: { request: Request }) {
   const { jugada, id_partido } = await request.json();
 
   // 1️⃣ Comprobar si la jugada ya existe
 const { data: existing, error: selectError } = await supabaseAdmin
-  .from("HistorialV")
+  .from(TablaHistorial)
   .select("id") // solo necesitamos saber si hay algún registro
   .eq("id_partido", id_partido)
   .eq("orden", jugada.orden)
@@ -14,7 +19,7 @@ const { data: existing, error: selectError } = await supabaseAdmin
 
   if (existing?.length === 0) {
   const { data, error } = await supabaseAdmin
-    .from("HistorialV")
+    .from(TablaHistorial)
     .insert([
       {
         id_partido: id_partido,
