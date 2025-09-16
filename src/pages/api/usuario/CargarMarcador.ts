@@ -1,9 +1,19 @@
 import { supabaseAdmin } from "src/lib/supabase";
 
+const { data: torneo, error: errorTorneos } = await supabaseAdmin
+  .from('Configuracion')
+  .select('in_inicio, in_fin, id_torneo')
+  .eq('estado', 'Actual')
+  .single();
+  
+  const TablaHistorial = `Historial${torneo?.id_torneo}`;
+  const TablaEquipos = `Equipos${torneo?.id_torneo}`;
+  const TablaPartidos = `Partidos${torneo?.id_torneo}`;
+  console.log(TablaPartidos)
 // 👉 pequeña utilidad para devolver la última jugada de un partido
 async function getUltimaJugada(id_partido: number | string) {
   const { data, error } = await supabaseAdmin
-    .from("HistorialV")
+    .from(TablaHistorial)
     .select(
       "locPuntos, visPuntos"
     )
@@ -18,7 +28,7 @@ async function getUltimaJugada(id_partido: number | string) {
 async function fetchEscudo(nombreEquipo: string): Promise<string> {
   if (!nombreEquipo) return "";
   const { data, error } = await supabaseAdmin
-    .from("EquiposSS")
+    .from(TablaEquipos)
     .select("escudo")
     .eq("nombre_equipo", nombreEquipo)
     .single();
@@ -31,7 +41,7 @@ export async function POST({ request }: { request: Request }) {
 
   try {
     const { data: partidos, error } = await supabaseAdmin
-      .from("PartidosSS")
+      .from(TablaPartidos)
       .select(`
         id_partido,
         equipo_local,

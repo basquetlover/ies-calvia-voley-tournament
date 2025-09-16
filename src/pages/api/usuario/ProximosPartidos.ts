@@ -1,9 +1,18 @@
 import { supabaseAdmin } from "src/lib/supabase";
-
+const { data: torneo, error: errorTorneos } = await supabaseAdmin
+  .from('Configuracion')
+  .select('in_inicio, in_fin, id_torneo')
+  .eq('estado', 'Actual')
+  .single();
+  
+  const TablaHistorial = `Historial${torneo?.id_torneo}`
+  const TablaEquipos = `Equipos${torneo?.id_torneo}`
+  const TablaPartidos = `Partidos${torneo?.id_torneo}`
+  console.log(TablaPartidos)
 // 🔹 utilidad: última jugada
 async function getUltimaJugada(id_partido: number | string) {
   const { data, error } = await supabaseAdmin
-    .from("HistorialV")
+    .from(TablaHistorial)
     .select("locPuntos, visPuntos")
     .eq("id_partido", id_partido)
     .order("id", { ascending: false })
@@ -17,7 +26,7 @@ async function getUltimaJugada(id_partido: number | string) {
 async function fetchEscudo(nombreEquipo: string): Promise<string> {
   if (!nombreEquipo) return "";
   const { data, error } = await supabaseAdmin
-    .from("EquiposSS")
+    .from(TablaEquipos)
     .select("escudo")
     .eq("nombre_equipo", nombreEquipo)
     .single();
@@ -97,7 +106,7 @@ export async function POST({ request }: { request: Request }) {
   try {
     // ⚙️ 1. Partidos en directo
     const { data: enDirecto, error: errDirecto } = await supabaseAdmin
-      .from("PartidosSS")
+      .from(TablaPartidos)
       .select(
         `id_partido, equipo_local, equipo_visitante, estado, pista,
          LocGlobal, VisGlobal, LocSet1, VisSet1, LocSet2, VisSet2, LocSet3, VisSet3, bracket`
@@ -108,7 +117,7 @@ export async function POST({ request }: { request: Request }) {
 
     // ⚙️ 2. Próximos (sin empezar) – adapta condición según tu tabla
     const { data: proximos, error: errProximos } = await supabaseAdmin
-      .from("PartidosSS")
+      .from(TablaPartidos)
       .select(`id_partido, equipo_local, equipo_visitante, pista, estado, bracket`)
       .in("estado", ["Per Jugar", "Pendiente"]) // ajusta a tu esquema
       .order("id", { ascending: true }); // o por id si no tienes hora
