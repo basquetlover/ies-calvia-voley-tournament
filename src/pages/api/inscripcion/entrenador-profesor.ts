@@ -3,8 +3,7 @@ import type { APIRoute } from "astro";
 import { supabase, supabaseAdmin } from "../../../lib/supabase";
 //import { Resend } from 'resend';
 
-let TablaJugadores = "Jugadores";
-let TablaEquipos = "Equipos";
+
 let Equipo_id = "sin_equipo"
 let equipoId = "";
 const { data: ConfTorneo, error } = await supabaseAdmin
@@ -13,10 +12,10 @@ const { data: ConfTorneo, error } = await supabaseAdmin
   .eq('estado', 'Actual')
   .single();
 
-if(ConfTorneo){
-  TablaJugadores = `Jugadores${ConfTorneo.id_torneo}`
-  TablaEquipos = `Equipos${ConfTorneo.id_torneo}`
-}
+
+  let TablaJugadores = `Jugadores${ConfTorneo?.id_torneo}`
+  let TablaEquipos = `Equipos${ConfTorneo?.id_torneo}`
+
 
 
 export const POST: APIRoute = async ({ request }) => {

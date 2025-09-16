@@ -12,6 +12,10 @@ const { data: ConfTorneo, error } = await supabaseAdmin
   .eq('estado', 'Actual')
   .single();
 
+  let TablaJugadores = `Jugadores${ConfTorneo?.id_torneo}`
+  let TablaEquipos = `Equipos${ConfTorneo?.id_torneo}`
+
+
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
   const nombre_equipo = formData.get("nombre_equipo")?.toString().trim() || "";
@@ -27,7 +31,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   let num_jugadores = 6;
   const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(TablaJugadores)
     .select('id')
     .eq('ficha', 'jugador')
     .eq('pertenece_equipo', number_id_equipo)
@@ -38,7 +42,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     let num_staff = 6;
   const {data: staffData, error: staffError} = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(TablaJugadores)
     .select('id')
     .eq('ficha', 'cuerpo_tecnico')
     .eq('pertenece_equipo', number_id_equipo)
@@ -110,7 +114,7 @@ export const POST: APIRoute = async ({ request }) => {
   //  console.log("Entrenador no inscrito en otro equipo")
 //}
 let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(TablaJugadores)
     .select('email')
 
     if (Usuarios) {
@@ -121,7 +125,7 @@ let { data: Usuarios, error } = await supabaseAdmin
       
       if (userExistsByEmail) {
         let { data: UsuariosID, error } = await supabaseAdmin
-        .from(`Jugadores${ConfTorneo?.id_torneo}`)
+        .from(TablaJugadores)
         .select('pertenece_equipo')
         .eq('email', acompañante_email)
         .single();
@@ -203,7 +207,7 @@ if (profesor_email) {
 //  console.log("Entrenador no inscrito en otro equipo")
 //}
 let { data: Usuarios, error } = await supabaseAdmin
-  .from(`Jugadores${ConfTorneo?.id_torneo}`)
+  .from(TablaJugadores)
   .select('email')
 
   if (Usuarios) {
@@ -214,7 +218,7 @@ let { data: Usuarios, error } = await supabaseAdmin
     
     if (userExistsByEmail) {
       let { data: UsuariosID, error } = await supabaseAdmin
-      .from(`Jugadores${ConfTorneo?.id_torneo}`)
+      .from(TablaJugadores)
       .select('pertenece_equipo')
       .eq('email', profesor_email)
       .single();
@@ -322,7 +326,7 @@ if (!profesor_genero) {
       mujeres++;
     }
     let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(TablaJugadores)
     .select('email')
 
     if (Usuarios) {
@@ -333,7 +337,7 @@ if (!profesor_genero) {
       
       if (userExistsByEmail) {
         let { data: UsuariosID, error } = await supabaseAdmin
-        .from(`Jugadores${ConfTorneo?.id_torneo}`)
+        .from(TablaJugadores)
         .select('pertenece_equipo')
         .eq('email', email)
         .single();
@@ -402,7 +406,7 @@ if (!profesor_genero) {
         mujeres++;
       }
       let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(TablaJugadores)
     .select('email')
 
     if (Usuarios) {
@@ -462,7 +466,7 @@ if (!profesor_genero) {
       
       }
       let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(TablaJugadores)
     .select('email')
 
     if (Usuarios) {
@@ -473,7 +477,7 @@ if (!profesor_genero) {
       
       if (userExistsByEmail) {
         let { data: UsuariosID, error } = await supabaseAdmin
-        .from(`Jugadores${ConfTorneo?.id_torneo}`)
+        .from(TablaJugadores)
         .select('pertenece_equipo')
         .eq('email', email)
         .single();
@@ -536,7 +540,7 @@ if (!profesor_genero) {
       
       }
       let { data: Usuarios, error } = await supabaseAdmin
-    .from(`Jugadores${ConfTorneo?.id_torneo}`)
+    .from(TablaJugadores)
     .select('email')
 
     if (Usuarios) {
@@ -578,7 +582,7 @@ if (!profesor_genero) {
 let equipo_inscrito_id = "0";
   // Verificar si el equipo ya existe en la tabla `Equipos${ConfTorneo?.id_torneo}`
   const { data: existingEquipo, error: checkError } = await supabaseAdmin
-  .from("EquiposSS")
+  .from(TablaEquipos)
   .select("id") // Seleccionar un campo mínimo
   .eq("nombre_equipo", nombre_equipo)
   .single();
