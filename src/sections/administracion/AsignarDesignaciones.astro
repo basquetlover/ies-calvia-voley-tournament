@@ -24,12 +24,19 @@ let escudosMapPista2: Record<string, string> = {}; // Mapa para guardar escudos 
 
 let pistaCentral: Partido[] = [];
 let escudosMapPistaCentral: Record<string, string> = {};
+const { data: ConfTorneo, error: ConfError } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
 
+  let TablaPartidos = `Partidos${ConfTorneo?.id_torneo}`;
+  let TablaEquipos = `Equipos${ConfTorneo?.id_torneo}`;
 
 try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('equipo_local, equipo_visitante, id, oficial_1, arbitro, oficial_2')
     .eq('pista', 'Pista 1')
     .order('id', { ascending: true });
@@ -45,7 +52,7 @@ try {
 
   // Obtener escudos de los equipos
   const { data: equipos, error: errorEquipos } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(TablaEquipos)
     .select('nombre_equipo, escudo')
     .in('nombre_equipo', equiposNombres);
 
@@ -65,7 +72,7 @@ try {
 try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('equipo_local, equipo_visitante, id, oficial_1, arbitro, oficial_2')
     .eq('pista', 'Pista 2')
     .order('id', { ascending: true });
@@ -81,7 +88,7 @@ try {
 
   // Obtener escudos de los equipos
   const { data: equipos, error: errorEquipos } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(TablaEquipos)
     .select('nombre_equipo, escudo')
     .in('nombre_equipo', equiposNombres);
 
@@ -101,7 +108,7 @@ try {
 try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('equipo_local, equipo_visitante, id, oficial_1, arbitro, oficial_2')
     .eq('pista', 'Pista Central')
     .order('id', { ascending: true });
@@ -117,7 +124,7 @@ try {
 
   // Obtener escudos de los equipos
   const { data: equipos, error: errorEquipos } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(TablaEquipos)
     .select('nombre_equipo, escudo')
     .in('nombre_equipo', equiposNombres);
 

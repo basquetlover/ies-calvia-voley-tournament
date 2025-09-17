@@ -4,7 +4,14 @@ import { verificarSesion } from "src/lib/session";
 import { supabaseAdmin } from "src/lib/supabase";
 
 const usuario = await verificarSesion(Astro.request);
+const { data: ConfTorneo, error: ConfError } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
 
+  let TablaPartidos = `Partidos${ConfTorneo?.id_torneo}`;
+  let TablaEquipos = `Equipos${ConfTorneo?.id_torneo}`;
 if(usuario){
 	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
 }
@@ -37,7 +44,7 @@ let { data: Administradores, error } = await supabaseAdmin
 try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado')
     .or(`arbitro.eq.${Administradores?.nombre},oficial_1.eq.${Administradores?.nombre},oficial_2.eq.${Administradores?.nombre}`)
     .order('id', { ascending: true });
@@ -53,7 +60,7 @@ try {
 
   // Obtener escudos de los equipos
   const { data: equipos, error: errorEquipos } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(TablaEquipos)
     .select('nombre_equipo, escudo')
     .in('nombre_equipo', equiposNombres);
 

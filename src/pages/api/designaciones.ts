@@ -1,5 +1,13 @@
 import type { APIRoute } from "astro";
 import { supabase, supabaseAdmin } from "../../lib/supabase";
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, nombre')
+  .eq('estado', 'Actual')
+  .single();
+
+  let TablaPartidos = `Partidos${ConfTorneo?.id_torneo}`;
+  let TablaEquipos = `Equipos${ConfTorneo?.id_torneo}`;
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
@@ -49,7 +57,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     for (const partido of designaciones1) {
         const { error: partidoError } = await supabaseAdmin
-          .from('PartidosSS')
+          .from(TablaPartidos)
           .update([
             { 
                 arbitro: partido.arbitro, 
@@ -68,7 +76,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     for (const partido of designaciones2) {
         const { error: partidoError } = await supabaseAdmin
-          .from('PartidosSS')
+          .from(TablaPartidos)
           .update([
             { 
                 arbitro: partido.arbitro, 
@@ -87,7 +95,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
       for (const partido of designaciones3) {
         const { error: partidoError } = await supabaseAdmin
-          .from('PartidosSS')
+          .from(TablaPartidos)
           .update([
             { 
                 arbitro: partido.arbitro, 
