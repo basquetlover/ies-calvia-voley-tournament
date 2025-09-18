@@ -115,9 +115,10 @@ export default function CrearPartidoForm() {
           ))}
           <option value="ganador">Guanyador P...</option>
           <option value="perdedor">Perdedor P...</option>
+          <option value="equipo">Equip ...</option>
         </select>
         {(formData.equipo_local === "ganador" ||
-          formData.equipo_local === "perdedor") && (
+          formData.equipo_local === "perdedor" || formData.equipo_local === "equipo") && (
           <input
             type="number"
             name="equipo_local_ref"
@@ -146,9 +147,10 @@ export default function CrearPartidoForm() {
           ))}
           <option value="ganador">Guanyador P...</option>
           <option value="perdedor">Perdedor P...</option>
+          <option value="equipo">Equip ...</option>
         </select>
         {(formData.equipo_visitante === "ganador" ||
-          formData.equipo_visitante === "perdedor") && (
+          formData.equipo_visitante === "perdedor" || formData.equipo_local === "equipo") && (
           <input
             type="number"
             name="equipo_visitante_ref"
