@@ -7,7 +7,7 @@ const { data: ConfTorneo, error } = await supabaseAdmin
   .eq('estado', 'Actual')
   .single();
   let TablaPartidos = `Partidos${ConfTorneo?.id_torneo}`;
-
+  console.log("TablaPartidos:", TablaPartidos);
 export async function POST({ request }: { request: Request }) {
   const { nuevoPartido } = await request.json();
   let partido_id = nuevoPartido.numero;
@@ -28,7 +28,7 @@ export async function POST({ request }: { request: Request }) {
   if(bracket === "3r i 4t") bracket = `tercer_quarto`;
   if(bracket === "Final") bracket = `final`;
   if(bracket === "Perdedors") bracket = `perdedores`;
-  if(bracket === "Octavos" && nuevoPartido.bracket_numero === "_2") bracket = `octavo_2`;
+  if(bracket === "octavos_2") bracket = `octavo_2`;
   console.log("Creant partit:", nuevoPartido);
 
 const { data, error } = await supabaseAdmin

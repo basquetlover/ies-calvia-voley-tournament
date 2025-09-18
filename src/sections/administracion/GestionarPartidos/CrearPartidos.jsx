@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { set } from "astro:schema";
+import { useState, useEffect } from "react";
+
+
 
 export default function CrearPartidoForm() {
   const [formData, setFormData] = useState({
@@ -12,9 +15,44 @@ export default function CrearPartidoForm() {
     bracket: "",
     bracket_numero: ""
   });
+// Lista de opciones
+const [equipos, setEquipos] = useState([]);
 
-  // Lista de opciones
-  let equipos = [];
+const fetchEquipos = async () => {
+  try {
+    const id_partido = "Carga de una puta vez"; // O cualquier otro valor predeterminado
+    const res = await fetch("/api/react/lista-equipos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+     body: JSON.stringify({ id_partido }),
+    });
+        if (!res.ok) throw new Error("Error al cargar historial desde DB");
+
+        const resultado = await res.json();
+        console.log("Respuesta API:", resultado);
+        console.log("Equipos cargados:", resultado.ListaEquipos);
+        const listaEquipos = resultado.ListaEquipos;
+        console.log("Lista de Equipos:", listaEquipos);
+
+  } catch (error) {
+    console.error("Error al cargar equipos:", error);
+    setEquipos([]);
+  }
+};
+
+
+  useEffect(() => {
+    // Llamada inicial
+    fetchEquipos();
+
+    // Intervalo cada 2 segundos
+    // const interval = setInterval(fetchEquipos, 2000);
+
+    // // Limpiar al desmontar
+    // return () => clearInterval(interval);
+  }, []);
+
+  
 
   const pistas = ["Pista 1", "Pista 2", "Pista Central"];
   const estados = ["Per Jugar", "En Directe", "Finalizat"];
@@ -108,11 +146,16 @@ export default function CrearPartidoForm() {
           className="w-full border text-black rounded-md p-2 mb-2"
         >
           <option value="">Seleccionar equipo</option>
-          {equipos.map((eq) => (
-            <option key={eq.id} value={eq.id}>
-              {eq.nombre}
-            </option>
-          ))}
+            {equipos.length > 0 ? (
+    equipos.map((eq, index) => (
+      <option key={index} value={eq.nombre_equipo}>
+        {eq.nombre_equipo}
+      </option>
+    ))
+  ) : (
+    <option disabled>Cargando equipos...</option>
+  )}
+
           <option value="ganador">Guanyador P...</option>
           <option value="perdedor">Perdedor P...</option>
           <option value="equipo">Equip ...</option>
@@ -140,11 +183,16 @@ export default function CrearPartidoForm() {
           className="w-full border rounded-md p-2 text-black mb-2"
         >
           <option value="">Seleccionar equipo</option>
-          {equipos.map((eq) => (
-            <option key={eq.id} value={eq.id}>
-              {eq.nombre}
-            </option>
-          ))}
+             {equipos.length > 0 ? (
+    equipos.map((eq, index) => (
+      <option key={index} value={eq.nombre_equipo}>
+        {eq.nombre_equipo}
+      </option>
+    ))
+  ) : (
+    <option disabled>Cargando equipos...</option>
+  )}
+
           <option value="ganador">Guanyador P...</option>
           <option value="perdedor">Perdedor P...</option>
           <option value="equipo">Equip ...</option>
