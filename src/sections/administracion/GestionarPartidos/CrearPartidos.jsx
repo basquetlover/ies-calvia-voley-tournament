@@ -1,4 +1,4 @@
-import { set } from "astro:schema";
+import React from "react";
 import { useState, useEffect } from "react";
 
 
@@ -33,6 +33,7 @@ const fetchEquipos = async () => {
         console.log("Equipos cargados:", resultado.ListaEquipos);
         const listaEquipos = resultado.ListaEquipos;
         console.log("Lista de Equipos:", listaEquipos);
+        setEquipos(listaEquipos.data);
 
   } catch (error) {
     console.error("Error al cargar equipos:", error);
@@ -146,7 +147,7 @@ const fetchEquipos = async () => {
           className="w-full border text-black rounded-md p-2 mb-2"
         >
           <option value="">Seleccionar equipo</option>
-            {equipos.length > 0 ? (
+            {equipos ? (
     equipos.map((eq, index) => (
       <option key={index} value={eq.nombre_equipo}>
         {eq.nombre_equipo}
@@ -183,7 +184,7 @@ const fetchEquipos = async () => {
           className="w-full border rounded-md p-2 text-black mb-2"
         >
           <option value="">Seleccionar equipo</option>
-             {equipos.length > 0 ? (
+             {equipos ? (
     equipos.map((eq, index) => (
       <option key={index} value={eq.nombre_equipo}>
         {eq.nombre_equipo}
