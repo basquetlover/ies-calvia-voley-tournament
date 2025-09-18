@@ -27,7 +27,7 @@ export default function CrearPartidoForm() {
   };
 
   // Enviar datos
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     let nuevoPartido ={
     numero: `partido_${formData.numero}`,
@@ -42,28 +42,7 @@ export default function CrearPartidoForm() {
    }
     console.log("Datos del formulario:", formData);
     console.log("Datos del formulario:", nuevoPartido);
-        try {
-            const response = await fetch('/api/react/crear-partido', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ nuevoPartido})
-            });
 
-            if (!response.ok) {
-            throw new Error('Error al guardar el informe en la DB');
-            }
-
-            const data = await response.json();
-            console.log('Jugada guardado en DB:', data);
-           
-           
-        } catch (error) {
-           
-        
-            
-        }
     setFormData({
     numero: "",
     equipo_local: "",
@@ -82,7 +61,7 @@ export default function CrearPartidoForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-lg mx-auto bg-gris-claro text-blanco shadow-md rounded-xl p-6 space-y-4"
+      className="max-w-2xl mx-auto bg-gris-claro text-blanco shadow-md rounded-xl p-6 space-y-4"
     >
       {/* Número de partido */}
       <div>

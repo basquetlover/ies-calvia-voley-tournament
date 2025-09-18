@@ -4,14 +4,16 @@ import LayoutAll from "@layouts/LayoutAll.astro";
 import PermisoList from "@sections/administracion/PermisoList.astro";
 import RolSecurity from "@components/admin/RolSecurity.astro";
 import CrearPartidos from "@sections/administracion/GestionarPartidos/CrearPartidos.jsx";
+import CargarPartidos from "@sections/administracion/GestionarPartidos/CargarPartidos";
 
 
 ---
 <LayoutAll title="Gestionar Permisos">
    
     <RolSecurity>
-    <h1 class="text-3xl font-bold mb-6">Gestionar Partidos</h1>
+    <h1 class="text-3xl text-accent text-center font-bold mb-6">Gestionar Partidos</h1>
     <!-- <CrearPartidos/> -->
+    <!-- <CargarPartidos client:load /> -->
     <CrearPartidos client:load />
 {/* <!-- <UserList /> --> */}
 </RolSecurity>
