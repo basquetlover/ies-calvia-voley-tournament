@@ -16,7 +16,9 @@ const { data: ListaEquipos, error } = await supabaseAdmin
   .select('nombre_equipo, escudo')
   .order('id', { ascending: true });
   console.log("Equipos:", ListaEquipos);
-  console.log("Error:", error);
+  if(error){
+    console.log("Error al obtener equipos:", error);
+  }
 
   return new Response(JSON.stringify({ ListaEquipos  }), { status: 200 });
 }

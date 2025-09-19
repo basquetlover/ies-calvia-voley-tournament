@@ -33,7 +33,7 @@ const fetchEquipos = async () => {
         console.log("Equipos cargados:", resultado.ListaEquipos);
         const listaEquipos = resultado.ListaEquipos;
         console.log("Lista de Equipos:", listaEquipos);
-        setEquipos(listaEquipos.data);
+        setEquipos(listaEquipos);
 
   } catch (error) {
     console.error("Error al cargar equipos:", error);
@@ -46,7 +46,7 @@ const fetchEquipos = async () => {
     // Llamada inicial
     fetchEquipos();
 
-    // Intervalo cada 2 segundos
+    // //Intervalo cada 2 segundos
     // const interval = setInterval(fetchEquipos, 2000);
 
     // // Limpiar al desmontar
