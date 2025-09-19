@@ -10,10 +10,10 @@ export const CONTACTO = [
     {
         nombre: 'Miguel Socias Perez',
         tooltip: 'Miguel',
-        cargo: 'Coordinador General',
+        cargo: 'Relacions Públiques',
         // email: 'm_sociasp@a.iescalvia.com',
         email: 'voley_tournament@iescalvia.com',
-        descripcion: 'En Miguel és un altre dels encarregats de la planificació general del torneig, assegurant que tot funcioni de manera fluida. És el principal responsable de la logística i la coordinació amb els equips participants.',
+        descripcion: 'En Miguel és l’encarregat de les Relacions Públiques del torneig. La seva funció principal és mantenir la comunicació amb els mitjans, voluntaris i participants, a més de representar el torneig davant d’altres entitats. També s’ocupa de transmetre una imatge positiva de l’esdeveniment i de reforçar els vincles amb la comunitat.',
     },
     {
         nombre: 'Lucas Hechavarria Escartin',
@@ -47,6 +47,23 @@ export const CONTACTO = [
         email: 'voley_tournament@iescalvia.com',
         descripcion: 'En Juanjo és responsable de assegurar-se que tot el material necessari estigui a punt. Des de les xarxes fins a les pilotes, ell s\'assegura que els partits es juguin sense problemes.',
     },
+    {
+        nombre: 'Ricardo Figuerola Lozano',
+        tooltip: 'Ricardo',
+        cargo: 'Professor Responsable',
+        // email: 'jgonzalez@iescalvia.com',
+        email: 'voley_tournament@iescalvia.com',
+        descripcion: 'El professor responsable fa d’enllaç entre l’organització i el centre educatiu. S’encarrega de supervisar totes les àrees implicades, assegurant que l’esdeveniment respecti els valors educatius i esportius. A més, dona suport a l’equip organitzador i garanteix que el torneig compti amb l’aprovació i el seguiment institucional.',
+    },
+    {
+        nombre: 'Ruben Esteve Maurell',
+        tooltip: 'Ruben',
+        cargo: 'Professor Responsable',
+        // email: 'jgonzalez@iescalvia.com',
+        email: 'voley_tournament@iescalvia.com',
+        descripcion: 'El professor responsable fa d’enllaç entre l’organització i el centre educatiu. S’encarrega de supervisar totes les àrees implicades, assegurant que l’esdeveniment respecti els valors educatius i esportius. A més, dona suport a l’equip organitzador i garanteix que el torneig compti amb l’aprovació i el seguiment institucional.',
+    },
+    
     {
         nombre: 'Pere Alemany Tomàs',
         tooltip: 'Pere',
