@@ -4,6 +4,50 @@ import EquipoBoxDer from "@components/admin/EquipoBoxDer.astro";
 
 import { supabaseAdmin } from "src/lib/supabase";
 
+let TablaPartidos = `Partidos`
+let TablaEquipos = `Equipos`
+let mes = "true";
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, fecha, nombre')
+  .eq('estado', 'Actual')
+  .single();
+
+  if(ConfTorneo){
+    const torneoDate = new Date(ConfTorneo.fecha);
+  const today = new Date();
+
+  const mismoMes =
+    torneoDate.getMonth() === today.getMonth() &&
+    torneoDate.getFullYear() === today.getFullYear();
+
+  if (mismoMes) {
+    //console.log(`El torneo actual de este mes es: ${ConfTorneo.nombre}`);
+     TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+    TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+  } else{
+    // console.log(`El torneo actual  ${ConfTorneo.nombre} no es de este mes`);
+    mes = "false";
+  }
+   
+  } 
+  
+  if(!ConfTorneo || error || mes === "false"){
+    //Si no hay torneo actual, coger el último finalizado
+   const { data: ConfTorneo, error } = await supabaseAdmin
+    .from('Configuracion')
+    .select('id_torneo, fecha')
+    .eq('estado', 'Finalizado')
+    .order('fecha', { ascending: false }) // ordenar por fecha más reciente
+    .limit(1) // solo el primero
+    .single(); // devuelve un solo objeto
+    
+    if(ConfTorneo){
+        TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+        TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+    }
+  }
+
 
 let recargar = "off";
 
@@ -180,7 +224,7 @@ function traducirPartido(str: string) {
     try {
     // Buscar el rango correspondiente al email en la tabla Administradores
     const { data: partido1, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
         .eq('bracket', 'octavos_1')
         .single();
@@ -192,7 +236,7 @@ function traducirPartido(str: string) {
         octavo_1e1 = partido1.equipo_local;
         if (octavo_1e1){
             const { data: escudo_e1_p1, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavo_1e1)
             .single();
@@ -207,7 +251,7 @@ function traducirPartido(str: string) {
         octavo_1e2 = partido1.equipo_visitante;
         if (octavo_1e2){
             const { data: escud_e2_p1, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavo_1e2)
             .single();
@@ -231,7 +275,7 @@ function traducirPartido(str: string) {
     try {
     // Buscar el rango correspondiente al email en la tabla Administradores
     const { data: partido1, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
         .eq('bracket', 'octavo_2')
         .single();
@@ -243,7 +287,7 @@ function traducirPartido(str: string) {
         octavo_2e1 = partido1.equipo_local;
         if (octavo_2e1){
             const { data: escudo_e1_p1, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavo_2e1)
             .single();
@@ -258,7 +302,7 @@ function traducirPartido(str: string) {
         octavo_2e2 = partido1.equipo_visitante;
         if (octavo_2e2){
             const { data: escud_e2_p1, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavo_2e2)
             .single();
@@ -283,7 +327,7 @@ function traducirPartido(str: string) {
     try {
     //P3
     const { data: partido3, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
         .eq('bracket', 'octavos_3')
         .single();
@@ -295,7 +339,7 @@ function traducirPartido(str: string) {
         octavos_3e1 = partido3.equipo_local;
         if (octavos_3e1){
             const { data: escudo_e1_p3, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_3e1)
             .single();
@@ -310,7 +354,7 @@ function traducirPartido(str: string) {
         octavos_3e2 = partido3.equipo_visitante;
         if (octavos_3e2){
             const { data: escud_e2_p3, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_3e2)
             .single();
@@ -336,7 +380,7 @@ function traducirPartido(str: string) {
     try {
     
     const { data: partido5, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
         .eq('bracket', 'octavos_4')
         .single();
@@ -348,7 +392,7 @@ function traducirPartido(str: string) {
         octavos_4e1 = partido5.equipo_local;
         if (octavos_4e1){
             const { data: escudo_e1_p5, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_4e1)
             .single();
@@ -363,7 +407,7 @@ function traducirPartido(str: string) {
         octavos_4e2 = partido5.equipo_visitante;
         if (octavos_4e2){
             const { data: escud_e2_p5, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_4e2)
             .single();
@@ -389,7 +433,7 @@ function traducirPartido(str: string) {
     try {
     
     const { data: partido5, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
         .eq('bracket', 'octavos_5')
         .single();
@@ -401,7 +445,7 @@ function traducirPartido(str: string) {
         octavos_5e1 = partido5.equipo_local;
         if (octavos_5e1){
             const { data: escudo_e1_p5, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_5e1)
             .single();
@@ -416,7 +460,7 @@ function traducirPartido(str: string) {
         octavos_5e2 = partido5.equipo_visitante;
         if (octavos_5e2){
             const { data: escud_e2_p5, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_5e2)
             .single();
@@ -442,7 +486,7 @@ function traducirPartido(str: string) {
     try {
     //P2
     const { data: partido2, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
         .eq('bracket', 'octavos_6')
         .single();
@@ -454,7 +498,7 @@ function traducirPartido(str: string) {
         octavos_6e1 = partido2.equipo_local;
         if (octavos_6e1){
             const { data: escudo_e1_p2, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_6e1)
             .single();
@@ -469,7 +513,7 @@ function traducirPartido(str: string) {
         octavos_6e2 = partido2.equipo_visitante;
         if (octavos_6e2){
             const { data: escud_e2_p2, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_6e2)
             .single();
@@ -495,7 +539,7 @@ function traducirPartido(str: string) {
     try {
     //P4
     const { data: partido4, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
         .eq('bracket', 'octavos_7')
         .single();
@@ -507,7 +551,7 @@ function traducirPartido(str: string) {
         octavos_7e1 = partido4.equipo_local;
         if (octavos_7e1){
             const { data: escudo_e1_p4, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_7e1)
             .single();
@@ -522,7 +566,7 @@ function traducirPartido(str: string) {
         octavos_7e2 = partido4.equipo_visitante;
         if (octavos_7e2){
             const { data: escud_e2_p4, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_7e2)
             .single();
@@ -548,7 +592,7 @@ function traducirPartido(str: string) {
     try {
 
     const { data: octavos_8, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
         .eq('bracket', 'octavos_8')
         .single();
@@ -560,7 +604,7 @@ function traducirPartido(str: string) {
         octavos_8_e1 = octavos_8.equipo_local;
         if (octavos_8_e1){
             const { data: escudo_e1_p6, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_8_e1)
             .single();
@@ -572,7 +616,7 @@ function traducirPartido(str: string) {
         octavos_8_e2 = octavos_8.equipo_visitante;
         if (octavos_8_e2){
             const { data: escud_e2_p6, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', octavos_8_e2)
             .single();
@@ -594,7 +638,7 @@ function traducirPartido(str: string) {
     try {
     
     const { data: quartos_1, error } = await supabaseAdmin
-        .from('PartidosSS')
+        .from(TablaPartidos)
         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
         .eq('bracket', 'quartos_1')
         .single();
@@ -606,7 +650,7 @@ function traducirPartido(str: string) {
         quartos_1_e1 = quartos_1.equipo_local;
         if (quartos_1_e1){
             const { data: escudo_e1_p7, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', quartos_1_e1)
             .single();
@@ -618,7 +662,7 @@ function traducirPartido(str: string) {
         quartos_1_e2 = quartos_1.equipo_visitante;
         if (quartos_1_e2){
             const { data: escud_e2_p7, error } = await supabaseAdmin
-            .from('EquiposSS')
+            .from(TablaEquipos)
             .select('escudo')
             .eq('nombre_equipo', quartos_1_e2)
             .single();
@@ -642,7 +686,7 @@ function traducirPartido(str: string) {
     try {
     
     const { data: quartos_2, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
     .eq('bracket', 'quartos_2')
     .single();
@@ -654,7 +698,7 @@ function traducirPartido(str: string) {
     quartos_2_e1 = quartos_2.equipo_local;
     if (quartos_2_e1){
         const { data: escudo_e1_p9, error } = await supabaseAdmin
-        .from('EquiposSS')
+        .from(TablaEquipos)
         .select('escudo')
         .eq('nombre_equipo', quartos_2_e1)
         .single();
@@ -666,7 +710,7 @@ function traducirPartido(str: string) {
     quartos_2_e2 = quartos_2.equipo_visitante;
     if (quartos_2_e2){
         const { data: escud_e2_p9, error } = await supabaseAdmin
-        .from('EquiposSS')
+        .from(TablaEquipos)
         .select('escudo')
         .eq('nombre_equipo', quartos_2_e2)
         .single();
@@ -690,7 +734,7 @@ function traducirPartido(str: string) {
     try {
     
     const { data: quartos_3, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
     .eq('bracket', 'quartos_3')
     .single();
@@ -702,7 +746,7 @@ function traducirPartido(str: string) {
     quartos_3_e1 = quartos_3.equipo_local;
     if (quartos_3_e1){
         const { data: escudo_e1_p11, error } = await supabaseAdmin
-        .from('EquiposSS')
+        .from(TablaEquipos)
         .select('escudo')
         .eq('nombre_equipo', quartos_3_e1)
         .single();
@@ -714,7 +758,7 @@ function traducirPartido(str: string) {
     quartos_3_e2 = quartos_3.equipo_visitante;
     if (quartos_3_e2){
         const { data: escud_e2_p11, error } = await supabaseAdmin
-        .from('EquiposSS')
+        .from(TablaEquipos)
         .select('escudo')
         .eq('nombre_equipo', quartos_3_e2)
         .single();
@@ -738,7 +782,7 @@ function traducirPartido(str: string) {
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: quartos_4, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
     .eq('bracket', 'quartos_4')
     .single();
@@ -750,7 +794,7 @@ try {
     quartos_4_e1 = quartos_4.equipo_local;
     if (quartos_4_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', quartos_4_e1)
        .single();
@@ -762,7 +806,7 @@ try {
     quartos_4_e2 = quartos_4.equipo_visitante;
     if (quartos_4_e2){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', quartos_4_e2)
        .single();
@@ -785,7 +829,7 @@ try {
 try {
  
   const { data: semi_1, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
     .eq('bracket', 'semi_1')
     .single();
@@ -797,7 +841,7 @@ try {
     semi_1_e1 = semi_1.equipo_local;
     if (semi_1_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', semi_1_e1)
        .single();
@@ -809,7 +853,7 @@ try {
     semi_1_e2 = semi_1.equipo_visitante;
     if (semi_1_e2){
        const { data: escudo_e2_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', semi_1_e2)
        .single();
@@ -831,7 +875,7 @@ try {
 try {
 
   const { data: semi_2, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
     .eq('bracket', 'semi_2')
     .single();
@@ -843,7 +887,7 @@ try {
     semi_2_e1 = semi_2.equipo_local;
     if (semi_2_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', semi_2_e1)
        .single();
@@ -855,7 +899,7 @@ try {
     semi_2_e2 = semi_2.equipo_visitante;
     if (semi_2_e2){
        const { data: escudo_e2_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', semi_2_e2)
        .single();
@@ -879,7 +923,7 @@ try {
 try {
  
  const { data: tercer_quarto, error } = await supabaseAdmin
-   .from('PartidosSS')
+   .from(TablaPartidos)
    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
    .eq('bracket', 'tercer_quarto')
    .single();
@@ -891,7 +935,7 @@ try {
    tercer_quarto_e1 = tercer_quarto.equipo_local;
    if (tercer_quarto_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', tercer_quarto_e1)
        .single();
@@ -903,7 +947,7 @@ try {
    tercer_quarto_e2 = tercer_quarto.equipo_visitante;
    if (tercer_quarto_e2){
        const { data: escudo_e2_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', tercer_quarto_e2)
        .single();
@@ -926,7 +970,7 @@ try {
 try {
  
  const { data: final, error } = await supabaseAdmin
-   .from('PartidosSS')
+   .from(TablaPartidos)
    .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido')
    .eq('bracket', 'final')
    .single();
@@ -938,7 +982,7 @@ try {
    final_e1 = final.equipo_local;
    if (final_e1){
        const { data: escudo_e1_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', final_e1)
        .single();
@@ -950,7 +994,7 @@ try {
    final_e2 = final.equipo_visitante;
    if (final_e2){
        const { data: escudo_e2_p12, error } = await supabaseAdmin
-       .from('EquiposSS')
+       .from(TablaEquipos)
        .select('escudo')
        .eq('nombre_equipo', final_e2)
        .single();
@@ -971,7 +1015,7 @@ try {
 
 try {
   const { data, error } = await supabaseAdmin
-    .from("PartidosSS")
+    .from(TablaPartidos)
     .select("pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido")
     .eq("bracket", "perdedores"); // o el bracket que quieras
 
@@ -990,7 +1034,7 @@ try {
       // Escudo equipo 1
       if (equipo1) {
         const { data: e1, error: err1 } = await supabaseAdmin
-          .from("EquiposSS")
+          .from(TablaEquipos)
           .select("escudo")
           .eq("nombre_equipo", equipo1)
           .single();
@@ -1000,7 +1044,7 @@ try {
       // Escudo equipo 2
       if (equipo2) {
         const { data: e2, error: err2 } = await supabaseAdmin
-          .from("EquiposSS")
+          .from(TablaEquipos)
           .select("escudo")
           .eq("nombre_equipo", equipo2)
           .single();
