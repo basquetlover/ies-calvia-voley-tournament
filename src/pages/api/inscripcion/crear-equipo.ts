@@ -64,7 +64,7 @@ export const POST: APIRoute = async ({ request }) => {
   
     
     //2.- Verificar nombre del equipo
-      if(!nombre_equipo || nombre_equipo === ""){
+      if(!nombre_equipo || nombre_equipo === "" || nombre_equipo === "Team Teto"){
         return new Response(
           `
           <div class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#640404] bg-[#A83434] bg-opacity-100 text-sm font-semibold">
