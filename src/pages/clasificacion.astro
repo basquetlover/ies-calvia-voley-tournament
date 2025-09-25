@@ -10,6 +10,7 @@ import PartidosSS from '@sections/clasificacion/PartidosSS.tsx';
 import Partidos from '@sections/clasificacion/Partidos.astro';
 import SistemaClass from "@sections/clasificacion/SistemaClass.astro";
 import LayoutMenu from "@layouts/LayoutMenu.astro";
+import GanadorAnuncio from "@components/GanadorAnuncio.astro";
 ---
 <script>
      //SubMenu desktop
@@ -67,7 +68,7 @@ import LayoutMenu from "@layouts/LayoutMenu.astro";
 <LayoutMenuSinLoader title="Classificació | IES Calvià Voley Tournament" descripcion="Clasificacion del torneo de navidad">
      <Loading />
      <h1 class="text-accent text-center font-bold text-6xl">Classificació Torneig Setmana Santa</h1>
-      
+      <GanadorAnuncio />
      <div class="max-w-[1600px] w-full mx-auto  overflow-x-auto p-0">
      <ClasificacionSS />
     </div>

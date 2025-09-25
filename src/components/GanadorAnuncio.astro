@@ -1,0 +1,83 @@
+---
+import { supabaseAdmin } from "src/lib/supabase";
+
+let TablaJugadores = `Jugadores`
+let TablaEquipos = `Equipos`
+let mes = "true";
+let NombreTorneo = "";
+const { data: ConfTorneo, error: ConfError } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, fecha, nombre')
+  .eq('estado', 'Actual')
+  .single();
+
+  if(ConfTorneo){
+    const torneoDate = new Date(ConfTorneo.fecha);
+  const today = new Date();
+
+  const mismoMes =
+    torneoDate.getMonth() === today.getMonth() &&
+    torneoDate.getFullYear() === today.getFullYear();
+
+  if (mismoMes) {
+    //console.log(`El torneo actual de este mes es: ${ConfTorneo.nombre}`);
+     TablaJugadores = `Jugadores${ConfTorneo.id_torneo}`;
+    TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+  } else{
+    // console.log(`El torneo actual  ${ConfTorneo.nombre} no es de este mes`);
+    mes = "false";
+  }
+   
+  } 
+  
+  if(!ConfTorneo || ConfError || mes === "false"){
+    //Si no hay torneo actual, coger el último finalizado
+   const { data: ConfTorneo, error } = await supabaseAdmin
+    .from('Configuracion')
+    .select('id_torneo, fecha, nombre')
+    .eq('estado', 'Finalizado')
+    .order('fecha', { ascending: false }) // ordenar por fecha más reciente
+    .limit(1) // solo el primero
+    .single(); // devuelve un solo objeto
+    
+    if(ConfTorneo){
+        TablaJugadores = `Jugadores${ConfTorneo.id_torneo}`;
+        TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+        NombreTorneo = ConfTorneo.nombre;
+    }
+  }
+
+  const { data: equipos, error: errorEquipos } = await supabaseAdmin
+      .from(TablaEquipos)
+      .select('id_equipo, nombre_equipo, capitan, entrenador, escudo, ganador')
+      .eq('ganador', 'ganador')
+      .single();
+---
+{
+    equipos ? (<>
+        <div id="GanadorBox" class="h-screen w-full fixed top-0 left-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-center">
+    <h2 class="text-2xl font-bold mb-4">Guanyadors {NombreTorneo}</h2>
+    
+      <img src={equipos?.escudo ? equipos?.escudo : "/default-team-logo.png"} alt="Escudo del equipo" class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
+      <h3 class="text-xl font-semibold mb-2">{equipos?.nombre_equipo}</h3>
+      <p class="mb-1"><strong>Capità:</strong> {equipos?.capitan}</p>
+      <p class="mb-1"><strong>Entrenador:</strong> {equipos?.entrenador}</p>
+    
+  </div>
+
+</div>
+
+    </>):(<></>)
+}
+
+<script>
+    const ganadorBox = document.getElementById('GanadorBox')!;
+    
+    // Cerrar el anuncio al pasar 10 segundos
+    setTimeout(() => {
+        ganadorBox.style.display = 'none';
+    }, 10000); // 10000 ms = 10 segundos
+
+   
+</script>
