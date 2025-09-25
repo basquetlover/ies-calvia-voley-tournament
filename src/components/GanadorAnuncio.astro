@@ -76,7 +76,7 @@ const { data: ConfTorneo, error: ConfError } = await supabaseAdmin
     
     // Cerrar el anuncio al pasar 10 segundos
     setTimeout(() => {
-        ganadorBox.style.display = 'none';
+        ganadorBox.classList.add('hidden');
     }, 10000); // 10000 ms = 10 segundos
 
    
