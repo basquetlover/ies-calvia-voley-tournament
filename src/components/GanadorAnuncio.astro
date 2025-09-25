@@ -54,7 +54,7 @@ const { data: ConfTorneo, error: ConfError } = await supabaseAdmin
       .single();
 ---
 {
-    equipos ? (<>
+    equipos ? (
         <div id="GanadorBox" class="h-screen w-full fixed top-0 left-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
   <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-center">
     <h2 class="text-2xl font-bold mb-4">Guanyadors {NombreTorneo}</h2>
@@ -68,7 +68,7 @@ const { data: ConfTorneo, error: ConfError } = await supabaseAdmin
 
 </div>
 
-    </>):(<></>)
+    ):(<></>)
 }
 
 <script>
