@@ -1,5 +1,6 @@
 ---
 import { supabaseAdmin } from "../../lib/supabase";
+import EquipoBox from "@components/admin/EquipoBoxIzq.astro";
 
 const { searchParams } = new URL(Astro.request.url);
 let torneoID = searchParams.get('torneoID');
@@ -142,43 +143,87 @@ try {
 } catch (err) {
   console.error('Error al obtener rango:', err);
 }
-//Eliminar jugador
-async function eliminarJugador(id: string) {
-    try {
-        const response = await fetch(`/api/jugadores/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+const partidos_perdedores = [];
+const TablaPartidos = `Partidos${torneoID}`;
+const TablaEquipos = `Equipos${torneoID}`;
 
-        if (!response.ok) {
-            throw new Error('Error al eliminar el jugador');
-        }
 
-        // Lógica para eliminar el jugador de la interfaz...
-        const li = document.querySelector(`li[data-id="${id}"]`);
-        if (li) {
-            li.remove();
-        }
-        console.log('Jugador eliminado correctamente');
-    } catch (error) {
-        console.error('Error al eliminar el jugador:', error);
-    }
+function traducirPartido(str: string) {
+  // Busca el primer bloque de números en el string
+  const match = str.match(/\d+$/);
+  const numero = match ? match[0] : "";
+  return `Partit ${numero}`;
 }
 
+try {
+  const { data, error } = await supabaseAdmin
+    .from(TablaPartidos)
+    .select("pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido")
+    .or(`equipo_local.eq.${nombre_equipo},equipo_visitante.eq.${nombre_equipo}`)
+    ; // o el bracket que quieras
+
+  if (!error && data) {
+    for (const fila of data) {
+      let pista   = fila.pista ?? "Sin Pista";
+      let equipo1 = fila.equipo_local ?? "";
+      let escudo1 = "";
+      let equipo2 = fila.equipo_visitante ?? "";
+      let escudo2 = "";
+      let resA    = fila.LocGlobal ?? "-";
+      let resB    = fila.VisGlobal ?? "-";
+      let estado  = fila.estado ?? "Por Jugar";
+      let numero  = traducirPartido(fila.id_partido);
+
+      // Escudo equipo 1
+      if (equipo1) {
+        const { data: e1, error: err1 } = await supabaseAdmin
+          .from(TablaEquipos)
+          .select("escudo")
+          .eq("nombre_equipo", equipo1)
+          .single();
+        if (!err1 && e1) escudo1 = e1.escudo;
+      }
+
+      // Escudo equipo 2
+      if (equipo2) {
+        const { data: e2, error: err2 } = await supabaseAdmin
+          .from(TablaEquipos)
+          .select("escudo")
+          .eq("nombre_equipo", equipo2)
+          .single();
+        if (!err2 && e2) escudo2 = e2.escudo;
+      }
+
+      partidos_perdedores.push({
+        pista,
+        equipo1,
+        escudo1,
+        equipo2,
+        escudo2,
+        resultadoA: resA,
+        resultadoB: resB,
+        estado,
+        numero
+      });
+    }
+  }
+} catch (err) {
+  console.error("Error al obtener partidos perdedores:", err);
+}
+//console.log(partidos_perdedores);
+
 //Checkbox
-const handleCheckboxChange = (index: number) => {
-    jugadores = jugadores.map((jugador, i) => {
-        if (i === index) {
-            return {
-                ...jugador,
-                checkboxChecked: !jugador.checkboxChecked, // Cambia el estado del checkbox
-            };
-        }
-        return jugador;
-    });
-};
+// const handleCheckboxChange = (index: number) => {
+//     jugadores = jugadores.map((jugador, i) => {
+//         if (i === index) {
+//             return {
+//                 ...jugador,
+//                 checkboxChecked: !jugador.checkboxChecked, // Cambia el estado del checkbox
+//             };
+//         }
+//         return jugador;
+//     });
+// };
 ---
 
 <LayoutMenu title={ `${nombre_equipo} | IES Calvià Voley Tournament`} descripcion={`Conoce los participantes del equipo ${nombre_equipo} `}>
@@ -246,8 +291,58 @@ const handleCheckboxChange = (index: number) => {
                   }
               </table>
               </>)}
-              
-              
+              <h3 class="text-4xl text-amarillo mt-5 font-semibold">Partits {nombre_equipo}</h3>
+              <div class="w-full mx-auto flex h-auto flex-wrap place-content-around gap-4 mb-5">
+    {partidos_perdedores.map((p, idx) => (
+  <div class="w-max flex flex-col gap-2 bg-gris-claro rounded-lg p-2">
+    {/* <!-- Cabecera --> */}
+    <div class="grid grid-cols-3 place-items-center text-blanco">
+      <h4 class="text-sm">{p.numero}</h4>
+      <h5 class={`text-gray-500 text-xs ${p.estado === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center" : ""}`}>
+        {p.estado}
+      </h5>
+      <h4 class="text-sm">{p.pista}</h4>
+    </div>
+
+    {/* <!-- Equipo 1 --> */}
+    <EquipoBox>
+      <div>
+        {p.escudo1 && p.escudo1.trim() !== "" ? (
+          <img src={p.escudo1} class="w-10 h-10 rounded-sm" alt={p.equipo1} />
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20" />
+            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10" />
+          </svg>
+        )}
+      </div>
+      <p class="text-blanco text-base text-center">{p.equipo1}</p>
+      <div>
+        <input name={`partido${idx}_ra`} class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={p.resultadoA} placeholder="0" />
+      </div>
+    </EquipoBox>
+
+    {/* <!-- Equipo 2 --> */}
+    <EquipoBox>
+      <div>
+        {p.escudo2 && p.escudo2.trim() !== "" ? (
+          <img src={p.escudo2} class="w-10 h-10 rounded-sm" alt={p.equipo2} />
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 rounded-sm" fill="none" viewBox="0 0 650 650">
+            <circle cx="325" cy="325" r="315" stroke="#fff" stroke-width="20" />
+            <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10" />
+          </svg>
+        )}
+      </div>
+      <p class="text-blanco text-base text-center">{p.equipo2}</p>
+      <div>
+        <input name={`partido${idx}_rb`} class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={p.resultadoB} placeholder="0" />
+      </div>
+    </EquipoBox>
+  </div>
+))}
+
+</div>
             </section>
           </>
 </LayoutMenu>
