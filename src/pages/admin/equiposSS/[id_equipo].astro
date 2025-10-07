@@ -296,6 +296,7 @@ if(usuario){
           <!--Datos ocultos para mandar api -->
           <>
           <input type="hidden" name="nuevo_estado" id="nuevo_estado" />
+          <input type="hidden" name="nuevo_aceptado" id="nuevo_aceptado" />
           <input type="hidden" name="equipo_id" value={id} />
           <input type="hidden" name="fecha_inscripcion" value={fecha_inscripcion} />
           <input type="hidden" name="nombre_equipo" value={nombre_equipo} />
@@ -842,6 +843,15 @@ if(usuario){
       <>
       
       </>)}
+      <div id="lista_espera" class="w-full h-full hidden bg-gris-claro absolute top-0 left-0 rounded-md">
+      <h2 class="text-4xl text-amarillo font-bold text-center mt-4">⚠️ Estado Final ⚠️</h2>
+      <p class="w-[80%] mx-auto mt-10 text-lg text-blanco text-center">El equipo <span class="text-accent">{nombre_equipo}</span> como estara para el torneo.</p>
+      <p class="w-[80%] mx-auto mt-10 text-xl text-blanco text-center">¿Estas seguro que quieres continuar con una nueva revision?</p>
+      <div class="w-[50%] mx-auto flex flex-wrap px-4 text-xl items-center place-content-around mt-4">
+        <span id="lista-inscrito" class="w-max h-max px-2 py-1 rounded-xl bg-verde-claro text-verde text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">Inscrit</span>
+        <span id="en-lista-espera" class="w-max  h-max  px-2 py-1 rounded-xl bg-rojo-claro text-rojo text-xl flex items-center place-content-center uppercase font-semibold cursor-pointer">Llista d'espera</span>
+    </div>
+    </div>
     <div id="btn-cerrar" class="h-10 w-10 rounded-full text-2xl text-blanco bg-cancelar flex items-center place-content-center absolute top-1 right-1 cursor-pointer">
       X
     </div>
@@ -916,7 +926,13 @@ if(usuario){
   const advertencia_no = document.getElementById("advertencia-no");
   const advertencia_si = document.getElementById("advertencia-si");
 
+  const lista_espera = document.getElementById("lista_espera");
+  const lista_inscrito = document.getElementById("lista-inscrito");
+  const en_lista_espera = document.getElementById("en-lista-espera");
+
+
   const nuevo_estado = document.getElementById("nuevo_estado") as HTMLInputElement;
+  const nuevo_aceptado = document.getElementById("nuevo_aceptado") as HTMLInputElement;
 
   boton?.addEventListener('click', function(){
     evaluar?.classList.add("centrar");
@@ -938,11 +954,23 @@ if(usuario){
 
   //aceptar
   aceptar?.addEventListener('click', function(){
-    evaluar?.classList.remove("centrar");
-    evaluar?.classList.add("ocultar");
+    // evaluar?.classList.remove("centrar");
+    // evaluar?.classList.add("ocultar");
 
     botones_send?.classList.add("equipo-denegado")
     nuevo_estado.value = "Acceptat";
+    lista_espera?.classList.remove("hidden");
+  })
+
+  lista_inscrito?.addEventListener('click', function(){
+    nuevo_aceptado.value = "Inscrit";
+    evaluar?.classList.remove("centrar");
+    evaluar?.classList.add("ocultar");
+  })
+  en_lista_espera?.addEventListener('click', function(){
+    nuevo_aceptado.value = "Llista d'espera";
+    evaluar?.classList.remove("centrar");
+    evaluar?.classList.add("ocultar");
   })
 
   // Denegar

@@ -9,6 +9,7 @@ import { Resend } from 'resend';
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
   const nuevo_estado = formData.get("nuevo_estado")?.toString().trim() || "";
+  const nuevo_aceptado = formData.get("nuevo_aceptado")?.toString().trim() || "";
   const equipo_id = formData.get("equipo_id")?.toString().trim() || "";
   const torneoID = formData.get("torneoID")?.toString().trim() || "";
   const fecha_inscripcion = formData.get("fecha_inscripcion")?.toString().trim() || "";
@@ -32,40 +33,12 @@ export const POST: APIRoute = async ({ request }) => {
         const entrenador_id = formData.get("entrenador_id")?.toString().trim();
         const img_entrenador = formData.get("img-entrenador")?.toString().trim();
         const probl_entrenador = formData.get("probl-entrenador")?.toString().trim();
-        if(img_entrenador === ''){
-          return new Response(
-              `
-              <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
-                <span>
-              <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
-                <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
-              </svg>
-                </span>
-                <p>Es necesario indicar si la foto es valida del entrenador</p>
-                </div>
-              `, 
-              { status: 401, headers: { "Content-Type": "text/html" } }
-          );
-       }
+        
 
        const profesor_id = formData.get("profesor_id")?.toString().trim();
         const img_profesor = formData.get("img-profesor")?.toString().trim();
         const probl_profesor = formData.get("probl-profesor")?.toString().trim();
-        if(img_profesor === ''){
-          return new Response(
-              `
-              <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
-                <span>
-              <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
-                <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
-              </svg>
-                </span>
-                <p>Es necesario indicar si la foto es valida del profesor</p>
-                </div>
-              `, 
-              { status: 401, headers: { "Content-Type": "text/html" } }
-          );
-       }
+        
         
         
 
@@ -77,21 +50,7 @@ export const POST: APIRoute = async ({ request }) => {
          const probl_player = formData.get(`probl_player_${index}`)?.toString().trim();
          const numero = index + 1;
 
-         if(probl_img === ''){
-            return new Response(
-                `
-                <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
-                  <span>
-                <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
-                  <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
-                </svg>
-                  </span>
-                  <p>Es necesario indicar si la foto es valida del jugador ${numero}</p>
-                  </div>
-                `, 
-                { status: 401, headers: { "Content-Type": "text/html" } }
-            );
-         }
+         
          jugadores.push({ id, probl_img, probl_player, numero });
          index++;
        }
@@ -103,21 +62,7 @@ export const POST: APIRoute = async ({ request }) => {
         const id = formData.get(`staff_id_${index}`)?.toString().trim();
         const probl_staff = formData.get(`probl_staff_${index}`)?.toString().trim();
         const numero = index + 1;
-        if(probl_img === ''){
-            return new Response(
-                `
-                <div class="w-[400px] min-h-20 h-max rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 py-1 px-3 border-solid border-2 border-[#A83434] bg-[#A83434] bg-opacity-60 text-base font-semibold">
-                  <span>
-                <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#BA3A3A] w-16 h-16" viewBox="0 -960 960 960">
-                  <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
-                </svg>
-                  </span>
-                  <p>Es necesario indicar si la foto es valida del cuerpo tecnico ${numero}</p>
-                  </div>
-                `, 
-                { status: 401, headers: { "Content-Type": "text/html" } }
-            );
-         }
+        
         staff.push({ id, probl_img, probl_staff, numero });
         index++;
       }
@@ -138,7 +83,7 @@ export const POST: APIRoute = async ({ request }) => {
         .update({ 
             fecha_revision: currentDate,
             estado: nuevo_estado,
-            aceptado: 'Inscrit',
+            aceptado: nuevo_aceptado,
          })
         .eq('id', equipo_id)
         .select()
