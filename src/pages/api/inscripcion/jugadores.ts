@@ -30,13 +30,15 @@ export const POST: APIRoute = async ({ request }) => {
   .single();
 
   if(EquipoData){
-    Equipo_id = EquipoData?.id_equipo
-    equipoId = EquipoData?.id
+    console.log("El equipo ja existeix", EquipoData)
+    Equipo_id = EquipoData?.id
+    equipoId = EquipoData?.id_equipo
   }
 //1.- Recoger Informacion capitan
     const capitan = formData.get("input_capitan_form")?.toString().trim();
     const capitan_email = formData.get("input_capitan_email_form")?.toString().trim() || "";
-    
+    console.log("Capitan:", capitan);
+    console.log("Email Capitan:", capitan_email);
 
   //2.- Recoger Información jugadores obligatorios
    const jugadores = [];
@@ -204,7 +206,7 @@ export const POST: APIRoute = async ({ request }) => {
 
 
           //4.- Verificar existencia de capitan
-            if (!capitan) {
+            if (!capitan && capitan === "" && !capitan_email && capitan_email === ""  ) {
               
               return new Response(
                 `<div class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#640404] bg-[#A83434] bg-opacity-100 text-sm font-semibold">
@@ -260,7 +262,7 @@ export const POST: APIRoute = async ({ request }) => {
               );
             }
 
-            //7.- Introducir datos de jugadores a db
+           // 7.- Introducir datos de jugadores a db
       for (const jugador of jugadores) {
     if(jugador.img.size <= 0){
       const { error: jugadorError } = await supabaseAdmin
@@ -398,7 +400,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Extraer la extensión del archivo
     const extension = file.name.split('.').pop(); // Obtiene la extensión
     const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-    const filePath = `torneo${ConfTorneo?.id_torneo}/${Equipo_id}/${uniqueFileName}`; // Define la ruta del archivo
+    const filePath = `torneo${ConfTorneo?.id_torneo}/${equipoId}/${uniqueFileName}`; // Define la ruta del archivo
   
     const { data, error } = await supabaseAdmin.storage
         .from('JugadoresIMG')

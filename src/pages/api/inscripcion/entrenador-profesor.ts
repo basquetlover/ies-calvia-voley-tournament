@@ -36,8 +36,8 @@ export const POST: APIRoute = async ({ request }) => {
   .single();
 
   if(EquipoData){
-    Equipo_id = EquipoData?.id_equipo
-    equipoId = EquipoData?.id
+    Equipo_id = EquipoData?.id
+    equipoId = EquipoData?.id_equipo
   }
 
 
@@ -167,27 +167,7 @@ if (profesor_email) {
       );
 }
 }
-// const { data: existingCoach, error: checkError } = await supabaseAdmin
-// .from(TablaJugadores)
-// .select("id") // Seleccionar un campo mínimo
-// .eq("email", profesor_email);
 
-// if(existingCoach){
-//  return new Response(
-//    `<div class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#640404] bg-[#A83434] bg-opacity-100 text-sm font-semibold">
-//         <span>
-//       <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#640404] w-10 h-10" viewBox="0 -960 960 960">
-//         <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
-//       </svg>
-//         </span>
-//         <p class="text-[#640404]">El professor ja està inscript en un altre Equip</p>
-//         </div>`, 
-//    { status: 401, headers: { "Content-Type": "text/html" } }
-// );
-// }
-// if(checkError){
-//  console.log("Entrenador no inscrito en otro equipo")
-// }
 let { data: Usuarios, error } = await supabaseAdmin
   .from(TablaJugadores)
   .select('email')
@@ -374,7 +354,7 @@ async function uploadFileCoach(file: File, email: string | undefined) {
   // Extraer la extensión del archivo
   const extension = file.name.split('.').pop(); // Obtiene la extensión
   const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-  const filePath = `torneo${ConfTorneo?.id_torneo}/${Equipo_id}/${uniqueFileName}`; // Define la ruta del archivo
+  const filePath = `torneo${ConfTorneo?.id_torneo}/${equipoId}/${uniqueFileName}`; // Define la ruta del archivo
 
   const { data, error } = await supabaseAdmin.storage
       .from('JugadoresIMG')

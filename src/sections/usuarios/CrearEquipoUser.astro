@@ -196,18 +196,18 @@ file.addEventListener('change', (e: Event) => {
         class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
       />
       <input
-        type="hidden"
+        type="text"
         id="input_capitan_form"
-        name="capitan"
-        placeholder="Seleccioni un capita amb ©"
+        name="input_capitan_form"
+        placeholder="Nombre capitan form"
         
         class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
       />
       <input
-      type="hidden"
+      type="text"
       id="input_capitan_email_form"
-      name="capitan_email"
-      placeholder="Seleccioni un capita amb ©"
+      name="input_capitan_email_form"
+      placeholder="Email capitan form"
       
       class="border-none ml-2 text-base text-blanco bg-transparent rounded py-1 px-2 w-auto"
     />
@@ -334,7 +334,12 @@ file.addEventListener('change', (e: Event) => {
           
         >
           <option value="" disabled selected>Selecciona un curso</option>
-          
+          <hr class="border-accent" />
+          {CURSO_3E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
           <hr class="border-accent" />
           {CURSO_4E.map(({ label }) => (
             <option value={label}>
@@ -545,7 +550,12 @@ file.addEventListener('change', (e: Event) => {
           
         >
           <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
-            
+            <hr class="border-accent" />
+          {CURSO_3E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
           <hr class="border-accent" />
           {CURSO_4E.map(({ label }) => (
             <option value={label}>
@@ -742,7 +752,12 @@ file.addEventListener('change', (e: Event) => {
           
         >
           <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
-
+            <hr class="border-accent" />
+          {CURSO_3E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
           <hr class="border-accent" />
           {CURSO_4E.map(({ label }) => (
             <option value={label}>
@@ -1123,7 +1138,12 @@ file.addEventListener('change', (e: Event) => {
           
         >
           <option value="" disabled selected={!jugador.curso}>Selecciona un curso</option>
-
+            <hr class="border-accent" />
+          {CURSO_3E.map(({ label }) => (
+            <option value={label}>
+              {label}
+            </option>
+          ))}
           <hr class="border-accent" />
           {CURSO_4E.map(({ label }) => (
             <option value={label}>
@@ -1303,7 +1323,7 @@ window.addEventListener('load', function(){
             // Usar una función de cierre para capturar el valor de index
             (function(index) {
                 capitan.addEventListener('click', function() {
-                  if( nombre.value || _1r_apellido.value || email.value){
+                  if( nombre.value && _1r_apellido.value && email.value){
                     // Si ya hay un capitán seleccionado, desactivar su botón
                     if (currentCapitanIndex !== null) {
                         const previousCapitan = document.getElementById(`capitan_${currentCapitanIndex}`) || document.getElementById(`extra_capitan_${currentCapitanIndex}`);
@@ -1331,7 +1351,7 @@ window.addEventListener('load', function(){
                     document.getElementById('errorbox')!.innerHTML = html;
                     setTimeout(() => {
                         document.getElementById('error-capitan')!.remove(); // Elimina el contenido
-                    }, 30000);
+                    }, 15000);
                   }
                   });
             })(index); // Llamar a la función con el valor actual de index
@@ -1578,10 +1598,15 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
             e?.classList.remove("oculto");
         };
 
-        let paso1 ="";
-        let paso2 ="";
-        let paso3 ="";
-        let paso4 ="";
+        
+        const paso1 = leerCookiePaso(1);
+        console.log(paso1);
+        const paso2 = leerCookiePaso(2);
+        console.log(paso2);
+        const paso3 = leerCookiePaso(3);
+        console.log(paso3);
+        const paso4 = leerCookiePaso(4);
+        console.log(paso4);
         
 
 
@@ -1594,7 +1619,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               // fd1.append("categoria", datos.categoria);
               let res1 = await fetch("/api/inscripcion/crear-equipo", { method: 'POST', body: fd1 });
               if (!(await procesarRespuesta(res1, "crear equipo"))) return;
-              paso1 = "Completado"
+              crearCookiePaso(1, "Completado"); 
             }
             
             // 2️⃣ Entrenador / Profesor
@@ -1606,7 +1631,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               // fd2.append("profesor_responsable", datos.profesor_responsable);
               let res2 = await fetch("/api/inscripcion/entrenador-profesor", { method: 'POST', body: fd2 });
               if (!(await procesarRespuesta(res2, "entrenador / profesor"))) return;
-              paso2 = "Completado"
+             crearCookiePaso(2, "Completado"); 
             }
             
             // 3️⃣ Jugadores
@@ -1619,7 +1644,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               });
               let res3 = await fetch("/api/inscripcion/jugadores", { method: 'POST', body: fd3 });
               if (!(await procesarRespuesta(res3, "jugadores"))) return;
-              paso3 = "Completado"
+              crearCookiePaso(3, "Completado"); 
             }
             
             // 4️⃣ Cuerpo técnico
@@ -1631,7 +1656,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               });
               let res4 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4 });
               if (!(await procesarRespuesta(res4, "cuerpo técnico"))) return;
-              paso4 = "Completado"
+              crearCookiePaso(4, "Completado"); 
             }
             
             // 5️⃣ Enviar Eamil
@@ -1695,6 +1720,26 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
         return true;
     }
 });
+
+function crearCookiePaso(numero: number, valor: string) {
+    const fecha = new Date();
+    fecha.setTime(fecha.getTime() + (15 * 60 * 1000)); // 15 minutos en ms
+    const expiracion = "expires=" + fecha.toUTCString();
+    document.cookie = `paso${numero}=${valor};${expiracion};path=/`;
+}
+
+function leerCookiePaso(numero: number) {
+    const nombre = `paso${numero}=`;
+    const cookies = document.cookie.split(";");
+
+    for (let cookie of cookies) {
+        cookie = cookie.trim(); // eliminar espacios
+        if (cookie.startsWith(nombre)) {
+            return cookie.substring(nombre.length);
+        }
+    }
+    return null; // si no existe
+}
 </script>
 
 <!-- <script>

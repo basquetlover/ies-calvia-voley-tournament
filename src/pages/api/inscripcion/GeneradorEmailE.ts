@@ -38,7 +38,7 @@ export const POST: APIRoute = async ({ request }) => {
     const usuario_email = formData.get("usuario_email")?.toString().trim() || "";
     const usuario_curso = formData.get("usuario_curso")?.toString().trim() || "";
     const capitan = formData.get("capitan")?.toString().trim();
-    const capitan_email = formData.get("capitan_email")?.toString().trim() || "";
+    const capitan_email = formData.get("input_capitan_email_form")?.toString().trim() || "";
     const capitan_edit = formData.get("capitan_edit")?.toString().trim();
     let acompañante_nombre = "";
     let acompañante_curso = "";
