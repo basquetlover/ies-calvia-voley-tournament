@@ -37,7 +37,7 @@ export const POST: APIRoute = async ({ request }) => {
     const usuario_nombre = formData.get("usuario_nombre")?.toString().trim() || "";
     const usuario_email = formData.get("usuario_email")?.toString().trim() || "";
     const usuario_curso = formData.get("usuario_curso")?.toString().trim() || "";
-    const capitan = formData.get("capitan")?.toString().trim();
+    const capitan = formData.get("input_capitan_form")?.toString().trim();
     const capitan_email = formData.get("input_capitan_email_form")?.toString().trim() || "";
     const capitan_edit = formData.get("capitan_edit")?.toString().trim();
     let acompañante_nombre = "";
@@ -45,6 +45,11 @@ export const POST: APIRoute = async ({ request }) => {
     let acompañante_1r_apellido = "";
     let acompañante_2n_apellido = "";
     let acompañante_email = "";
+    acompañante_nombre = formData.get("entrenador_name")?.toString().trim() || "";
+    acompañante_curso = formData.get(`entrenador_curso`)?.toString().trim() || "";
+    acompañante_1r_apellido = formData.get(`entrenador_1r_apellido`)?.toString().trim() || "";
+    acompañante_2n_apellido = formData.get(`entrenador_2n_apellido`)?.toString().trim() || "";
+    acompañante_email = formData.get(`entrenador_email`)?.toString().trim() || "";
 
     const jugadores = [];
    let index = 0;

@@ -34,8 +34,8 @@ console.log("Datos a cuerpo-tecnico")
       .single();
     
       if(EquipoData){
-        Equipo_id = EquipoData?.id_equipo
-        equipoId = EquipoData?.id
+        Equipo_id = EquipoData?.id
+        equipoId = EquipoData?.id_equipo
       }
 
   const staff = [];
@@ -218,7 +218,7 @@ console.log("Datos a cuerpo-tecnico")
     // Extraer la extensión del archivo
     const extension = file.name.split('.').pop(); // Obtiene la extensión
     const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
-    const filePath = `torneo${ConfTorneo?.id_torneo}/${Equipo_id}/${uniqueFileName}`; // Define la ruta del archivo
+    const filePath = `torneo${ConfTorneo?.id_torneo}/${equipoId}/${uniqueFileName}`; // Define la ruta del archivo
   
     const { data, error } = await supabaseAdmin.storage
         .from('JugadoresIMG')
