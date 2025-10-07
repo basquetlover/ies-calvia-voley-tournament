@@ -152,7 +152,7 @@ console.log("Datos a cuerpo-tecnico")
             _2n_apellido: jugador._2n_apellido,
             curso: jugador.curso,
             genero: jugador.genero_staff,
-            pertenece_equipo: equipoId,
+            pertenece_equipo: Equipo_id,
             email: jugador.email,
             ficha: 'cuerpo_tecnico',
             
@@ -187,7 +187,7 @@ console.log("Datos a cuerpo-tecnico")
             _2n_apellido: jugador._2n_apellido,
             curso: jugador.curso,
             genero: jugador.genero_staff,
-            pertenece_equipo: equipoId,
+            pertenece_equipo: Equipo_id,
             email: jugador.email,
             ficha: 'cuerpo_tecnico',
             img: publicIMGurl,
