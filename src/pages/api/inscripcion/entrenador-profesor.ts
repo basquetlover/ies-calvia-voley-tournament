@@ -236,13 +236,13 @@ if (!acompañante_genero) {
       
       //Obtener la URL pública del escudo subido
       const { data: urlDataCoach } = supabaseAdmin.storage
-          .from('EquiposIMG')
+          .from('JugadoresIMG')
           .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
       
       // Verifica si urlData contiene la propiedad publicUrl
       
       if (urlDataCoach) {
-        publicCoachUrl = urlDataCoach.publicUrl;
+        publicProfesorhUrl = urlDataCoach.publicUrl;
       }
   }
   
@@ -315,7 +315,7 @@ if (!acompañante_genero) {
           pertenece_equipo: Equipo_id,
           email: profesor_email,
           ficha: 'profesor',
-          img: publicCoachUrl,
+          img: publicProfesorhUrl,
           },
       ])
       .select()
@@ -368,3 +368,23 @@ async function uploadFileCoach(file: File, email: string | undefined) {
   console.log("Imagen subida correctamente:", data.path);
   return filePath; // Devuelve la ruta del archivo
 }
+
+//Subir Imagen de Jugadores
+  async function uploadJugadorIMG(file: File, email: string | undefined) {
+    // Extraer la extensión del archivo
+    const extension = file.name.split('.').pop(); // Obtiene la extensión
+    const uniqueFileName = `${email}_${Date.now()}.${extension}`; // Combina id_equipo con la extensión
+    const filePath = `torneo${ConfTorneo?.id_torneo}/${equipoId}/${uniqueFileName}`; // Define la ruta del archivo
+  
+    const { data, error } = await supabaseAdmin.storage
+        .from('JugadoresIMG')
+        .upload(filePath, file); // Sube el archivo
+  
+    if (error) {
+        console.error("Error al subir imagen:", error.message);
+        throw new Error("Error al subir imagen.");
+    }
+  
+    console.log("Imagen subida correctamente:", data.path);
+    return filePath; // Devuelve la ruta del archivo
+  }
