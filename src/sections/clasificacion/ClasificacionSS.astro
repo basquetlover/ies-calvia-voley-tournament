@@ -1074,13 +1074,13 @@ try {
     
 
         
-<section class="w-[1500px] mx-auto  min-h-screen overflow-x-auto h-auto z-0 pt-2 flex flex-col place-content-center items-center rounded-md bg-gris-claro">
+<section class="relative -z-50 w-[1500px] mx-auto  min-h-screen overflow-x-auto h-auto pt-2 flex flex-col place-content-center items-center rounded-md bg-gris-claro">
 <!-- /<div class="overflow-x-auto no-scrollbar h-auto w-max b"> -->
 <div class="grid grid-cols-6 grid-rows-4 gap-4  w-[1400px] mx-auto place-items-center ">
 <!-- Octavo 1  -->
  {octavo_1_numero !== "" && (
-<div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
-    <!-- Equipo 1  -->
+<div class="relative w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+    {/* <!-- Equipo 1  --> */}
     <div class="grid grid-cols-3 place-items-center text-blanco">
         <h4 class="text-sm">{octavo_1_numero}</h4>
         <h5 class={`text-gray-500 text-xs  ${estado_octavo_1=== "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavo_1}</h5>
@@ -1104,9 +1104,12 @@ try {
         <div>
             <p id="octavo_1ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavo_1ra}</p>
         </div>
+        <div class={`${Number(octavo_1ra) > Number(octavo_1rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
     </EquipoBox>
 
-    <!-- Equipo 2  -->
+    {/* <!-- Equipo 2  --> */}
     <EquipoBox>
         <div class="w-full h-full flex items-center place-content-center">
             {
@@ -1126,13 +1129,19 @@ try {
                 <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavo_1rb}</p>
             </div>
         </div>
+        <div class={`${Number(octavo_1ra) < Number(octavo_1rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
     </EquipoBox>
+    <div class="absolute w-12 h-28 bg-accent top-[50%] right-[-40px]  linea-octavos-down rotate-180 -z-10">
+        &nbsp;
+    </div>
 </div>
 )}
 
 <!-- Octavo 2  -->
  {octavo_2_numero !== "" && (
-<div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 col-start-1 row-start-2">
+<div class="relative w-max flex flex-col gap-2 bg-gris rounded-lg p-2 col-start-1 row-start-2">
     {/* <!-- Equipo 1  --> */}
     <div class="grid grid-cols-3 place-items-center text-blanco">
         <h4 class="text-sm">{octavo_2_numero}</h4>
@@ -1157,6 +1166,9 @@ try {
         <div>
             <p id="octavo_2ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavo_2ra}</p>
         </div>
+        <div class={`${Number(octavo_2ra) < Number(octavo_2rb) ? "" : "hidden" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
     </EquipoBox>
 
     {/* <!-- Equipo 2  --> */}
@@ -1179,13 +1191,22 @@ try {
                 <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavo_2rb}</p>
             </div>
         </div>
+        <div class={`${Number(octavo_2ra) < Number(octavo_2rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
     </EquipoBox>
+    <div class="absolute w-12 h-28 bg-accent top-[50%] right-[-40px] -translate-y-3/4 linea-octavos-up rotate-180 -z-10">
+        &nbsp;
+    </div>
 </div>
 )}
 <!-- Octavo 3  -->
 {octavos_3_numero !== "" && (
-<div class="col-start-1 row-start-3"> 
-<div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
+<div class="relative col-start-1 row-start-3"> 
+    <div class="absolute w-12 h-28 bg-accent top-[50%] right-[-40px]  linea-octavos-down rotate-180 -z-10">
+        &nbsp;
+    </div>
+<div class="w-max flex flex-col gap-2 z-10 bg-gris rounded-lg p-2 ">
     {/* <!-- Equipo 1  --> */}
     <div class="grid grid-cols-3 place-items-center text-blanco">
         <h4 class="text-sm">{octavos_3_numero}</h4>
@@ -1210,6 +1231,9 @@ try {
         <div>
             <p id="octavos_3ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_3ra}</p>
         </div>
+        <div class={`${Number(octavos_3ra) > Number(octavos_3rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
     </EquipoBox>
 
     {/* <!-- Equipo 2  --> */}
@@ -1232,14 +1256,21 @@ try {
                 <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_3rb}</p>
             </div>
         </div>
+         <div class={`${Number(octavos_3ra) < Number(octavos_3rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
     </EquipoBox>
 </div>
+
 </div>
 )}
 <!-- Octavo 4  -->
 {octavos_4_numero !== "" && (
-<div class="col-start-1 row-start-4">
-    <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
+<div class="relative col-start-1 row-start-4">
+    <div class="absolute w-12 h-28 bg-accent top-[50%] right-[-40px] -translate-y-3/4 linea-octavos-up rotate-180 -z-10">
+        &nbsp;
+    </div>
+    <div class="w-max flex flex-col z-10 gap-2 bg-gris rounded-lg p-2 ">
         {/* <!-- Equipo 1  --> */}
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{octavos_4_numero}</h4>
@@ -1264,7 +1295,11 @@ try {
             <div>
                 <p id="octavos_4ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_4ra}</p>
             </div>
+            <div class={`${Number(octavos_4ra) > Number(octavos_4rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBox>
+        
     
         {/* <!-- Equipo 2  --> */}
         <EquipoBox>
@@ -1286,19 +1321,23 @@ try {
                     <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_4rb}</p>
                 </div>
             </div>
+            <div class={`${Number(octavos_4ra) < Number(octavos_4rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBox>
     </div>
+    
 </div>
 )}
 {octavos_5_numero !== "" && (
-<div class="col-start-6 row-start-1">
-     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
+<div class=" relative col-start-6 row-start-1">
+     <div class="w-max flex flex-col gap-2 z-10 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{octavos_5_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_octavos_5=== "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_5}</h5>
             <h4 class="text-sm">{pista_octavos_5}</h4>
         </div>
-        <!--Ganador P7 -->
+        {/* <!--Ganador P7 --> */}
         <EquipoBoxDer>
             <div>
                 <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_5ra}</p>
@@ -1314,9 +1353,12 @@ try {
                             </svg>
                     )}
             </div>
+            <div class={`${Number(octavos_5ra) > Number(octavos_5rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
 
-        <!--Ganador P8 -->
+        {/* <!--Ganador P8 --> */}
         <EquipoBoxDer>
             <div>
                 <div>
@@ -1334,20 +1376,26 @@ try {
                             </svg>
                     )}
             </div>
+            <div class={`${Number(octavos_5ra) < Number(octavos_5rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
+    </div>
+   <div class="absolute w-12 h-28 bg-accent top-[50%] left-[-40px]  linea-octavos-up rotate-180 -z-10">
+        &nbsp;
     </div>
 </div>
 )}
 <!-- Octavo 6  -->
  {octavos_6_numero !== "" && (
-<div class="col-start-6 row-start-2">
+<div class="relative col-start-6 row-start-2">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{octavos_6_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_octavos_6=== "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_6}</h5>
             <h4 class="text-sm">{pista_octavos_8}</h4>
         </div>
-        <!--Ganador P7 -->
+        {/* <!--Ganador P7 --> */}
         <EquipoBoxDer>
             <div>
                 <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_6ra}</p>
@@ -1363,9 +1411,12 @@ try {
                             </svg>
                     )}
             </div>
+            <div class={`${Number(octavos_6ra) > Number(octavos_6rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
 
-        <!--Ganador P8 -->
+        {/* <!--Ganador P8 --> */}
         <EquipoBoxDer>
             <div>
                 <div>
@@ -1383,21 +1434,27 @@ try {
                             </svg>
                     )}
             </div>
+            <div class={`${Number(octavos_6ra) < Number(octavos_6rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
+    </div>
+    <div class="absolute w-12 h-28 bg-accent top-[50%] left-[-40px] -translate-y-3/4 linea-octavos-down rotate-180 -z-10">
+        &nbsp;
     </div>
 </div>
 )}
 
 <!-- Octavo 7  -->
  {octavos_7_numero !== "" && (
-<div class="col-start-6 row-start-3">
+<div class="relative col-start-6 row-start-3">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{octavos_7_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_octavos_7 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_7}</h5>
             <h4 class="text-sm">{pista_octavos_7}</h4>
         </div>
-        <!--Ganador P7 -->
+        {/* <!--Ganador P7 --> */}
         <EquipoBoxDer>
             <div>
                 <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_7ra}</p>
@@ -1413,9 +1470,12 @@ try {
                             </svg>
                     )}
             </div>
+            <div class={`${Number(octavos_7ra) > Number(octavos_7rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
 
-        <!--Ganador P8 -->
+        {/* <!--Ganador P8 --> */}
         <EquipoBoxDer>
             <div>
                 <div>
@@ -1433,20 +1493,27 @@ try {
                             </svg>
                     )}
             </div>
+            <div class={`${Number(octavos_7ra) < Number(octavos_7rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg ${octavos_7ra === octavos_7rb ? "hidden" : "" }`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
     </div>
+    <div class="absolute w-12 h-28 bg-accent top-[50%] left-[-40px]  linea-octavos-up rotate-180 -z-10">
+        &nbsp;
+    </div>
+    
 </div>
 )}
 <!-- Octavo 8  -->
  {octavos_8_numero !== "" && (
-<div class="col-start-6 row-start-4">
+<div class="relative col-start-6 row-start-4">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{octavos_8_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_octavos_8 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_octavos_8}</h5>
             <h4 class="text-sm">{pista_octavos_8}</h4>
         </div>
-        <!--Ganador P7 -->
+        {/* <!--Ganador P7 --> */}
         <EquipoBoxDer>
             <div>
                 <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{octavos_8_ra}</p>
@@ -1462,9 +1529,12 @@ try {
                             </svg>
                     )}
             </div>
+            <div class={`${Number(octavos_8_ra) > Number(octavos_8_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
 
-        <!--Ganador P8 -->
+        {/* <!--Ganador P8 --> */}
         <EquipoBoxDer>
             <div>
                 <div>
@@ -1482,16 +1552,22 @@ try {
                             </svg>
                     )}
             </div>
+            <div class={`${Number(octavos_8_ra) < Number(octavos_8_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
+    </div>
+    <div class="absolute w-12 h-28 bg-accent top-[50%] left-[-40px] -translate-y-3/4 linea-octavos-down rotate-180 -z-10">
+        &nbsp;
     </div>
 </div>
 )}
 
 <!-- Quartos 1  -->
  {quartos_1_numero !== "" && (
-<div class="row-span-2 col-start-2 row-start-1">
+<div class="relative row-span-2 col-start-2 row-start-1">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
-        <!-- Equipo 1  -->
+        {/* <!-- Equipo 1  --> */}
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{quartos_1_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_quartos_1 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_quartos_1}</h5>
@@ -1515,9 +1591,12 @@ try {
             <div>
                 <p id="quartos_1_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_1_ra}</p>
             </div>
+            <div class={`${Number(quartos_1_ra) > Number(quartos_1_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBox>
     
-        <!-- Equipo 2  -->
+        {/* <!-- Equipo 2  --> */}
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
@@ -1537,16 +1616,22 @@ try {
                     <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_1_rb}</p>
                 </div>
             </div>
+              <div class={`${Number(quartos_1_ra) < Number(quartos_1_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBox>
+    </div>
+    <div class="absolute w-12 h-52 bg-accent top-[50%] right-[-40px]  linea-cuartos-down rotate-180 -z-10">
+        &nbsp;
     </div>
 </div>
 )}
 
 <!-- Quartos 2 -->
  {quartos_2_numero !== "" && (
-<div class="row-span-2 col-start-2 row-start-3">
+<div class="relative row-span-2 col-start-2 row-start-3">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
-        <!-- Equipo 1  -->
+        {/* <!-- Equipo 1  --> */}
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{quartos_2_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_quartos_2 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_quartos_2}</h5>
@@ -1570,9 +1655,12 @@ try {
             <div>
                 <p id="quartos_2_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_2_ra}</p>
             </div>
+             <div class={`${Number(quartos_2_ra) > Number(quartos_2_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBox>
     
-        <!-- Equipo 2  -->
+        {/* <!-- Equipo 2  --> */}
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
@@ -1592,21 +1680,27 @@ try {
                     <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_2_rb}</p>
                 </div>
             </div>
+             <div class={`${Number(quartos_2_ra) < Number(quartos_2_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBox>
+    </div>
+    <div class="absolute w-12 h-52 bg-accent top-[35%] right-[-40px] -translate-y-3/4 linea-cuartos-up rotate-180 -z-10">
+        &nbsp;
     </div>
 </div>
 )}
 
 <!-- Quartos 3 -->
  {quartos_3_numero !== "" && (
-<div class="row-span-2 col-start-5 row-start-1">
+<div class="relative row-span-2 col-start-5 row-start-1">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{quartos_3_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_quartos_3 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_quartos_3}</h5>
             <h4 class="text-sm">{pista_quartos_3}</h4>
         </div>
-        <!--Ganador P7 -->
+        {/* <!--Ganador P7 --> */}
         <EquipoBoxDer>
             <div>
                 <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_3_ra}</p>
@@ -1622,9 +1716,12 @@ try {
                             </svg>
                     )}
             </div>
+             <div class={`${Number(quartos_3_ra) > Number(quartos_3_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
 
-        <!--Ganador P8 -->
+        {/* <!--Ganador P8 --> */}
         <EquipoBoxDer>
             <div>
                 <div>
@@ -1642,21 +1739,27 @@ try {
                             </svg>
                     )}
             </div>
+             <div class={`${Number(quartos_3_ra) < Number(quartos_3_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
+    </div>
+    <div class="absolute w-12 h-52 bg-accent top-[50%] left-[-40px]  linea-cuartos-up rotate-180 -z-10">
+        &nbsp;
     </div>
 </div>
 )}
 
 <!-- Quartos 4 -->
  {quartos_4_numero !== "" && (
-<div class="row-span-2 col-start-5 row-start-3">
+<div class="relative row-span-2 col-start-5 row-start-3">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{quartos_4_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_quartos_4 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_quartos_4}</h5>
             <h4 class="text-sm">{pista_quartos_4}</h4>
         </div>
-        <!--Ganador P7 -->
+        {/* <!--Ganador P7 --> */}
         <EquipoBoxDer>
             <div>
                 <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{quartos_4_ra}</p>
@@ -1672,9 +1775,12 @@ try {
                             </svg>
                     )}
             </div>
+             <div class={`${Number(quartos_4_ra) > Number(quartos_4_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
 
-        <!--Ganador P8 -->
+        {/* <!--Ganador P8 --> */}
         <EquipoBoxDer>
             <div>
                 <div>
@@ -1692,16 +1798,22 @@ try {
                             </svg>
                     )}
             </div>
+             <div class={`${Number(quartos_4_ra) < Number(quartos_4_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
+    </div>
+    <div class="absolute w-12 h-52 bg-accent top-[35%] left-[-40px] -translate-y-3/4 linea-cuartos-down rotate-180 -z-10">
+        &nbsp;
     </div>
 </div>
 )}
 
 <!-- Semi 1 -->
  {semi_1_numero !== "" && (
-<div class="row-span-2 col-start-3 row-start-2">
+<div class="relative row-span-2 col-start-3 row-start-2">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2 ">
-        <!-- Equipo 1  -->
+        {/* <!-- Equipo 1  --> */}
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{semi_1_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_semi_1 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_semi_1}</h5>
@@ -1725,9 +1837,12 @@ try {
             <div>
                 <p id="semi_1_ra" class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{semi_1_ra}</p>
             </div>
+             <div class={`${Number(semi_1_ra) > Number(semi_1_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBox>
-    
-        <!-- Equipo 2  -->
+{/*     
+        <!-- Equipo 2  --> */}
         <EquipoBox>
             <div class="w-full h-full flex items-center place-content-center">
                 {
@@ -1747,21 +1862,27 @@ try {
                     <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{semi_1_rb}</p>
                 </div>
             </div>
+             <div class={`${Number(semi_1_ra) < Number(semi_1_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBox>
+    </div>
+    <div class="absolute w-12 h-56 bg-accent -top-[50%] right-[-40px] -translate-y-1/4 linea-semis  rotate-180 -z-10">
+        &nbsp;
     </div>
 </div>
 )}
 
 <!-- Semi 2 -->
  {semi_2_numero !== "" && (
-<div class="row-span-2 col-start-4 row-start-2">
+<div class="relative row-span-2 col-start-4 row-start-2">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{semi_2_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_semi_2 === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_semi_2}</h5>
             <h4 class="text-sm">{pista_semi_2}</h4>
         </div>
-        <!--Ganador P7 -->
+        {/* <!--Ganador P7 --> */}
         <EquipoBoxDer>
             <div>
                 <p  class="text-blanco text-2xl w-4 text-center bg-transparent border-none" >{semi_2_ra}</p>
@@ -1777,9 +1898,12 @@ try {
                             </svg>
                     )}
             </div>
+             <div class={`${Number(semi_2_ra) > Number(semi_2_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
 
-        <!--Ganador P8 -->
+        {/* <!--Ganador P8 --> */}
         <EquipoBoxDer>
             <div>
                 <div>
@@ -1797,8 +1921,12 @@ try {
                             </svg>
                     )}
             </div>
+             <div class={`${Number(semi_2_ra) < Number(semi_2_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
         </EquipoBoxDer>
     </div>
+    
 </div>
 )}
 
@@ -1811,7 +1939,7 @@ try {
             <h5 class={`text-gray-500 text-xs  ${estado_final === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_final}</h5>
             <h4 class="text-sm">{pista_final}</h4>
         </div>
-        <!--Ganador octavo_2-->
+        {/* <!--Ganador octavo_2--> */}
         <div class="flex flex-row gap-2">
             <EquipoBox>
                 <div>
@@ -1828,9 +1956,12 @@ try {
                 <div>
                     <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{final_ra}</p>
                 </div>
+                <div class={`${Number(final_ra) > Number(final_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
             </EquipoBox>
 
-            <!--Ganador P2 -->
+            {/* <!--Ganador P2 --> */}
             <EquipoBoxDer>
                 <div>
                     <div>
@@ -1848,6 +1979,9 @@ try {
                                 </svg>
                         )}
                 </div> 
+                <div class={`${Number(final_ra) < Number(final_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
             </EquipoBoxDer>
         </div>
     </div>
@@ -1856,14 +1990,14 @@ try {
 
 <!-- 3/4 puesto -->
  {tercer_quarto_numero !== "" && (
-<div class="col-span-2 col-start-3 row-start-4">
+<div class="relative col-span-2 col-start-3 row-start-4">
     <div class="w-max flex flex-col gap-2 bg-gris rounded-lg p-2">
         <div class="grid grid-cols-3 place-items-center text-blanco">
             <h4 class="text-sm">{tercer_quarto_numero}</h4>
             <h5 class={`text-gray-500 text-xs  ${estado_tercer_quarto === "En Directe" ? "text-red-600 flex flex-row items-center place-content-center":" " }`}>{estado_tercer_quarto}</h5>
             <h4 class="text-sm">{pista_tercer_quarto}</h4>
         </div>
-        <!--Ganador octavo_2-->
+        {/* <!--Ganador octavo_2--> */}
         <div class="flex flex-row gap-2">
             <EquipoBox>
                 <div>
@@ -1880,9 +2014,12 @@ try {
                 <div>
                     <p class="text-blanco text-2xl w-4 text-center bg-transparent border-none">{tercer_quarto_ra}</p>
                 </div>
+                <div class={`${Number(tercer_quarto_ra) > Number(tercer_quarto_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
             </EquipoBox>
 
-            <!--Ganador P2 -->
+            {/* <!--Ganador P2 --> */}
             <EquipoBoxDer>
                 <div>
                     <div>
@@ -1900,8 +2037,14 @@ try {
                                 </svg>
                         )}
                 </div> 
+                <div class={`${Number(tercer_quarto_ra) < Number(tercer_quarto_rb) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
             </EquipoBoxDer>
         </div>
+    </div>
+    <div class="absolute w-12 h-56 bg-azul-suave -top-[35%] left-[50%] -translate-x-1/2 -translate-y-3/4 linea-semis  -z-10">
+        &nbsp;
     </div>
 </div>
 )}
@@ -1938,6 +2081,9 @@ try {
       <div>
         <input name={`partido${idx}_ra`} class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={p.resultadoA} placeholder="0" />
       </div>
+      <div class={`${Number(p.resultadoA) > Number(p.resultadoB) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
     </EquipoBox>
 
     {/* <!-- Equipo 2 --> */}
@@ -1956,6 +2102,9 @@ try {
       <div>
         <input name={`partido${idx}_rb`} class="text-blanco text-2xl w-4 text-center bg-transparent border-none" value={p.resultadoB} placeholder="0" />
       </div>
+       <div class={`${Number(p.resultadoA) < Number(p.resultadoB) ? "hidden" : "" } absolute w-full h-full bg-gris top-0 left-0 opacity-50 rounded-lg`}>
+            &nbsp;
+        </div>
     </EquipoBox>
   </div>
 ))}
@@ -1964,3 +2113,22 @@ try {
 </section>
 
 <!-- </div> -->
+
+<style>
+    .linea-octavos-down{
+        clip-path: polygon(0 0, 0% 10%, 40% 10%, 40% 100%, 60% 100%, 100% 100%, 100% 90%, 60% 90%, 60% 0);
+    }
+    .linea-octavos-up{
+        clip-path: polygon(40% 90%, 0 90%, 0 100%, 60% 100%, 60% 10%, 100% 10%, 100% 0, 60% 0, 40% 0);
+    }
+
+     .linea-cuartos-down{
+        clip-path: polygon(0 0, 0% 5%, 40% 5%, 40% 100%, 60% 100%, 100% 100%, 100% 95%, 60% 95%, 60% 0);
+    }
+    .linea-cuartos-up{
+        clip-path: polygon(40% 95%, 0 95%, 0 100%, 60% 100%, 60% 5%, 100% 5%, 100% 0, 60% 0, 40% 0);
+    }
+    .linea-semis{
+        clip-path: polygon(0 0, 100% 0, 100% 5%, 60% 5%, 60% 100%, 40% 100%, 40% 5%, 0 5%);
+    }
+</style>
