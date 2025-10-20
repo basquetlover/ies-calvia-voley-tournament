@@ -818,6 +818,7 @@ try {
 //Capitan
 if (capitan_email !== usuario_email){
   if(capitan_edit === "si_edit"){
+    await new Promise(resolve => setTimeout(resolve, 2000));
     try {
       const { data, error } = await resend.emails.send({
         from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
