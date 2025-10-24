@@ -133,12 +133,12 @@ try {
 
   const { data: UsuarioInscripcion } = await supabaseAdmin
     .from('Usuarios')
-    .select('nombre, email, curso')
+    .select('nombre, email_microsoft, curso')
     .eq('id', inscrito)
     .single();
     if(UsuarioInscripcion){
         creador_nombre = UsuarioInscripcion.nombre;
-        creador_email = UsuarioInscripcion.email;
+        creador_email = UsuarioInscripcion.email_microsoft;
         creador_curso = UsuarioInscripcion.curso
     }
 
