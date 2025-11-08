@@ -1672,6 +1672,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
             window.location.href = '/usuario';
 
         } catch (error) {
+          console.log(error);
             mostrarError(`Error en el envío: ${error}`);
         }
     }
