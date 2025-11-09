@@ -641,11 +641,13 @@ file.addEventListener('change', (e: Event) => {
   <div class="w-[95%] h-[2px] my-10 mx-auto border-none block rounded-full bg-accent select-none">&nbsp;</div>
   <div class="flex flex-row gap-2 items-end">
         <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 7}. Jugador</p>
+        {/* 
         <span id={`extra_capitan_${index}`} class="p-2 bg-gris-claro bg-opacity-55 flex items-center place-content-center rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="#e8eaed" viewBox="0 -960 960 960">
                 <path d="M400-320h160q17 0 29-11t11-29v-80h-80v40h-80v-160h80v40h80v-80q0-17-11-28t-29-12H400q-17 0-28 12t-12 28v240q0 17 12 29t28 11Zm80 240q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
             </svg>
         </span>
+        */}
 
         {/* Genero */}
         <div class="flex flex-col relative">
@@ -1605,6 +1607,8 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
         console.log(paso2);
         const paso3 = leerCookiePaso(3);
         console.log(paso3);
+        const paso6 = leerCookiePaso(6);
+        console.log(paso6);
         const paso4 = leerCookiePaso(4);
         console.log(paso4);
         
@@ -1733,6 +1737,44 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               if (!(await procesarRespuesta(res3, "jugadores"))) return;
               crearCookiePaso(3, "Completado"); 
             }
+                        // 3️⃣ Jugadores
+            if(paso6 !== "Completado"){
+              mostrarEspera("espera6");
+                const fd6 = new FormData();
+                fd6.append("nombre_equipo", datos.nombre_equipo || "");
+                fd6.append("input_capitan_form", datos.input_capitan_form || "");
+                fd6.append("input_capitan_email_form", datos.input_capitan_email_form || "");
+
+                // Añadir jugadores titulares
+                let index = 0;
+                while (document.getElementById(`extra_player_${index}_name`)) {
+                    const nombre = (document.getElementById(`extra_player_${index}_name`) as HTMLInputElement)?.value || "";
+                    const apellido1 = (document.getElementById(`extra_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                    const apellido2 = (document.getElementById(`extra_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                    const curso = (document.getElementById(`extra_player_${index}_curso`) as HTMLInputElement)?.value || "";
+                    const genero = (document.getElementById(`extra_genero_${index}`) as HTMLInputElement)?.value || "";
+                    const email = (document.getElementById(`extra_player_${index}_email`) as HTMLInputElement)?.value || "";
+                    const img = (document.getElementById(`extra_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+
+                    fd6.append(`extra_player_${index}_name`, nombre);
+                    fd6.append(`extra_player_${index}_1r_apellido`, apellido1);
+                    fd6.append(`extra_player_${index}_2n_apellido`, apellido2);
+                    fd6.append(`extra_player_${index}_curso`, curso);
+                    fd6.append(`extra_genero_${index}`, genero);
+                    fd6.append(`extra_player_${index}_email`, email);
+                    if (img) fd6.append(`extra_player_${index}_img`, img);
+
+                    index++;
+                }
+
+              Object.keys(datos).forEach(key => {
+                  if (key.startsWith("jugador")) fd6.append(key, datos[key]);
+              });
+              console.log("FormData entries antes de enviar:", Array.from(fd6.entries()));
+              let res6 = await fetch("/api/inscripcion/jugadores-extra", { method: 'POST', body: fd6 });
+              if (!(await procesarRespuesta(res6, "jugadores"))) return;
+              crearCookiePaso(6, "Completado"); 
+            }
             
             // 4️⃣ Cuerpo técnico
             if(paso4 !== "Completado"){
@@ -1796,7 +1838,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
                     const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
                     const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
-                    const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                    
 
                     fd5.append(`player_${index}_name`, nombre);
                     fd5.append(`player_${index}_1r_apellido`, apellido1);
@@ -1804,7 +1846,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     fd5.append(`player_${index}_curso`, curso);
                     fd5.append(`genero_${index}`, genero);
                     fd5.append(`player_${index}_email`, email);
-                    if (img) fd5.append(`player_${index}_img`, img);
+                    
 
                     index++;
                 }
@@ -1818,7 +1860,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     const curso = (document.getElementById(`extra_player_${index}_curso`) as HTMLInputElement)?.value || "";
                     const genero = (document.getElementById(`extra_genero_${index}`) as HTMLInputElement)?.value || "";
                     const email = (document.getElementById(`extra_player_${index}_email`) as HTMLInputElement)?.value || "";
-                    const img = (document.getElementById(`extra_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                    
 
                     fd5.append(`extra_player_${index}_name`, nombre);
                     fd5.append(`extra_player_${index}_1r_apellido`, apellido1);
@@ -1826,7 +1868,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     fd5.append(`extra_player_${index}_curso`, curso);
                     fd5.append(`extra_genero_${index}`, genero);
                     fd5.append(`extra_player_${index}_email`, email);
-                    if (img) fd5.append(`extra_player_${index}_img`, img);
+                    
 
                     index++;
                 }
@@ -1840,7 +1882,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
                     const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
                     const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
-                    const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                    
 
                     fd5.append(`staff_player_${index}_name`, nombre);
                     fd5.append(`staff_player_${index}_1r_apellido`, apellido1);
@@ -1848,7 +1890,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     fd5.append(`staff_player_${index}_curso`, curso);
                     fd5.append(`staff_genero_${index}`, genero);
                     fd5.append(`staff_player_${index}_email`, email);
-                    if (img) fd5.append(`staff_player_${index}_img`, img);
+                    
 
                     index++;
                 }
