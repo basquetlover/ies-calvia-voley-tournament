@@ -1686,33 +1686,65 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                 fd3.append("input_capitan_email_form", datos.input_capitan_email_form || "");
 
                 // Añadir jugadores titulares
-                let index = 0;
-                while (document.getElementById(`player_${index}_name`)) {
-                    const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
-                    const apellido1 = (document.getElementById(`player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
-                    const apellido2 = (document.getElementById(`player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
-                    const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
-                    const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
-                    const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
-                    const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                
 
-                    fd3.append(`player_${index}_name`, nombre);
-                    fd3.append(`player_${index}_1r_apellido`, apellido1);
-                    fd3.append(`player_${index}_2n_apellido`, apellido2);
-                    fd3.append(`player_${index}_curso`, curso);
-                    fd3.append(`genero_${index}`, genero);
-                    fd3.append(`player_${index}_email`, email);
-                    if (img) fd3.append(`player_${index}_img`, img);
+              // 🔹 Bucle de jugadores 0 a 2
+              for (let index = 0; index <= 2; index++) {
+                  const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
+                  const apellido1 = (document.getElementById(`player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                  const apellido2 = (document.getElementById(`player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                  const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
+                  const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
+                  const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
+                  const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
-                    index++;
-                }
+                  // Añadir cada campo al mismo FormData
+                  fd3.append(`player_${index}_name`, nombre);
+                  fd3.append(`player_${index}_1r_apellido`, apellido1);
+                  fd3.append(`player_${index}_2n_apellido`, apellido2);
+                  fd3.append(`player_${index}_curso`, curso);
+                  fd3.append(`genero_${index}`, genero);
+                  fd3.append(`player_${index}_email`, email);
+                  if (img) fd3.append(`player_${index}_img`, img);
+              }
 
-              Object.keys(datos).forEach(key => {
-                  if (key.startsWith("jugador")) fd3.append(key, datos[key]);
-              });
-              console.log("FormData entries antes de enviar:", Array.from(fd3.entries()));
-              let res3 = await fetch("/api/inscripcion/jugadores", { method: 'POST', body: fd3 });
+              // 🔹 Llamada única a la API (fuera del bucle)
+              let res3 = await fetch("/api/inscripcion/jugadores", { method: "POST", body: fd3 });
               if (!(await procesarRespuesta(res3, "jugadores"))) return;
+
+               const fd3_1 = new FormData();
+                fd3_1.append("nombre_equipo", datos.nombre_equipo || "");
+                fd3_1.append("input_capitan_form", datos.input_capitan_form || "");
+                fd3_1.append("input_capitan_email_form", datos.input_capitan_email_form || "");
+
+                for (let index = 3; index <= 5; index++) {
+                  const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
+                  const apellido1 = (document.getElementById(`player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                  const apellido2 = (document.getElementById(`player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                  const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
+                  const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
+                  const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
+                  const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
+
+                  // Añadir cada campo al mismo FormData
+                  fd3_1.append(`player_${index}_name`, nombre);
+                  fd3_1.append(`player_${index}_1r_apellido`, apellido1);
+                  fd3_1.append(`player_${index}_2n_apellido`, apellido2);
+                  fd3_1.append(`player_${index}_curso`, curso);
+                  fd3_1.append(`genero_${index}`, genero);
+                  fd3_1.append(`player_${index}_email`, email);
+                  if (img) fd3_1.append(`player_${index}_img`, img);
+              }
+
+              // 🔹 Llamada única a la API (fuera del bucle)
+              let res3_1 = await fetch("/api/inscripcion/jugadores", { method: "POST", body: fd3_1 });
+              if (!(await procesarRespuesta(res3_1, "jugadores"))) return;
+
+              // Object.keys(datos).forEach(key => {
+              //     if (key.startsWith("jugador")) fd3.append(key, datos[key]);
+              // });
+              // console.log("FormData entries antes de enviar:", Array.from(fd3.entries()));
+              
               crearCookiePaso(3, "Completado"); 
             }
                         // 3️⃣ Jugadores
