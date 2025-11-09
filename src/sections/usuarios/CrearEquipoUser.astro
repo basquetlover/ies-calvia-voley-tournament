@@ -1708,26 +1708,26 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                 }
 
                 // Jugadores extra - usando índice incremental
-                index = 0;
-                while (document.getElementById(`extra_player_${index}_name`)) {
-                    const nombre = (document.getElementById(`extra_player_${index}_name`) as HTMLInputElement)?.value || "";
-                    const apellido1 = (document.getElementById(`extra_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
-                    const apellido2 = (document.getElementById(`extra_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
-                    const curso = (document.getElementById(`extra_player_${index}_curso`) as HTMLInputElement)?.value || "";
-                    const genero = (document.getElementById(`extra_genero_${index}`) as HTMLInputElement)?.value || "";
-                    const email = (document.getElementById(`extra_player_${index}_email`) as HTMLInputElement)?.value || "";
-                    const img = (document.getElementById(`extra_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                // index = 0;
+                // while (document.getElementById(`extra_player_${index}_name`)) {
+                //     const nombre = (document.getElementById(`extra_player_${index}_name`) as HTMLInputElement)?.value || "";
+                //     const apellido1 = (document.getElementById(`extra_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                //     const apellido2 = (document.getElementById(`extra_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                //     const curso = (document.getElementById(`extra_player_${index}_curso`) as HTMLInputElement)?.value || "";
+                //     const genero = (document.getElementById(`extra_genero_${index}`) as HTMLInputElement)?.value || "";
+                //     const email = (document.getElementById(`extra_player_${index}_email`) as HTMLInputElement)?.value || "";
+                //     const img = (document.getElementById(`extra_player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
-                    fd3.append(`extra_player_${index}_name`, nombre);
-                    fd3.append(`extra_player_${index}_1r_apellido`, apellido1);
-                    fd3.append(`extra_player_${index}_2n_apellido`, apellido2);
-                    fd3.append(`extra_player_${index}_curso`, curso);
-                    fd3.append(`extra_genero_${index}`, genero);
-                    fd3.append(`extra_player_${index}_email`, email);
-                    if (img) fd3.append(`extra_player_${index}_img`, img);
+                //     fd3.append(`extra_player_${index}_name`, nombre);
+                //     fd3.append(`extra_player_${index}_1r_apellido`, apellido1);
+                //     fd3.append(`extra_player_${index}_2n_apellido`, apellido2);
+                //     fd3.append(`extra_player_${index}_curso`, curso);
+                //     fd3.append(`extra_genero_${index}`, genero);
+                //     fd3.append(`extra_player_${index}_email`, email);
+                //     if (img) fd3.append(`extra_player_${index}_img`, img);
 
-                    index++;
-                }
+                //     index++;
+                // }
 
               Object.keys(datos).forEach(key => {
                   if (key.startsWith("jugador")) fd3.append(key, datos[key]);
