@@ -1614,9 +1614,16 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
             // 1️⃣ Crear equipo
             if(paso1 !== "Completado"){
               mostrarEspera("espera");
-              let fd1 = new FormData(form);
-              // fd1.append("nombre_equipo", datos.nombre_equipo);
-              // fd1.append("categoria", datos.categoria);
+                const fd1 = new FormData();
+                fd1.append("nombre_equipo", datos.nombre_equipo || "");
+                fd1.append("capitan_edit", datos.capitan_edit || "");
+
+                // Añadir la imagen solo si el usuario subió una
+                const fotoInput = document.querySelector<HTMLInputElement>('input[name="foto"]');
+                if (fotoInput?.files?.[0]) {
+                  fd1.append("foto", fotoInput.files[0]);
+                }
+
               let res1 = await fetch("/api/inscripcion/crear-equipo", { method: 'POST', body: fd1 });
               if (!(await procesarRespuesta(res1, "crear equipo"))) return;
               crearCookiePaso(1, "Completado"); 
@@ -1625,23 +1632,103 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
             // 2️⃣ Entrenador / Profesor
             if(paso2 !== "Completado"){
               mostrarEspera("espera2");
-              let fd2 = new FormData(form);
-              // fd2.append("nombre_entrenador", datos.nombre_entrenador);
-              // fd2.append("apellido_entrenador", datos.apellido_entrenador);
-              // fd2.append("profesor_responsable", datos.profesor_responsable);
+                const fd2 = new FormData();
+
+                  // Nombre del equipo (clave para asociar los datos)
+                  fd2.append("nombre_equipo", datos.nombre_equipo || "");
+
+                  // --- ENTRENADOR / ACOMPAÑANTE ---
+                  const entrenador_nombre = datos.entrenador_name;
+                  if (entrenador_nombre !== "") {
+                    fd2.append("entrenador_name", entrenador_nombre);
+                    fd2.append("entrenador_1r_apellido", datos.entrenador_1r_apellido);
+                    fd2.append("entrenador_2n_apellido", datos.entrenador_2n_apellido);
+                    fd2.append("entrenador_curso", datos.entrenador_curso);
+                    fd2.append("genero_entrenador", datos.genero_entrenador);
+                    fd2.append("entrenador_email", datos.entrenador_email);
+
+                    const entrenadorFoto = document.querySelector<HTMLInputElement>('input[name="entrenador_img"]');
+                    if (entrenadorFoto?.files?.[0]) {
+                      fd2.append("entrenador_img", entrenadorFoto.files[0]);
+                    }
+                  }
+
+                  // --- PROFESOR RESPONSABLE ---
+                  const profesor_nombre = datos.profesor_name;
+                  if (profesor_nombre !== "") {
+                    fd2.append("profesor_name", profesor_nombre);
+                    fd2.append("profesor_1r_apellido", datos.profesor_1r_apellido);
+                    fd2.append("profesor_2n_apellido", datos.profesor_2n_apellido);
+                    fd2.append("profesor_curso", datos.profesor_curso);
+                    fd2.append("genero_profesor", datos.genero_profesor);
+                    fd2.append("profesor_email", datos.profesor_email);
+
+                    const profesorFoto = document.querySelector<HTMLInputElement>('input[name="profesor_img"]');
+                    if (profesorFoto?.files?.[0]) {
+                      fd2.append("profesor_img", profesorFoto.files[0]);
+                    }
+                  }
               let res2 = await fetch("/api/inscripcion/entrenador-profesor", { method: 'POST', body: fd2 });
               if (!(await procesarRespuesta(res2, "entrenador / profesor"))) return;
-             crearCookiePaso(2, "Completado"); 
+              crearCookiePaso(2, "Completado"); 
             }
             
             // 3️⃣ Jugadores
             if(paso3 !== "Completado"){
               mostrarEspera("espera3");
-              let fd3 = new FormData(form);
-              // Aquí añadirías solo los campos de jugadores
+                const fd3 = new FormData();
+                fd3.append("nombre_equipo", datos.nombre_equipo || "");
+                fd3.append("input_capitan_form", datos.input_capitan_form || "");
+                fd3.append("input_capitan_email_form", datos.input_capitan_email_form || "");
+
+                // Añadir jugadores titulares
+                let index = 0;
+                while (document.getElementById(`player_${index}_name`)) {
+                    const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
+                    const apellido1 = (document.getElementById(`player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                    const apellido2 = (document.getElementById(`player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                    const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
+                    const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
+                    const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
+                    const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
+
+                    fd3.append(`player_${index}_name`, nombre);
+                    fd3.append(`player_${index}_1r_apellido`, apellido1);
+                    fd3.append(`player_${index}_2n_apellido`, apellido2);
+                    fd3.append(`player_${index}_curso`, curso);
+                    fd3.append(`genero_${index}`, genero);
+                    fd3.append(`player_${index}_email`, email);
+                    if (img) fd3.append(`player_${index}_img`, img);
+
+                    index++;
+                }
+
+                // Jugadores extra - usando índice incremental
+                index = 0;
+                while (document.getElementById(`extra_player_${index}_name`)) {
+                    const nombre = (document.getElementById(`extra_player_${index}_name`) as HTMLInputElement)?.value || "";
+                    const apellido1 = (document.getElementById(`extra_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                    const apellido2 = (document.getElementById(`extra_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                    const curso = (document.getElementById(`extra_player_${index}_curso`) as HTMLInputElement)?.value || "";
+                    const genero = (document.getElementById(`extra_genero_${index}`) as HTMLInputElement)?.value || "";
+                    const email = (document.getElementById(`extra_player_${index}_email`) as HTMLInputElement)?.value || "";
+                    const img = (document.getElementById(`extra_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+
+                    fd3.append(`extra_player_${index}_name`, nombre);
+                    fd3.append(`extra_player_${index}_1r_apellido`, apellido1);
+                    fd3.append(`extra_player_${index}_2n_apellido`, apellido2);
+                    fd3.append(`extra_player_${index}_curso`, curso);
+                    fd3.append(`extra_genero_${index}`, genero);
+                    fd3.append(`extra_player_${index}_email`, email);
+                    if (img) fd3.append(`extra_player_${index}_img`, img);
+
+                    index++;
+                }
+
               Object.keys(datos).forEach(key => {
                   if (key.startsWith("jugador")) fd3.append(key, datos[key]);
               });
+              console.log("FormData entries antes de enviar:", Array.from(fd3.entries()));
               let res3 = await fetch("/api/inscripcion/jugadores", { method: 'POST', body: fd3 });
               if (!(await procesarRespuesta(res3, "jugadores"))) return;
               crearCookiePaso(3, "Completado"); 
@@ -1650,7 +1737,30 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
             // 4️⃣ Cuerpo técnico
             if(paso4 !== "Completado"){
               mostrarEspera("espera4");
-              let fd4 = new FormData(form);
+                const fd4 = new FormData();
+                fd4.append("nombre_equipo", datos.nombre_equipo || "");
+
+                // Array para recorrer los miembros del staff
+                let index = 0;
+                while (document.getElementById(`staff_player_${index}_name`)) {
+                    const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
+                    const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                    const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                    const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
+                    const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
+                    const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
+                    const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+
+                    fd4.append(`staff_player_${index}_name`, nombre);
+                    fd4.append(`staff_player_${index}_1r_apellido`, apellido1);
+                    fd4.append(`staff_player_${index}_2n_apellido`, apellido2);
+                    fd4.append(`staff_player_${index}_curso`, curso);
+                    fd4.append(`staff_genero_${index}`, genero);
+                    fd4.append(`staff_player_${index}_email`, email);
+                    if (img) fd4.append(`staff_player_${index}_img`, img);
+
+                    index++;
+                }
               Object.keys(datos).forEach(key => {
                   if (key.startsWith("cuerpo")) fd4.append(key, datos[key]);
               });
@@ -1661,7 +1771,87 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
             
             // 5️⃣ Enviar Eamil
             mostrarEspera("espera5");
-            let fd5 = new FormData(form);
+              const fd5 = new FormData();
+              fd5.append("nombre_equipo", datos.nombre_equipo || "");
+              fd5.append("usuario_nombre", datos.usuario_nombre || "");
+              fd5.append("usuario_email", datos.usuario_email || "");
+              fd5.append("usuario_curso", datos.usuario_curso || "");
+              fd5.append("input_capitan_form", datos.input_capitan_form || "");
+              fd5.append("input_capitan_email_form", datos.input_capitan_email_form || "");
+              fd5.append("capitan_edit", datos.capitan_edit || "");
+              
+              // Entrenador / acompañante
+              fd5.append("entrenador_name", datos.entrenador_name || "");
+              fd5.append("entrenador_curso", datos.entrenador_curso || "");
+              fd5.append("entrenador_1r_apellido", datos.entrenador_1r_apellido || "");
+              fd5.append("entrenador_2n_apellido", datos.entrenador_2n_apellido || "");
+              fd5.append("entrenador_email", datos.entrenador_email || "");
+
+
+              let index = 0;
+                while (document.getElementById(`player_${index}_name`)) {
+                    const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
+                    const apellido1 = (document.getElementById(`player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                    const apellido2 = (document.getElementById(`player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                    const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
+                    const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
+                    const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
+                    const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
+
+                    fd5.append(`player_${index}_name`, nombre);
+                    fd5.append(`player_${index}_1r_apellido`, apellido1);
+                    fd5.append(`player_${index}_2n_apellido`, apellido2);
+                    fd5.append(`player_${index}_curso`, curso);
+                    fd5.append(`genero_${index}`, genero);
+                    fd5.append(`player_${index}_email`, email);
+                    if (img) fd5.append(`player_${index}_img`, img);
+
+                    index++;
+                }
+
+                // Jugadores extra - usando índice incremental
+                index = 0;
+                while (document.getElementById(`extra_player_${index}_name`)) {
+                    const nombre = (document.getElementById(`extra_player_${index}_name`) as HTMLInputElement)?.value || "";
+                    const apellido1 = (document.getElementById(`extra_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                    const apellido2 = (document.getElementById(`extra_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                    const curso = (document.getElementById(`extra_player_${index}_curso`) as HTMLInputElement)?.value || "";
+                    const genero = (document.getElementById(`extra_genero_${index}`) as HTMLInputElement)?.value || "";
+                    const email = (document.getElementById(`extra_player_${index}_email`) as HTMLInputElement)?.value || "";
+                    const img = (document.getElementById(`extra_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+
+                    fd5.append(`extra_player_${index}_name`, nombre);
+                    fd5.append(`extra_player_${index}_1r_apellido`, apellido1);
+                    fd5.append(`extra_player_${index}_2n_apellido`, apellido2);
+                    fd5.append(`extra_player_${index}_curso`, curso);
+                    fd5.append(`extra_genero_${index}`, genero);
+                    fd5.append(`extra_player_${index}_email`, email);
+                    if (img) fd5.append(`extra_player_${index}_img`, img);
+
+                    index++;
+                }
+
+              // Jugadores titulares
+              index = 0;
+                while (document.getElementById(`staff_player_${index}_name`)) {
+                    const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
+                    const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                    const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                    const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
+                    const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
+                    const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
+                    const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+
+                    fd5.append(`staff_player_${index}_name`, nombre);
+                    fd5.append(`staff_player_${index}_1r_apellido`, apellido1);
+                    fd5.append(`staff_player_${index}_2n_apellido`, apellido2);
+                    fd5.append(`staff_player_${index}_curso`, curso);
+                    fd5.append(`staff_genero_${index}`, genero);
+                    fd5.append(`staff_player_${index}_email`, email);
+                    if (img) fd5.append(`staff_player_${index}_img`, img);
+
+                    index++;
+                }
             Object.keys(datos).forEach(key => {
                 if (key.startsWith("cuerpo")) fd5.append(key, datos[key]);
             });

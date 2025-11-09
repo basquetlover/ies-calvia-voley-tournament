@@ -203,6 +203,8 @@ export const POST: APIRoute = async ({ request }) => {
             }
             index++;
           }
+          console.log("Jugadores Extra:", jugadores_extra);
+          console.log("Jugadores:", jugadores);
 
 
           //4.- Verificar existencia de capitan
@@ -222,20 +224,20 @@ export const POST: APIRoute = async ({ request }) => {
             }
   
             //5.- Verificar minimo de jugadores de cada genero
-            if(hombres <2 || mujeres <2){
-              console.log("Falta variedad de genero", hombres, mujeres)
-              return new Response(
-                `<div class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#640404] bg-[#A83434] bg-opacity-100 text-sm font-semibold">
-                  <span>
-                <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#640404] w-10 h-10" viewBox="0 -960 960 960">
-                  <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
-                </svg>
-                  </span>
-                  <p class="text-[#640404]">Ha de haber un minim de 2 nins i 2 nines</p>
-                  </div>`, 
-                { status: 401, headers: { "Content-Type": "text/html" } }
-            );
-            }
+            // if(hombres <2 || mujeres <2){
+            //   console.log("Falta variedad de genero", hombres, mujeres)
+            //   return new Response(
+            //     `<div class="w-full h-full rounded-lg grid grid-rows-1 grid-cols-[max-content_1fr] items-center gap-2 mx-auto py-1 px-3 border-solid border-2 border-[#640404] bg-[#A83434] bg-opacity-100 text-sm font-semibold">
+            //       <span>
+            //     <svg xmlns="http://www.w3.org/2000/svg"  class="fill-[#640404] w-10 h-10" viewBox="0 -960 960 960">
+            //       <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
+            //     </svg>
+            //       </span>
+            //       <p class="text-[#640404]">Ha de haber un minim de 2 nins i 2 nines</p>
+            //       </div>`, 
+            //     { status: 401, headers: { "Content-Type": "text/html" } }
+            // );
+            // }
 
             //6.- Actualizar datos de Equipo
             const { data: datosEquipos, error: equipoError } = await supabaseAdmin
