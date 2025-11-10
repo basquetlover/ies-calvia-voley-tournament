@@ -667,7 +667,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:560px">
                    <table width="100%" role="presentation" cellpadding="0" cellspacing="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" bgcolor="#FFC700" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#0E347D;background:#1666FF;border-width:0px 0px 2px 0px;display:inline-block;border-radius:15px;width:auto"><a href="https://iescalvia-voley.com/usuario" target="_blank" class="es-button" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;padding:10px 20px 10px 20px;display:inline-block;background:#1666FF;border-radius:15px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:21.6px;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #1666FF"> Anar a la web</a></span></td>
+                      <td align="center" bgcolor="#FFC700" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#0E347D;background:#1666FF;border-width:0px 0px 2px 0px;display:inline-block;border-radius:15px;width:auto"><a href="https://voley.iescalvia.com/usuario" target="_blank" class="es-button" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;padding:10px 20px 10px 20px;display:inline-block;background:#1666FF;border-radius:15px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:21.6px;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #1666FF"> Anar a la web</a></span></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -744,7 +744,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:560px">
                    <table cellspacing="0" role="presentation" width="100%" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>iescalvia-voley.com</strong></a>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://iescalvia-voley.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>voley.iescalvia.com</strong></a>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://voley.iescalvia.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://voley.iescalvia.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -1073,7 +1073,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:560px">
                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" bgcolor="#FFC700" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#0E347D;background:#1666FF;border-width:0px 0px 2px 0px;display:inline-block;border-radius:15px;width:auto"><a href="https://iescalvia-voley.com/usuario" target="_blank" class="es-button" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;padding:10px 20px 10px 20px;display:inline-block;background:#1666FF;border-radius:15px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:21.6px;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #1666FF"> Anar a la web </a></span></td>
+                      <td align="center" bgcolor="#FFC700" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#0E347D;background:#1666FF;border-width:0px 0px 2px 0px;display:inline-block;border-radius:15px;width:auto"><a href="https://voley.iescalvia.com/usuario" target="_blank" class="es-button" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;padding:10px 20px 10px 20px;display:inline-block;background:#1666FF;border-radius:15px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:21.6px;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #1666FF"> Anar a la web </a></span></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -1150,7 +1150,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:560px">
                    <table cellpadding="0" cellspacing="0" role="presentation" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>iescalvia-voley.com</strong></a> <span style="color:#ffffff">utilitzant el compte de correu</span> <strong style="color:#FFC700"><a style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px" href="">ejemplo@gmail.com</a></strong>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://iescalvia-voley.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>voley.iescalvia.com</strong></a> <span style="color:#ffffff">utilitzant el compte de correu</span> <strong style="color:#FFC700"><a style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px" href="">ejemplo@gmail.com</a></strong>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://voley.iescalvia.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://voley.iescalvia.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -1479,7 +1479,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:560px">
                    <table width="100%" role="presentation" cellpadding="0" cellspacing="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" bgcolor="#FFC700" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#0E347D;background:#1666FF;border-width:0px 0px 2px 0px;display:inline-block;border-radius:15px;width:auto"><a href="https://iescalvia-voley.com/usuario" target="_blank" class="es-button" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;padding:10px 20px 10px 20px;display:inline-block;background:#1666FF;border-radius:15px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:21.6px;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #1666FF"> Anar a la web</a></span></td>
+                      <td align="center" bgcolor="#FFC700" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#0E347D;background:#1666FF;border-width:0px 0px 2px 0px;display:inline-block;border-radius:15px;width:auto"><a href="https://voley.iescalvia.com/usuario" target="_blank" class="es-button" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;padding:10px 20px 10px 20px;display:inline-block;background:#1666FF;border-radius:15px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:21.6px;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #1666FF"> Anar a la web</a></span></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -1556,7 +1556,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:560px">
                    <table cellspacing="0" role="presentation" width="100%" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>iescalvia-voley.com</strong></a>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://iescalvia-voley.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>voley.iescalvia.com</strong></a>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://voley.iescalvia.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://voley.iescalvia.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -1577,7 +1577,7 @@ if(nuevo_estado === "Acceptat" && nuevo_aceptado === "Inscrit"){
     //Realizador Inscripcion
     try {
     const { data, error } = await resend.emails.send({
-        from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+        from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
         to: [usuario_email], // Asegúrate de que esta variable tenga el valor correcto
         subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
         html: emailBodyAceptado,
@@ -1604,7 +1604,7 @@ if(nuevo_estado === "Acceptat" && nuevo_aceptado === "Inscrit"){
     if(capitan_edit === "si_edit"){
         try {
         const { data, error } = await resend.emails.send({
-            from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+            from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
             to: [capitan_email], // Asegúrate de que esta variable tenga el valor correcto
             subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
             html: emailBodyAceptado,
@@ -1636,7 +1636,7 @@ if(nuevo_estado === "Acceptat" && nuevo_aceptado === "Llista d'espera"){
     //Realizador Inscripcion
     try {
     const { data, error } = await resend.emails.send({
-        from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+        from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
         to: [usuario_email], // Asegúrate de que esta variable tenga el valor correcto
         subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
         html: emailBodyListaEspera,
@@ -1663,7 +1663,7 @@ if(nuevo_estado === "Acceptat" && nuevo_aceptado === "Llista d'espera"){
     if(capitan_edit === "si_edit"){
         try {
         const { data, error } = await resend.emails.send({
-            from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+            from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
             to: [capitan_email], // Asegúrate de que esta variable tenga el valor correcto
             subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
             html: emailBodyListaEspera,
@@ -1696,7 +1696,7 @@ if(nuevo_estado === "Denegat"){
     //Realizador Inscripcion
     try {
     const { data, error } = await resend.emails.send({
-        from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+        from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
         to: [usuario_email], // Asegúrate de que esta variable tenga el valor correcto
         subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
         html: emailBodyDenegado,
@@ -1723,7 +1723,7 @@ if(nuevo_estado === "Denegat"){
     if(capitan_edit === "si_edit"){
         try {
         const { data, error } = await resend.emails.send({
-            from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+            from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
             to: [capitan_email], // Asegúrate de que esta variable tenga el valor correcto
             subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
             html: emailBodyDenegado,
