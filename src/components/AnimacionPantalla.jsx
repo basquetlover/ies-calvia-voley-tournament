@@ -14,8 +14,12 @@ const DURACIONES = {
 };
 
       const [indice, setIndice] = useState(0); // índice en PANTALLAS
+  const [isPaused, setIsPaused] = useState(false); // estado para controlar la pausa
 
   useEffect(() => {
+    // Si está pausado, no configurar el temporizador
+    if (isPaused) return;
+
     // decide cuánto esperar según pantalla actual
     const actual = PANTALLAS[indice];
     const delay = DURACIONES[actual] ?? 10000;
@@ -26,12 +30,18 @@ const DURACIONES = {
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [indice]);
+  }, [indice, isPaused]);
 
   // 🔑 Escuchar teclado
 useEffect(() => {
   const handleKey = (e) => {
     const key = e.key.toLowerCase();
+
+    // Manejar la tecla espaciadora para pausar/reanudar
+    if (key === " ") {
+      setIsPaused(prev => !prev);
+      return;
+    }
 
     // definimos inicial -> nombre pantalla
     const mapa = {
@@ -57,7 +67,7 @@ useEffect(() => {
 }, []);
 
   let pantalla = PANTALLAS[indice];
-  //pantalla = "despues"; // FORZAR PANTALLA PARA TESTING
+  //pantalla = "marcador"; // FORZAR PANTALLA PARA TESTING
   
   
  
@@ -123,6 +133,24 @@ useEffect(() => {
         </div>
             <ProximosPartidos />
         </div>
+
+        {/* Icono de pausa */}
+        {isPaused && (
+          <div className="fixed bottom-8 right-8 z-50 bg-black bg-opacity-50 p-4 rounded-full">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24" 
+              fill="white" 
+              className="w-12 h-12"
+            >
+              <path 
+                fillRule="evenodd" 
+                d="M6.75 5.25a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75V5.25zm7.5 0A.75.75 0 0115 4.5h1.5a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H15a.75.75 0 01-.75-.75V5.25z" 
+                clipRule="evenodd" 
+              />
+            </svg>
+          </div>
+        )}
         </div>
     );
 }
