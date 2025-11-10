@@ -46,7 +46,7 @@ if(usuario){
     const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
             .select("rango, user_email")
-            .eq("user_email", usuario.email)
+            .eq("user_email", usuario.email_microsoft)
             .single();
 if(error){
     console.log(
@@ -95,7 +95,7 @@ if (fechaActual < fechaInicio) {
   let { data: Equipos, error: errorE } = await supabaseAdmin
         .from('Voluntarios')
         .select('estado')
-        .eq('email', usuario.email)
+        .eq('email', usuario.email_microsoft)
         .single(); // Use .single() to get a single record
 
         if (Equipos) {
@@ -117,7 +117,7 @@ if(usuario){
             const { data: adminData, error } = await supabaseAdmin
         .from("Administradores")
         .select("rango, user_email")
-        .eq("user_email", usuario.email)
+        .eq("user_email", usuario.email_microsoft)
         .single();
 
         if(error){
@@ -137,7 +137,7 @@ if(usuario){
 
     
 //     //Ultra admin
-//     if(usuario.email === "alemanytomaspere@gmail.com"){
+//     if(usuario.email_microsoft === "alemanytomaspere@gmail.com"){
 //         RangoFechas = true;
 //         YaInscrito = true;
 //         Revisando = false;
