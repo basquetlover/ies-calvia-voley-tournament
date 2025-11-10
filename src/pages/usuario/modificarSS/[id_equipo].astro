@@ -4,7 +4,7 @@ import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
 
 import LayoutUsuario from "@layouts/LayoutUsuario.astro";
 
-import {CURSO_2E, CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
+import { CURSO_3E, CURSO_4E, CURSO_1B, CURSO_2B, CURSO_FP, CURSO_P } from "@const/registrarse";
 // export const jugadores = Array.from({ length: 6 }, () => ({ nombre: "", curso: "" }));
 
 //export const staff = Array.from({ length: 5 }, () => ({ nombre: "", curso: "" }));
@@ -128,6 +128,8 @@ try {
     .eq('id_equipo', id_equipo)
     .single();
 
+    
+
   if (error) {
     console.error(`Error al buscar nombre_equipo para ${id_equipo}:`, error.message);
   } else if (equipoData) {
@@ -146,12 +148,12 @@ try {
 
   const { data: UsuarioInscripcion } = await supabaseAdmin
     .from('Usuarios')
-    .select('nombre, email, curso')
+    .select('nombre, email_microsoft, curso')
     .eq('id', inscrito)
     .single();
     if(UsuarioInscripcion){
         creador_nombre = UsuarioInscripcion.nombre;
-        creador_email = UsuarioInscripcion.email;
+        creador_email = UsuarioInscripcion.email_microsoft;
         creador_curso = UsuarioInscripcion.curso
     }
 
@@ -492,12 +494,6 @@ const handleCheckboxChange = (index: number) => {
             class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
           >
             <option value={entrenador_curso} class="bg-accent" selected>{entrenador_curso}</option>
-            <hr class="border-accent" />
-{CURSO_2E.map(({ label }) => (
-            <option value={label}>
-              {label}
-            </option>
-          ))}
           <hr class="border-accent" />
             {CURSO_3E.map(({ label }) => (
               <option value={label}>
@@ -735,12 +731,7 @@ const handleCheckboxChange = (index: number) => {
             
           >
             <option value={jugador.curso} class="bg-accent" selected={jugador.curso}>{jugador.curso}</option>
-            <hr class="border-accent" />
-{CURSO_2E.map(({ label }) => (
-            <option value={label}>
-              {label}
-            </option>
-          ))}
+          
           <hr class="border-accent" />
             {CURSO_3E.map(({ label }) => (
               <option value={label}>
@@ -940,11 +931,7 @@ const handleCheckboxChange = (index: number) => {
             
           >
             <option value="" disabled selected>Selecciona un curso</option>
-{CURSO_2E.map(({ label }) => (
-            <option value={label}>
-              {label}
-            </option>
-          ))}
+
           <hr class="border-accent" />
             {CURSO_3E.map(({ label }) => (
               <option value={label}>
@@ -1346,11 +1333,7 @@ const handleCheckboxChange = (index: number) => {
             
           >
             <option value={jugador.curso} class="bg-accent" selected={jugador.curso}>{jugador.curso}</option>
-{CURSO_2E.map(({ label }) => (
-            <option value={label}>
-              {label}
-            </option>
-          ))}
+
           <hr class="border-accent" />
             {CURSO_3E.map(({ label }) => (
               <option value={label}>
@@ -1547,11 +1530,7 @@ const handleCheckboxChange = (index: number) => {
           
         >
           <option value="" disabled selected>Selecciona un curso</option>
-{CURSO_2E.map(({ label }) => (
-            <option value={label}>
-              {label}
-            </option>
-          ))}
+
           <hr class="border-accent" />
           {CURSO_3E.map(({ label }) => (
             <option value={label}>

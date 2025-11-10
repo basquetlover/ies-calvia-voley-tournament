@@ -28,7 +28,7 @@ let usuario_nombre = "";
 let usuario_curso = "";
 
 if(usuario){
-    usuario_email = usuario.email;
+    usuario_email = usuario.email_microsoft;
      usuario_nombre = usuario.nombre;
      usuario_curso = usuario.curso;
     
@@ -62,7 +62,7 @@ if(usuario){
     let { data: JugadorCurso, error: errorJC } = await supabaseAdmin
     .from('Usuarios')
     .select('curso')
-    .eq('email', usuario_email)
+    .eq('email_microsoft', usuario_email)
     .single();
 
     if(JugadorCurso){

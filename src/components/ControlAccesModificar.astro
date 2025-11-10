@@ -48,7 +48,7 @@ if(usuario){
     const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
             .select("rango, user_email")
-            .eq("user_email", usuario.email)
+            .eq("user_email", usuario.email_microsoft)
             .single();
 if(error){
     console.log(
@@ -101,7 +101,7 @@ console.log("Actual:", fechaActual.toISOString());
     let { data: Jugador, error: errorJ } = await supabaseAdmin
     .from(`Jugadores${torneo?.id_torneo}`)
     .select('pertenece_equipo')
-    .eq('email', usuario.email)
+    .eq('email', usuario.email_microsoft)
     .single(); // Use .single() to get a single record
 
     if (errorJ) {
@@ -121,7 +121,7 @@ if(Jugador){
         }
 
         if (Equipos.capitan_edit === "si_edit") {
-            if (Equipos.email_capitan === usuario.email) {
+            if (Equipos.email_capitan === usuario.email_microsoft) {
                 YaInscrito = true;
             }
         }
@@ -144,7 +144,7 @@ if(usuario){
             const { data: adminData, error } = await supabaseAdmin
         .from("Administradores")
         .select("rango, user_email")
-        .eq("user_email", usuario.email)
+        .eq("user_email", usuario.email_microsoft)
         .single();
 
         if(error){
@@ -164,7 +164,7 @@ if(usuario){
 
     
     //Ultra admin
-//     if(usuario.email === "alemanytomaspere@gmail.com"){
+//     if(usuario.email_microsoft === "alemanytomaspere@gmail.com"){
 //         RangoFechas = true;
 //         YaInscrito = true;
 //         Revisando = false;
