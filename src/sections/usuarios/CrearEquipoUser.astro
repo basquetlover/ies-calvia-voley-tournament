@@ -1718,6 +1718,10 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               let res3 = await fetch("/api/inscripcion/jugadores", { method: "POST", body: fd3 });
               if (!(await procesarRespuesta(res3, "jugadores"))) return;
 
+              setTimeout(() => {
+                //console.log("Han pasado 2 segundos");
+              }, 1000);
+
                const fd3_1 = new FormData();
                 fd3_1.append("nombre_equipo", datos.nombre_equipo || "");
                 fd3_1.append("input_capitan_form", datos.input_capitan_form || "");
@@ -1824,6 +1828,10 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               let res4 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4 });
               if (!(await procesarRespuesta(res4, "cuerpo técnico"))) return;
 
+               setTimeout(() => {
+                //console.log("Han pasado 2 segundos");
+              }, 1000);
+
               const fd4_1 = new FormData();
                 fd4_1.append("nombre_equipo", datos.nombre_equipo || "");
 
@@ -1852,6 +1860,10 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               });
               let res4_1 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4_1 });
               if (!(await procesarRespuesta(res4_1, "cuerpo técnico"))) return;
+
+               setTimeout(() => {
+                //console.log("Han pasado 2 segundos");
+              }, 1000);
 
               const fd4_2 = new FormData();
                 fd4_2.append("nombre_equipo", datos.nombre_equipo || "");
