@@ -39,8 +39,8 @@ console.log("Datos a cuerpo-tecnico")
       }
 
   const staff = [];
-  let index = 0;
-  while (formData.has(`staff_player_${index}_name`)) {
+  for (let index = 0; index <= 5; index++) { // o el máximo esperado
+     if (!formData.has(`staff_player_${index}_name`)) continue;
     const nombre = formData.get(`staff_player_${index}_name`)?.toString().trim();
     if(nombre !== ""){
       const _1r_apellido = formData.get(`staff_player_${index }_1r_apellido`)?.toString().trim();

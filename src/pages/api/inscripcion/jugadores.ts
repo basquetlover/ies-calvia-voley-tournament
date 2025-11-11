@@ -42,8 +42,8 @@ export const POST: APIRoute = async ({ request }) => {
 
   //2.- Recoger Información jugadores obligatorios
    const jugadores = [];
-   let index = 0;
-      while (formData.has(`player_${index}_name`)) {
+   for (let index = 0; index <= 6; index++) { // o el máximo esperado
+     if (!formData.has(`player_${index}_name`)) continue;
         const nombre = formData.get(`player_${index}_name`)?.toString().trim();
         const curso = formData.get(`player_${index}_curso`)?.toString().trim();
         const _1r_apellido = formData.get(`player_${index}_1r_apellido`)?.toString().trim();
