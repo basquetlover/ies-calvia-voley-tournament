@@ -1800,7 +1800,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
 
                 // Array para recorrer los miembros del staff
                 
-                for (let index = 0; index <= 2; index++) {
+                for (let index = 0; index <= 1; index++) {
                   const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
                     const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
                     const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
@@ -1829,7 +1829,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
 
                 // Array para recorrer los miembros del staff
                
-                for (let index = 3; index <= 4; index++) {
+                for (let index = 2; index <= 3; index++) {
                   const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
                     const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
                     const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
@@ -1852,6 +1852,35 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               });
               let res4_1 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4_1 });
               if (!(await procesarRespuesta(res4_1, "cuerpo técnico"))) return;
+
+              const fd4_2 = new FormData();
+                fd4_2.append("nombre_equipo", datos.nombre_equipo || "");
+
+                // Array para recorrer los miembros del staff
+               
+                for (let index = 4; index <= 4; index++) {
+                  const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
+                    const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+                    const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+                    const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
+                    const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
+                    const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
+                    const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+
+                    fd4_2.append(`staff_player_${index}_name`, nombre);
+                    fd4_2.append(`staff_player_${index}_1r_apellido`, apellido1);
+                    fd4_2.append(`staff_player_${index}_2n_apellido`, apellido2);
+                    fd4_2.append(`staff_player_${index}_curso`, curso);
+                    fd4_2.append(`staff_genero_${index}`, genero);
+                    fd4_2.append(`staff_player_${index}_email`, email);
+                    if (img) fd4_2.append(`staff_player_${index}_img`, img);
+              }
+                
+              Object.keys(datos).forEach(key => {
+                  if (key.startsWith("cuerpo")) fd4_2.append(key, datos[key]);
+              });
+              let res4_2 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4_2 });
+              if (!(await procesarRespuesta(res4_2, "cuerpo técnico"))) return;
               crearCookiePaso(4, "Completado"); 
             }
             
