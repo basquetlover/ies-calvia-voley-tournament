@@ -42,7 +42,11 @@ export const POST: APIRoute = async ({ request }) => {
 
   //2.- Recoger Información jugadores obligatorios
    const jugadores = [];
-   for (let index = 0; index <= 6; index++) { // o el máximo esperado
+   const indicesStr = formData.get("jugadores_indices")?.toString() || "[]";
+const indices: number[] = JSON.parse(indicesStr);
+
+// 🔹 Recorrer solo esos índices
+for (let index of indices) { // o el máximo esperado
      if (!formData.has(`player_${index}_name`)) continue;
         const nombre = formData.get(`player_${index}_name`)?.toString().trim();
         const curso = formData.get(`player_${index}_curso`)?.toString().trim();

@@ -39,7 +39,11 @@ console.log("Datos a cuerpo-tecnico")
       }
 
   const staff = [];
-  for (let index = 0; index <= 5; index++) { // o el máximo esperado
+  const indicesStr = formData.get("jugadores_indices")?.toString() || "[]";
+const indices: number[] = JSON.parse(indicesStr);
+
+// 🔹 Recorrer solo esos índices
+for (let index of indices) { // o el máximo esperado
      if (!formData.has(`staff_player_${index}_name`)) continue;
     const nombre = formData.get(`staff_player_${index}_name`)?.toString().trim();
     if(nombre !== ""){

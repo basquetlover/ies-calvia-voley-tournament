@@ -1690,12 +1690,16 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                 fd3.append("nombre_equipo", datos.nombre_equipo || "");
                 fd3.append("input_capitan_form", datos.input_capitan_form || "");
                 fd3.append("input_capitan_email_form", datos.input_capitan_email_form || "");
+                fd3.append("a", "");
+                fd3.append("b",  "");
 
                 // Añadir jugadores titulares
                 
 
               // 🔹 Bucle de jugadores 0 a 2
-              for (let index = 0; index <= 2; index++) {
+                const indices = [0, 1, 2]; // los jugadores que quieres pasar
+                fd3.append("jugadores_indices", JSON.stringify(indices));
+              for (let index of indices) {
                   const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
                   const apellido1 = (document.getElementById(`player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
                   const apellido2 = (document.getElementById(`player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
@@ -1727,7 +1731,9 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                 fd3_1.append("input_capitan_form", datos.input_capitan_form || "");
                 fd3_1.append("input_capitan_email_form", datos.input_capitan_email_form || "");
 
-                for (let index = 3; index <= 5; index++) {
+                const indices3_1 = [3, 4, 5]; // los jugadores que quieres pasar
+                fd3_1.append("jugadores_indices", JSON.stringify(indices3_1));
+              for (let index of indices3_1) {
                   const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
                   const apellido1 = (document.getElementById(`player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
                   const apellido2 = (document.getElementById(`player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
@@ -1804,7 +1810,9 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
 
                 // Array para recorrer los miembros del staff
                 
-                for (let index = 0; index <= 1; index++) {
+                const indices4 = [0, 1]; // los jugadores que quieres pasar
+                fd4.append("jugadores_indices", JSON.stringify(indices4));
+              for (let index of indices4) {
                   const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
                     const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
                     const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
@@ -1837,7 +1845,9 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
 
                 // Array para recorrer los miembros del staff
                
-                for (let index = 2; index <= 3; index++) {
+                const indices4_1 = [2, 3]; // los jugadores que quieres pasar
+                fd4_1.append("jugadores_indices", JSON.stringify(indices4_1));
+              for (let index of indices4_1) {
                   const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
                     const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
                     const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
@@ -1870,7 +1880,9 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
 
                 // Array para recorrer los miembros del staff
                
-                for (let index = 4; index <= 4; index++) {
+                const indices4_2 = [4]; // los jugadores que quieres pasar
+                fd4_2.append("jugadores_indices", JSON.stringify(indices4_2));
+              for (let index of indices4_2) {
                   const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
                     const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
                     const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
