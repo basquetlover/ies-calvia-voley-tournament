@@ -932,7 +932,7 @@ export const POST: APIRoute = async ({ request }) => {
                             //Realizador Inscripcion
                             try {
                             const { data, error } = await resend.emails.send({
-                                from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
+                                from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
                                 to: [email], // Asegúrate de que esta variable tenga el valor correcto
                                 subject: `Revisió finalitzada del voluntari ${email}`,
                                 html: emailBodyAceptado,
@@ -1050,7 +1050,7 @@ export const POST: APIRoute = async ({ request }) => {
                                           //Realizador Inscripcion
                                           try {
                                           const { data, error } = await resend.emails.send({
-                                              from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
+                                              from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
                                               to: [email], // Asegúrate de que esta variable tenga el valor correcto
                                               subject: `Revisió finalitzada del voluntari ${email}`,
                                               html: emailBodyDenegado,

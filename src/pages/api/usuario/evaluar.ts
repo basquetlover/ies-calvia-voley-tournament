@@ -1577,7 +1577,7 @@ if(nuevo_estado === "Acceptat" && nuevo_aceptado === "Inscrit"){
     //Realizador Inscripcion
     try {
     const { data, error } = await resend.emails.send({
-        from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
+        from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
         to: [usuario_email], // Asegúrate de que esta variable tenga el valor correcto
         subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
         html: emailBodyAceptado,
@@ -1604,7 +1604,7 @@ if(nuevo_estado === "Acceptat" && nuevo_aceptado === "Inscrit"){
     if(capitan_edit === "si_edit"){
         try {
         const { data, error } = await resend.emails.send({
-            from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
+            from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
             to: [capitan_email], // Asegúrate de que esta variable tenga el valor correcto
             subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
             html: emailBodyAceptado,
@@ -1636,7 +1636,7 @@ if(nuevo_estado === "Acceptat" && nuevo_aceptado === "Llista d'espera"){
     //Realizador Inscripcion
     try {
     const { data, error } = await resend.emails.send({
-        from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
+        from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
         to: [usuario_email], // Asegúrate de que esta variable tenga el valor correcto
         subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
         html: emailBodyListaEspera,
@@ -1663,7 +1663,7 @@ if(nuevo_estado === "Acceptat" && nuevo_aceptado === "Llista d'espera"){
     if(capitan_edit === "si_edit"){
         try {
         const { data, error } = await resend.emails.send({
-            from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
+            from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
             to: [capitan_email], // Asegúrate de que esta variable tenga el valor correcto
             subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
             html: emailBodyListaEspera,
@@ -1696,7 +1696,7 @@ if(nuevo_estado === "Denegat"){
     //Realizador Inscripcion
     try {
     const { data, error } = await resend.emails.send({
-        from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
+        from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
         to: [usuario_email], // Asegúrate de que esta variable tenga el valor correcto
         subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
         html: emailBodyDenegado,
@@ -1723,7 +1723,7 @@ if(nuevo_estado === "Denegat"){
     if(capitan_edit === "si_edit"){
         try {
         const { data, error } = await resend.emails.send({
-            from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
+            from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
             to: [capitan_email], // Asegúrate de que esta variable tenga el valor correcto
             subject: `Revisió finalitzada de l'equip ${nombre_equipo}`,
             html: emailBodyDenegado,

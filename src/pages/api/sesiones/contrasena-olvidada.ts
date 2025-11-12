@@ -451,7 +451,7 @@ a[x-apple-data-detectors],
 
 try {
   const { data, error } = await resend.emails.send({
-    from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
+    from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
     to: [email], // Asegúrate de que esta variable tenga el valor correcto
     subject: `🔐 Restableix la teva contrasenya`,
     html: emailBody,

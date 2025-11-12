@@ -197,7 +197,7 @@ a[x-apple-data-detectors],
                   <td valign="top" align="center" style="padding:0;Margin:0;width:580px">
                    <table cellspacing="0" cellpadding="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0;font-size:0"><a href="https://iescalvia-voley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#1376C8;font-size:14px"><img src="https://epqqhnq.stripocdn.email/content/guids/CABINET_0cb0af73485e28aee9f8c657f4585c662890522ff24809cfe8f5a3e6e5f27897/images/webappmanifest192x192.png" alt="" width="84" class="img-6730" height="84" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><a href="https://voley.iescalvia.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#1376C8;font-size:14px"><img src="https://epqqhnq.stripocdn.email/content/guids/CABINET_0cb0af73485e28aee9f8c657f4585c662890522ff24809cfe8f5a3e6e5f27897/images/webappmanifest192x192.png" alt="" width="84" class="img-6730" height="84" style="display:block;font-size:14px;border:0;outline:none;text-decoration:none"></a></td>
                       <td align="left" class="es-text-3268" style="padding:0;Margin:0"><h1 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:30px;font-style:normal;font-weight:normal;line-height:36px;color:#FFC700"><strong class="es-override-size es-text-mobile-size-18" style="font-size:22px">IES Calvià Voley Tournament</strong></h1></td>
                      </tr>
                    </table></td>
@@ -703,10 +703,10 @@ a[x-apple-data-detectors],
                                           <tr>
                                             <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#FFFFFF;font-size:14px">
                                               <p style="color:#FFFFFF">
-                                                Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web <a target="_blank" href="https://iescalvia-coley.com" style="color:#FFC700"><strong>iescalvia-voley.com</strong></a> utilitzant el compte de correu <strong style="color:#FFC700"><a style="color:#FFC700">${usuario_email}</a></strong>.
+                                                Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web <a target="_blank" href="https://iescalvia-coley.com" style="color:#FFC700"><strong>voley.iescalvia.com</strong></a> utilitzant el compte de correu <strong style="color:#FFC700"><a style="color:#FFC700">${usuario_email}</a></strong>.
                                               </p>
                                               <p style="color:#FFFFFF">
-                                                Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="color:#FFC700">Avís Legal</a> i <a target="_blank" href="https://iescalvia-voley.com/cookies" style="color:#FFC700">Política de Cookies</a>.&nbsp;
+                                                Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre <a href="https://voley.iescalvia.com/aviso-legal" target="_blank" style="color:#FFC700">Avís Legal</a> i <a target="_blank" href="https://voley.iescalvia.com/cookies" style="color:#FFC700">Política de Cookies</a>.&nbsp;
                                               </p>
                                             </td>
                                           </tr>
