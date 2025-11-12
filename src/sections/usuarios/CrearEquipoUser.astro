@@ -1836,7 +1836,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
               let res4 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4 });
               if (!(await procesarRespuesta(res4, "cuerpo técnico"))) return;
 
-               setTimeout(() => {
+              setTimeout(() => {
                 //console.log("Han pasado 2 segundos");
               }, 1000);
 
