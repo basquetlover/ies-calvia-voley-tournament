@@ -86,7 +86,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
-const enlace = `https://iescalvia-voley.com/usuario/restablecer?UserReference="${reestablecer_id}"`;
+const enlace = `https://voley.iescalvia.com/usuario/restablecer?UserReference="${reestablecer_id}"`;
 
 const emailBody = `
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -431,7 +431,7 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:0;Margin:0;width:560px">
                    <table cellpadding="0" cellspacing="0" role="presentation" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>iescalvia-voley.com</strong></a> <span style="color:#ffffff">utilitzant el compte de correu</span> <strong style="color:#FFC700"><a style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px" href="">${email}/a></strong>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://iescalvia-voley.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://iescalvia-voley.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff">Heu rebut aquest correu perquè heu realitzat la preinscripció al torneig des de la nostra web</span> <a href="https://iescalvia-coley.com" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px"><strong>voley.iescalvia.com</strong></a> <span style="color:#ffffff">utilitzant el compte de correu</span> <strong style="color:#FFC700"><a style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px" href="">${email}/a></strong>.</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><span style="color:#ffffff"> Per a més informació sobre com tractem les vostres dades, podeu consultar el nostre</span> <a href="https://voley.iescalvia.com/aviso-legal" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Avís Legal</a> i <a href="https://voley.iescalvia.com/cookies" target="_blank" style="mso-line-height-rule:exactly;text-decoration:underline;color:#FFC700;font-size:14px">Política de Cookies</a>.&nbsp;</p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -451,7 +451,7 @@ a[x-apple-data-detectors],
 
 try {
   const { data, error } = await resend.emails.send({
-    from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+    from: 'IES Calvià Voley Tournament <hi@marketing.voley.iescalvia.com>',
     to: [email], // Asegúrate de que esta variable tenga el valor correcto
     subject: `🔐 Restableix la teva contrasenya`,
     html: emailBody,
