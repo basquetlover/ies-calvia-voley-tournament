@@ -1657,10 +1657,10 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     fd2.append("genero_entrenador", datos.genero_entrenador);
                     fd2.append("entrenador_email", datos.entrenador_email);
 
-                    const entrenadorFoto = document.querySelector<HTMLInputElement>('input[name="entrenador_img"]');
-                    if (entrenadorFoto?.files?.[0]) {
-                      fd2.append("entrenador_img", entrenadorFoto.files[0]);
-                    }
+                    // const entrenadorFoto = document.querySelector<HTMLInputElement>('input[name="entrenador_img"]');
+                    // if (entrenadorFoto?.files?.[0]) {
+                    //   fd2.append("entrenador_img", entrenadorFoto.files[0]);
+                    // }
                   }
 
                   // --- PROFESOR RESPONSABLE ---
@@ -1673,10 +1673,10 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     fd2.append("genero_profesor", datos.genero_profesor);
                     fd2.append("profesor_email", datos.profesor_email);
 
-                    const profesorFoto = document.querySelector<HTMLInputElement>('input[name="profesor_img"]');
-                    if (profesorFoto?.files?.[0]) {
-                      fd2.append("profesor_img", profesorFoto.files[0]);
-                    }
+                  //   const profesorFoto = document.querySelector<HTMLInputElement>('input[name="profesor_img"]');
+                  //   if (profesorFoto?.files?.[0]) {
+                  //     fd2.append("profesor_img", profesorFoto.files[0]);
+                  //   }
                   }
               let res2 = await fetch("/api/inscripcion/entrenador-profesor", { method: 'POST', body: fd2 });
               if (!(await procesarRespuesta(res2, "entrenador / profesor"))) return;
@@ -1706,7 +1706,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                   const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
                   const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
                   const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
-                  const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                  //const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
                   // Añadir cada campo al mismo FormData
                   fd3.append(`player_${index}_name`, nombre);
@@ -1715,7 +1715,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                   fd3.append(`player_${index}_curso`, curso);
                   fd3.append(`genero_${index}`, genero);
                   fd3.append(`player_${index}_email`, email);
-                  if (img) fd3.append(`player_${index}_img`, img);
+                  //if (img) fd3.append(`player_${index}_img`, img);
               }
 
               // 🔹 Llamada única a la API (fuera del bucle)
@@ -1740,7 +1740,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                   const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
                   const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
                   const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
-                  const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                  //const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
                   // Añadir cada campo al mismo FormData
                   fd3_1.append(`player_${index}_name`, nombre);
@@ -1749,7 +1749,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                   fd3_1.append(`player_${index}_curso`, curso);
                   fd3_1.append(`genero_${index}`, genero);
                   fd3_1.append(`player_${index}_email`, email);
-                  if (img) fd3_1.append(`player_${index}_img`, img);
+                  //if (img) fd3_1.append(`player_${index}_img`, img);
               }
 
               // 🔹 Llamada única a la API (fuera del bucle)
@@ -1780,7 +1780,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     const curso = (document.getElementById(`extra_player_${index}_curso`) as HTMLInputElement)?.value || "";
                     const genero = (document.getElementById(`extra_genero_${index}`) as HTMLInputElement)?.value || "";
                     const email = (document.getElementById(`extra_player_${index}_email`) as HTMLInputElement)?.value || "";
-                    const img = (document.getElementById(`extra_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                    //const img = (document.getElementById(`extra_player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
                     fd6.append(`extra_player_${index}_name`, nombre);
                     fd6.append(`extra_player_${index}_1r_apellido`, apellido1);
@@ -1788,7 +1788,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     fd6.append(`extra_player_${index}_curso`, curso);
                     fd6.append(`extra_genero_${index}`, genero);
                     fd6.append(`extra_player_${index}_email`, email);
-                    if (img) fd6.append(`extra_player_${index}_img`, img);
+                    //if (img) fd6.append(`extra_player_${index}_img`, img);
 
                     index++;
                 }
@@ -1819,7 +1819,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
                     const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
                     const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
-                    const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                    //const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
                     fd4.append(`staff_player_${index}_name`, nombre);
                     fd4.append(`staff_player_${index}_1r_apellido`, apellido1);
@@ -1827,7 +1827,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     fd4.append(`staff_player_${index}_curso`, curso);
                     fd4.append(`staff_genero_${index}`, genero);
                     fd4.append(`staff_player_${index}_email`, email);
-                    if (img) fd4.append(`staff_player_${index}_img`, img);
+                    //if (img) fd4.append(`staff_player_${index}_img`, img);
               }
                 
               Object.keys(datos).forEach(key => {
@@ -1854,7 +1854,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
                     const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
                     const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
-                    const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                    //const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
                     fd4_1.append(`staff_player_${index}_name`, nombre);
                     fd4_1.append(`staff_player_${index}_1r_apellido`, apellido1);
@@ -1862,7 +1862,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     fd4_1.append(`staff_player_${index}_curso`, curso);
                     fd4_1.append(`staff_genero_${index}`, genero);
                     fd4_1.append(`staff_player_${index}_email`, email);
-                    if (img) fd4_1.append(`staff_player_${index}_img`, img);
+                    //if (img) fd4_1.append(`staff_player_${index}_img`, img);
               }
                 
               Object.keys(datos).forEach(key => {
@@ -1889,7 +1889,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
                     const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
                     const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
-                    const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+                    //const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
                     fd4_2.append(`staff_player_${index}_name`, nombre);
                     fd4_2.append(`staff_player_${index}_1r_apellido`, apellido1);
@@ -1897,7 +1897,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                     fd4_2.append(`staff_player_${index}_curso`, curso);
                     fd4_2.append(`staff_genero_${index}`, genero);
                     fd4_2.append(`staff_player_${index}_email`, email);
-                    if (img) fd4_2.append(`staff_player_${index}_img`, img);
+                    //if (img) fd4_2.append(`staff_player_${index}_img`, img);
               }
                 
               Object.keys(datos).forEach(key => {
