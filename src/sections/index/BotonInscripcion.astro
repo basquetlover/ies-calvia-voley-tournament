@@ -1,0 +1,66 @@
+---
+import { supabaseAdmin } from "src/lib/supabase";
+
+// const fechaInicio = new Date('2025-3-10'); // Cambia esta fecha según tus necesidades
+// const fechaFin = new Date('2025-3-31'); // Cambia esta fecha según tus necesidades
+
+const { data: torneo, error: errorTorneos } = await supabaseAdmin
+  .from('Configuracion')
+  .select('in_inicio, in_fin')
+  .eq('estado', 'Actual')
+  .single();
+
+  
+let RangoFechas = false;
+
+const fechaActual = new Date();
+
+
+let fechaInicio 
+let fechaFin 
+
+if(torneo){
+fechaInicio = new Date(torneo?.in_inicio);
+fechaFin = new Date(torneo?.in_fin);
+
+// Compara la fecha actual con las fechas de inicio y fin
+if (fechaActual < fechaInicio) {
+    RangoFechas = false;
+    console.log("Fuera del rango: antes de la fecha de inicio");
+} else if (fechaActual > fechaFin) {
+    RangoFechas = false;
+    console.log("Fuera del rango: después de la fecha de fin");
+} else {
+    RangoFechas = true;
+    console.log("Dentro del rango de fechas");
+}
+
+
+
+}
+---
+
+    {RangoFechas === true ? (<>
+    <section class="max-w-4xl h-auto m-auto my-10  cursor-pointer">
+       <h2 class="text-5xl text-amarillo font-bold text-center">Formularis Inscripció</h2>
+       <div class="w-full h-auto flex flex-wrap items-center place-content-center mt-5 gap-5 font-medium text-3xl">
+        <a href="/usuario/solicitud-voluntario"  class="w-max h-auto px-3 py-2  hover:scale-105 duration-300 transition-all bg-azul rounded gap-2 flex items-center place-content-center text-blanco fill-blanco hover:text-amarillo hover:fill-amarillo relative ">
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7"  viewBox="0 -960 960 960" >
+                <path d="M360-80v-529q-91-24-145.5-100.5T160-880h80q0 83 53.5 141.5T430-680h100q30 0 56 11t47 32l181 181-56 56-158-158v478h-80v-240h-80v240h-80Zm120-640q-33 0-56.5-23.5T400-800q0-33 23.5-56.5T480-880q33 0 56.5 23.5T560-800q0 33-23.5 56.5T480-720Z"/>
+            </svg>
+        </span>
+            Voluntaris
+        </a>
+        <a href="/usuario/inscripcion"  class="w-max h-auto px-3 py-2  hover:scale-105 duration-300 transition-all bg-azul rounded gap-2 flex items-center place-content-center text-blanco fill-blanco hover:text-amarillo hover:fill-amarillo relative ">
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8"  viewBox="0 -960 960 960">
+                <path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"/>
+            </svg>
+        </span>
+            Equips
+        </a>
+       </div>
+    </section>
+    </>):(<>
+    </>)}
