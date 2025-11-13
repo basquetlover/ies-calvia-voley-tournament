@@ -51,7 +51,7 @@ if(EquipoData){
             const genero_extra = formData.get(`extra_genero_${index}`)?.toString().trim();
             const curso = formData.get(`extra_player_${index}_curso`)?.toString().trim();
             const email = formData.get(`extra_player_${index}_email`)?.toString().trim();
-            const img = formData.get(`extra_player_${index}_img`) as File;
+            //const img = formData.get(`extra_player_${index}_img`) as File;
             const numero = index + 7;
             if (email) { 
                 const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
@@ -119,7 +119,7 @@ if(EquipoData){
                 );
             }
             }
-            jugadores_extra.push({ nombre, curso, _1r_apellido, _2n_apellido, genero_extra, email, numero, img });
+            jugadores_extra.push({ nombre, curso, _1r_apellido, _2n_apellido, genero_extra, email, numero });
             }
             index++;
         }
@@ -150,7 +150,7 @@ if(EquipoData){
         // 7.- Introducir datos de jugadores a db
 
 for (const jugador of jugadores_extra) {
-    if(jugador.img.size <= 0){
+   // if(jugador.img.size <= 0){
     const { error: jugadorError } = await supabaseAdmin
         .from(TablaJugadores)
         .insert([
@@ -170,41 +170,41 @@ for (const jugador of jugadores_extra) {
         console.error("Error insertando jugador principal:", jugadorError.message);
         // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
     }
-    } else {
-    let publicIMGurl = "";
-    // Llama a la función para subir el escudo
-    const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
+    // } else {
+    // let publicIMGurl = "";
+    // // Llama a la función para subir el escudo
+    // const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
     
-    //Obtener la URL pública del escudo subido
-    const { data: urlIMGData } = supabaseAdmin.storage
-        .from('JugadoresIMG')
-        .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
+    // //Obtener la URL pública del escudo subido
+    // const { data: urlIMGData } = supabaseAdmin.storage
+    //     .from('JugadoresIMG')
+    //     .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
     
-    // Verifica si urlData contiene la propiedad publicUrl
-    if (urlIMGData) {
-    publicIMGurl = urlIMGData.publicUrl;
-    }
+    // // Verifica si urlData contiene la propiedad publicUrl
+    // if (urlIMGData) {
+    // publicIMGurl = urlIMGData.publicUrl;
+    // }
 
-    const { error: jugadorError } = await supabaseAdmin
-        .from(TablaJugadores)
-        .insert([
-        {   nombre: jugador.nombre, 
-            _1r_apellido: jugador._1r_apellido,
-            _2n_apellido: jugador._2n_apellido,
-            curso: jugador.curso,
-            genero: jugador.genero_extra,
-            pertenece_equipo: Equipo_id,
-            email: jugador.email,
-            ficha: 'jugador',
-            img: publicIMGurl,
-            },
-        ]).select()
+    // const { error: jugadorError } = await supabaseAdmin
+    //     .from(TablaJugadores)
+    //     .insert([
+    //     {   nombre: jugador.nombre, 
+    //         _1r_apellido: jugador._1r_apellido,
+    //         _2n_apellido: jugador._2n_apellido,
+    //         curso: jugador.curso,
+    //         genero: jugador.genero_extra,
+    //         pertenece_equipo: Equipo_id,
+    //         email: jugador.email,
+    //         ficha: 'jugador',
+    //         img: publicIMGurl,
+    //         },
+    //     ]).select()
 
-    if (jugadorError) {
-        console.error("Error insertando jugador principal:", jugadorError.message);
-        // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-    }
-    }
+    // if (jugadorError) {
+    //     console.error("Error insertando jugador principal:", jugadorError.message);
+    //     // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+    // }
+    // }
 }
 
         

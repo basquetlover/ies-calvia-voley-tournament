@@ -50,7 +50,7 @@ export const POST: APIRoute = async ({ request }) => {
   let acompañante_email = "";
 
   let acompañante = "";
-  const acompañante_foto = formData.get('entrenador_img')  as File;
+  //const acompañante_foto = formData.get('entrenador_img')  as File;
   acompañante_nombre = formData.get("entrenador_name")?.toString().trim() || "";
   if(acompañante_nombre !== "") {
    acompañante_curso = formData.get(`entrenador_curso`)?.toString().trim() || "";
@@ -62,9 +62,9 @@ export const POST: APIRoute = async ({ request }) => {
 
    acompañante = acompañante_nombre + " " + acompañante_1r_apellido;
     console.log(acompañante_nombre, acompañante_1r_apellido, acompañante_2n_apellido, acompañante_curso, acompañante_email)
-    console.log("Tipo de archivo:", acompañante_foto?.name);
-    console.log("Tipo de archivo:", acompañante_foto?.type);
-    console.log("Tamaño de archivo:", acompañante_foto?.size);
+    // console.log("Tipo de archivo:", acompañante_foto?.name);
+    // console.log("Tipo de archivo:", acompañante_foto?.type);
+    // console.log("Tamaño de archivo:", acompañante_foto?.size);
   if (acompañante_email) { 
     const dominio = acompañante_email.split('@')[1]; // Esto te dará 'gmail.com'
     const dominioConArroba = '@' + dominio;
@@ -134,7 +134,7 @@ let profesor_email = "";
 
 
 let profesor = "";
-const profesor_foto = formData.get('profesor_img')  as File;
+//const profesor_foto = formData.get('profesor_img')  as File;
 profesor_nombre = formData.get("profesor_name")?.toString().trim() || "";
 if(profesor_nombre !== "") {
  profesor_curso = formData.get(`profesor_curso`)?.toString().trim() || "";
@@ -146,9 +146,9 @@ if(profesor_nombre !== "") {
  profesor = profesor_nombre + " " + profesor_1r_apellido;
 
  console.log(profesor_nombre, profesor_1r_apellido, profesor_2n_apellido, profesor_curso, profesor_email)
- console.log("Tipo de archivo:", profesor_foto?.name);
- console.log("Tipo de archivo:", profesor_foto?.type);
- console.log("Tamaño de archivo:", profesor_foto?.size);
+//  console.log("Tipo de archivo:", profesor_foto?.name);
+//  console.log("Tipo de archivo:", profesor_foto?.type);
+//  console.log("Tamaño de archivo:", profesor_foto?.size);
 if (profesor_email) { 
   const dominio = profesor_email.split('@')[1]; // Esto te dará 'gmail.com'
   const dominioConArroba = '@' + dominio;
@@ -210,41 +210,41 @@ if (!acompañante_genero) {
 
 
 //3.- Subir Imagen Entrenador
-  //Llama a la función para subir el escudo
-  let publicCoachUrl ="";
-  if(acompañante_foto?.size > 0){
-    const CoachPath = await uploadFileCoach(acompañante_foto, acompañante_email);
+  // //Llama a la función para subir el escudo
+  // let publicCoachUrl ="";
+  // if(acompañante_foto?.size > 0){
+  //   const CoachPath = await uploadFileCoach(acompañante_foto, acompañante_email);
 
     
-    //Obtener la URL pública del escudo subido
-    const { data: urlDataCoach } = supabaseAdmin.storage
-        .from('JugadoresIMG')
-        .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
+  //   //Obtener la URL pública del escudo subido
+  //   const { data: urlDataCoach } = supabaseAdmin.storage
+  //       .from('JugadoresIMG')
+  //       .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
 
-    //Verifica si urlData contiene la propiedad publicUrl
+  //   //Verifica si urlData contiene la propiedad publicUrl
     
-    if (urlDataCoach) {
-      publicCoachUrl = urlDataCoach.publicUrl;
-    }
-  }
+  //   if (urlDataCoach) {
+  //     publicCoachUrl = urlDataCoach.publicUrl;
+  //   }
+  // }
   
 
-  //4.- Subir Imagen Profesor
-  let publicProfesorhUrl ="";
-  if(profesor_foto?.size > 0){
-    const CoachPath = await uploadFileCoach(profesor_foto, profesor_email);
+  // //4.- Subir Imagen Profesor
+  // let publicProfesorhUrl ="";
+  // if(profesor_foto?.size > 0){
+  //   const CoachPath = await uploadFileCoach(profesor_foto, profesor_email);
       
-      //Obtener la URL pública del escudo subido
-      const { data: urlDataCoach } = supabaseAdmin.storage
-          .from('JugadoresIMG')
-          .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
+  //     //Obtener la URL pública del escudo subido
+  //     const { data: urlDataCoach } = supabaseAdmin.storage
+  //         .from('JugadoresIMG')
+  //         .getPublicUrl(CoachPath); // Usa el escudoPath que se generó al subir el archivo
       
-      // Verifica si urlData contiene la propiedad publicUrl
+  //     // Verifica si urlData contiene la propiedad publicUrl
       
-      if (urlDataCoach) {
-        publicProfesorhUrl = urlDataCoach.publicUrl;
-      }
-  }
+  //     if (urlDataCoach) {
+  //       publicProfesorhUrl = urlDataCoach.publicUrl;
+  //     }
+  // }
   
 
   //5.- Subir datos a la db
@@ -260,7 +260,7 @@ if (!acompañante_genero) {
               .select()
 
   //5.2.- Datos Entrenador
-    if(acompañante_foto?.size <= 0){
+   // if(acompañante_foto?.size <= 0){
     const { error: jugadorExtraError } = await supabaseAdmin
       .from(TablaJugadores)
       .insert([
@@ -279,48 +279,48 @@ if (!acompañante_genero) {
       console.error("Error insertando jugador extra:", jugadorExtraError.message);
       // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
     }
-  } else {
-    const { error: jugadorExtraError } = await supabaseAdmin
-      .from(TablaJugadores)
-      .insert([
-        { nombre: acompañante_nombre, 
-          _1r_apellido: acompañante_1r_apellido,
-          _2n_apellido: acompañante_2n_apellido,
-          curso: acompañante_curso,
-          genero: acompañante_genero,
-          email: acompañante_email,
-          pertenece_equipo: Equipo_id,
-          img: publicCoachUrl,
-          ficha: 'entrenador',
-        },
-    ]).select()
+//   } else {
+//     const { error: jugadorExtraError } = await supabaseAdmin
+//       .from(TablaJugadores)
+//       .insert([
+//         { nombre: acompañante_nombre, 
+//           _1r_apellido: acompañante_1r_apellido,
+//           _2n_apellido: acompañante_2n_apellido,
+//           curso: acompañante_curso,
+//           genero: acompañante_genero,
+//           email: acompañante_email,
+//           pertenece_equipo: Equipo_id,
+//           img: publicCoachUrl,
+//           ficha: 'entrenador',
+//         },
+//     ]).select()
 
-    if (jugadorExtraError) {
-      console.error("Error insertando jugador extra:", jugadorExtraError.message);
+//     if (jugadorExtraError) {
+//       console.error("Error insertando jugador extra:", jugadorExtraError.message);
       
-    }
-  }
+//     }
+  // }
 
   //5.3.- Datos Profesor
- if(profesor_foto?.size > 0){
+//  if(profesor_foto?.size > 0){
    
-      const { error: jugadorError } = await supabaseAdmin
-      .from(TablaJugadores)
-      .insert([
-        {   nombre: profesor_nombre, 
-          _1r_apellido: profesor_1r_apellido,
-          _2n_apellido: profesor_2n_apellido,
-          curso: profesor_curso,
-          genero: profesor_genero,
-          pertenece_equipo: Equipo_id,
-          email: profesor_email,
-          ficha: 'profesor',
-          img: publicProfesorhUrl,
-          },
-      ])
-      .select()
+//       const { error: jugadorError } = await supabaseAdmin
+//       .from(TablaJugadores)
+//       .insert([
+//         {   nombre: profesor_nombre, 
+//           _1r_apellido: profesor_1r_apellido,
+//           _2n_apellido: profesor_2n_apellido,
+//           curso: profesor_curso,
+//           genero: profesor_genero,
+//           pertenece_equipo: Equipo_id,
+//           email: profesor_email,
+//           ficha: 'profesor',
+//           img: publicProfesorhUrl,
+//           },
+//       ])
+//       .select()
 
-  }else{
+//   }else{
     const { error: jugadorError } = await supabaseAdmin
     .from(TablaJugadores)
     .insert([
@@ -337,7 +337,7 @@ if (!acompañante_genero) {
     ])
     .select()
 
- }
+ //}
 
 
     return new Response(

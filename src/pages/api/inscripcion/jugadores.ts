@@ -54,7 +54,7 @@ for (let index of indices) { // o el máximo esperado
         const _2n_apellido = formData.get(`player_${index}_2n_apellido`)?.toString().trim();
         const genero = formData.get(`genero_${index}`)?.toString().trim();
         const email = formData.get(`player_${index}_email`)?.toString().trim();
-        const img = formData.get(`player_${index}_img`) as File;
+        //const img = formData.get(`player_${index}_img`) as File;
         const numero = index + 1;
         if (email) { 
           const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
@@ -120,7 +120,7 @@ for (let index of indices) { // o el máximo esperado
             );
           }
         }
-        jugadores.push({ nombre, curso, _1r_apellido, _2n_apellido, genero, email, numero, img });
+        jugadores.push({ nombre, curso, _1r_apellido, _2n_apellido, genero, email, numero });
         index++;
       }
 
@@ -270,7 +270,7 @@ for (let index of indices) { // o el máximo esperado
 
            // 7.- Introducir datos de jugadores a db
       for (const jugador of jugadores) {
-    if(jugador.img.size <= 0){
+    //if(jugador.img.size <= 0){
       const { error: jugadorError } = await supabaseAdmin
         .from(TablaJugadores)
         .insert([
@@ -290,41 +290,42 @@ for (let index of indices) { // o el máximo esperado
         console.error("Error insertando jugador principal:", jugadorError.message);
         // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
       }
-    } else {
-      let publicIMGurl = "";
-      // Llama a la función para subir el escudo
-    const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
+    //} 
+    // else {
+    //   let publicIMGurl = "";
+    //   // Llama a la función para subir el escudo
+    // const JugadorIMGPath = await uploadJugadorIMG(jugador.img, jugador.email);
     
-    //Obtener la URL pública del escudo subido
-    const { data: urlIMGData } = supabaseAdmin.storage
-        .from('JugadoresIMG')
-        .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
+    // //Obtener la URL pública del escudo subido
+    // const { data: urlIMGData } = supabaseAdmin.storage
+    //     .from('JugadoresIMG')
+    //     .getPublicUrl(JugadorIMGPath); // Usa el escudoPath que se generó al subir el archivo
     
-    // Verifica si urlData contiene la propiedad publicUrl
-    if (urlIMGData) {
-      publicIMGurl = urlIMGData.publicUrl;
-    }
+    // // Verifica si urlData contiene la propiedad publicUrl
+    // if (urlIMGData) {
+    //   publicIMGurl = urlIMGData.publicUrl;
+    // }
   
-      const { error: jugadorError } = await supabaseAdmin
-        .from(TablaJugadores)
-        .insert([
-          {   nombre: jugador.nombre, 
-              _1r_apellido: jugador._1r_apellido,
-              _2n_apellido: jugador._2n_apellido,
-              curso: jugador.curso,
-              genero: jugador.genero,
-              pertenece_equipo: Equipo_id,
-              email: jugador.email,
-              ficha: 'jugador',
-              img: publicIMGurl,
-            },
-        ]).select()
+    //   const { error: jugadorError } = await supabaseAdmin
+    //     .from(TablaJugadores)
+    //     .insert([
+    //       {   nombre: jugador.nombre, 
+    //           _1r_apellido: jugador._1r_apellido,
+    //           _2n_apellido: jugador._2n_apellido,
+    //           curso: jugador.curso,
+    //           genero: jugador.genero,
+    //           pertenece_equipo: Equipo_id,
+    //           email: jugador.email,
+    //           ficha: 'jugador',
+    //           img: publicIMGurl,
+    //         },
+    //     ]).select()
   
-      if (jugadorError) {
-        console.error("Error insertando jugador principal:", jugadorError.message);
-        // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
-      }
-    }
+    //   if (jugadorError) {
+    //     console.error("Error insertando jugador principal:", jugadorError.message);
+    //     // Considera si quieres detener todo el proceso o continuar con los siguientes jugadores
+    //   }
+    // }
   }
 
   // for (const jugador of jugadores_extra) {
