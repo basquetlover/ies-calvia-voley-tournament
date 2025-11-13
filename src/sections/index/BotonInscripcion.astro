@@ -26,13 +26,13 @@ fechaFin = new Date(torneo?.in_fin);
 // Compara la fecha actual con las fechas de inicio y fin
 if (fechaActual < fechaInicio) {
     RangoFechas = false;
-    console.log("Fuera del rango: antes de la fecha de inicio");
+    //console.log("Fuera del rango: antes de la fecha de inicio");
 } else if (fechaActual > fechaFin) {
     RangoFechas = false;
-    console.log("Fuera del rango: después de la fecha de fin");
+    //console.log("Fuera del rango: después de la fecha de fin");
 } else {
     RangoFechas = true;
-    console.log("Dentro del rango de fechas");
+    //console.log("Dentro del rango de fechas");
 }
 
 
