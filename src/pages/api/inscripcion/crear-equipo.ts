@@ -22,7 +22,7 @@ export const POST: APIRoute = async ({ request }) => {
       const formData = await request.formData();
       const nombre_equipo = formData.get("nombre_equipo")?.toString().trim() || "";
       const capitan_edit = formData.get("capitan_edit")?.toString().trim();
-      let publicUrl = "https://iescalvia-voley.com/img/escudos/sin-escudo.png";
+      let publicUrl = "https://voley.iescalvia.com/img/escudos/sin-escudo.png";
 
       console.log(nombre_equipo,capitan_edit)
       const escudo = formData.get("foto") as File;
