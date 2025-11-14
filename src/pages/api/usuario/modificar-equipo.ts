@@ -88,7 +88,7 @@ export const POST: APIRoute = async ({ request }) => {
   if (acompañante_email) { 
     const dominio = acompañante_email.split('@')[1]; // Esto te dará 'gmail.com'
     const dominioConArroba = '@' + dominio;
-    if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+    if (dominioConArroba !== "@alu.ibeducacio.eu" && dominioConArroba !== "@ibeducacio.eu") {
       console.log(`El email de l'entrenador ha de ser del centre`)
       return new Response(
             `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email de l'entrenador ha de ser del centre</div>`, 
@@ -181,7 +181,7 @@ if(profesor_nombre !== "") {
 if (profesor_email) { 
   const dominio = profesor_email.split('@')[1]; // Esto te dará 'gmail.com'
   const dominioConArroba = '@' + dominio;
-  if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+  if (dominioConArroba !== "@alu.ibeducacio.eu" && dominioConArroba !== "@ibeducacio.eu") {
     console.log(`El email del professor ha de ser del centre`)
     return new Response(
           `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email del professor ha de ser del centre</div>`, 
@@ -276,7 +276,7 @@ if (!profesor_genero) {
   console.log("Tipo de archivo:", escudo.type);
   console.log("Tamaño de archivo:", escudo.size);
 
-  let publicUrl = "https://iescalvia-voley.com/img/escudos/sin-escudo.png";
+  let publicUrl = "https://voley.iescalvia.com/img/escudos/sin-escudo.png";
 
   if(escudo.size <= 0){
     const escudo_actual = formData.get("escudo_actual")?.toString().trim() || "";
@@ -302,7 +302,7 @@ if (!profesor_genero) {
     if (email) { 
       const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
       const dominioConArroba = '@' + dominio;
-    //   if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+    //   if (dominioConArroba !== "@alu.ibeducacio.eu" && dominioConArroba !== "@ibeducacio.eu") {
     //     console.log(`El email del ${index + 1}. Jugador ha de ser del centre`)
     //     return new Response(
     //           `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email del ${index + 1}. Jugador ha de ser del centre</div>`, 
@@ -380,7 +380,7 @@ if (!profesor_genero) {
       if (email) { 
         const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
         const dominioConArroba = '@' + dominio;
-        if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+        if (dominioConArroba !== "@alu.ibeducacio.eu" && dominioConArroba !== "@ibeducacio.eu") {
           console.log(`El email del ${index + 1 + num_jugadores}. Jugador ha de ser del centre`)
           return new Response(
                 `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email del ${index + 1 + num_jugadores}. Jugador ha de ser del centre</div>`, 
@@ -447,7 +447,7 @@ if (!profesor_genero) {
       if (email) { 
         const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
         const dominioConArroba = '@' + dominio;
-        if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+        if (dominioConArroba !== "@alu.ibeducacio.eu" && dominioConArroba !== "@ibeducacio.eu") {
           console.log(`El email del ${index + 7}. Jugador ha de ser del centre`)
           return new Response(
                 `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email del ${index + 7}. Jugador ha de ser del centre</div>`, 
@@ -521,7 +521,7 @@ if (!profesor_genero) {
       if (email) { 
         const dominio = email.split('@')[1]; // Esto te dará 'gmail.com'
         const dominioConArroba = '@' + dominio;
-        if (dominioConArroba !== "@a.iescalvia.com" && dominioConArroba !== "@iescalvia.com") {
+        if (dominioConArroba !== "@alu.ibeducacio.eu" && dominioConArroba !== "@ibeducacio.eu") {
           console.log(`El email del ${index + 1 + num_staff}. Jugador ha de ser del centre`)
           return new Response(
                 `<div class="bg-red-600 bg-opacity-30 border-3 border-red-700 text-white rounded-lg p-2 my-2 flex items-center text-center">El email del ${index + 1 + num_staff}. Staff ha de ser del centre</div>`, 
