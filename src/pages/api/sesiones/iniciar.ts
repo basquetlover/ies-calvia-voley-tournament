@@ -12,9 +12,9 @@ interface Usuario {
 }
 
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
-    const politica_cookies = cookies.get("all_cookies");
-
-    if(politica_cookies){
+    let politica_cookies = cookies.get("all_cookies");
+    
+    //if(politica_cookies){
         const formData = await request.formData();
         const nombre = formData.get("nombre")?.toString(); // <input name="nombre" id="4584" />
         const password = formData.get("password")?.toString(); // <input name="password" id="4684" />
@@ -169,7 +169,7 @@ const encrypted = encrypt(password);
             path: "/",
           });
           
-    }
+    //}
 
 
 
