@@ -1697,7 +1697,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                 
 
               // 🔹 Bucle de jugadores 0 a 2
-                const indices = [0, 1, 2]; // los jugadores que quieres pasar
+                const indices = [0, 1, 2, 3, 4, 5]; // los jugadores que quieres pasar
                 fd3.append("jugadores_indices", JSON.stringify(indices));
               for (let index of indices) {
                   const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
@@ -1726,35 +1726,35 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                 //console.log("Han pasado 2 segundos");
               }, 1000);
 
-               const fd3_1 = new FormData();
-                fd3_1.append("nombre_equipo", datos.nombre_equipo || "");
-                fd3_1.append("input_capitan_form", datos.input_capitan_form || "");
-                fd3_1.append("input_capitan_email_form", datos.input_capitan_email_form || "");
+              //  const fd3_1 = new FormData();
+              //   fd3_1.append("nombre_equipo", datos.nombre_equipo || "");
+              //   fd3_1.append("input_capitan_form", datos.input_capitan_form || "");
+              //   fd3_1.append("input_capitan_email_form", datos.input_capitan_email_form || "");
 
-                const indices3_1 = [3, 4, 5]; // los jugadores que quieres pasar
-                fd3_1.append("jugadores_indices", JSON.stringify(indices3_1));
-              for (let index of indices3_1) {
-                  const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
-                  const apellido1 = (document.getElementById(`player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
-                  const apellido2 = (document.getElementById(`player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
-                  const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
-                  const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
-                  const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
-                  //const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
+              //   const indices3_1 = [3, 4, 5]; // los jugadores que quieres pasar
+              //   fd3_1.append("jugadores_indices", JSON.stringify(indices3_1));
+              // for (let index of indices3_1) {
+              //     const nombre = (document.getElementById(`player_${index}_name`) as HTMLInputElement)?.value || "";
+              //     const apellido1 = (document.getElementById(`player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+              //     const apellido2 = (document.getElementById(`player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+              //     const curso = (document.getElementById(`player_${index}_curso`) as HTMLInputElement)?.value || "";
+              //     const genero = (document.getElementById(`genero_${index}`) as HTMLInputElement)?.value || "";
+              //     const email = (document.getElementById(`player_${index}_email`) as HTMLInputElement)?.value || "";
+              //     //const img = (document.getElementById(`player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
-                  // Añadir cada campo al mismo FormData
-                  fd3_1.append(`player_${index}_name`, nombre);
-                  fd3_1.append(`player_${index}_1r_apellido`, apellido1);
-                  fd3_1.append(`player_${index}_2n_apellido`, apellido2);
-                  fd3_1.append(`player_${index}_curso`, curso);
-                  fd3_1.append(`genero_${index}`, genero);
-                  fd3_1.append(`player_${index}_email`, email);
-                  //if (img) fd3_1.append(`player_${index}_img`, img);
-              }
+              //     // Añadir cada campo al mismo FormData
+              //     fd3_1.append(`player_${index}_name`, nombre);
+              //     fd3_1.append(`player_${index}_1r_apellido`, apellido1);
+              //     fd3_1.append(`player_${index}_2n_apellido`, apellido2);
+              //     fd3_1.append(`player_${index}_curso`, curso);
+              //     fd3_1.append(`genero_${index}`, genero);
+              //     fd3_1.append(`player_${index}_email`, email);
+              //     //if (img) fd3_1.append(`player_${index}_img`, img);
+              // }
 
-              // 🔹 Llamada única a la API (fuera del bucle)
-              let res3_1 = await fetch("/api/inscripcion/jugadores", { method: "POST", body: fd3_1 });
-              if (!(await procesarRespuesta(res3_1, "jugadores"))) return;
+              // // 🔹 Llamada única a la API (fuera del bucle)
+              // let res3_1 = await fetch("/api/inscripcion/jugadores", { method: "POST", body: fd3_1 });
+              // if (!(await procesarRespuesta(res3_1, "jugadores"))) return;
 
               // Object.keys(datos).forEach(key => {
               //     if (key.startsWith("jugador")) fd3.append(key, datos[key]);
@@ -1810,7 +1810,7 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
 
                 // Array para recorrer los miembros del staff
                 
-                const indices4 = [0, 1]; // los jugadores que quieres pasar
+                const indices4 = [0, 1, 2, 3, 4]; // los jugadores que quieres pasar
                 fd4.append("jugadores_indices", JSON.stringify(indices4));
               for (let index of indices4) {
                   const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
@@ -1840,71 +1840,71 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
                 //console.log("Han pasado 2 segundos");
               }, 1000);
 
-              const fd4_1 = new FormData();
-                fd4_1.append("nombre_equipo", datos.nombre_equipo || "");
+              // const fd4_1 = new FormData();
+              //   fd4_1.append("nombre_equipo", datos.nombre_equipo || "");
 
-                // Array para recorrer los miembros del staff
+              //   // Array para recorrer los miembros del staff
                
-                const indices4_1 = [2, 3]; // los jugadores que quieres pasar
-                fd4_1.append("jugadores_indices", JSON.stringify(indices4_1));
-              for (let index of indices4_1) {
-                  const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
-                    const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
-                    const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
-                    const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
-                    const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
-                    const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
-                    //const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+              //   const indices4_1 = [2, 3]; // los jugadores que quieres pasar
+              //   fd4_1.append("jugadores_indices", JSON.stringify(indices4_1));
+              // for (let index of indices4_1) {
+              //     const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
+              //       const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+              //       const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+              //       const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
+              //       const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
+              //       const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
+              //       //const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
-                    fd4_1.append(`staff_player_${index}_name`, nombre);
-                    fd4_1.append(`staff_player_${index}_1r_apellido`, apellido1);
-                    fd4_1.append(`staff_player_${index}_2n_apellido`, apellido2);
-                    fd4_1.append(`staff_player_${index}_curso`, curso);
-                    fd4_1.append(`staff_genero_${index}`, genero);
-                    fd4_1.append(`staff_player_${index}_email`, email);
-                    //if (img) fd4_1.append(`staff_player_${index}_img`, img);
-              }
+              //       fd4_1.append(`staff_player_${index}_name`, nombre);
+              //       fd4_1.append(`staff_player_${index}_1r_apellido`, apellido1);
+              //       fd4_1.append(`staff_player_${index}_2n_apellido`, apellido2);
+              //       fd4_1.append(`staff_player_${index}_curso`, curso);
+              //       fd4_1.append(`staff_genero_${index}`, genero);
+              //       fd4_1.append(`staff_player_${index}_email`, email);
+              //       //if (img) fd4_1.append(`staff_player_${index}_img`, img);
+              // }
                 
-              Object.keys(datos).forEach(key => {
-                  if (key.startsWith("cuerpo")) fd4_1.append(key, datos[key]);
-              });
-              let res4_1 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4_1 });
-              if (!(await procesarRespuesta(res4_1, "cuerpo técnico"))) return;
+              // Object.keys(datos).forEach(key => {
+              //     if (key.startsWith("cuerpo")) fd4_1.append(key, datos[key]);
+              // });
+              // let res4_1 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4_1 });
+              // if (!(await procesarRespuesta(res4_1, "cuerpo técnico"))) return;
 
-               setTimeout(() => {
-                //console.log("Han pasado 2 segundos");
-              }, 1000);
+              //  setTimeout(() => {
+              //   //console.log("Han pasado 2 segundos");
+              // }, 1000);
 
-              const fd4_2 = new FormData();
-                fd4_2.append("nombre_equipo", datos.nombre_equipo || "");
+              // const fd4_2 = new FormData();
+              //   fd4_2.append("nombre_equipo", datos.nombre_equipo || "");
 
-                // Array para recorrer los miembros del staff
+              //   // Array para recorrer los miembros del staff
                
-                const indices4_2 = [4]; // los jugadores que quieres pasar
-                fd4_2.append("jugadores_indices", JSON.stringify(indices4_2));
-              for (let index of indices4_2) {
-                  const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
-                    const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
-                    const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
-                    const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
-                    const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
-                    const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
-                    //const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
+              //   const indices4_2 = [4]; // los jugadores que quieres pasar
+              //   fd4_2.append("jugadores_indices", JSON.stringify(indices4_2));
+              // for (let index of indices4_2) {
+              //     const nombre = (document.getElementById(`staff_player_${index}_name`) as HTMLInputElement)?.value || "";
+              //       const apellido1 = (document.getElementById(`staff_player_${index}_1r_apellido`) as HTMLInputElement)?.value || "";
+              //       const apellido2 = (document.getElementById(`staff_player_${index}_2n_apellido`) as HTMLInputElement)?.value || "";
+              //       const curso = (document.getElementById(`staff_player_${index}_curso`) as HTMLInputElement)?.value || "";
+              //       const genero = (document.getElementById(`staff_genero_${index}`) as HTMLInputElement)?.value || "";
+              //       const email = (document.getElementById(`staff_player_${index}_email`) as HTMLInputElement)?.value || "";
+              //       //const img = (document.getElementById(`staff_player_${index}_img`) as HTMLInputElement)?.files?.[0];
 
-                    fd4_2.append(`staff_player_${index}_name`, nombre);
-                    fd4_2.append(`staff_player_${index}_1r_apellido`, apellido1);
-                    fd4_2.append(`staff_player_${index}_2n_apellido`, apellido2);
-                    fd4_2.append(`staff_player_${index}_curso`, curso);
-                    fd4_2.append(`staff_genero_${index}`, genero);
-                    fd4_2.append(`staff_player_${index}_email`, email);
-                    //if (img) fd4_2.append(`staff_player_${index}_img`, img);
-              }
+              //       fd4_2.append(`staff_player_${index}_name`, nombre);
+              //       fd4_2.append(`staff_player_${index}_1r_apellido`, apellido1);
+              //       fd4_2.append(`staff_player_${index}_2n_apellido`, apellido2);
+              //       fd4_2.append(`staff_player_${index}_curso`, curso);
+              //       fd4_2.append(`staff_genero_${index}`, genero);
+              //       fd4_2.append(`staff_player_${index}_email`, email);
+              //       //if (img) fd4_2.append(`staff_player_${index}_img`, img);
+              // }
                 
-              Object.keys(datos).forEach(key => {
-                  if (key.startsWith("cuerpo")) fd4_2.append(key, datos[key]);
-              });
-              let res4_2 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4_2 });
-              if (!(await procesarRespuesta(res4_2, "cuerpo técnico"))) return;
+              // Object.keys(datos).forEach(key => {
+              //     if (key.startsWith("cuerpo")) fd4_2.append(key, datos[key]);
+              // });
+              // let res4_2 = await fetch("/api/inscripcion/cuerpo-tecnico", { method: 'POST', body: fd4_2 });
+              // if (!(await procesarRespuesta(res4_2, "cuerpo técnico"))) return;
               crearCookiePaso(4, "Completado"); 
             }
             
