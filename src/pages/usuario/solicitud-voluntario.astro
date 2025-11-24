@@ -12,7 +12,7 @@ import { verificarSesion } from "src/lib/session";
 import { supabaseAdmin } from "src/lib/supabase";
 const { data: torneo, error: errorTorneos } = await supabaseAdmin
   .from('Configuracion')
-  .select('in_inicio, in_fin, id_torneo')
+  .select('vo_inicio, vo_fin, id_torneo')
   .eq('estado', 'Actual')
   .single();
 
@@ -45,10 +45,10 @@ let userHasAccess = accessibleBlocks.includes(pathname);
 
 const fechaActual = new Date();
 
-console.log(fechaActual, torneo?.in_inicio)
+console.log(fechaActual, torneo?.vo_inicio)
 // Compara la fecha actual con las fechas de inicio y fin
-const fechaInicio = new Date(torneo?.in_inicio);
-const fechaFin = new Date(torneo?.in_fin);
+const fechaInicio = new Date(torneo?.vo_inicio);
+const fechaFin = new Date(torneo?.vo_fin);
 
 const formatoFecha = (fecha: Date) => {
   const dia = fecha.getDate().toString().padStart(2, '0');
