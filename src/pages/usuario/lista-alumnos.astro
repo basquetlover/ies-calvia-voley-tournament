@@ -78,7 +78,7 @@ const { data: StaffData, error: fetchOwnerError } = await supabaseAdmin
         .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
         .in('rango', ['Owner', 'Co-Owner', 'Staff'])
         .eq('lista', 'si')
-        .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E'])
+        .ilike("curso", "2n BAT%")
         .order('curso', {ascending: true});;;
 if(StaffData){
     TotalStaff = StaffData.length;
@@ -97,7 +97,7 @@ const { data: VoluntarioData, error: fetchVoluntarioError } = await supabaseAdmi
         .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
         .in('rango', ['Arbitro', 'Oficial de Mesa', 'Voluntario'])
         .eq('lista', 'si')
-        .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E'])
+        .ilike("curso", "2n BAT%")
         .order('curso', {ascending: true});;;
 if(VoluntarioData){
     TotalVoluntarios2 = VoluntarioData.length;
@@ -105,7 +105,7 @@ if(VoluntarioData){
 const { data: Jugador2BatData, error: fetchJugador2BatError } = await supabaseAdmin
         .from(TablaJugadores)
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
-        .in('curso', ['2n BAT A', '2n BAT B', '2n BAT C', '2n BAT D', '2n BAT E'])
+        .ilike("curso", "2n BAT%")
         .in('pertenece_equipo', equipoIds)
         .order('curso', {ascending: true});;;
 if(Jugador2BatData){
@@ -116,7 +116,7 @@ const { data: Voluntario1Data, error: fetchVoluntario1Error } = await supabaseAd
         .select(" user_email, nombre, curso, _1r_apellido, _2n_apellido")
         .in('rango', ['Arbitro', 'Oficial de Mesa', 'Voluntario'])
         .eq('lista', 'si')
-        .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E'])
+        .ilike("curso", "1r BAT%")
         .order('curso', {ascending: true});;;
 if(Voluntario1Data){
     TotalVoluntarios1 = Voluntario1Data.length;
@@ -124,7 +124,7 @@ if(Voluntario1Data){
 const { data: Jugador1BatData, error: fetchJugador1BatError } = await supabaseAdmin
         .from(TablaJugadores)
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
-        .in('curso', ['1r BAT A', '1r BAT B', '1r BAT C', '1r BAT D', '1r BAT E'])
+        .ilike("curso", "1r BAT%")
         .in('pertenece_equipo', equipoIds)
         .order('curso', {ascending: true});;;;
 if(Jugador1BatData){
@@ -133,7 +133,7 @@ if(Jugador1BatData){
 const { data: Jugador4ESOData, error: fetchJugador4ESOError } = await supabaseAdmin
         .from(TablaJugadores)
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
-        .in('curso', ['4t ESO A', '4t ESO B', '4t ESO C', '4t ESO D', '4t ESO E', '4t ESO F', '4t ESO G', '4t ESO H'])
+        .ilike("curso", "4t ESO%")
         .in('pertenece_equipo', equipoIds)
         .order('curso', {ascending: true});;;;
 if(Jugador4ESOData){
@@ -142,7 +142,7 @@ if(Jugador4ESOData){
 const { data: Jugador3ESOData, error: fetchJugador3ESOError } = await supabaseAdmin
         .from(TablaJugadores)
         .select(" nombre, curso, _1r_apellido, _2n_apellido")
-        .in('curso', ['3r ESO A', '3r ESO B', '3r ESO C', '3r ESO D', '3r ESO E', '3r ESO F', '3r ESO G', '3r ESO H'])
+        .ilike("curso", "3r ESO%")
         .in('pertenece_equipo', equipoIds)
         .order('curso', {ascending: true});;
 if(Jugador3ESOData){
