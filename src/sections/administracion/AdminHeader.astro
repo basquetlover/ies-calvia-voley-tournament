@@ -118,17 +118,17 @@ if(usuario){
 
 
 let usuarioWithRango = {
-    email: usuario?.email || "Desconocido",
+    email: usuario?.email_microsoft || "Desconocido",
     rango: "Sin rango"
 };
 
 try {
     // Obtén el rango del usuario autenticado
-    if (usuario?.email) {
+    if (usuario) {
         const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
             .select("rango")
-            .eq("user_email", usuario.email)
+            .or(`user_email.eq.${usuario.email},user_email.eq.${usuario.email_microsoft}`)
             .single(); // Obtiene un único registro
 
         if (error) {

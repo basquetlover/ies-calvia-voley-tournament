@@ -73,7 +73,7 @@ if(usuario){
         let { data: Administradores, error } = await supabaseAdmin
         .from('Administradores')
         .select('rango')
-        .eq('user_email', usuario_email)
+        .or(`user_email.eq.${usuario.email},user_email.eq.${usuario.email_microsoft}`)
         .single();
 
     if(!Administradores){
