@@ -10,27 +10,21 @@ type AdministradorProps = {
     id_equipo: string;
     nombre_equipo: string;
 };
+const { searchParams } = new URL(Astro.request.url);
+let torneoID = searchParams.get('torneoID');
+
+if (torneoID) {
+  // Eliminar comillas si las hubiera
+  torneoID = torneoID.replace(/^"(.*)"$/, '$1');
+  //console.log('Torneo ID:', torneoID); // Aparece en consola del servidor
+} else{
+  torneoID = "SS"
+}
+
+const TablaJugadores = `Jugadores${torneoID}`;
+const TablaEquipos = `Equipos${torneoID}`;
 
 // Genera rutas dinámicas
-export async function getStaticPaths() {
-  // Consulta a la base de datos para obtener user_email y rango
-  const { data, error } = await supabaseAdmin
-    .from('Equipos')
-    .select('id_equipo, nombre_equipo');
-
-  if (error) {
-    console.error('Error fetching administradores:', error.message);
-    return { paths: [] };
-  }
-
-  // Genera las rutas dinámicas con datos adicionales
-  const paths = data.map((equipo) => ({
-    params: { id_equipo: equipo.id_equipo },
-    props: { nombre_equipo: equipo.nombre_equipo }, // Pasamos rango como parte de los props
-  }));
-
-  return { paths };
-}
 const id_equipo = Astro.url.pathname.split('/').pop();
 
 let nombre_equipo = 'Sin Nombre';
@@ -94,7 +88,7 @@ let Staff: Staff[] = [];
 try {
   // Buscar el rango correspondiente al email en la tabla Administradores
   const { data: equipoData, error } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(TablaEquipos)
     .select('nombre_equipo, id, capitan, escudo, inscrito, estado, aceptado, fecha_inscripcion, email_capitan, capitan_edit, probl_tit_logo')
     .eq('id_equipo', id_equipo)
     .single();
@@ -127,7 +121,7 @@ try {
     }
 
   const {data: jugadoresData, error: jugadorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(TablaJugadores)
     .select('nombre, curso, _1r_apellido, _2n_apellido, email, img')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'jugador')
@@ -141,7 +135,7 @@ try {
   }
 
   const {data: StaffData, error: StaffError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(TablaJugadores)
     .select('nombre, curso, _1r_apellido, _2n_apellido, email, img')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'cuerpo_tecnico')
@@ -154,7 +148,7 @@ try {
   }
 
   const {data: EntrenadorData, error: EntrenadorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(TablaJugadores)
     .select('nombre, curso, _1r_apellido, _2n_apellido, email, img')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'entrenador')
@@ -177,7 +171,7 @@ try {
     console.log("No se encontró ningún entrenador.");
 }
 const {data: ProfesorData, error: ProfesorError} = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(TablaJugadores)
     .select('nombre, curso, _1r_apellido, _2n_apellido, genero, email, img, id, observaciones')
     .eq('pertenece_equipo', id)
     .eq('ficha', 'profesor')
@@ -304,7 +298,7 @@ const currentDate = getCurrentDateInCatalan();
             <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               
               <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr]  gap-2 gap-y-8 place-items-center">
-                <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
+                <!-- <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
                   {entrenador_img ? (
                     <img 
                         src={entrenador_img} 
@@ -317,7 +311,7 @@ const currentDate = getCurrentDateInCatalan();
                     <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
                   </svg>
                   )}
-                </div>
+                </div> -->
                   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               {/* Nombre */}
               <div class="flex flex-col relative">
@@ -381,7 +375,7 @@ const currentDate = getCurrentDateInCatalan();
         </div>
 
       <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
-            <div class="w-20 min-h-20 h-auto overflow-hidden gap-1 flex flex-col items-center justify-center">
+            {/* <div class="w-20 min-h-20 h-auto overflow-hidden gap-1 flex flex-col items-center justify-center">
               {jugador.img ? (
                   <img 
                       src={jugador.img} 
@@ -395,7 +389,7 @@ const currentDate = getCurrentDateInCatalan();
                 </svg>
                 )}
                 
-            </div>
+            </div> */}
             <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               
               {/* Nombre */}
@@ -462,7 +456,7 @@ const currentDate = getCurrentDateInCatalan();
             <div class="flex min-h-20 h-auto pt-4 pb-2  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               
               <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
-                <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
+                <!-- <div class="w-20 min-h-20  h-auto overflow-hidden flex flex-col items-center justify-center">
                   {profesor_img ? (
                     <img 
                         src={profesor_img} 
@@ -476,7 +470,7 @@ const currentDate = getCurrentDateInCatalan();
                   </svg>
                   )}
                   
-                  </div>
+                  </div> -->
                 
                   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
               {/* Nombre */}
@@ -541,7 +535,7 @@ const currentDate = getCurrentDateInCatalan();
 
 </div>
 <div class="w-auto min-h-20 h-auto pt-4 pb-2 grid grid-cols-[max-content_1fr] grid-rows-1 md:grid-cols-[max-content_1fr] md:grid-rows-1 xs:grid-cols-1 xs:grid-rows-[max-content_1fr] sm:grid-cols-1 sm:grid-rows-[max-content_1fr] gap-2 gap-y-8 place-items-center">
-  <div class="w-20 min-h-20 h-auto overflow-hidden flex flex-col items-center justify-center">
+  {/* <div class="w-20 min-h-20 h-auto overflow-hidden flex flex-col items-center justify-center">
     {jugador.img ? (
   <img 
       src={jugador.img} 
@@ -554,7 +548,7 @@ const currentDate = getCurrentDateInCatalan();
   <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
 </svg>
 )}
-</div>
+</div> */}
 
   <div class="flex min-h-20 h-auto  flex-wrap place-content-start items-center gap-x-2 gap-y-8 space-x-2">
     
