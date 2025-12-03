@@ -1,6 +1,51 @@
 ---
 import { supabaseAdmin } from "src/lib/supabase";
 
+let TablaPartidos = `Partidos`
+let TablaEquipos = `Equipos`
+let mes = "true";
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, fecha, nombre')
+  .eq('estado', 'Actual')
+  .single();
+
+  if(ConfTorneo){
+    const torneoDate = new Date(ConfTorneo.fecha);
+  const today = new Date();
+
+  const mismoMes =
+    torneoDate.getMonth() === today.getMonth() &&
+    torneoDate.getFullYear() === today.getFullYear();
+
+  if (mismoMes) {
+    //console.log(`El torneo actual de este mes es: ${ConfTorneo.nombre}`);
+     TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+    TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+  } else{
+    // console.log(`El torneo actual  ${ConfTorneo.nombre} no es de este mes`);
+    mes = "false";
+  }
+  //mes = "false";
+   
+  } 
+  
+  if(!ConfTorneo || error || mes === "false"){
+    //Si no hay torneo actual, coger el último finalizado
+   const { data: ConfTorneo, error } = await supabaseAdmin
+    .from('Configuracion')
+    .select('id_torneo, fecha')
+    .eq('estado', 'Finalizado')
+    .order('fecha', { ascending: false }) // ordenar por fecha más reciente
+    .limit(1) // solo el primero
+    .single(); // devuelve un solo objeto
+    
+    if(ConfTorneo){
+        TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+        TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+    }
+  }
+
 interface Equipo {
   nombre_equipo: string;
   escudo: string;
@@ -28,7 +73,7 @@ let escudosMapPista1: Record<string, string> = {}; // Mapa para guardar escudos 
 try {
   // Obtener partidos de la pista 1
   const { data, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('equipo_local, equipo_visitante, estado, pista, id_partido, LocGlobal, VisGlobal, LocSet1, VisSet1, LocSet2, VisSet2, LocSet3, VisSet3')
     //.in('estado', ['Per Jugar', 'Finalitzat'])
     .neq('id_partido', 'partido_prueba')
@@ -45,7 +90,7 @@ try {
 
   // Obtener escudos de los equipos
   const { data: equipos, error: errorEquipos } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(TablaEquipos)
     .select('nombre_equipo, escudo')
     .in('nombre_equipo', equiposNombres);
 
@@ -64,7 +109,7 @@ try {
 
 
 // const { data: Partidos, error } = await supabaseAdmin
-//         .from('PartidosSS')
+//         .from(TablaPartidos)
 //         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
 //         .in('estado', ['Per Jugar', 'Finalitzat'])
 //         .order('id', {ascending: true});
@@ -72,7 +117,7 @@ try {
 // console.log(Partidos)
 
 // const { data: Directe, error: EDirecte } = await supabaseAdmin
-//         .from('PartidosSS')
+//         .from(TablaPartidos)
 //         .select('pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado')
 //         .eq('estado', 'En Directe')
 //         .order('id', {ascending: true});
@@ -153,7 +198,7 @@ try {
             </div>
         </div>
         <div class="flex items-center place-content-center">
-            <a class="text-blanco" href={`/partidosSS/${partido.id_partido}`}>Estadística</a>
+            <a class="text-blanco" href={`/partidosSS/${partido.id_partido}?torneoID=${ConfTorneo?.id_torneo}`}>Estadística</a>
         </div>
     </div>
       ))}

@@ -15,7 +15,7 @@ const filtroEmail = url.searchParams.get('email') || '';
 // Consulta a la DB aplicando filtros
 let { data: Usuarios, error } = await supabaseAdmin
   .from('Usuarios')
-  .select('nombre, curso, email, anyo, estado')
+  .select('id, nombre, curso, email, anyo, estado')
   .ilike('nombre', `%${filtroNombre}%`)
   .ilike('curso', `%${filtroCurso}%`)
   .ilike('email', `%${filtroEmail}%`)
@@ -24,6 +24,9 @@ let { data: Usuarios, error } = await supabaseAdmin
 // Verifica que Usuarios no sea null
 if (!Usuarios) {
     return console.log("no hay usuarios")
+}
+if(error){
+    console.error("Error al obtener usuarios:", error);
 }
 
 // Paginación
@@ -77,7 +80,7 @@ id="btn_filtrar"
                 <tbody>
                     {usuariosToShow.map((usuario, index) => (
                         <tr class="font-normal text-center gap-y-2" >
-                            <td><a href={`/admin/usuario/${usuario.email}`}>{totalUsuarios - index}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.id}</a></td>
                             <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.nombre}</a></td>
                             <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.curso}</a></td>
                             <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.anyo}</a></td>
