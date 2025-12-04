@@ -1367,7 +1367,9 @@ const ModificarJugada = async () => {
                                 <input key={`local_nombre_${index}`} class="w-full bg-transparent text-center text-blanco select-none" value={`Jugador ${index + 1}`} disabled/> */}
                                 <div>
                                      
-                                     <img src={jugador.img} class="w-20 h-20"/>
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg>
                                 </div>
                                  <p class="w-full bg-transparent text-center text-blanco">{jugador.nombre}</p>
                             </div>
@@ -1627,7 +1629,9 @@ const ModificarJugada = async () => {
                                 <input key={`visitante_nombre_${index}`} class="w-full bg-transparent text-center text-blanco" value={`Jugador ${index + 1}`} disabled/> */}
                                 <div>
                                      
-                                     <img src={jugador.img} class="w-20 h-20"/>
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-blanco" viewBox="0 -960 960 960">
+                                        <path d="M234-276q51-39 114-61t132-23q69 0 132 23t114 61q35-41 55-93t19-111q0-133-93-226t-227-94q-133 0-226 94t-94 226q0 59 20 111t54 93Zm246-164q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0 360q-83 0-156-31t-127-86q-54-54-85-127T80-480q0-83 32-156t85-127q54-54 127-85t156-32q83 0 156 32t127 85q54 54 86 127t31 156q0 83-31 156t-86 127q-54 54-127 86T480-80Zm0-80q53 0 100-15t86-45q-39-29-86-44t-100-16q-53 0-100 16t-86 44q39 29 86 45t100 15Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                                    </svg>
                                 </div>
                                  <p class="w-full bg-transparent text-center text-blanco">{jugador.nombre}</p>
                             </div>

@@ -1,5 +1,7 @@
 // src/pages/api/partidos.ts
 import { supabaseAdmin } from "../../../lib/supabase";
+  let TablaPartidos = `Partidos`
+let TablaEquipos = `Equipos`
 
 interface Partido {
   bracket: string;
@@ -23,7 +25,7 @@ function traducirPartido(str: string) {
 async function fetchEscudo(nombreEquipo: string): Promise<string> {
   if (!nombreEquipo) return "";
   const { data, error } = await supabaseAdmin
-    .from("EquiposSS")
+    .from(TablaEquipos)
     .select("escudo")
     .eq("nombre_equipo", nombreEquipo)
     .single();
@@ -32,6 +34,51 @@ async function fetchEscudo(nombreEquipo: string): Promise<string> {
 }
 
 export async function POST({ request }: { request: Request }) {
+
+
+let mes = "true";
+const { data: ConfTorneo, error } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, fecha, nombre')
+  .eq('estado', 'Actual')
+  .single();
+
+  if(ConfTorneo){
+    const torneoDate = new Date(ConfTorneo.fecha);
+  const today = new Date();
+
+  const mismoMes =
+    torneoDate.getMonth() === today.getMonth() &&
+    torneoDate.getFullYear() === today.getFullYear();
+
+  if (mismoMes) {
+    //console.log(`El torneo actual de este mes es: ${ConfTorneo.nombre}`);
+     TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+    TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+  } else{
+    // console.log(`El torneo actual  ${ConfTorneo.nombre} no es de este mes`);
+    mes = "false";
+  }
+  //mes = "false";
+   
+  } 
+  
+  if(!ConfTorneo || error || mes === "false"){
+    //Si no hay torneo actual, coger el último finalizado
+   const { data: ConfTorneo, error } = await supabaseAdmin
+    .from('Configuracion')
+    .select('id_torneo, fecha')
+    .eq('estado', 'Finalizado')
+    .order('fecha', { ascending: false }) // ordenar por fecha más reciente
+    .limit(1) // solo el primero
+    .single(); // devuelve un solo objeto
+    
+    if(ConfTorneo){
+        TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+        TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+    }
+  }
+
   try {
     // todos los brackets que quieres cargar
     const brackets = [
@@ -57,7 +104,7 @@ export async function POST({ request }: { request: Request }) {
 
     for (const bracket of brackets) {
       const { data: partido, error } = await supabaseAdmin
-        .from("PartidosSS")
+        .from(TablaPartidos)
         .select(
           "pista, equipo_local, equipo_visitante, LocGlobal, VisGlobal, estado, id_partido"
         )

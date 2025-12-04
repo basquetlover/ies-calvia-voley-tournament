@@ -134,18 +134,30 @@ useEffect(() => {
     <div className={`w-[400px] px-2 py-1 gap-2 rounded-lg flex flex-col transform scale-[1.10] text-center ${index === 0 ? "bg-amarillo text-azul font-semibold" : "bg-azul-suave text-blanco"}`}>
         <p className="text-lg">{prox.tipo}</p>
     <div class={`   grid grid-cols-[60px_1fr_30px_1fr_60px] items-center   `}> 
-        <div>
-        
-            <img src={prox.escudo_equipo_local} class="w-14 h-14" alt={prox.equipo_local} />
+      <div>
+        {prox.escudo_equipo_local?.trim() ? (
+              <img src={prox.escudo_equipo_local} class="w-14 h-14" alt={prox.equipo_local} />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-w-10" fill="none" viewBox="0 0 650 650">
+                <circle cx="325" cy="325" r="315" stroke="#fff" strokeWidth="20" />
+                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10" />
+              </svg>
+            )}
                 
         </div>
         <p>{prox.equipo_local} </p>
         <p>VS</p>
         <p>{prox.equipo_visitante}</p>
         <div>
-        
-            <img src={prox.escudo_equipo_visitante} class="w-14 h-14" alt={prox.equipo_visitante} />
-               
+            {prox.escudo_equipo_visitante?.trim() ? (
+              <img src={prox.escudo_equipo_visitante} class="w-14 h-14" alt={prox.equipo_visitante} />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-w-10" fill="none" viewBox="0 0 650 650">
+                <circle cx="325" cy="325" r="315" stroke="#fff" strokeWidth="20" />
+                <rect width="450" height="20" x="100" y="315" fill="#fff" rx="10" />
+              </svg>
+            )}
+                
         </div>
     </div>
     </div>

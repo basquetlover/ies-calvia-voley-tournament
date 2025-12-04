@@ -8,7 +8,19 @@ import LayoutMenu from "@layouts/LayoutMenu.astro";
 import Descripcion from "@sections/index/Descripcion.astro";
 import DescripcionSection from "@components/DescripcionSection.astro";
 // Tipo explícito para las propiedades esperadas en `Astro.props`
+const { searchParams } = new URL(Astro.request.url);
+let torneoID = searchParams.get('torneoID');
 
+if (torneoID) {
+  // Eliminar comillas si las hubiera
+  torneoID = torneoID.replace(/^"(.*)"$/, '$1');
+  console.log('Torneo ID:', torneoID); // Aparece en consola del servidor
+}
+
+let TablaPartidos = `Partidos${torneoID}`;
+let TablaEquipos = `Equipos${torneoID}`;
+let TablaJugadores = `Jugadores${torneoID}`;
+let TablaHistorial = `Historial${torneoID}`;
 // Tipo explícito para las propiedades esperadas en `Astro.props`
 type AdministradorProps = {
   user_email: string;
@@ -63,7 +75,7 @@ let id_equipo_visitante = "";
 let escudo_equipo_visitante = "";
 let referencia_EV = "";
 const { data, error } = await supabaseAdmin
-    .from('PartidosSS')
+    .from(TablaPartidos)
     .select('equipo_local, equipo_visitante, estado, pista, id_partido, LocGlobal, VisGlobal, LocSet1, VisSet1, LocSet2, VisSet2, LocSet3, VisSet3')
     .eq('id_partido', id_partido)
     .single();
@@ -90,7 +102,7 @@ const { data, error } = await supabaseAdmin
 
   
   let { data: EquipoLocale, error: EquipoLocaleError } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(TablaEquipos)
     .select('id, escudo')
     .eq('nombre_equipo', nombre_equipo_local)
     .single();
@@ -101,7 +113,7 @@ const { data, error } = await supabaseAdmin
     }
     
     let { data: JugadoresLocales, error: JugadoresLocalesError } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(TablaJugadores)
     .select('nombre, _1r_apellido, punto_directo, punto_remate, punto_bloqueo, punto_error')
     .in('ficha', ['jugador'])
     .eq('pertenece_equipo', id_equipo_local)
@@ -123,7 +135,7 @@ if (JugadoresLocalesError) {
 
 // Buscar entrenador
 let { data: Entrenador, error: EntrenadorError } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(TablaJugadores)
     .select('nombre, _1r_apellido, punto_directo, punto_remate, punto_bloqueo, punto_error')
     .eq('ficha', 'profesor')
     .eq('pertenece_equipo', id_equipo_local)
@@ -142,7 +154,7 @@ if (EntrenadorError) {
 }
     
     let { data: EquipoVisitante, error: EquipoVisitanteError } = await supabaseAdmin
-    .from('EquiposSS')
+    .from(TablaEquipos)
     .select('id, escudo')
     .eq('nombre_equipo', nombre_equipo_visitante)
     .single();
@@ -153,7 +165,7 @@ if (EntrenadorError) {
     }
     
     let { data: JugadoresVisitantes, error: JugadoresVisitantesError } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(TablaJugadores)
     .select('nombre, _1r_apellido, punto_directo, punto_remate, punto_bloqueo, punto_error')
     .in('ficha', ['jugador']) // Solo buscamos jugadores primero
     .eq('pertenece_equipo', id_equipo_visitante)
@@ -175,7 +187,7 @@ if (JugadoresVisitantesError) {
 
 // Buscar entrenador
 let { data: EntrenadorVisitante, error: EntrenadorVisitanteError } = await supabaseAdmin
-    .from('JugadoresSS')
+    .from(TablaJugadores)
     .select('nombre, _1r_apellido, punto_directo, punto_remate, punto_bloqueo, punto_error')
     .eq('ficha', 'profesor') // Buscamos al entrenador
     .eq('pertenece_equipo', id_equipo_visitante)
@@ -190,7 +202,7 @@ if (EntrenadorVisitante) {
 }
 
 let { data: Historial, error: HistorialError } = await supabaseAdmin
-    .from('HistorialSS')
+    .from(TablaHistorial)
     .select('nombre, id_equipo, locPuntos, locSet, orden, tiempo, tipoPunto, visPuntos, visSet')
     //.eq('ficha', 'profesor') // Buscamos al entrenador
     .eq('id_partido', id_partido)
@@ -247,86 +259,50 @@ let { data: Historial, error: HistorialError } = await supabaseAdmin
         console.log("No se encontró ningún FinSet en el historial.");
     }
 }
-let jugadoresLocalStats: JugadorConPuntos[] = [];
-let jugadoresVisitanteStats: JugadorConPuntos[] = [];
+
+let estadisticasLocal = {
+  remate: 0,
+  directo: 0,
+  error: 0,
+  bloqueo: 0,
+  total: 0
+};
+
+let estadisticasVisitante = {
+  remate: 0,
+  directo: 0,
+  error: 0,
+  bloqueo: 0,
+  total: 0
+};
 
 if (Historial) {
-  // === EQUIPO LOCAL ===
-  const jugadasLocal = Historial.filter(j => j.id_equipo === "equipo-local");
-  const contadorLocal: Record<string, JugadorConPuntos> = {};
+  for (const jugada of Historial) {
+    let obj;
 
-  for (const jugada of jugadasLocal) {
-    const key = jugada.nombre;
-    if (!contadorLocal[key]) {
-      contadorLocal[key] = {
-        nombre: jugada.nombre,
-        punto_directo: 0,
-        punto_remate: 0,
-        punto_bloqueo: 0,
-        punto_error: 0,
-        total_jugadas: 0
-      };
+    if (jugada.id_equipo === "equipo-local") {
+      obj = estadisticasLocal;
+    } else if (jugada.id_equipo === "equipo-visitante") {
+      obj = estadisticasVisitante;
+    } else {
+      continue;
     }
 
-    if (jugada.tipoPunto === 'Directo') contadorLocal[key].punto_directo += 1;
-    if (jugada.tipoPunto === 'Remate') contadorLocal[key].punto_remate += 1;
-    if (jugada.tipoPunto === 'Bloqueo') contadorLocal[key].punto_bloqueo += 1;
-    if (jugada.tipoPunto === 'Error') contadorLocal[key].punto_error += 1;
+    // Sumar tipo de jugada
+    if (jugada.tipoPunto === "Directo") obj.directo++;
+    if (jugada.tipoPunto === "Remate") obj.remate++;
+    if (jugada.tipoPunto === "Bloqueo") obj.bloqueo++;
+    if (jugada.tipoPunto === "Error") obj.error++;
 
-    contadorLocal[key].total_jugadas += 1;
+    // Sumar total
+    obj.total++;
   }
-
-  jugadoresLocalStats = jugadoresLocal.map(jugador => {
-    return contadorLocal[jugador.nombre] ?? {
-      nombre: jugador.nombre,
-      punto_directo: 0,
-      punto_remate: 0,
-      punto_bloqueo: 0,
-      punto_error: 0,
-      total_jugadas: 0
-    };
-  });
-
-  console.log("Local:", jugadoresLocalStats);
-
-  // === EQUIPO VISITANTE ===
-  const jugadasVisitante = Historial.filter(j => j.id_equipo === "equipo-visitante");
-  const contadorVisitante: Record<string, JugadorConPuntos> = {};
-
-  for (const jugada of jugadasVisitante) {
-    const key = jugada.nombre;
-    if (!contadorVisitante[key]) {
-      contadorVisitante[key] = {
-        nombre: jugada.nombre,
-        punto_directo: 0,
-        punto_remate: 0,
-        punto_bloqueo: 0,
-        punto_error: 0,
-        total_jugadas: 0
-      };
-    }
-
-    if (jugada.tipoPunto === 'Directo') contadorVisitante[key].punto_directo += 1;
-    if (jugada.tipoPunto === 'Remate') contadorVisitante[key].punto_remate += 1;
-    if (jugada.tipoPunto === 'Bloqueo') contadorVisitante[key].punto_bloqueo += 1;
-    if (jugada.tipoPunto === 'Error') contadorVisitante[key].punto_error += 1;
-
-    contadorVisitante[key].total_jugadas += 1;
-  }
-
-  jugadoresVisitanteStats = jugadoresVisitante.map(jugador => {
-    return contadorVisitante[jugador.nombre] ?? {
-      nombre: jugador.nombre,
-      punto_directo: 0,
-      punto_remate: 0,
-      punto_bloqueo: 0,
-      punto_error: 0,
-      total_jugadas: 0
-    };
-  });
-
-  console.log("Visitante:", jugadoresVisitanteStats);
 }
+
+// OUTPUTS
+console.log("Local:", estadisticasLocal);
+console.log("Visitante:", estadisticasVisitante);
+
 
 ---
 <LayoutMenu title={`Partit ${id_partido} | IES Calvià Voley Tournament`}  descripcion="">
@@ -404,27 +380,7 @@ if (Historial) {
 
     <div class="w-full flex flex-wrap items-center place-content-center gap-2">
 
-        <table class="text-blanco espacio">
-            <tr class="text-center">
-                <th>Jugador</th>
-                <th>Directes</th>
-                <th>Remat</th>
-                <th>Bloqueig</th>
-                <th>Errors</th>
-            </tr>
-            {
-                 jugadoresLocalStats.map((jugador, index) => (
-                    <tr>
-                        <td>{jugador.nombre}</td>
-                        <td class="text-center">{jugador.punto_directo} / {jugador.total_jugadas}</td>
-                        <td class="text-center">{jugador.punto_remate} / {jugador.total_jugadas}</td>
-                        <td class="text-center">{jugador.punto_bloqueo} / {jugador.total_jugadas}</td>
-                        <td class="text-center">{jugador.punto_error} / {jugador.total_jugadas}</td>
-                    </tr>
-                ))
-            }
-            
-        </table>
+        <canvas id="directosLocal"  style="height: 400px;"></canvas>
 
          
          <div class="w-64 h-64 rounded-md bg-gris overflow-y-scroll no-scrollbar flex flex-col gap-y-2 border-2 border-gris">
@@ -465,27 +421,9 @@ if (Historial) {
             </div>
         </div>
 
-        <table class="text-blanco espacio">
-            <tr class="text-center">
-                <th>Jugador</th>
-                <th>Directes</th>
-                <th>Remat</th>
-                <th>Bloqueig</th>
-                <th>Errors</th>
-            </tr>
-            {
-                 jugadoresVisitanteStats.map((jugador, index) => (
-                    <tr>
-                        <td>{jugador.nombre}</td>
-                        <td class="text-center">{jugador.punto_directo} / {jugador.total_jugadas}</td>
-                        <td class="text-center">{jugador.punto_remate} / {jugador.total_jugadas}</td>
-                        <td class="text-center">{jugador.punto_bloqueo} / {jugador.total_jugadas}</td>
-                        <td class="text-center">{jugador.punto_error} / {jugador.total_jugadas}</td>
-                    </tr>
-                ))
-            }
-            
-        </table>
+        <div>
+            &nbsp;
+        </div>
 
     </div>
 </div>
@@ -541,7 +479,45 @@ if (Historial) {
         </style>
 </LayoutMenu>
 
-<script>
+<!-- <script>
+    import Chart from 'chart.js/auto';
+    //const data = [{x: 'Jan', net: 100, }, {x: 'Feb', net: 120, cogs: 55, gm: 75}];
+        
+    
+        const ctxDirectosLocal = document.getElementById('directosLocal') as HTMLCanvasElement;
+        new Chart(ctxDirectosLocal, {
+        type: 'doughnut',
+        data: {
+        labels: ['Remate', 'Directo', 'Bloqueo', 'Error'],
+        datasets: [{
+        label: 'Estadístiques Equip Local',
+        data: [${estadisticasLocal.remate}, ${estadisticasLocal.directo}, ${estadisticasLocal.bloqueo}, ${estadisticasLocal.error}],
+        backgroundColor: [
+        'rgb(22, 102, 255, .8)',
+        'rgb(0, 200, 83, .8)',
+        'rgb(255, 199, 0, .8)',
+        'rgb(255, 59, 48, .8)'
+        ],
+        hoverOffset: 4
+    }]
+    },
+    options: {
+        plugins: {
+            legend: {
+            labels: {
+                color: 'white' // Cambia el color del texto de la leyenda
+            }
+            },
+            tooltip: {
+            titleColor: 'white', // Cambia el color del texto del título del tooltip
+            bodyColor: 'white' // Cambia el color del texto del cuerpo del tooltip
+            }
+        },
+        }
+        });
+</script> -->
+
+<!-- <script>
     const LivePartidos = document.getElementById("EnDirecto") as HTMLInputElement;
 
     //if(LivePartidos.value === "NoDirecto"){
@@ -587,4 +563,4 @@ async function enviarDatosAPi() {
         }
     }
 }
-</script>
+</script> -->
