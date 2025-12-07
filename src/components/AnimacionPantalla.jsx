@@ -4,76 +4,83 @@ import MarcadorPabellon from "./MarcadorPabellon";
 import ProximosPartidos from "./ProximosPartidos";
 
 const Pantalla = ( )=>{
-    const PANTALLAS = ["marcador", "logo", "pistas","marcador", "clasificacion", "marcador", "despues"];
+const PANTALLAS = ["marcador", "logo", "pistas", "marcador", "clasificacion", "marcador", "despues"];
 const DURACIONES = {
-  logo: 5000,
-  pistas: 10000,
-  clasificacion: 30000,
-  marcador: 30000, // mucho más tiempo
-  despues: 20000,
+  logo: 2000,
+  pistas: 2500,
+  clasificacion: 15000,
+  marcador: 30000,
+  despues: 15000,
 };
 
-      const [indice, setIndice] = useState(0); // índice en PANTALLAS
-  const [isPaused, setIsPaused] = useState(false); // estado para controlar la pausa
+ const [indice, setIndice] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [hayPartidos, setHayPartidos] = useState(true); // estado global de partidos
 
+  // 🚀 Interceptar cambio de pantalla
   useEffect(() => {
-    // Si está pausado, no configurar el temporizador
-    if (isPaused) return;
+  if (isPaused) return;
 
-    // decide cuánto esperar según pantalla actual
-    const actual = PANTALLAS[indice];
-    const delay = DURACIONES[actual] ?? 10000;
+  const timer = setTimeout(async () => {
+    let siguiente = (indice + 1) % PANTALLAS.length;
 
-    const timer = setTimeout(() => {
-      // avanzar al siguiente índice en bucle
-      setIndice((prev) => (prev + 1) % PANTALLAS.length);
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [indice, isPaused]);
-
-  // 🔑 Escuchar teclado
-useEffect(() => {
-  const handleKey = (e) => {
-    const key = e.key.toLowerCase();
-
-    // Manejar la tecla espaciadora para pausar/reanudar
-    if (key === " ") {
-      setIsPaused(prev => !prev);
-      return;
-    }
-
-    // definimos inicial -> nombre pantalla
-    const mapa = {
-      m: "marcador",
-      l: "logo",
-      p: "pistas",
-      c: "clasificacion",
-      d: "despues"
-    };
-
-    const destino = mapa[key];
-    if (destino) {
-      // busca el primer índice en PANTALLAS que coincida
-      const nuevo = PANTALLAS.findIndex((p) => p === destino);
-      if (nuevo !== -1) {
-        setIndice(nuevo);
+    // ⚡ Si el siguiente es "marcador" y no hay partidos, saltamos al siguiente índice que no sea "marcador"
+    if (PANTALLAS[siguiente] === "marcador") {
+      try {
+        const res = await fetch("/api/usuario/CargarMarcador", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        if (!data || data.length === 0) {
+          // Buscar el siguiente índice que no sea "marcador"
+          let nuevoSiguiente = siguiente;
+          do {
+            nuevoSiguiente = (nuevoSiguiente + 1) % PANTALLAS.length;
+          } while (PANTALLAS[nuevoSiguiente] === "marcador" && nuevoSiguiente !== siguiente);
+          siguiente = nuevoSiguiente;
+        }
+      } catch (err) {
+        console.error("Error comprobando partidos:", err);
       }
     }
-  };
 
-  window.addEventListener("keydown", handleKey);
-  return () => window.removeEventListener("keydown", handleKey);
-}, []);
+    setIndice(siguiente);
+  }, DURACIONES[PANTALLAS[indice]] ?? 10000);
+
+  return () => clearTimeout(timer);
+}, [indice, isPaused]);
+
+  // Teclado
+  useEffect(() => {
+    const handleKey = (e) => {
+      const key = e.key.toLowerCase();
+      if (key === " ") {
+        setIsPaused(prev => !prev);
+        return;
+      }
+
+      const mapa = { m: "marcador", l: "logo", p: "pistas", c: "clasificacion", d: "despues" };
+      const destino = mapa[key];
+      if (destino) {
+        const nuevo = PANTALLAS.findIndex((p) => p === destino);
+        if (nuevo !== -1) setIndice(nuevo);
+      }
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
 
   let pantalla = PANTALLAS[indice];
-  //pantalla = "marcador"; // FORZAR PANTALLA PARA TESTING
+ 
+  //pantalla = "despues"; // FORZAR PANTALLA PARA TESTING
   
   
  
 
     return(
-        <div className="w-[1920px] h-[1080px]  margin-y-auto relative">
+        <div className="w-[1920px] h-[1080px] bg-gris  margin-y-auto relative">
             {/* Pantalla Logo */}
 
         <div className={`w-[1920px] h-[1080px]  top-0 left-0 min-h-screen flex gap-x-10 items-center justify-center ${
@@ -95,7 +102,7 @@ useEffect(() => {
 
         {/* Clasificación */}
       <div
-        className={`w-[1920px] h-[1080px] bg-gris-claro flex flex-col   items-center justify-center ${
+        className={`w-[1920px] h-[1080px] bg-gris-claro flex flex-col relative  items-center justify-center ${
           pantalla === "clasificacion" ? "flex" : "hidden"
         }`}
       >
@@ -104,12 +111,18 @@ useEffect(() => {
         </div>
         {/* Marcador */}
         <div
-            className={`w-[1920px] h-[1080px]  relative top-0 left-0 min-h-screen flex flex-col items-center place-content-center ${
+            className={`w-[1920px] h-[1080px]  relative top-0 left-0 min-h-screen flex flex-col items-center  ${
             pantalla === "marcador" ? "flex" : "hidden"
             }`}
         >
-        {/* <h1 className="text-7xl uppercase absolute top-10 font-bold text-accent">Marcador</h1> */}
-            <MarcadorPabellon />
+        
+            <MarcadorPabellon 
+              onSinPartidos={() => {
+                console.log("No hay partidos → cambiar pantalla"); // debug
+                const idx = PANTALLAS.findIndex(p => p === "despues");
+                if (idx !== -1) setIndice(idx);
+              }}
+            />
         </div>
         {/* Despues */}
         <div

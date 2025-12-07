@@ -127,11 +127,11 @@ try {
 <form id="LivePartidos" method="POST" action="/api/usuario/LivePartidos" class="max-w-4xl w-auto mx-auto h-auto  flex-col items-center gap-y-4 mt-5 hidden">
 <input name="EnDirecto" value="EnDirecto">
 </form>
-<section id="Partidos" class="max-w-4xl w-auto mx-auto h-auto  mt-5 transform ">
-    <div class="flex flex-col items-center gap-y-4">
+<section id="Partidos" class="max-w-7xl w-auto mx-auto h-auto  mt-5 transform ">
+    <div class="flex flex-wrap items-center gap-y-4">
 
     </div >
-    <div id="ArrayPartidos" class="flex flex-col items-center gap-y-4 p-1">
+    <div id="ArrayPartidos" class="flex flex-wrap items-center place-content-around gap-y-4 p-1">
     {pista1.map(partido => (
     <div class={`max-w-[500px] w-full flex flex-col items-center place-content-center border-2 border-blanco rounded-md p-2 ${partido.estado === "En Directe"? "border-rojo-claro" : " "}`}>
         <div class="w-full h-auto grid grid-cols-3 place-items-center text-base text-blanco">

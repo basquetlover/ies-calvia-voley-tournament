@@ -13,3 +13,132 @@
 .pulso-texto {
   animation: pulsarTexto 1.5s infinite;
 }
+
+.team-teto{
+  clip-path: polygon(100% 0, 100% 10%, 10% 100%, 0 100%, 0 0);
+}
+
+.ies-calvia{
+  clip-path: polygon(100% 0, 90% 0, 0 90%, 0 100%, 100% 100%);
+}
+
+.linea-diagonal{
+  clip-path: polygon(90% 0, 100% 0, 100% 10%, 10% 100%, 0 100%, 0 90%);
+}
+
+/* ----------------------------------------
+   ✨ GLOW DORADO EN EL TEXTO
+---------------------------------------- */
+.glow-gold {
+  position: relative;
+  display: inline-block;
+  color: #ffd978; 
+  font-weight: 700;
+
+  text-shadow:
+    0 0 10px #ffeb9d,
+    0 0 20px #ffcf47,
+    0 0 35px #ffb800;
+
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow:
+      0 0 10px #ffeb9d,
+      0 0 20px #ffcf47,
+      0 0 35px #ffb800;
+  }
+  50% {
+    text-shadow:
+      0 0 15px #fff1b5,
+      0 0 30px #ffd95e,
+      0 0 55px #ffb300;
+  }
+  100% {
+    text-shadow:
+      0 0 10px #ffeb9d,
+      0 0 20px #ffcf47,
+      0 0 35px #ffb800;
+  }
+}
+
+/* ----------------------------------------
+   ✨ PARTICULAS INFINITAS DESDE EL TEXTO
+---------------------------------------- */
+/* .glow-gold::before,
+.glow-gold::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+
+  background: radial-gradient(circle, #fff7c4, #ffd978, transparent);
+
+  animation: particleUp 2s ease-out infinite;
+}
+
+.glow-gold::after {
+  width: 4px;
+  height: 4px;
+  animation-duration: 3s;
+  animation-delay: -1s;
+}
+
+/* Movimiento ascendente aleatorio */
+@keyframes particleUp {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(calc(-50% + (var(--x) * 1px)),
+                         calc(-120% + (var(--y) * 1px)))
+               scale(1.5);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(calc(-50% + (var(--x) * 1px)),
+                         calc(-200% + (var(--y) * 1px)))
+               scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* Variaciones aleatorias usando variables CSS */
+/* .glow-gold {
+  --x: -10;
+  --y: 5;
+}
+.glow-gold::after {
+  --x: 12;
+  --y: -8;
+} */ 
+
+
+.linea-octavos-down{
+  clip-path: polygon(18% 0, 18% 10%, 40% 10%, 40% 100%, 60% 100%, 82% 100%, 82% 90%, 60% 90%, 60% 0);
+  z-index: -30;
+}
+.linea-octavos-up{
+  clip-path: polygon(40% 90%, 18% 90%, 18% 100%, 60% 100%, 60% 10%, 82% 10%, 82% 0, 60% 0, 40% 0);
+  z-index: -30;
+}
+
+.linea-cuartos-down{
+  clip-path: polygon(18% 0, 18% 5%, 40% 5%, 40% 100%, 60% 100%, 82% 100%, 82% 95%, 60% 95%, 60% 0);
+  z-index: -30;
+}
+.linea-cuartos-up{
+  clip-path: polygon(40% 95%, 18% 95%, 18% 100%, 60% 100%, 60% 5%, 82% 5%, 82% 0, 60% 0, 40% 0);
+  z-index: -30;
+}
+.linea-semis{
+  clip-path: polygon(0 0, 85% 0, 85% 5%, 60% 5%, 60% 100%, 40% 100%, 40% 5%, 0 5%);
+  z-index: -30;
+}

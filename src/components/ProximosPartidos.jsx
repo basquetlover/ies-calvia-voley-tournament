@@ -31,7 +31,7 @@ useEffect(() => {
   }
 
    cargarPartidos();
-  const intervalo = setInterval(cargarPartidos, 2 * 60 *1000); // cada 5 minutos
+  const intervalo = setInterval(cargarPartidos, 60 *1000); // cada 5 minutos
     const handleKeyPress = (event) => {
     if (event.key.toLowerCase() === 'r') {
       cargarPartidos();

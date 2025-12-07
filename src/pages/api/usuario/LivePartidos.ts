@@ -145,7 +145,7 @@ export const POST: APIRoute = async ({ request }) => {
     
       return new Response(
         `
-        <div id="ArrayPartidos" class="flex flex-col items-center gap-y-4 p-1">
+        <div id="ArrayPartidos" class="flex flex-wrap items-center place-content-around gap-y-4 p-1">
           ${partidosHTML}
         </div>
         `, 
