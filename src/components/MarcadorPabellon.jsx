@@ -25,7 +25,7 @@ useEffect(() => {
       console.log("Número de partidos en directo:", numeroPartidos);
       //numeroPartidos = 1
       // ⚠️ Si la API devuelve sin partidos
-           if (!data || data.length === 0 || data.sinPartidos) {
+           if (!data || data.length === 0) {
               // ⚡ Lanzamos evento global
               window.dispatchEvent(new Event("sinPartidos"));
               return;
@@ -43,16 +43,16 @@ useEffect(() => {
   }
 
    cargarPartidos();
-  const intervalo = setInterval(cargarPartidos, 3* 60 *1000); // cada 5 minutos
+  const intervalo = setInterval(cargarPartidos, 3*1000); // cada 5 minutos
   return () => clearInterval(intervalo);
 }, []);
 
     
 
-    let estado = "En Directe"
-    let LocSet = 1
-    let VisSet = 1
-    let SetActual = String(LocSet + VisSet)
+    // let estado = "En Directe"
+    // let LocSet = 1
+    // let VisSet = 1
+    //let SetActual = String(LocSet + VisSet)
 
   return (
     <>
