@@ -74,7 +74,7 @@ const DURACIONES = {
 
   let pantalla = PANTALLAS[indice];
  
-  //pantalla = "despues"; // FORZAR PANTALLA PARA TESTING
+  pantalla = "despues"; // FORZAR PANTALLA PARA TESTING
   
   
  

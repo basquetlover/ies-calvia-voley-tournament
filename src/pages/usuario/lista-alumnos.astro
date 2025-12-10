@@ -157,6 +157,13 @@ const { data: JugadorFPData, error: fetchJugadorFPError } = await supabaseAdmin
 if(JugadorFPData){
 TotalFp = JugadorFPData.length;
 }
+const { data: JugadorProfessprData, error: fetchJugadorProfessorError } = await supabaseAdmin
+        .from(TablaJugadores)
+        .select(" nombre, curso, _1r_apellido, _2n_apellido, ficha")
+        .eq('curso', 'Professor')
+        .in('pertenece_equipo', equipoIds)
+        .order('curso', {ascending: true});;;;
+
 let TotalAlumnos = TotalStaff + TotalVoluntarios2 + TotalVoluntarios1 + Total2Bat + Total1Bat + Total4Eso + Total3Eso + TotalFp;
 ---
 
@@ -452,6 +459,8 @@ let TotalAlumnos = TotalStaff + TotalVoluntarios2 + TotalVoluntarios1 + Total2Ba
 
                  
                 </div>
+
+                
                 </>
             )}
         </section>
