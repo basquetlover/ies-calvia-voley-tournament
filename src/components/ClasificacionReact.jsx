@@ -928,6 +928,17 @@ useEffect(() => {
     </div>
 </div>
 )}
+
+<div className="col-span-2 col-start-3 row-start-4  w-full h-full">
+    <div className="w-full h-full   flex flex-row items-center justify-around">
+              <img src="/favicon.svg" className="w-48 h-48" />
+              <div className="w-48 h-48 relative z-0">
+                <img src="/img/team-teto.png" className="w-48 h-48 team-teto absolute -top-3 -left-3" />
+                <div className="w-[1px] rotate-45 rounded h-52 absolute -top-2 left-1/2 -translate-x-1/2 bg-accent -z-10 "> &nbsp; </div>
+                <img src="/img/ies-calvia.png" className="w-48 h-48 ies-calvia absolute -bottom-3 -right-3" />
+              </div>
+            </div>
+</div>
 </div>
     // <div>
 

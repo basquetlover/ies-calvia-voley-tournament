@@ -130,6 +130,14 @@ const DURACIONES = {
             pantalla === "despues" ? "flex" : "hidden"
             }`}
         >
+          <div className="w-48 h-49 absolute top-10 left-20">
+            <img src="/favicon.svg" className="w-48 h-48" />
+          </div>
+          <div className="w-48 h-48 absolute top-10 right-32">
+                <img src="/img/team-teto.png" className="w-48 h-48 team-teto absolute -top-3 -left-3" />
+                <div className="w-[1px] rotate-45 rounded h-52 absolute -top-2 left-1/2 -translate-x-1/2 bg-accent -z-10 "> &nbsp; </div>
+                <img src="/img/ies-calvia.png" className="w-48 h-48 ies-calvia absolute -bottom-3 -right-3" />
+            </div>
           <div className="absolute top-10">
         <h1 className="text-7xl uppercase font-bold text-accent">Pròxims Partits</h1>
         <div className="flex gap-2 transform scale-150 my-5 justify-center items-center">

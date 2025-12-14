@@ -43,7 +43,7 @@ useEffect(() => {
   }
 
    cargarPartidos();
-  const intervalo = setInterval(cargarPartidos, 3*1000); // cada 5 minutos
+  const intervalo = setInterval(cargarPartidos, 3*1000); // cada 3 segundos
   return () => clearInterval(intervalo);
 }, []);
 
