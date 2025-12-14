@@ -1472,7 +1472,7 @@ const ModificarJugada = async () => {
                                 // Condición 1: equipo local
                                 if (j.idEquipo === "equipo-local" && j.tipo != "FinSet") {
                                     return (
-                                    <div key={j.orden || i} ref={(el) => (refs.current[j.orden] = el)} onMouseDown={() => handleMouseDown(j.orden, j.tipo)} onMouseUp={() => handleMouseUp(j.orden, j.tipo)} onMouseLeave={() => handleMouseLeave(j.orden, j.tipo)} onTouchStart={() => handleMouseDown(j.orden, j.tipo)} onTouchEnd={() => handleMouseUp(j.orden, j.tipo)} className={`w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center ${presionados[j.orden] ? "bg-azul-suave" : "bg-gris-claro"}`}>
+                                    <div key={j.orden || i} ref={(el) => (refs.current[j.orden] = el)} onPointerDown={() => handleMouseDown(j.orden, j.tipo)} onPointerUp={() => handleMouseUp(j.orden, j.tipo)} onPointerLeave={() => handleMouseLeave(j.orden, j.tipo)} onPointerCancel={() => handleMouseLeave(j.orden, j.tipo)} className={`w-full h-16 bg-gris-claro select-none text-blanco grid grid-rows-1 grid-cols-[max-content_1fr_max-content] border-blanco border-y-[1px] border-l-[1px] items-center ${presionados[j.orden] ? "bg-azul-suave" : "bg-gris-claro"}`}>
                                         <div>
                                             <div className="flex flex-row items-center">
                                                 <div>
@@ -1514,7 +1514,7 @@ const ModificarJugada = async () => {
                                 // Condición 2: equipo visitante
                                 if (j.idEquipo === "equipo-visitante" && j.tipo != "FinSet") {
                                     return (
-                                    <div key={j.orden || i} ref={(el) => (refs.current[j.orden] = el)} onMouseDown={() => handleMouseDown(j.orden, j.tipo)} onMouseUp={() => handleMouseUp(j.orden, j.tipo)} onMouseLeave={() => handleMouseLeave(j.orden, j.tipo)} onTouchStart={() => handleMouseDown(j.orden, j.tipo)} onTouchEnd={() => handleMouseUp(j.orden, j.tipo)} className={`w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center ${presionados[j.orden] ? "bg-azul-suave" : "bg-gris-claro"}`}>
+                                    <div key={j.orden || i} ref={(el) => (refs.current[j.orden] = el)} onPointerDown={() => handleMouseDown(j.orden, j.tipo)} onPointerUp={() => handleMouseUp(j.orden, j.tipo)} onPointerLeave={() => handleMouseLeave(j.orden, j.tipo)} onPointerCancel={() => handleMouseLeave(j.orden, j.tipo)} className={`w-full h-16 bg-gris-claro select-none text-blanco grid grid-rows-1 grid-cols-[1fr_max-content_max-content] border-blanco border-y-[1px] border-l-[1px] items-center ${presionados[j.orden] ? "bg-azul-suave" : "bg-gris-claro"}`}>
                                         <div className="flex flex-row items-center place-content-center h-full w-full text-blanco text-4xl font-semibold">
                                             <p id={`LocPuntos_${j.orden}`} className="bg-transparent w-10 text-center h-max">{j.nuevoLoc}</p>
                                             <span>-</span>
@@ -1546,7 +1546,7 @@ const ModificarJugada = async () => {
                                 // // Condición 3: otro tipo de jugada
                                 if (j.tipo === "FinSet") {
                                 return (
-                                     <div key={j.orden || i} ref={(el) => (refs.current[j.orden] = el)} onMouseDown={() => handleMouseDown(j.orden, j.tipo)} onMouseUp={() => handleMouseUp(j.orden, j.tipo)} onMouseLeave={() => handleMouseLeave(j.orden, j.tipo)} onTouchStart={() => handleMouseDown(j.orden, j.tipo)} onTouchEnd={() => handleMouseUp(j.orden, j.tipo)} className={`w-full h-16 bg-gris-claro text-blanco grid grid-rows-1 grid-cols-[1fr_auto] border-blanco border-y-[1px] border-l-[1px] items-center ${presionados[j.orden] ? "bg-azul-suave" : "bg-gris-claro"}`}>
+                                     <div key={j.orden || i} ref={(el) => (refs.current[j.orden] = el)} onPointerDown={() => handleMouseDown(j.orden, j.tipo)} onPointerUp={() => handleMouseUp(j.orden, j.tipo)} onPointerLeave={() => handleMouseLeave(j.orden, j.tipo)} onPointerCancel={() => handleMouseLeave(j.orden, j.tipo)} className={`w-full h-16 bg-gris-claro select-none text-blanco grid grid-rows-1 grid-cols-[1fr_auto] border-blanco border-y-[1px] border-l-[1px] items-center ${presionados[j.orden] ? "bg-azul-suave" : "bg-gris-claro"}`}>
                                     <div class="flex items-center justify-center h-full">
                                         <p class="text-xl font-semibold">Fin Set {j.nuevoLocSet + j.nuevoVisSet}</p>
                                     </div>
