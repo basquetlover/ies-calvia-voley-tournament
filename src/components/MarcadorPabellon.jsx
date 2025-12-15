@@ -70,14 +70,14 @@ useEffect(() => {
                 <div className="w-full grid grid-cols-1 place-items-center mt-8">
                   <div className="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
                     <div className="flex items-center place-content-center">
-                      <p className={`text-4xl text-accent font-semibold ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) > (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}>{p.equipo_local}</p>
+                      <p className={`text-4xl text-accent font-semibold ${(p.marcador.puntos.local) > (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}>{p.equipo_local}</p>
                     </div>
                     <div className="w-max h-max">
                       <img src={p.escudo_equipo_local} className="w-16 h-16" />
                     </div>
                     <p
                       id="resultado_final_local"
-                      className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) > (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}
+                      className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.puntos.local) > (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}
                       
                     >
                       {p.marcador.global.local}
@@ -138,14 +138,14 @@ useEffect(() => {
                 <div className="w-full grid grid-cols-1 place-items-center mt-8">
                   <div className="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
                     <div className="flex items-center place-content-center">
-                      <p className={`text-4xl text-accent font-semibold ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) < (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}>{p.equipo_visitante}</p>
+                      <p className={`text-4xl text-accent font-semibold ${(p.marcador.puntos.local) < (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}>{p.equipo_visitante}</p>
                     </div>
                     <div className="w-max h-max">
                       <img src={p.escudo_equipo_visitante} className="w-16 h-16" />
                     </div>
                     <p
                       id="resultado_final_visitante"
-                      className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) < (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}
+                      className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.puntos.local) < (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}
                       
                     >
                       {p.marcador.global.visitante}
@@ -209,14 +209,14 @@ useEffect(() => {
                 <div className="w-full grid grid-cols-1 place-items-center mt-8">
                   <div className="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
                     <div className="flex items-center place-content-center">
-                      <p className={`text-4xl text-accent font-semibold ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) > (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}>{p.equipo_local}</p>
+                      <p className={`text-4xl text-accent font-semibold ${(p.marcador.puntos.local) > (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}>{p.equipo_local}</p>
                     </div>
                     <div className="w-max h-max">
                       <img src={p.escudo_equipo_local} className="w-16 h-16" />
                     </div>
                     <p
                       id="resultado_final_local"
-                      className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) > (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}
+                      className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.puntos.local) > (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}
                     >
                       {p.marcador.global.local}
                       </p>
@@ -276,14 +276,14 @@ useEffect(() => {
                 <div className="w-full grid grid-cols-1 place-items-center mt-8">
                   <div className="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
                     <div className="flex items-center place-content-center">
-                      <p className={`text-4xl text-accent font-semibold ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) < (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}>{p.equipo_visitante}</p>
+                      <p className={`text-4xl text-accent font-semibold ${(p.marcador.puntos.local) < (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}>{p.equipo_visitante}</p>
                     </div>
                     <div className="w-max h-max">
                       <img src={p.escudo_equipo_visitante} className="w-16 h-16" />
                     </div>
                     <p
                       id="resultado_final_visitante"
-                      className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) < (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}
+                      className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.puntos.local) < (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}
                     >
                       {p.marcador.global.visitante}
                       </p>
@@ -345,14 +345,14 @@ useEffect(() => {
                   <div className="w-full grid grid-cols-1 place-items-center mt-8">
                     <div className="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
                       <div className="flex items-center place-content-center">
-                        <p className={`text-4xl text-accent font-semibol ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) > (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}>{p.equipo_local}</p>
+                        <p className={`text-4xl text-accent font-semibol ${(p.marcador.puntos.local) > (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}>{p.equipo_local}</p>
                       </div>
                       <div className="w-max h-max">
                         <img src={p.escudo_equipo_local} className="w-16 h-16" />
                       </div>
                       <p
                         id="resultado_final_local"
-                        className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) > (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}
+                        className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.puntos.local) > (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}
                         
                       >
                         {p.marcador.global.local}
@@ -414,14 +414,14 @@ useEffect(() => {
                     <div className="w-max h-auto grid grid-cols-[max-content_max-content_max-content] grid-rows-1 p-2 gap-x-4">
                       <p
                         id="resultado_final_visitante"
-                        className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) < (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''} `}
+                        className={`w-10 h-auto text-center text-6xl bg-transparent text-blanco ${(p.marcador.puntos.local) < (p.marcador.puntos.visitante) ? 'glow-gold': ''} `}
                         
                       >{p.marcador.global.visitante}</p>
                       <div className="w-max h-max">
                         <img src={p.escudo_equipo_visitante} className="w-16 h-16" />
                       </div>
                       <div className="flex items-center place-content-center">
-                        <p className={`text-4xl text-accent font-semibold ${(p.marcador.set1.local + p.marcador.set2.local + p.marcador.set3.local) < (p.marcador.set1.visitante + p.marcador.set2.visitante + p.marcador.set3.visitante) ? 'glow-gold': ''}`}>{p.equipo_visitante}</p>
+                        <p className={`text-4xl text-accent font-semibold ${(p.marcador.puntos.local) < (p.marcador.puntos.visitante) ? 'glow-gold': ''}`}>{p.equipo_visitante}</p>
                       </div>
                       
                       

@@ -15,7 +15,7 @@ async function getUltimaJugada(id_partido: number | string) {
   const { data, error } = await supabaseAdmin
     .from(TablaHistorial)
     .select(
-      "locPuntos, visPuntos"
+      "locPuntos, visPuntos, locSet, visSet"
     )
     .eq("id_partido", id_partido)
     .order("id", { ascending: false }) // la última jugada queda primera
@@ -81,19 +81,43 @@ export async function POST({ request }: { request: Request }) {
         let VisSet1 = p.VisSet1
         let VisSet2 = p.VisSet2
         let VisSet3 = p.VisSet3
+        let LocGlobal = p.LocGlobal
+        let VisGlobal = p.VisGlobal
+        let PuntosGlobalLocal = 0
+        let PuntosGlobalVis = 0
+        let ExtraLocal = 0
+        let ExtraVis = 0
         if (ultimaJugada) {
+            LocGlobal = ultimaJugada.locSet
+            VisGlobal = ultimaJugada.visSet
+            setActual = Number(LocGlobal) + Number(VisGlobal) + 1
+          
             //console.log("Ultima jugada: ",ultimaJugada)
             if(setActual === 1){
                 LocSet1 = ultimaJugada.locPuntos
                 VisSet1 = ultimaJugada.visPuntos
+                LocSet2 = "-"
+                VisSet2 = "-"
+                LocSet3 = "-"
+                VisSet3 = "-"
+
             } else if(setActual === 2){
                 LocSet2 = ultimaJugada.locPuntos
                 VisSet2 = ultimaJugada.visPuntos
+                LocSet3 = "-"
+                VisSet3 = "-"
             }
             if(setActual === 3){
                 LocSet3 = ultimaJugada.locPuntos
                 VisSet3 = ultimaJugada.visPuntos
             }
+             ExtraLocal = ultimaJugada.locSet * 10
+             ExtraVis = ultimaJugada.visSet * 10
+             let PuntosSetActualLocal = ultimaJugada.locPuntos
+             let PuntosSetActualVis = ultimaJugada.visPuntos
+            PuntosGlobalLocal = PuntosSetActualLocal + ExtraLocal
+            PuntosGlobalVis = PuntosSetActualVis + ExtraVis
+            
         }
         const escudoLocal = await fetchEscudo(p.equipo_local);
         const escudoVis = await fetchEscudo(p.equipo_visitante);
@@ -108,7 +132,8 @@ export async function POST({ request }: { request: Request }) {
         pista: p.pista,
         setActual, // nuevo campo
         marcador: {
-          global: { local: p.LocGlobal, visitante: p.VisGlobal },
+          global: { local: LocGlobal, visitante: VisGlobal },
+          puntos: {local: PuntosGlobalLocal, visitante: PuntosGlobalVis},
           set1: { local: LocSet1, visitante: VisSet1 },
           set2: { local: LocSet2, visitante: VisSet2 },
           set3: { local: LocSet3, visitante: VisSet3 },
