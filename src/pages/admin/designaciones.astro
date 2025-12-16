@@ -39,7 +39,7 @@ let escudosMappartidos_designados: Record<string, string> = {}; // Mapa para gua
 let { data: Administradores, error } = await supabaseAdmin
   .from('Administradores')
   .select('nombre')
-  .or(`user_email.eq.${usuario.email},user_email.eq.${usuario.email_microsoft}`)
+  .or(`user_email.eq.${usuario?.email},user_email.eq.${usuario?.email_microsoft}`)
   .single();
 
 try {

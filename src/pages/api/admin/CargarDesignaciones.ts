@@ -38,7 +38,7 @@ export async function POST({ request }: { request: Request }) {
         const { data: Administradores } = await supabaseAdmin
             .from('Administradores')
             .select('nombre')
-            .or(`user_email.eq.${usuario.email},user_email.eq.${usuario.email_microsoft}`)
+            .or(`user_email.eq.${usuario?.email},user_email.eq.${usuario?.email_microsoft}`)
             .single();
 
         try {
