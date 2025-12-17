@@ -8,6 +8,7 @@ interface Torneo {
 }
 
 interface Equipo {
+  id: number;
   id_equipo: string;
   nombre_equipo: string;
   capitan: string;
@@ -16,6 +17,7 @@ interface Equipo {
   inscrito: number;
   estado: string | null;
   aceptado: string | null;
+  numero?: number;
 }
 
 let torneosConEquipos: Torneo[] = [];
@@ -23,34 +25,67 @@ let torneosConEquipos: Torneo[] = [];
 const { data: torneos, error: errorTorneos } = await supabaseAdmin
   .from('Configuracion')
   .select('id_torneo, nombre')
-  .order('id', {ascending: false});
+  .order('id', { ascending: false });
 
 if (errorTorneos) {
   console.error('Error al obtener los torneos:', errorTorneos);
-} else if (torneos) {
+}
+
+if (torneos) {
   for (const torneo of torneos) {
     const tablaEquipos = `Equipos${torneo.id_torneo}`;
+    const tablaJugadores = `Jugadores${torneo.id_torneo}`;
+
     const { data: equipos, error: errorEquipos } = await supabaseAdmin
       .from(tablaEquipos)
-      .select('id_equipo, nombre_equipo, capitan, entrenador, escudo, inscrito, estado, aceptado')
+      .select(
+        'id_equipo, nombre_equipo, capitan, entrenador, escudo, inscrito, estado, aceptado, id'
+      )
       .order('id', { ascending: true });
 
-    if (errorEquipos) {
-      console.warn(`Error al obtener equipos del torneo ${torneo.nombre}:`, errorEquipos.message);
-    }
+    if (errorEquipos || !equipos) continue;
 
+    const equiposConNumero = await Promise.all(
+      equipos.map(async (equipo) => {
+        const { data: jugadores, error } = await supabaseAdmin
+          .from(tablaJugadores)
+          .select('id')
+          .eq('pertenece_equipo', equipo.id);
+
+        if (error) {
+          console.warn(
+            `Error jugadores equipo ${equipo.nombre_equipo}:`,
+            error.message
+          );
+        }
+
+        
+
+           const numero = jugadores ? jugadores.length : 0;
+
+    // 👇 CONSOLE LOG AQUÍ
+    // console.log(
+    //   `Equipo: ${equipo.nombre_equipo} → ${numero} jugadores`
+    // );
+
+    return {
+      ...equipo,
+      numero,
+    };
+        
+      })
+    );
+      
     torneosConEquipos.push({
       id_torneo: torneo.id_torneo,
       nombre: torneo.nombre,
-      equipos: equipos || [],
+      equipos: equiposConNumero,
     });
   }
-
-  // 👇 Mostrar el array completo en consola
-  //console.dir(torneosConEquipos, { depth: null, colors: true });
-
 }
 ---
+
+
 {torneosConEquipos.map((torneo) => (
   <section class="my-16">
     <h2 class="ml-10 text-accent font-bold text-5xl">
@@ -75,7 +110,7 @@ if (errorTorneos) {
         {torneo.equipos.map((equipo) => (
           <a href={`/admin/equiposSS/${equipo.id_equipo}?torneoID="${torneo.id_torneo}"`} class="w-80 h-80 p-4 relative rounded-lg bg-azul-suave group transition-all duration-300">
             <div class="w-full h-full grid grid-cols-1 grid-rows-[auto_1fr_auto_auto]">
-              <p class="text-blanco text-lg font-semibold" translate="no">{equipo.nombre_equipo}</p>
+              <p class="text-blanco text-lg font-semibold" translate="no">{equipo.nombre_equipo} — {equipo.numero}</p>
               <div class="flex items-center justify-center w-full h-full">
                 {equipo.escudo && equipo.escudo.trim() !== "" ? (
                   <img 
