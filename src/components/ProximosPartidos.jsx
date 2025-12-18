@@ -47,7 +47,7 @@ useEffect(() => {
     
    <div className="grid grid-flow-col transform scale-[1.35] mt-20 gap-20 ">
     {partidos.map((p) => (
-  <div key={p.id_partido} className={`w-max flex flex-col items-center gap-5`}>
+  <div key={p.id_partido} className={`${p.proximos.length === 0 ? "hidden" : "w-max flex flex-col items-center gap-5"}`}>
     <h2 className="text-6xl uppercase font-bold text-amarillo">
       {p.pista}
     </h2>
