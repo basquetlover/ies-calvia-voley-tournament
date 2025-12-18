@@ -45,7 +45,7 @@ useEffect(() => {
 
   return (
     
-   <div className="grid grid-flow-col transform scale-150 mt-10 gap-20 ">
+   <div className="grid grid-flow-col transform scale-[1.35] mt-10 gap-20 ">
     {partidos.map((p) => (
   <div key={p.id_partido} className={`w-max flex flex-col items-center gap-5`}>
     <h2 className="text-6xl uppercase font-bold text-amarillo">
