@@ -61,6 +61,7 @@ async function getIPAndCountry() {
 // analytics.js
 (async function() {
   const PROJECT_URL = window.location.hostname;
+  const URL_PATHNAME = window.location.pathname;
   const PROJECT_SECRET = '14dfd2bfbb91c941fca730d2a874e202b7a1ec9a14f10865c4fccb5304d0edcaecbf0c194444c02cbad254a3383b49416b3d3e6f42d33fd84acdbd507afec175839b02237e0fd344f9c0e8a14783093a3e774ab491ebc2edddd2f5821c5cae121f34f1e4';
   const API_URL = 'https://perealemany-dev.vercel.app/api/analytics/track';
 
@@ -83,6 +84,7 @@ const ua = navigator.userAgent;
   const payload = {
     device_id,
     url: PROJECT_URL,
+    pathname: URL_PATHNAME,
     title: document.title,
     search: window.location.search,
     secret_key: PROJECT_SECRET,
