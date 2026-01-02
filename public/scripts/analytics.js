@@ -100,11 +100,13 @@ const ua = navigator.userAgent;
   console.log('Analytics payload:', payload);
 
   //Enviar datos al servidor
+const MIN_TIME = 5000; // 5 segundos
+
+setTimeout(() => {
   fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
-  }).catch((err) => {
-    console.error('Analytics error:', err);
-  });
+  }).catch(err => console.error('Analytics error:', err));
+}, MIN_TIME);
 })();
