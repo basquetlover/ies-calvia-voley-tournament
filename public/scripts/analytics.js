@@ -100,13 +100,24 @@ const ua = navigator.userAgent;
   console.log('Analytics payload:', payload);
 
   //Enviar datos al servidor
-const MIN_TIME = 5000; // 5 segundos
+let sent = false;
 
-setTimeout(() => {
+function sendAnalytics() {
+  if (sent) return;
+  sent = true;
+
   fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
-  }).catch(err => console.error('Analytics error:', err));
-}, MIN_TIME);
+  });
+}
+
+// 5 segundos
+setTimeout(sendAnalytics, 5000);
+
+// interacción
+['click', 'scroll', 'keydown', 'touchstart'].forEach(e =>
+  window.addEventListener(e, sendAnalytics, { once: true })
+);
 })();
