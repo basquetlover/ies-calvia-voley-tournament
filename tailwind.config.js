@@ -20,6 +20,7 @@ export default {
 		  'rojo-claro': '#E63946',
 		  verde: '#13702C',
 		  'verde-claro': '#50C878',
+		  magenta: '#c23a97',
 
 		},
 		screens: {

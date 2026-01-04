@@ -17,14 +17,15 @@ const añoActual = new Date().getFullYear();
                 ">
     <Organizadores />
     <EnlazesFooter />
+    
     <section class=" w-full h-full flex flex-col gap-10 place-items-center justify-center transform scale-90 xs:row-start-2 sm:row-start-2 md:row-start-1 md:col-start-3 ">
         <!--Boton inscribirse -->
         
-            <Boton href="/inscripcion" class:list={`hover:scale-100 hover:cursor-pointer px-10 transition-transform transform duration-300`}>
+            <!-- <Boton href="/inscripcion" class:list={`hover:scale-100 hover:cursor-pointer px-10 transition-transform transform duration-300`}>
               INSCRIURE'S
-              <!-- <p class="text-base">Próximamente</p> -->
+             
             </Boton>
-        
+         -->
         <!--redes sociales -->
         <div class="hover:cursor-not-allowed">
             <!-- <h4 class="text-accent text-3xl whitespace-nowrap font-semibold uppercase my-2">Redes sociales</h4> -->
@@ -40,6 +41,17 @@ const añoActual = new Date().getFullYear();
             </a>
         </div>
         
+        <div class="flex flex-col mt-2  place-items-center gap-1 scale-100 xs:scale-90 sm:scale-90 md:scale-90">
+                <span class="text-accent font-semibold uppercase text-2xl">Web desenvolupada per</span>
+                <a href="https://perealemany-dev.vercel.app" target="_blank" class="flex flex-row font-semibold items-center text-center text-blanco gap-x-2 text-2xl">
+                        <img src="https://perealemany-dev.vercel.app/developer-logo.svg" class="w-12 h-12" alt="Logo"/>
+                    <div class="w-max h-auto flex flex-col items-start text-center">
+                        <h3 class="text-2xl">Pere Alemany</h3>
+                       
+                        <h2 class="text-sm"><span class="text-magenta">Full-Stack</span> DEVELOPER</h2>
+                    </div>
+                </a>
+    </div>
     </section>
     
 </div>
@@ -83,6 +95,18 @@ const añoActual = new Date().getFullYear();
       </span>
     </div>
     
+    <!-- <div class="flex flex-col absolute bottom-2 right-2 xs:bottom-4 xs:right-4 sm:bottom-4 sm:right-4 md:bottom-2 md:right-2 justify-center place-items-center gap-1">
+                <span class="text-accent font-semibold text-2xl">Web desenvolupada per</span>
+                <a href="https://perealemany-dev.vercel.app" target="_blank" class="flex flex-row font-semibold items-center text-center text-blanco gap-x-2 text-2xl">
+                        <img src="https://perealemany-dev.vercel.app/developer-logo.svg" class="w-12 h-12" alt="Logo"/>
+                    <div class="w-max h-auto flex flex-col items-start text-center">
+                        <h3 class="text-2xl">Pere Alemany</h3>
+                       
+                        <h2 class="text-sm"><span class="text-magenta">Full-Stack</span> DEVELOPER</h2>
+                    </div>
+                </a>
+    </div> -->
+
 </footer>
 
 <!--Mensaje cookies -->

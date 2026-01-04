@@ -27,13 +27,13 @@ export const ENLACES = [
         href: '/preguntas-frecuentes',
         nombre: 'Preguntes Freqüents',
     },
-    {
-        href: '/usuario/galeria',
-        nombre: 'Galeria',
-    },
-    {
-        href: '/',
-        nombre: 'Inici',
-    }
+    // {
+    //     href: '/usuario/galeria',
+    //     nombre: 'Galeria',
+    // },
+    // {
+    //     href: '/',
+    //     nombre: 'Inici',
+    // }
 
 ]
