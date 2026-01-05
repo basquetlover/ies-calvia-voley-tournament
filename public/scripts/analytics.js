@@ -34,19 +34,27 @@ function getOS() {
 // Función para obtener país/región usando una API gratuita (ipapi.co)
 async function getIPAndCountry() {
   try {
-    // Obtener IP pública
-    const ipResponse = await fetch('https://api.ipify.org?format=json');
-    const ipData = await ipResponse.json();
-    const clientIP = ipData.ip;
+    console.log('Obteniendo IP y geolocalización...');
+    // Paso 1: Obtener IP pública
+    // const ipResponse = await fetch('https://api.ipify.org?format=json');
+    // const ipData = await ipResponse.json();
+    // const clientIP = ipData.ip;
 
-    // Usar la IP para geolocalización (ej. con ipapi.co)
-    const geoResponse = await fetch(`https://ipapi.co/${clientIP}/json/`);
+    // Paso 2: Enviar IP a tu backend para geolocalización
+    const geoResponse = await fetch('https://perealemany-dev.vercel.app/api/analytics/geoLoc', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}) // opcional, deja que la API detecte la IP
+    });
+
     const geoData = await geoResponse.json();
+    console.log('Geo:', geoData);
+
 
     return {
-      ip: clientIP,
-      country: geoData.country_name || 'Unknown',
-      region: geoData.region || 'Unknown'
+      //ip: clientIP,
+      country: geoData.geo.country || 'Unknown',
+      region: geoData.geo.city || 'Unknown'
     };
   } catch (error) {
     console.error('Error obteniendo IP o geo:', error);
