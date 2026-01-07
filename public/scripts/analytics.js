@@ -122,7 +122,7 @@ function sendAnalytics() {
 }
 
 // 5 segundos
-setTimeout(sendAnalytics, 5000);
+setTimeout(sendAnalytics, 30000);
 
 // interacción
 ['click', 'scroll', 'keydown', 'touchstart'].forEach(e =>
