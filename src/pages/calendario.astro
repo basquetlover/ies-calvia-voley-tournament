@@ -20,9 +20,15 @@ const { data: torneo, error: errorTorneos } = await supabaseAdmin
   return `${dia} de ${mes}`;
 }
 
-const inicioFormateado = formatarDataCatalan(torneo?.in_inicio);
-const finFormateado = formatarDataCatalan(torneo?.in_fin);
-const fechaFormateada = formatarDataCatalan(torneo?.fecha);
+ let inicioFormateado = "Per decidir"
+let finFormateado = "Per decidir"
+let fechaFormateada = "Per decidir" 
+if(torneo){
+     inicioFormateado = formatarDataCatalan(torneo?.in_inicio);
+     finFormateado = formatarDataCatalan(torneo?.in_fin);
+     fechaFormateada = formatarDataCatalan(torneo?.fecha);
+}
+
 ---
 <LayoutMenu title="Calendari | IES Calvià Voley Tournament" descripcion="Descobreix cada data important d'aquest torneig: inscripcions, reunions ...">
     <section class="max-w-4xl w-auto h-auto m-auto my-10 p-2 mx-auto text-lg xs:text-base sm:text-base md:text-lg font-light text-blanco">
