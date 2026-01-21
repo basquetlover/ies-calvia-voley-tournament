@@ -17,7 +17,7 @@ const { data: torneo, error: errorTorneos } = await supabaseAdmin
   const mes = formatterMonth.format(date);
 
   // Meses en catalán van en minúscula y la preposición "de" se incluye manualmente
-  return `${dia} de ${mes}`;
+  return `${dia} d'${mes}`;
 }
 let inicioFormateado = ""
 let finFormateado = ""
@@ -34,9 +34,20 @@ fechaFormateada = formatarDataCatalan(torneo?.fecha);
 {
   fechaFormateada != "" ? (<>
   <div class=" italic  mx-auto w-max relative text-end mt-10">
-<p class="text-6xl text-amarillo anton-regular uppercase">Hora de</p>
-<p class="text-8xl text-blanco anton-regular uppercase">Tornar</p>
-<h3 class="text-center text-amarillo  font-semibold text-5xl xs:text-3xl sm:text-4xl md:text-5xl imperial-script-regular absolute -bottom-6 -right-8">{fechaFormateada}</h3>
+    <div class="relative grid grid-cols-[1fr_auto] gap-3 items-end">
+      <p class="text-8xl text-blanco anton-regular uppercase">El</p>
+      <p class="text-3xl text-amarillo anton-regular">4a EDICIÓ</p>
+    </div>
+      <p class="text-8xl text-blanco anton-regular uppercase">Darrer</p>
+      <div class="relative grid grid-cols-[1fr_auto] gap-6 items-end">
+        <div>
+          <h3 class="text-center text-amarillo  font-semibold text-5xl xs:text-3xl sm:text-4xl md:text-5xl imperial-script-regular absolute -top-6 -left-6">{fechaFormateada}</h3>
+        </div>
+        <div class="">
+          <p class="text-8xl text-blanco anton-regular uppercase">Ball</p>
+        </div>
+        
+      </div>
 </div>
   
     <a href="https://maps.app.goo.gl/VTPP4ENdYY8xfinr8" target="_blank" class="text-blanco   hover:text-amarillo duration-300 w-max my-6 group text-3xl xs:text-xl sm:text-xl md:text-3xl mx-auto text-center flex content-center items-center">
