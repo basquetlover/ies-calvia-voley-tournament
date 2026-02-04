@@ -91,7 +91,7 @@ if(usuario){
     const { data: adminData, error } = await supabaseAdmin
             .from("Administradores")
             .select("rango, user_email")
-            .eq("user_email", usuario.email)
+            .or(`user_email.eq.${usuario.email},user_email.eq.${usuario.email_microsoft}`)
             .single();
 if(error){
     console.log(
@@ -99,7 +99,7 @@ if(error){
     )
 }
 // adminData?.rango === "Owner" || 
-if(adminData?.rango === "Owner" || adminData?.rango === "Co-Owner" || adminData?.rango === "Staff"){
+if(adminData?.rango === "Owner" || adminData?.rango === "Co-Owner" || adminData?.rango === "Staff" || adminData?.rango === "Oficial de Mesa" || adminData?.rango === "Arbitro"){
     RangoFechas = true;
 
     const { data: adminAccess } = await supabaseAdmin
