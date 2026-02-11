@@ -1624,6 +1624,13 @@ const condiciones = document.getElementById("condiciones") as HTMLInputElement;
             // 1️⃣ Crear equipo
             if(paso1 !== "Completado"){
               mostrarEspera("espera");
+              const form = document.getElementById("equipo-form") as HTMLFormElement;
+                const fd0 = new FormData(form); // 🔥 Esto recoge TODOS los inputs automáticamente
+
+              // 🔹 1️⃣ Verificación previa con TODO el formulario
+              let resVer = await fetch("/api/inscripcion/verificacion", { method: 'POST', body: fd0 });
+              if (!(await procesarRespuesta(resVer, "verificación"))) return;
+
                 const fd1 = new FormData();
                 fd1.append("nombre_equipo", datos.nombre_equipo || "");
                 fd1.append("capitan_edit", datos.capitan_edit || "");
