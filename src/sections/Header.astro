@@ -22,8 +22,8 @@ const paginas_importantes = [
 }));
 
 const paginas_secundarias = [
-{ name: "1a Edició", href: "/torneo-navidad" },
-{ name: "2a Edició", href: "/torneo-semana-santa" },
+{ name: "1a Edició", href: "/edicion/torneo-navidad" },
+{ name: "2a Edició", href: "/edicion/torneo-semana-santa" },
     { name: "Equips", href: "/equipos" },
     { name: "Normativa", href: "/normativa" },
     { name: "Bases de Competició", href: "/bases-de-competicion" },
@@ -33,7 +33,7 @@ const paginas_secundarias = [
     { name: "Voluntaris", href: "/voluntarios" },
     { name: "Calendari", href: "/calendario" },
     
-].map((page) => ({
+].map((page) => ({  
     ...page,
     isActive: normalizedPathName === page.href,
 }));
