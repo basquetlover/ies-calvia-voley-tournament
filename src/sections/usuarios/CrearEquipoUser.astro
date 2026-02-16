@@ -28,6 +28,7 @@ export { jugadores, jugadores_extra, staff };
 import { verificarSesion } from "src/lib/session";
 import PoliticaInscripcion from "@components/PoliticaInscripcion.astro";
 import FormSend from "@components/FormSend.astro";
+import RecuperarInscripcionAnterior from "@components/RecuperarInscripcionAnterior.jsx";
 
 
 const usuario = await verificarSesion(Astro.request);
@@ -152,6 +153,9 @@ file.addEventListener('change', (e: Event) => {
 
 <!-- action="/api/usuario/anadir-equipo" -->
 <div class="max-w-5xl w-full h-max py-2  overflow-hidden mx-auto my-10 ">
+  <!-- Componente para recuperar y precargar inscripción anterior -->
+  <RecuperarInscripcionAnterior client:load />
+  
   <form id="equipo-form" method="POST" class="space-y-4"   enctype="multipart/form-data">
     <div id="errorbox" class="text-red-500 bg-gris rounded-lg px-3 py-2 text-center error-box"></div>
     <!-- Datos usuario -->
@@ -309,6 +313,7 @@ file.addEventListener('change', (e: Event) => {
             <input
             type="text"
             name={`entrenador_2n_apellido`}
+            id={`entrenador_2n_apellido`}
             placeholder="Segon Cognom de l'entrenador"
             class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
             
@@ -328,6 +333,7 @@ file.addEventListener('change', (e: Event) => {
             
         <select
           name={`entrenador_curso`}
+          id={`entrenador_curso`}
           class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
           
           
@@ -385,6 +391,7 @@ file.addEventListener('change', (e: Event) => {
             </label>
             <input
             type="email"
+            id={`entrenador_email`}
             name={`entrenador_email`}
             placeholder="Email de l'entrenador"
             class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
@@ -940,6 +947,7 @@ file.addEventListener('change', (e: Event) => {
           <input
           type="text"
           name={`profesor_2n_apellido`}
+          id={`profesor_2n_apellido`}
           placeholder="Segon Cognom de l'profesor"
           class="px-2 py-1 w-56 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
           
@@ -959,6 +967,7 @@ file.addEventListener('change', (e: Event) => {
           
       <select
         name={`profesor_curso`}
+        id={`profesor_curso`}
         class="px-3 py-2 w-44 h-12 bg-gris-claro rounded-full text-base text-blanco border-none"
       >
         
@@ -984,6 +993,7 @@ file.addEventListener('change', (e: Event) => {
           </label>
           <input
           type="email"
+          id="profesor_email"
           name={`profesor_email`}
           placeholder="Email de l'profesor"
           class="px-2 py-1 w-72 overflow-hidden h-12 bg-gris-claro rounded-full text-base text-blanco border-none"

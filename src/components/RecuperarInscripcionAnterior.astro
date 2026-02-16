@@ -1,0 +1,405 @@
+---
+/**
+ * RecuperarInscripcionAnterior.astro
+ * Componente que revisa si el usuario tiene inscripción en edición anterior
+ * y muestra un popup para confirmar si desea cargar los datos
+ */
+import { verificarSesion } from "src/lib/session";
+
+const usuario = await verificarSesion(Astro.request);
+---
+
+<div id="modal-inscripcion-anterior" class="oculto fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
+  <div class="bg-gris-claro rounded-lg shadow-2xl p-6 max-w-md w-11/12 border-2 border-accent">
+    <div class="flex items-center gap-3 mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-amarillo" fill="currentColor" viewBox="0 -960 960 960">
+        <path d="M480-280q17 0 29-12t12-29q0-17-12-29t-29-12q-17 0-29 12t-12 29q0 17 12 29t29 12Zm0-120q17 0 29-12t12-29v-120q0-17-12-29t-29-12q-17 0-29 12t-12 29v120q0 17 12 29t29 12Zm0-400q83 0 156 31t127 85q54 54 85 127t31 156q0 83-31 156t-85 127q-54 54-127 85t-156 31q-83 0-156-31t-127-85q-54-54-85-127t-31-156q0-83 31-156t85-127q54-54 127-85t156-31Zm0 480q66 0 124-25t102-68q44-43 68-101t25-124q0-66-25-124t-68-102q-44-43-102-68t-124-25q-66 0-124 25t-102 68q-44 44-68 102t-25 124q0 66 25 124t68 101q44 43 102 68t124 25Z"/>
+      </svg>
+      <h3 class="text-2xl font-bold text-amarillo">Inscripción Anterior Encontrada</h3>
+    </div>
+    
+    <p class="text-blanco mb-4 text-base">
+      Hemos detectado que ya participaste en el torneo anterior.
+    </p>
+    
+    <!-- Información del equipo anterior -->
+    <div class="bg-azul bg-opacity-20 rounded-lg p-4 mb-4 border border-azul border-opacity-50">
+      <p class="text-gray-300 text-sm mb-2">Datos encontrados:</p>
+      <div class="space-y-1">
+        <p class="text-amarillo font-semibold">
+          Equipo: <span id="modal-nombre-equipo" class="text-blanco">-</span>
+        </p>
+        <p class="text-amarillo font-semibold text-sm">
+          Edición: <span id="modal-edicion" class="text-blanco">-</span>
+        </p>
+      </div>
+    </div>
+    
+    <p class=" mb-6 text-sm text-gray-300">
+      ¿Deseas cargar los datos de tu inscripción anterior para rellenar automáticamente el formulario?
+    </p>
+    
+    <div class="flex gap-3 justify-end">
+      <button 
+        id="btn-rechazar-datos"
+        class="px-4 py-2 rounded-lg bg-cancelar bg-opacity-70 hover:bg-opacity-100 text-blanco font-semibold transition-all duration-200"
+      >
+        No, gracias
+      </button>
+      <button 
+        id="btn-aceptar-datos"
+        class="px-4 py-2 rounded-lg bg-aceptar hover:bg-opacity-90 text-blanco font-semibold transition-all duration-200"
+      >
+        Sí, cargar datos
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface DatosInscripcionAnterior {
+    success: boolean;
+    message?: string;
+    equipo?: {
+      id: number;
+      nombre_equipo: string;
+      escudo?: string;
+      capitan_edit?: string;
+    };
+    jugadores?: Array<{
+      nombre: string;
+      apellido1: string;
+      apellido2?: string;
+      curso: string;
+      genero: string;
+      email?: string;
+    }>;
+    staff?: Array<{
+      nombre: string;
+      apellido1: string;
+      apellido2?: string;
+      curso: string;
+      genero: string;
+      email?: string;
+      puesto: string;
+    }>;
+    edicionAnterior?: {
+      nombre: string;
+    };
+  }
+
+  let datosActuales: DatosInscripcionAnterior | null = null;
+
+  async function verificarInscripcionAnterior() {
+    try {
+      const response = await fetch("/api/inscripcion/recuperar-anterior", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        console.log("No hay inscripción anterior o error en la consulta");
+        return;
+      }
+
+      const datos: DatosInscripcionAnterior = await response.json();
+
+      if (!datos.success || !datos.equipo) {
+        console.log("No se encontró inscripción anterior");
+        return;
+      }
+
+      // Guardar datos y mostrar modal
+      datosActuales = datos;
+      mostrarModalInscripcionAnterior();
+    } catch (error) {
+      console.error("Error recuperando inscripción anterior:", error);
+    }
+  }
+
+  function mostrarModalInscripcionAnterior() {
+    const modal = document.getElementById("modal-inscripcion-anterior");
+    if (modal && datosActuales) {
+      // Cargar información en el modal
+      const nombreEquipoElement = document.getElementById("modal-nombre-equipo");
+      const edicionElement = document.getElementById("modal-edicion");
+      
+      if (nombreEquipoElement && datosActuales.equipo) {
+        nombreEquipoElement.textContent = datosActuales.equipo.nombre_equipo || "-";
+      }
+      
+      if (edicionElement && datosActuales.edicionAnterior) {
+        edicionElement.textContent = datosActuales.edicionAnterior.nombre || "-";
+      }
+      
+      modal.classList.remove("oculto");
+    }
+  }
+
+  function cerrarModalInscripcionAnterior() {
+    const modal = document.getElementById("modal-inscripcion-anterior");
+    if (modal) {
+      modal.classList.add("oculto");
+    }   
+  }
+
+  function precargarDatos(datos: DatosInscripcionAnterior) {
+    if (!datos.equipo) return;
+
+    // Precarga nombre del equipo
+    const inputNombreEquipo = document.getElementById(
+      "nombre_equipo"
+    ) as HTMLInputElement;
+    if (inputNombreEquipo) {
+      inputNombreEquipo.value = datos.equipo.nombre_equipo || "";
+      inputNombreEquipo.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    // Precarga capitán si existe
+    if (datos.equipo.capitan_edit) {
+      const inputCapitan = document.getElementById(
+        "input_capitan_form"
+      ) as HTMLInputElement;
+      if (inputCapitan) {
+        inputCapitan.value = datos.equipo.capitan_edit;
+      }
+    }
+
+    // Precarga jugadores
+    if (datos.jugadores && datos.jugadores.length > 0) {
+      datos.jugadores.forEach((jugador, index) => {
+        // Nombre
+        const inputNombre = document.getElementById(
+          `player_${index}_name`
+        ) as HTMLInputElement;
+        if (inputNombre) {
+          inputNombre.value = jugador.nombre || "";
+        }
+
+        // Primer apellido
+        const inputApellido1 = document.getElementById(
+          `player_${index}_1r_apellido`
+        ) as HTMLInputElement;
+        if (inputApellido1) {
+          inputApellido1.value = jugador.apellido1 || "";
+        }
+
+        // Segundo apellido
+        const inputApellido2 = document.getElementById(
+          `player_${index}_2n_apellido`
+        ) as HTMLInputElement;
+        if (inputApellido2) {
+          inputApellido2.value = jugador.apellido2 || "";
+        }
+
+        // Curso
+        const selectCurso = document.getElementById(
+          `player_${index}_curso`
+        ) as HTMLSelectElement;
+        if (selectCurso) {
+          selectCurso.value = jugador.curso || "";
+        }
+
+        // Email
+        const inputEmail = document.getElementById(
+          `player_${index}_email`
+        ) as HTMLInputElement;
+        if (inputEmail) {
+          inputEmail.value = jugador.email || "";
+        }
+
+        // Género
+        if (jugador.genero) {
+          const inputGenero = document.getElementById(
+            `genero_${index}`
+          ) as HTMLInputElement;
+          if (inputGenero) {
+            inputGenero.value = jugador.genero;
+          }
+          // Actualizar los spans visuales del género
+          const spanHombre = document.getElementById(`hombre_${index}`);
+          const spanMujer = document.getElementById(`mujer_${index}`);
+          if (jugador.genero === "Hombre" || jugador.genero === "H") {
+            spanHombre?.classList.remove("desactivado");
+            spanMujer?.classList.add("desactivado");
+          } else if (jugador.genero === "Mujer" || jugador.genero === "M") {
+            spanMujer?.classList.remove("desactivado");
+            spanHombre?.classList.add("desactivado");
+          }
+        }
+      });
+    }
+
+    // Precarga entrenador (generalmente en el staff[0] o específicos)
+    if (datos.staff && datos.staff.length > 0) {
+      const entrenador = datos.staff.find((s) => s.puesto === "Entrenador");
+      const profesor = datos.staff.find((s) => s.puesto === "Profesor");
+
+      if (entrenador) {
+        precargarPersonal("entrenador", entrenador);
+      }
+
+      if (profesor) {
+        precargarPersonal("profesor", profesor);
+      }
+
+      // Precarga resto del staff (cuerpo técnico)
+      const staffTecnico = datos.staff.filter(
+        (s) => s.puesto !== "Entrenador" && s.puesto !== "Profesor"
+      );
+      staffTecnico.forEach((personal, index) => {
+        precargarPersonal(`staff_${index}`, personal);
+      });
+    }
+
+    // Mostrar notificación de datos precargados
+    mostrarNotificacion("✓ Datos de inscripción anterior cargados exitosamente");
+  }
+
+  function precargarPersonal(
+    tipo: string,
+    datos: {
+      nombre: string;
+      apellido1: string;
+      apellido2?: string;
+      curso: string;
+      genero: string;
+      email?: string;
+    }
+  ) {
+    // Nombre
+    const inputNombre = document.getElementById(`${tipo}_name`) as HTMLInputElement;
+    if (inputNombre) {
+      inputNombre.value = datos.nombre || "";
+    }
+
+    // Primer apellido
+    const inputApellido1 = document.getElementById(
+      `${tipo}_1r_apellido`
+    ) as HTMLInputElement;
+    if (inputApellido1) {
+      inputApellido1.value = datos.apellido1 || "";
+    }
+
+    // Segundo apellido
+    const inputApellido2 = document.getElementById(
+      `${tipo}_2n_apellido`
+    ) as HTMLInputElement;
+    if (inputApellido2) {
+      inputApellido2.value = datos.apellido2 || "";
+    }
+
+    // Curso
+    const selectCurso = document.getElementById(
+      `${tipo}_curso`
+    ) as HTMLSelectElement;
+    if (selectCurso) {
+      selectCurso.value = datos.curso || "";
+    }
+
+    // Email
+    const inputEmail = document.getElementById(`${tipo}_email`) as HTMLInputElement;
+    if (inputEmail) {
+      inputEmail.value = datos.email || "";
+    }
+
+    // Género
+    if (datos.genero) {
+      const inputGenero = document.getElementById(
+        `genero_${tipo}`
+      ) as HTMLInputElement;
+      if (inputGenero) {
+        inputGenero.value = datos.genero;
+      }
+      // Actualizar los spans visuales del género
+      const spanHombre = document.getElementById(`hombre_${tipo}`);
+      const spanMujer = document.getElementById(`mujer_${tipo}`);
+      if (datos.genero === "Hombre" || datos.genero === "H") {
+        spanHombre?.classList.remove("desactivado");
+        spanMujer?.classList.add("desactivado");
+      } else if (datos.genero === "Mujer" || datos.genero === "M") {
+        spanMujer?.classList.remove("desactivado");
+        spanHombre?.classList.add("desactivado");
+      }
+    }
+  }
+
+  function mostrarNotificacion(mensaje: string) {
+    const errorbox = document.getElementById("errorbox");
+    if (errorbox) {
+      errorbox.innerHTML = `<div class="text-green-500 bg-green-900 bg-opacity-30 rounded-lg px-3 py-2 text-center">${mensaje}</div>`;
+      setTimeout(() => {
+        errorbox.innerHTML = "";
+      }, 5000);
+    }
+  }
+
+  function configurarEventListeners() {
+    console.log("Configurando event listeners...");
+    
+    const btnAceptar = document.getElementById("btn-aceptar-datos");
+    const btnRechazar = document.getElementById("btn-rechazar-datos");
+    const modal = document.getElementById("modal-inscripcion-anterior");
+
+    console.log("btn-aceptar-datos:", btnAceptar);
+    console.log("btn-rechazar-datos:", btnRechazar);
+    console.log("modal:", modal);
+
+    if (btnAceptar) {
+      btnAceptar.onclick = () => {
+        console.log("Botón aceptar clickeado");
+        if (datosActuales) {
+          precargarDatos(datosActuales);
+          mostrarNotificacion("✓ Datos de inscripción anterior cargados exitosamente");
+        }
+        cerrarModalInscripcionAnterior();
+      };
+    } else {
+      console.warn("btn-aceptar-datos no encontrado");
+    }
+
+    if (btnRechazar) {
+      btnRechazar.onclick = () => {
+        console.log("Botón rechazar clickeado");
+        cerrarModalInscripcionAnterior();
+        datosActuales = null;
+      };
+    } else {
+      console.warn("btn-rechazar-datos no encontrado");
+    }
+
+    // Cerrar modal al hacer clic fuera
+    if (modal) {
+      modal.onclick = (e) => {
+        if (e.target === modal) {
+          console.log("Clic fuera del modal");
+          cerrarModalInscripcionAnterior();
+          datosActuales = null;
+        }
+      };
+    }
+  }
+
+  // Ejecutar al cargar el DOM
+  function inicializar() {
+    console.log("Inicializando component...");
+    configurarEventListeners();
+    verificarInscripcionAnterior();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", inicializar);
+  } else {
+    inicializar();
+  }
+
+  // También usar setTimeout para asegurar que todo está listo
+  setTimeout(inicializar, 100);
+
+
+</script>
+
+<noscript>
+  <div class="text-yellow-500 bg-yellow-900 bg-opacity-30 rounded-lg px-3 py-2 text-center">
+    Se requiere JavaScript habilitado para cargar datos de inscripciones anteriores
+  </div>
+</noscript>

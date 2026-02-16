@@ -535,7 +535,7 @@ console.log(usuario_id, usuario_curso, usuario_email, usuario_nombre)
                     <path d="m332-285 148-148 148 148 47-47-148-148 148-148-47-47-148 148-148-148-47 47 148 148-148 148 47 47ZM480-80q-82 0-155-31-73-32-128-86-54-55-85-128T80-480q0-83 32-156t85-127q55-54 128-85t155-32q83 0 156 32t127 85q54 54 86 127t31 156q0 82-31 155-32 73-86 128-54 54-127 86T480-80Z"/>
                 </svg>
                     </span>
-                    <p class="text-[#640404]">Seleccioni el gènere del ${index + 7}. Jugador ${nombre}</p>
+                    <p class="text-[#640404]">Seleccioni el gènere del ${index + 1}. Staff ${nombre}</p>
                     </div>`, 
                     { status: 401, headers: { "Content-Type": "text/html" } }
                 );
