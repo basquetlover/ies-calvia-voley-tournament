@@ -145,7 +145,7 @@ const Pantalla = () => {
     const finalizar = setTimeout(() => {
       setIsTransitioning(false);
       setSiguienteIndice(null);
-    }, 1800); // duración total animación
+    },4000); // duración total animación
 
     return () => clearTimeout(finalizar);
   }, [isTransitioning]);
