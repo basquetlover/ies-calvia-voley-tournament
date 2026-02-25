@@ -20,10 +20,41 @@ import GaleriaSS from "@sections/usuarios/GaleriaSS.astro";
 <LayoutMenu title="Galeria | IES Calvià Voley Tournament" descripcion="Galeria d'imatges de la edició de Nadal" >
     <SpamDescarga />
     <PortadaGaleria />
-    <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa</h2>
-    <GaleriaSS />
-    <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal</h2>
-    <GaleriaFotos />
+    <section class="w-full h-auto flex flex-col my-5">
+        <div class="w-[95%] mx-auto flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden text-lg relative">
+    <div class="w-full rounded h-[2px] bg-accent -z-10 absolute bottom-[1px]">&nbsp;</div>
+
+    <div class="p-3 text-blanco cursor-not-allowed relative rounded-t shrink-0">
+        <p>Nadal 2025</p>
+        <span class="absolute bottom-0 text-amarillo left-1/2 transform -translate-x-1/2 text-[10px]">
+            Pròximament
+        </span>
+    </div>
+
+    <div id="btn-edicion-2" class="p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0">
+        <p>Setmana Santa 2025</p>
+    </div>
+
+    <div id="btn-edicion-1" class="p-3 text-blanco cursor-pointer rounded-t shrink-0">
+        <p>Nadal 2024</p>
+    </div>
+</div>
+        <div class="w-full h-auto my-5">
+            <!-- Torneo Semana Santa 2025 -->
+            <div class="edicio-2">
+                <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa</h2>
+                <GaleriaSS />
+            </div>
+
+            <!-- Torneo Navidad 2024 -->
+            <div id="edicio-1" class="hidden">
+                <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2024</h2>
+                <GaleriaFotos />
+            </div>
+        </div>
+    </section>
+    
+    
     <div class="w-full h-10 mt-10 flex items-center place-content-center">
         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=voley_tournament@iescalvia.com&su=Descarregar%20Imatges%20|%20IES%20Calvià%20Voley%20Tournament" target="_blank" class=" bg-amarillo px-3 py-2 rounded-full mx-auto text-xl hover:scale-105 transition-all duration-300">
             Vols descarregar alguna imatge?
@@ -36,3 +67,28 @@ import GaleriaSS from "@sections/usuarios/GaleriaSS.astro";
     }
 </style>
 </ControlAcces>
+
+<script>
+    const btnEdicion1 = document.getElementById("btn-edicion-1")!;
+    const btnEdicion2 = document.getElementById("btn-edicion-2")!;
+    const edicion1 = document.getElementById("edicio-1")!;
+    const edicion2 = document.querySelector(".edicio-2")!;
+
+    btnEdicion1.addEventListener("click", () => {
+        btnEdicion1.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+        btnEdicion1.classList.remove("cursor-not-allowed");
+        btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+        btnEdicion2.classList.add("cursor-not-allowed");
+        edicion1.classList.remove("hidden");
+        edicion2.classList.add("hidden");
+    });
+
+    btnEdicion2.addEventListener("click", () => {
+        btnEdicion2.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+        btnEdicion2.classList.remove("cursor-not-allowed");
+        btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+        btnEdicion1.classList.add("cursor-not-allowed");
+        edicion2.classList.remove("hidden");
+        edicion1.classList.add("hidden");
+    });
+</script>

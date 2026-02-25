@@ -130,10 +130,12 @@ const Pantalla = () => {
   // ----------------------------------------------------
 
   const handleMidpoint = () => {
-    if (siguienteIndice !== null) {
+  if (siguienteIndice !== null) {
+    requestAnimationFrame(() => {
       setIndice(siguienteIndice);
-    }
-  };
+    });
+  }
+};
 
   // ----------------------------------------------------
   // FINALIZAR TRANSICIÓN
@@ -145,7 +147,7 @@ const Pantalla = () => {
     const finalizar = setTimeout(() => {
       setIsTransitioning(false);
       setSiguienteIndice(null);
-    },4000); // duración total animación
+    },5000); // duración total animación
 
     return () => clearTimeout(finalizar);
   }, [isTransitioning]);

@@ -31,20 +31,20 @@ export default {
 		//   xl: '1280px',  // Pantallas extra grandes
 		},
 
-		  keyframes: {
-    "cuadrado-in": {
-      "0%": { opacity: "0", transform: "scale(0)" },
-      "100%": { opacity: "1", transform: "scale(1)" },
-    },
-    "cuadrado-out": {
-      "0%": { opacity: "1", transform: "scale(1)" },
-      "100%": { opacity: "0", transform: "scale(0)" },
-    },
+		keyframes: {
+  "cuadrado-in": {
+    "0%": { opacity: "0", transform: "scale(0)" },
+    "100%": { opacity: "1", transform: "scale(1)" },
   },
-  animation: {
-    "cuadrado-in": "cuadrado-in 0.4s forwards",
-    "cuadrado-out": "cuadrado-out 0.4s forwards",
+  "cuadrado-out": {
+    "0%": { opacity: "1", transform: "scale(1)" },
+    "100%": { opacity: "0", transform: "scale(0)" },
   },
+},
+animation: {
+  "cuadrado-in": "cuadrado-in 0.3s ease-out both",
+  "cuadrado-out": "cuadrado-out 0.3s ease-in both",
+},
 	  },
 	},
 	plugins: [
