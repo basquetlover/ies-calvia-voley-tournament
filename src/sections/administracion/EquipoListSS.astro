@@ -88,11 +88,11 @@ if (torneos) {
 
 {torneosConEquipos.map((torneo) => (
   <section class="my-16">
-    <h2 class="ml-10 text-accent font-bold text-5xl">
-      Equipos {torneo.nombre}
-      <span class="text-amarillo">
+    <h2 class="ml-10 text-accent font-bold text-3xl">
+      Equipos {torneo.nombre} 
+      <span class="text-amarillo ml-2">
   {torneo.equipos.filter(e => e.aceptado === "Inscrit").length}
-  <span class="text-3xl"> / {torneo.equipos.length}</span>
+  <span class="text-xl"> / {torneo.equipos.length}</span>
 </span>
     </h2>
 
