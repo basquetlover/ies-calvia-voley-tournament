@@ -6,7 +6,7 @@ import SinPermisos from "@components/admin/SinPermisos.astro";
 const usuario = await verificarSesion(Astro.request);
 
 if(usuario){
-	console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
+	//console.log("Usuario:", usuario.email, usuario.nombre, usuario.curso )
 }
 
 const pathname = Astro.url.pathname;

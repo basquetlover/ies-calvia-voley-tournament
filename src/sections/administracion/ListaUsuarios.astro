@@ -1,4 +1,5 @@
 ---
+import Usuario from "@pages/usuario.astro";
 import { supabaseAdmin } from "src/lib/supabase";
 
 // Obtén parámetros de la URL
@@ -13,14 +14,20 @@ const filtroCurso = url.searchParams.get('curso') || '';
 const filtroEmail = url.searchParams.get('email') || '';
 
 // Consulta a la DB aplicando filtros
-let { data: Usuarios, error } = await supabaseAdmin
+let query = supabaseAdmin
   .from('Usuarios')
-  .select('id, nombre, curso, email, anyo, estado')
+  .select('id, nombre, curso, email, email_microsoft, anyo, estado')
   .ilike('nombre', `%${filtroNombre}%`)
   .ilike('curso', `%${filtroCurso}%`)
-  .ilike('email', `%${filtroEmail}%`)
   .order('id', { ascending: false });
 
+if (filtroEmail) {
+  query = query.or(
+    `email.ilike.%${filtroEmail}%,email_microsoft.ilike.%${filtroEmail}%`
+  );
+}
+
+let { data: Usuarios, error } = await query;
 // Verifica que Usuarios no sea null
 if (!Usuarios) {
     return console.log("no hay usuarios")
@@ -32,6 +39,8 @@ if(error){
 // Paginación
 const totalUsuarios = Usuarios.length;
 const usuariosToShow = Usuarios.slice(minimo, count);
+
+
 ---
 <div class="max-w-5xl w-auto mx-auto h-auto content-center mb-10">
     <div class="flex flex-col relative w-full mx-auto ">
@@ -79,12 +88,13 @@ id="btn_filtrar"
                 </tr>
                 <tbody>
                     {usuariosToShow.map((usuario, index) => (
+                        
                         <tr class="font-normal text-center gap-y-2" >
-                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.id}</a></td>
-                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.nombre}</a></td>
-                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.curso}</a></td>
-                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.anyo}</a></td>
-                            <td><a href={`/admin/usuario/${usuario.email}`}>{usuario.email}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email_microsoft || usuario.email || ''}`}>{usuario.id}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email_microsoft || usuario.email || ''}`}>{usuario.nombre}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email_microsoft || usuario.email || ''}`}>{usuario.curso}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email_microsoft || usuario.email || ''}`}>{usuario.anyo}</a></td>
+                            <td><a href={`/admin/usuario/${usuario.email_microsoft || usuario.email || ''}`}>{usuario.email_microsoft || usuario.email || ''}</a></td>
                             <td>
                                 {
                                     usuario.estado === "activa" ? (

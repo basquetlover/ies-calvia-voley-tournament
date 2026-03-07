@@ -15,7 +15,7 @@ const { data: ListaEquipos, error } = await supabaseAdmin
   .from(TablaEquipos)
   .select('nombre_equipo, escudo')
   .order('id', { ascending: true });
-  console.log("Equipos:", ListaEquipos);
+  //console.log("Equipos:", ListaEquipos);
   if(error){
     console.log("Error al obtener equipos:", error);
   }

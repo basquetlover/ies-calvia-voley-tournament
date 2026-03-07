@@ -29,10 +29,10 @@ const fetchEquipos = async () => {
         if (!res.ok) throw new Error("Error al cargar historial desde DB");
 
         const resultado = await res.json();
-        console.log("Respuesta API:", resultado);
-        console.log("Equipos cargados:", resultado.ListaEquipos);
+        //console.log("Respuesta API:", resultado);
+        //console.log("Equipos cargados:", resultado.ListaEquipos);
         const listaEquipos = resultado.ListaEquipos;
-        console.log("Lista de Equipos:", listaEquipos);
+        //console.log("Lista de Equipos:", listaEquipos);
         setEquipos(listaEquipos);
 
   } catch (error) {

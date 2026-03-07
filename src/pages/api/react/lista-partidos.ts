@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+
 import { supabaseAdmin } from "src/lib/supabase";
 
 const { data: ConfTorneo, error } = await supabaseAdmin
@@ -15,9 +15,9 @@ const { data: ListaPartidos, error } = await supabaseAdmin
   .from(TablaPartidos)
   .select('*')
   .order('id', { ascending: true });
-  console.log("Partidos:", ListaPartidos);
+  //console.log("Partidos:", ListaPartidos);
   if(error){
-    console.log("Error al obtener Partidos:", error);
+    //console.log("Error al obtener Partidos:", error);
   }
 
   return new Response(JSON.stringify({ ListaPartidos  }), { status: 200 });
