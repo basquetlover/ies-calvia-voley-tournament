@@ -18,16 +18,17 @@ const { data: ConfTorneo, error } = await supabaseAdmin
     torneoDate.getMonth() === today.getMonth() &&
     torneoDate.getFullYear() === today.getFullYear();
 
-  if (mismoMes) {
-    //console.log(`El torneo actual de este mes es: ${ConfTorneo.nombre}`);
-     TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
-    TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
-  } else{
-    // console.log(`El torneo actual  ${ConfTorneo.nombre} no es de este mes`);
-    mes = "false";
-  }
+//   if (mismoMes) {
+//     //console.log(`El torneo actual de este mes es: ${ConfTorneo.nombre}`);
+//      TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+//     TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+//   } else{
+//     // console.log(`El torneo actual  ${ConfTorneo.nombre} no es de este mes`);
+//     mes = "false";
+//   }
   //mes = "false";
-   
+   TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+     TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
   } 
   
   if(!ConfTorneo || error || mes === "false"){
@@ -77,7 +78,7 @@ try {
     .select('equipo_local, equipo_visitante, estado, pista, id_partido, LocGlobal, VisGlobal, LocSet1, VisSet1, LocSet2, VisSet2, LocSet3, VisSet3')
     //.in('estado', ['Per Jugar', 'Finalitzat'])
     .neq('id_partido', 'partido_prueba')
-    .order('id', {ascending: true});
+    .order('jornada', {ascending: true});
 
   if (error) {
     console.error(`Error al buscar partido 1`, error.message);
@@ -206,7 +207,7 @@ try {
 </section>
 
 <script>
-    setInterval(enviarDatosAPi, 300000); // 300000 ms = 5 minutos
+    setInterval(enviarDatosAPi, 5 * 60 * 1000); // 300000 ms = 5 minutos
         // Función para enviar datos a la API
 async function enviarDatosAPi() {
         const FormAction = document.getElementById('FormAction') as HTMLInputElement;

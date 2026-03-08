@@ -35,11 +35,11 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     // Obtener partidos de la pista 1
     const { data, error } = await supabaseAdmin
-      .from('PartidosSS')
+      .from('PartidosSS26')
       .select('equipo_local, equipo_visitante, estado, pista, id_partido, LocGlobal, VisGlobal, LocSet1, VisSet1, LocSet2, VisSet2, LocSet3, VisSet3')
       //.in('estado', ['Per Jugar', 'Finalitzat'])
       .neq('id_partido', 'partido_prueba')
-      .order('id', {ascending: true});
+      .order('jornada', {ascending: true});
   
     if (error) {
       console.error(`Error al buscar partido 1`, error.message);
@@ -52,7 +52,7 @@ export const POST: APIRoute = async ({ request }) => {
   
     // Obtener escudos de los equipos
     const { data: equipos, error: errorEquipos } = await supabaseAdmin
-      .from('EquiposSS')
+      .from('EquiposSS26')
       .select('nombre_equipo, escudo')
       .in('nombre_equipo', equiposNombres);
   

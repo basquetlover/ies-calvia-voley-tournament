@@ -17,19 +17,21 @@ const { data: ConfTorneo, error } = await supabaseAdmin
     const torneoDate = new Date(ConfTorneo.fecha);
   const today = new Date();
 
-  const mismoMes =
-    torneoDate.getMonth() === today.getMonth() &&
-    torneoDate.getFullYear() === today.getFullYear();
+//   const mismoMes =
+//     torneoDate.getMonth() === today.getMonth() &&
+//     torneoDate.getFullYear() === today.getFullYear();
 
-  if (mismoMes) {
-    //console.log(`El torneo actual de este mes es: ${ConfTorneo.nombre}`);
-     TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+//   if (mismoMes) {
+//     //console.log(`El torneo actual de este mes es: ${ConfTorneo.nombre}`);
+//      TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+//     TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
+//   } else{
+//     // console.log(`El torneo actual  ${ConfTorneo.nombre} no es de este mes`);
+//     mes = "false";
+//   }
+//   mes = "true";
+   TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
     TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
-  } else{
-    // console.log(`El torneo actual  ${ConfTorneo.nombre} no es de este mes`);
-    mes = "false";
-  }
-  //mes = "false";
    
   } 
   
