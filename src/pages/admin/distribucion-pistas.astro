@@ -5,6 +5,7 @@ import LayoutAll from "@layouts/LayoutAll.astro";
 import Pistas from '@sections/administracion/Pistas.astro';
 import PistasSS from "@sections/administracion/PistasSS.astro";
 import RolSecurity from "@components/admin/RolSecurity.astro";
+import VerPartidos from "@sections/administracion/GestionarPartidos/VerPartidos";
 
 
 
@@ -15,7 +16,8 @@ import RolSecurity from "@components/admin/RolSecurity.astro";
     {/* <div class="w-full h-screen flex items-center">
         <h2 class="text-6xl text-amarillo text-center my-auto p-2">Distribución de Pistas por definir</h2>
     </div> */}
-    <PistasSS />
+    <VerPartidos client:load />
+    <!-- <PistasSS /> -->
        {/* <Pistas />     */}
     </RolSecurity>
  

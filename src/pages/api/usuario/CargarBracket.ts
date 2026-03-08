@@ -59,7 +59,9 @@ const { data: ConfTorneo, error } = await supabaseAdmin
     // console.log(`El torneo actual  ${ConfTorneo.nombre} no es de este mes`);
     mes = "false";
   }
-  //mes = "false";
+  mes = "true";
+   TablaPartidos = `Partidos${ConfTorneo.id_torneo}`;
+    TablaEquipos = `Equipos${ConfTorneo.id_torneo}`;
    
   } 
   

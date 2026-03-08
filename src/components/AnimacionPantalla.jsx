@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ClasificacionReact from "./ClasificacionReact";
 import MarcadorPabellon from "./MarcadorPabellon";
 import ProximosPartidos from "./ProximosPartidos";
-import CuadradosTransition from "./CuadradosTransition";
+// import CuadradosTransition from "./CuadradosTransition"; // TRANSICIÓN DESACTIVADA
 
 const Pantalla = () => {
 
@@ -27,21 +27,19 @@ const Pantalla = () => {
   const [indice, setIndice] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // 🔥 NUEVO: transición
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [siguienteIndice, setSiguienteIndice] = useState(null);
+  // 🔥 TRANSICIÓN DESACTIVADA
+  // const [isTransitioning, setIsTransitioning] = useState(false);
+  // const [siguienteIndice, setSiguienteIndice] = useState(null);
 
   const pantalla = PANTALLAS[indice];
 
   // ----------------------------------------------------
-  // FUNCIÓN GLOBAL PARA CAMBIAR PANTALLA CON ANIMACIÓN
+  // CAMBIAR PANTALLA (SIN ANIMACIÓN)
   // ----------------------------------------------------
 
   const cambiarPantalla = (nuevoIndice) => {
-    if (nuevoIndice === indice || isTransitioning) return;
-
-    setSiguienteIndice(nuevoIndice);
-    setIsTransitioning(true);
+    if (nuevoIndice === indice) return;
+    setIndice(nuevoIndice);
   };
 
   // ----------------------------------------------------
@@ -49,12 +47,11 @@ const Pantalla = () => {
   // ----------------------------------------------------
 
   useEffect(() => {
-    if (isPaused || isTransitioning) return;
+    if (isPaused) return;
 
     const timer = setTimeout(async () => {
       let siguiente = (indice + 1) % PANTALLAS.length;
 
-      // 🔥 Si siguiente es marcador, comprobar si hay partidos
       if (PANTALLAS[siguiente] === "marcador") {
         try {
           const res = await fetch("/api/usuario/CargarMarcador", {
@@ -88,7 +85,7 @@ const Pantalla = () => {
 
     return () => clearTimeout(timer);
 
-  }, [indice, isPaused, isTransitioning]);
+  }, [indice, isPaused]);
 
   // ----------------------------------------------------
   // TECLADO
@@ -123,34 +120,7 @@ const Pantalla = () => {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [indice, isTransitioning]);
-
-  // ----------------------------------------------------
-  // PUNTO MEDIO DE TRANSICIÓN (cuando pantalla está cubierta)
-  // ----------------------------------------------------
-
-  const handleMidpoint = () => {
-  if (siguienteIndice !== null) {
-    requestAnimationFrame(() => {
-      setIndice(siguienteIndice);
-    });
-  }
-};
-
-  // ----------------------------------------------------
-  // FINALIZAR TRANSICIÓN
-  // ----------------------------------------------------
-
-  useEffect(() => {
-    if (!isTransitioning) return;
-
-    const finalizar = setTimeout(() => {
-      setIsTransitioning(false);
-      setSiguienteIndice(null);
-    },5000); // duración total animación
-
-    return () => clearTimeout(finalizar);
-  }, [isTransitioning]);
+  }, [indice]);
 
   // ----------------------------------------------------
   // RENDER
@@ -190,17 +160,40 @@ const Pantalla = () => {
 
       {pantalla === "despues" && (
         <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-48 h-49 absolute top-10 left-20">
+            <img src="/favicon.svg" className="w-48 h-48" />
+          </div>
+          <div className="w-48 h-48 absolute top-10 right-32">
+                <img src="/img/team-teto.png" className="w-48 h-48 team-teto absolute -top-3 -left-3" />
+                <div className="w-[1px] rotate-45 rounded h-52 absolute -top-2 left-1/2 -translate-x-1/2 bg-accent -z-10 "> &nbsp; </div>
+                <img src="/img/ies-calvia.png" className="w-48 h-48 ies-calvia absolute -bottom-3 -right-3" />
+            </div>
+          <div className="absolute top-10">
+        <h1 className="text-7xl uppercase font-bold text-accent">Pròxims Partits</h1>
+        <div className="flex gap-2 transform scale-150 my-5 justify-center items-center">
+            <p className="px-4 py-2 border border-rojo bg-rojo bg-opacity-10 text-rojo font-semibold rounded-lg text-center">
+                Jugant
+            </p>
+            <p className="px-4 py-2 bg-amarillo text-azul font-semibold rounded-lg text-center">
+                Escalfant
+            </p>
+            <p className="px-4 py-2 bg-azul-suave text-blanco font-semibold rounded-lg text-center">
+                Propers
+            </p>
+            </div>
+            </div>
           <ProximosPartidos />
         </div>
       )}
 
-      {/* 🔥 OVERLAY DE TRANSICIÓN */}
+      {/* 🔥 TRANSICIÓN DESACTIVADA */}
+      {/*
       <CuadradosTransition
         active={isTransitioning}
         onMidpoint={handleMidpoint}
       />
+      */}
 
-      {/* ICONO PAUSA */}
       {isPaused && (
         <div className="fixed bottom-8 right-8 z-50 bg-black/50 p-4 rounded-full">
           ⏸

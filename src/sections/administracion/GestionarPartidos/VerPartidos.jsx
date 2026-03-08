@@ -234,8 +234,7 @@ function EditPartidoForm({ partido, onClose, onSave, equipos, voluntarios }) {
 // Componente principal
 export default function CargarPartidos() {
   const [partidos, setPartidos] = useState([]);
-  const [modalAbierto, setModalAbierto] = useState(false);
-  const [partidoSeleccionado, setPartidoSeleccionado] = useState(null);
+
   const [voluntarios, setVoluntarios] = useState([]);
   const [equipos, setEquipos] = useState([]);
   const [orden, setOrden] = useState("jornada");
@@ -266,8 +265,6 @@ export default function CargarPartidos() {
 
   useEffect(() => { fetchEquipos(); fetchPartidos(); fetchVoluntarios(); }, []);
 
-  const abrirModal = (p) => { setPartidoSeleccionado(p); setModalAbierto(true); };
-  const cerrarModal = () => { setPartidoSeleccionado(null); setModalAbierto(false); };
   const refrescarLista = () => fetchPartidos();
 
   const actualizarDatos = async () => {
@@ -347,7 +344,6 @@ pistas.forEach(pista => {
               <PartidoCard
                 key={p.id_partido}
                 partido={p}
-                onClick={() => abrirModal(p)}
                 calentando={partidosCalentando[p.pista] === p.id_partido}
               />
             ))}
@@ -355,9 +351,7 @@ pistas.forEach(pista => {
         </div>
       ))}
 
-      <Modal isOpen={modalAbierto} onClose={cerrarModal}>
-        {partidoSeleccionado && <EditPartidoForm partido={partidoSeleccionado} onClose={cerrarModal} onSave={refrescarLista} voluntarios={voluntarios} equipos={equipos} />}
-      </Modal>
+      
     </section>
   );
 }
