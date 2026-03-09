@@ -1,0 +1,295 @@
+---
+import { verificarSesion } from "src/lib/session";
+import { supabaseAdmin } from "src/lib/supabase";
+import {IMG} from "@const/img-torneo-semana-santa"
+const usuario = await verificarSesion(Astro.request);
+let equipo = "Sense Equip";
+let equipo_id = "";
+let escudo = "/img/escudos/sin-escudo-blanco.png";
+let block = false;
+let admin = false;
+const acceso_fotos = "ver-fotos-galeria";
+  let accessibleBlocks = [];
+  
+  // Obtén las páginas a las que el usuario tiene acceso
+  try {
+      const { data: pageAccess, error } = await supabaseAdmin
+          .from('AccesoUsuarios')
+          .select('pagina, acceso');
+  
+      if (error) {
+          console.error("Error al obtener acceso:", error);
+      } else if (pageAccess) {
+          // Filtra las páginas a las que el usuario tiene acceso
+          accessibleBlocks = pageAccess
+              .filter(page => page.acceso === true) // Solo páginas con acceso true
+              .map(page => page.pagina); // Obtiene solo las páginas
+          // console.log(accessibleBlocks);
+      }
+  } catch (err) {
+      console.error("Error al obtener acceso:", err);
+  }
+  
+  // Verifica si el usuario tiene acceso a la página actual
+  const userHasAccess = accessibleBlocks.includes(acceso_fotos);
+
+  if(userHasAccess){
+    block = true;
+  }
+if(usuario){
+    const usuario_nombre = usuario.nombre;
+    const usuario_email = usuario.email;
+    let { data: Administradores, error } = await supabaseAdmin
+        .from('Administradores')
+        .select('rango')
+        .eq('user_email', usuario_email)
+        .single();
+
+    if(!Administradores){
+            // console.error("Este usuario no es Staff");
+        } else{
+            admin = true;
+        }
+    
+
+    let { data: Jugador, error: errorJ } = await supabaseAdmin
+    .from('Jugadores')
+    .select('pertenece_equipo')
+    .eq('email', usuario_email)
+    .single(); // Use .single() to get a single record
+
+    if (errorJ) {
+    // console.error('Jugador sin equipo', errorJ.message);
+    // Handle the error appropriately
+    }
+    
+    if (!Jugador) {
+        // console.error('Jugador no encontrado');
+    } else {
+
+    let { data: Equipos, error: errorE } = await supabaseAdmin
+        .from('Equipos')
+        .select('nombre_equipo, escudo, id_equipo')
+        .eq('id', Jugador.pertenece_equipo)
+        .single(); // Use .single() to get a single record
+
+    if (errorE) {
+        // console.error('Error fetching Equipos:', errorE);
+        // Handle the error appropriately
+    }
+    if(Equipos){
+        equipo = Equipos.nombre_equipo
+        equipo_id = Equipos.id_equipo
+        escudo = Equipos.escudo
+    }
+    }
+}
+
+---
+<section class=" w-[95%] mx-auto overflow-hidden">
+<div class="h-[2px] bg-accent rounded-full w-[95%] mx-auto my-10">
+
+</div>
+<div id="photo-container-N25" class="max-w-full mx-auto w-full h-auto flex  place-content-center items-center flex-wrap gap-y-4 gap-x-4 xs:gap-x-0 sm:gap-x-2 md-gap-x-4 ">
+   
+    {IMG.slice(0, 50).map((img, index) => (
+        <div class={`w-96 h-60 overflow-hidden relative xs:scale-90 sm:scale-90 md:scale-100 scale-100 text-blanco ${block === true ? " cursor-pointer" : " cursor-not-allowed "} `} id={`image-N25-${index}`}>
+            <img src={`${img.referencia}`} alt={`Imagen ${index + 1}`} loading="lazy" class="h-full w-auto mx-auto img" />
+            {/* <img src="/img/img-block.png" alt="" loading="lazy" class={`placeholder w-96 h-60 ${block === true ? " opacity-0" : " opacity-100 "} `} /> */}
+        </div>
+    ))}
+    
+    
+</div>
+<div class="w-full flex items-center place-content-center">
+    <button id="load-more-N25" class="mt-4 mx-auto w-max p-2 bg-azul-suave text-white rounded">Cargar más fotos</button>
+</div>
+
+<!-- {
+    block === true ? (
+    <>
+    <div id="modal" class="modal" style="display: none;">
+        <input type="text" id="numero-img" disabled class="bg-transparent text-base text-blanco absolute top-8 left-5" />
+        <input type="hidden" id="src-img" disabled  class="bg-transparent w-max text-base text-blanco absolute top-14 left-5" />
+        <span class="close w-16 h-16 bg-cancelar flex items-center place-content-center text-5xl rounded-full " id="closeModal">X</span>
+        <span class="prev" id="prevImage">&#10094;</span>
+        <span class="next" id="nextImage">&#10095;</span>
+        <img id="modalImage" src="/img/galeria/sin-equipo/portada-1.jpg" alt="Imagen ampliada" />
+        <img src="/img/img-block-2.png" alt="" loading="lazy" class={`placeholder2 ${block === true ? " opacity-0" : " opacity-100 "} `} />
+    </div>
+        </>
+    ):(
+    <></>
+    )
+} -->
+
+</section>
+<script>
+import {IMG} from "@const/img-torneo-semana-santa"
+
+    let displayedImages = 50; // Número de imágenes que se muestran inicialmente
+    const loadMoreButton = document.getElementById('load-more-N25')!;
+    const photoContainer = document.getElementById('photo-container-N25')!;
+
+    loadMoreButton.addEventListener('click', () => {
+        // Cargar más imágenes al hacer clic
+        displayedImages += 50; // Incrementamos el número de imágenes a mostrar
+        const newImages = IMG.slice(displayedImages - 50, displayedImages);
+        
+        newImages.forEach((img, index) => {
+            const imageElement = document.createElement('div');
+            imageElement.classList.add('w-96', 'h-60', 'overflow-hidden', 'relative', 'xs:scale-90', 'sm:scale-90', 'md:scale-100', 'scale-100', 'text-blanco');
+            imageElement.id = `image-N25-${index}`
+            imageElement.innerHTML = `
+                <img src="${img.referencia}" alt="Imagen ${displayedImages - 50 + index + 1}" loading="lazy" class="h-full w-auto mx-auto img" />
+                
+            `;
+            photoContainer.appendChild(imageElement);
+        });
+        if (displayedImages >= IMG.length) {
+        loadMoreButton.style.display = 'none'; // Hide button if no more images
+        return;
+    }
+    });
+</script>
+<style>
+.placeholder{
+  position: absolute;
+  top: 0;
+  left: 0;
+
+}
+.placeholder2{
+  position: absolute;
+  width: auto;
+  height: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+    .img {
+        user-select: none; /* Para navegadores modernos */
+        -webkit-user-drag: none; /* Para Safari */
+        -moz-user-select: none; /* Para Firefox */
+        -ms-user-select: none; /* /* Para Internet Explorer/Edge */
+    }
+    .modal {
+        z-index: 10000000;
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+    }
+    .modal img {
+        max-width: 90%;
+        max-height: 90%;
+    }
+    .close, .prev, .next {
+        z-index: 100000000000;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+        font-size: 40px;
+        cursor: pointer;
+        transition-duration: .3s;
+        user-select: none;
+    }
+    .close {
+        top: 50px;
+        right: 20px;
+    }
+    .prev {
+        left: 20px;
+    }
+    .prev:hover{
+        color: #FFC700;
+        transition-duration: .3s;
+    }
+    .next:hover{
+        color: #FFC700;
+        transition-duration: .3s;
+    }
+    .next {
+        right: 20px;
+    }
+</style>
+
+<script>
+    import {IMG} from "@const/img-torneo-semana-santa" // Asegúrate de que esta importación sea correcta
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Suponiendo que IMAGENES es un array de objetos con la propiedad 'enlace'
+        const imageArray = IMG.map(img => img.referencia); // Extraemos las URLs de las imágenes
+        let currentIndex = 0;
+        const numero_img = document.getElementById('numero-img') as HTMLInputElement;
+        const src_img = document.getElementById('src-img') as HTMLInputElement;
+
+        function openModal(index: number): void {
+            currentIndex = index;
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modalImage') as HTMLImageElement;
+            if (modalImage) {
+                const referencia = imageArray[currentIndex]
+                modalImage.src = imageArray[currentIndex];
+                console.log(referencia)
+                numero_img.value = `Imatge Nº ${currentIndex + 1}`;
+                src_img.value = imageArray[currentIndex];
+            }
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeModal(): void {
+            const modal = document.getElementById('modal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function changeImage(direction: number): void {
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = imageArray.length - 1;
+            } else if (currentIndex >= imageArray.length) {
+                currentIndex = 0;
+            }
+            const modalImage = document.getElementById('modalImage') as HTMLImageElement;
+            if (modalImage) {
+                modalImage.src = imageArray[currentIndex];
+                // src_img.value = `${imageArray[currentIndex]}`;
+                numero_img.value = `Imatge Nº ${currentIndex + 1}`;
+                
+            }
+        }
+
+        // Asignar eventos a las imágenes
+        imageArray.forEach((_, index) => {
+            const imageElement = document.getElementById(`image-N25-${index}`);
+            if (imageElement) {
+                imageElement.addEventListener('click', () => openModal(index));
+            }
+        });
+
+        document.getElementById('closeModal')?.addEventListener('click', closeModal);
+        document.getElementById('prevImage')?.addEventListener('click', () => changeImage(-1));
+        document.getElementById('nextImage')?.addEventListener('click', () => changeImage(1));
+
+        // Control de teclado
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') {
+                changeImage(1);
+            } else if (event.key === 'ArrowLeft') {
+                changeImage(-1);
+            } else if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    });
+</script>
