@@ -11,8 +11,14 @@ export const BASES_COMPETICION = [
             {
                 texto: 'En cas d’empat a un set, el set decisiu es juga a 7 punts (sense diferència de dos punts).',
             },
+            // {
+            //     texto: 'En arribar als 20 minuts de durada del partit i si els equips estan empatats a 0 sets, es disputaran 5 minuts de desempat; si aquest no finalitza, guanyarà l’equip amb més punts totals acumulats.',
+            // },
             {
-                texto: 'En arribar als 20 minuts de durada del partit i si els equips estan empatats a 0 sets, es disputaran 5 minuts de desempat; si aquest no finalitza, guanyarà l’equip amb més punts totals acumulats.',
+                texto: `Si el temps de partit finalitza durant un set, aquest es donarà per finalitzat i el resultat serà el marcador existent en aquell moment.`
+            },
+            {
+                texto: `Per motius d’organització i gestió del temps, el staff del torneig podrà decidir eliminar el set de desempat en alguns partits sense notificació prèvia. En aquest cas, el partit finalitzarà amb el resultat existent en aquell moment (podent ser 1-1).`
             }
         ]
     },
@@ -111,6 +117,9 @@ export const BASES_COMPETICION = [
             },
             {
                 texto: 'Les decisions de l’àrbitre són definitives i s’han de respectar.',
+            },
+            {
+                texto: `L’organització podrà intervenir en qualsevol decisió arbitral en cas de situacions excepcionals que afectin el desenvolupament del torneig.`
             }
         ]
     },
@@ -177,10 +186,19 @@ export const BASES_COMPETICION = [
                 texto: 'Cada equip disposarà d’una pilota pròpia per a l’escalfament.',
             },
             {
-                texto: 'Si una pilota entra a una pista de joc, es farà un primer avís; a la segona vegada, la pilota serà retirada durant aquella ronda d’escalfament.',
+                texto: 'Si una pilota sobrepassa la línia de banquetes d’una pista de joc, es farà un avís a l’equip responsable.',
             },
             {
                 texto: 'El mal ús del material comportarà la prohibició d’utilitzar material d’escalfament durant la resta del torneig.',
+            },
+            {
+                texto: `Si una pilota entra dins d’una pista on s’està disputant un partit, la sanció podrà ser immediata, sense avís previ, i la pilota serà retirada durant aquella ronda d’escalfament.`
+            },
+            {
+                texto: `Qualsevol membre del staff o de l’equip de voluntariat del torneig està autoritzat a aplicar aquestes sancions.`
+            },
+            {
+                texto: `En cas de reiteració o comportament negligent, l’organització podrà retirar la pilota d’escalfament durant més d’una ronda o durant la resta del torneig.`
             }
         ]
     },
@@ -218,6 +236,12 @@ export const BASES_COMPETICION = [
             },
             {
                 texto: 'Un equip que no estigui preparat o no es presenti podrà perdre el partit per decisió de l’organització.',
+            },
+            {
+                texto: `Si un partit finalitza abans del temps establert, el següent partit podrà començar immediatament si els equips estan preparats.`
+            },
+            {
+                texto: `No es permet escalfar amb pilota dins de les pistes de joc entre partits, excepte si l’àrbitre ho autoritza.`
             }
         ]
     },
