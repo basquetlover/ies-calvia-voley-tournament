@@ -1,7 +1,7 @@
 ---
 import { verificarSesion } from "src/lib/session";
 import { supabaseAdmin } from "src/lib/supabase";
-import {IMG} from "@const/img-torneo-semana-santa"
+import {IMG} from "@const/img-torneo-navidad25"
 const usuario = await verificarSesion(Astro.request);
 let equipo = "Sense Equip";
 let equipo_id = "";
@@ -125,7 +125,7 @@ if(usuario){
 
 </section>
 <script>
-import {IMG} from "@const/img-torneo-semana-santa"
+import {IMG} from "@const/img-torneo-navidad25"
 
     let displayedImages = 50; // Número de imágenes que se muestran inicialmente
     const loadMoreButton = document.getElementById('load-more-N25')!;
@@ -221,7 +221,7 @@ import {IMG} from "@const/img-torneo-semana-santa"
 </style>
 
 <script>
-    import {IMG} from "@const/img-torneo-semana-santa" // Asegúrate de que esta importación sea correcta
+    import {IMG} from "@const/img-torneo-navidad25" // Asegúrate de que esta importación sea correcta
 
     document.addEventListener('DOMContentLoaded', () => {
         // Suponiendo que IMAGENES es un array de objetos con la propiedad 'enlace'
