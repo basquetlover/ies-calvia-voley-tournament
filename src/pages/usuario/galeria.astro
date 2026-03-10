@@ -7,6 +7,11 @@ import GaleriaFotos from "@sections/usuarios/Galeria.astro";
 import SpamDescarga from "@sections/usuarios/SpamDescarga.astro";
 import GaleriaSS from "@sections/usuarios/GaleriaSS.astro";
 import GaleriaN25 from "@sections/usuarios/GaleriaN25.astro";
+
+const diaPublicacion = new Date("2026-03-11");
+const hoy = new Date();
+const edicion3Disponible = hoy >= diaPublicacion;
+console.log("Edición 3 disponible:", edicion3Disponible);
 ---
 <ControlAcces>
     <script>
@@ -19,20 +24,25 @@ import GaleriaN25 from "@sections/usuarios/GaleriaN25.astro";
         }, false);
     </script>
 <LayoutMenu title="Galeria | IES Calvià Voley Tournament" descripcion="Galeria d'imatges de la edició de Nadal" >
-    <SpamDescarga />
+    <!-- <SpamDescarga /> -->
     <PortadaGaleria />
     <section class="w-full h-auto flex flex-col my-5">
         <div class="w-[95%] mx-auto flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden text-lg relative">
     <div class="w-full rounded h-[2px] bg-accent -z-10 absolute bottom-[1px]">&nbsp;</div>
 
-    <div id="btn-edicion-3" class="p-3 text-blanco cursor-not-allowed relative rounded-t shrink-0">
+    <div id="btn-edicion-3" class={` ${edicion3Disponible ? "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0" : "p-3 text-blanco cursor-not-allowed relative rounded-t shrink-0"} `}>
         <p>Nadal 2025</p>
-        <span class="absolute bottom-0 text-amarillo left-1/2 transform -translate-x-1/2 text-[10px]">
-            Pròximament
-        </span>
+        {
+            !edicion3Disponible && (
+                <span class="absolute bottom-0 text-amarillo left-1/2 transform -translate-x-1/2 text-[10px]">
+                    Pròximament
+                </span>
+        )
+        }
+        
     </div>
 
-    <div id="btn-edicion-2" class="p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0">
+    <div id="btn-edicion-2" class={` ${edicion3Disponible ? "p-3 text-blanco cursor-pointer rounded-t shrink-0" : "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0"} `}>
         <p>Setmana Santa 2025</p>
     </div>
 
@@ -42,12 +52,26 @@ import GaleriaN25 from "@sections/usuarios/GaleriaN25.astro";
 </div>
         <div class="w-full h-auto my-5">
             <!-- Torneo Navidad 2025 -->
-            <!-- <div id="edicio-3" class="hidden">
-                <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2025</h2>
-                <GaleriaN25 />
-            </div> -->
+             <div id="edicio-3" class={`edicio-3 ${edicion3Disponible ? "" : "hidden"}`}>
+             {
+                edicion3Disponible ? (
+                    
+                        <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2025</h2>
+                        <GaleriaN25 />
+                    
+                ) : (
+                   <div>
+                        <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2025</h2>
+                        <div class="w-full h-64 flex items-center place-content-center">
+                            <p class="text-amarillo text-xl">Aquest contingut estarà disponible a partir de Març de 2026</p>
+                        </div>
+                   </div>
+                )
+             }
+             </div>
+            
             <!-- Torneo Semana Santa 2025 -->
-            <div id="edicio-2" class="edicio-2">
+            <div id="edicio-2" class={`edicio-2 ${edicion3Disponible ? "hidden" : ""}`}>
                 <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa</h2>
                 <GaleriaSS />
             </div>
@@ -77,18 +101,21 @@ import GaleriaN25 from "@sections/usuarios/GaleriaN25.astro";
 <script>
     const btnEdicion1 = document.getElementById("btn-edicion-1")!;
     const btnEdicion2 = document.getElementById("btn-edicion-2")!;
-    //const btnEdicion3 = document.getElementById("btn-edicion-3")!;
+    const btnEdicion3 = document.getElementById("btn-edicion-3");
     const edicion1 = document.getElementById("edicio-1")!;
     const edicion2 = document.getElementById("edicio-2")!;
-    const edicion3 = document.getElementById("edicio-3")!;
+    const edicion3 = document.getElementById("edicio-3");
 
     btnEdicion1.addEventListener("click", () => {
         btnEdicion1.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
         btnEdicion1.classList.remove("cursor-not-allowed");
         btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
         btnEdicion2.classList.add("cursor-not-allowed");
+        btnEdicion3?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+        btnEdicion3?.classList.add("cursor-not-allowed");
         edicion1.classList.remove("hidden");
         edicion2.classList.add("hidden");
+        edicion3?.classList.add("hidden");
     });
 
     btnEdicion2.addEventListener("click", () => {
@@ -96,19 +123,22 @@ import GaleriaN25 from "@sections/usuarios/GaleriaN25.astro";
         btnEdicion2.classList.remove("cursor-not-allowed");
         btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
         btnEdicion1.classList.add("cursor-not-allowed");
+        btnEdicion3?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+        btnEdicion3?.classList.add("cursor-not-allowed");
         edicion2.classList.remove("hidden");
         edicion1.classList.add("hidden");
+        edicion3?.classList.add("hidden");
     });
 
-    // btnEdicion3.addEventListener("click", () => {
-    //     btnEdicion3.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-    //     btnEdicion3.classList.remove("cursor-not-allowed");
-    //     btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-    //     btnEdicion1.classList.add("cursor-not-allowed");
-    //     btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-    //     btnEdicion2.classList.add("cursor-not-allowed");
-    //     edicion3.classList.remove("hidden");
-    //     edicion1.classList.add("hidden");
-    //     edicion2.classList.add("hidden");
-    // });
+    btnEdicion3?.addEventListener("click", () => {
+        btnEdicion3?.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+        btnEdicion3?.classList.remove("cursor-not-allowed");
+        btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+        btnEdicion1.classList.add("cursor-not-allowed");
+        btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+        btnEdicion2.classList.add("cursor-not-allowed");
+        edicion3?.classList.remove("hidden");
+        edicion1.classList.add("hidden");
+        edicion2.classList.add("hidden");
+    });
 </script>
