@@ -98,12 +98,17 @@ const escudosMap = partidos[1] || {};
           <div className="w-full h-auto flex flex-row items-center place-content-around">
 
             {/* Enlace lista equipos */}
-            <a
+            {
+              /*
+              <a
               href={`/admin/partido/${partido.id_partido}`}
               className="w-max h-max px-2 py-2 rounded-md bg-azul-suave text-blanco mb-1"
             >
               Lista Equipos
             </a>
+              */
+            }
+            
 
             {/* Acta Digital */}
             {partido.estado !== "Finalitzat" ? (
