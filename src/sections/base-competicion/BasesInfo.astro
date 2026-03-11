@@ -1,14 +1,17 @@
 ---
 import { BASES_COMPETICION } from "@const/base-competicion"
 ---
-<section class="max-w-[1600px] h-auto m-auto my-10">
+<section class="max-w-5xl h-auto m-auto my-10">
         {
-            BASES_COMPETICION.map(({titulo, articulos}) => (
-                <h3 class="text-accent text-4xl font-bold mt-10">{titulo}</h3>
-                <ul class="text-blanco text-lg ml-6 mt-4 custom-punto my-2">
+            BASES_COMPETICION.map(({titulo, articulos, numero}) => (
+                <h3 class="text-accent text-3xl font-bold mt-10">{numero}. {titulo}</h3>
+                <ul class="text-blanco flex flex-col text-base ml-6 mt-4 custom-punto my-2">
                     {
-                        articulos.map(({texto}) => (
-                            <li class="my-2">
+                        articulos.map(({texto, numero}) => (
+                            <li class="my-2 inline-flex items-start gap-2">
+                                <span class="text-amarillo font-bold">
+                                    {numero}
+                                </span>
                                 <p>
                                  {texto}
                                 </p>
@@ -22,8 +25,8 @@ import { BASES_COMPETICION } from "@const/base-competicion"
     
     
 </section>
-<style>
-    .custom-punto li {
+<!-- <style>
+    /* .custom-punto li {
     position: relative;
     padding-left: 1rem; /* Espacio para el nuevo "bullet" */
 }
@@ -34,6 +37,6 @@ import { BASES_COMPETICION } from "@const/base-competicion"
     position: absolute;
     left: 0;
     font-size: 1.125em; /* Tamaño del punto similar al texto */
-}
+} */
 
-</style>
+</style> -->
