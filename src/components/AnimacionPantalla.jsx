@@ -127,7 +127,10 @@ const Pantalla = () => {
   // ----------------------------------------------------
 
   return (
-    <div className="w-[1920px] h-[1080px] bg-gris relative overflow-hidden">
+    <div className="w-full h-screen flex items-center place-content-center">
+
+    
+    <div className="w-[1920px] h-[1080px] bg-gris mx-auto my-auto relative overflow-hidden">
 
       {pantalla === "logo" && (
         <div className="absolute inset-0 flex gap-x-10 items-center justify-center">
@@ -154,7 +157,7 @@ const Pantalla = () => {
 
       {pantalla === "marcador" && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <MarcadorPabellon />
+           <MarcadorPabellon /> 
         </div>
       )}
 
@@ -200,6 +203,7 @@ const Pantalla = () => {
         </div>
       )}
 
+    </div>
     </div>
   );
 };
