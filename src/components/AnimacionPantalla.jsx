@@ -127,7 +127,7 @@ const Pantalla = () => {
   // ----------------------------------------------------
 
   return (
-    <div className="w-full h-screen flex items-center place-content-center">
+    <div className="w-full  h-screen flex items-center place-content-center">
 
     
     <div className="w-[1920px] h-[1080px] bg-gris mx-auto my-auto relative overflow-hidden">
@@ -144,7 +144,7 @@ const Pantalla = () => {
         <div className="absolute inset-0 flex items-center justify-center">
           <img
             src="/img/distribucion-pistas.png"
-            className="w-full h-full"
+            className="w-full h-full rounded"
           />
         </div>
       )}
@@ -157,7 +157,7 @@ const Pantalla = () => {
 
       {pantalla === "marcador" && (
         <div className="absolute inset-0 flex items-center justify-center">
-           <MarcadorPabellon /> 
+          <MarcadorPabellon /> 
         </div>
       )}
 

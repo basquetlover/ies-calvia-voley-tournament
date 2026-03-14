@@ -141,7 +141,7 @@ export async function POST({ request }: { request: Request }) {
               };
       })
     );
-   
+   //console.log("Resultado API de partidos:", resultado);
    return new Response(JSON.stringify(resultado), {
       status: 200,
       headers: { "Content-Type": "application/json" },

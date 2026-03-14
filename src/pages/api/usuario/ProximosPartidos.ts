@@ -118,9 +118,9 @@ export async function POST({ request }: { request: Request }) {
     // ⚙️ 2. Próximos (sin empezar) – adapta condición según tu tabla
     const { data: proximos, error: errProximos } = await supabaseAdmin
       .from(TablaPartidos)
-      .select(`id_partido, equipo_local, equipo_visitante, pista, estado, bracket`)
-      .in("estado", ["Per Jugar", "Pendiente"]) // ajusta a tu esquema
-      .order("id", { ascending: true }); // o por id si no tienes hora
+      .select(`id_partido, equipo_local, equipo_visitante, pista, estado, bracket, jornada`)
+      .eq("estado", "Per Jugar") // ajusta a tu esquema
+      .order("jornada", { ascending: true }); // o por id si no tienes hora
 
     if (errProximos) throw errProximos;
 
@@ -178,7 +178,7 @@ export async function POST({ request }: { request: Request }) {
 // Filtrar para mostrar solo pistas que cumplan la condición
 const resultado = bruto.filter((p) => p.enDirecte || p.mostrar);
 
-
+//console.log("Resultado API de partidos:", resultado);
 
    return new Response(JSON.stringify(resultado), {
       status: 200,
@@ -191,3 +191,45 @@ const resultado = bruto.filter((p) => p.enDirecte || p.mostrar);
     });
   }
 }
+
+
+// const resultado: {
+//     pista: string;
+//     enDirecte: {
+//         id_partido: any;
+//         estado: any;
+//         tipo: string;
+//         equipo_local: any;
+//         escudo_equipo_local: string;
+//         equipo_visitante: any;
+//         escudo_equipo_visitante: string;
+//         setActual: number;
+//         marcador: {
+//             global: {
+//                 local: any;
+//                 visitante: any;
+//             };
+//             set1: {
+//                 local: any;
+//                 visitante: any;
+//             };
+//             set2: {
+//                 local: any;
+//                 visitante: any;
+//             };
+//             set3: {
+//                 local: any;
+//                 visitante: any;
+//             };
+//         };
+//     } | null;
+//     proximos: {
+//         tipo: string;
+//         id_partido: any;
+//         equipo_local: any;
+//         escudo_equipo_local: string;
+//         equipo_visitante: any;
+//         escudo_equipo_visitante: string;
+//     }[];
+//     mostrar: boolean;
+// }[]

@@ -53,7 +53,7 @@ useEffect(() => {
     </h2>
     {p.enDirecte?.id_partido && (
       <div
-      className={`max-w-[500px] transform scale-105 w-full flex flex-col items-center place-content-center border-2 border-blanco rounded-md p-2 ${p.enDirecte?.estado === "En Directe" ? "border-rojo bg-rojo bg-opacity-10" : " hidden"
+      className={`w-[500px] transform scale-105  flex flex-col items-center place-content-center border-2 border-blanco rounded-md p-2 ${p.enDirecte?.estado === "En Directe" ? "border-rojo bg-rojo bg-opacity-10" : " hidden"
       }`}
     >
       <div className="w-full h-auto grid grid-cols-3 place-items-center text-lg text-blanco">
@@ -131,9 +131,9 @@ useEffect(() => {
     )}
 
     {p.proximos.map((prox, index) => (
-    <div className={`w-[400px] px-2 py-1 gap-2 rounded-lg flex flex-col transform scale-[1.10] text-center ${index === 0 ? "bg-amarillo text-azul font-semibold" : "bg-azul-suave text-blanco"}`}>
+    <div className={`w-[400px] h-32 px-2  gap-2 rounded-lg flex flex-col  place-content-center  text-center ${index === 0 ? "bg-amarillo text-azul font-semibold" : "bg-azul-suave text-blanco"}`}>
         <p className="text-lg">{prox.tipo}</p>
-    <div class={`   grid grid-cols-[60px_1fr_30px_1fr_60px] items-center   `}> 
+    <div class={`grid grid-cols-[60px_1fr_30px_1fr_60px] items-center   `}> 
       <div>
         {prox.escudo_equipo_local?.trim() ? (
               <img src={prox.escudo_equipo_local} class="w-14 h-14" alt={prox.equipo_local} />
