@@ -49,7 +49,12 @@ export async function POST({ request }: { request: Request }) {
     escudo_visitante: mapaEscudos[partido.equipo_visitante] || null
   }));
 
+  // const { data: ListaPartidos2, error: error2 } = await supabaseAdmin
+  //   .from(TablaPartidos)
+  //   .select('id_partido, equipo_local, equipo_visitante, pista, jornada')
+  //   .order('id', { ascending: true });
   //console.log("Partidos con escudos:", PartidosConEscudos);
+ // console.log("Lista Partidos", ListaPartidos2);
   return new Response(
     JSON.stringify({ ListaPartidos: PartidosConEscudos }),
     { status: 200 }

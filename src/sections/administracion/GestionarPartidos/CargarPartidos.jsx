@@ -49,7 +49,7 @@ function PartidoCard({ partido, equipos, onClick, calentando }) {
   const escudoVisitante = partido.escudo_visitante || escudoDefault;
 
   return (
-    <div onClick={onClick} className={`cursor-pointer rounded-xl p-4 shadow-md ${estadoStyles[partido.estado]}`}>
+    <div onClick={onClick} className={`cursor-pointer rounded-xl max-w-80 p-4 shadow-md ${estadoStyles[partido.estado]} ${partido.pista === "Pista 2" ? "col-start-2": "col-start-1"} row-start-1`}>
 
       <div className="grid grid-cols-4 text-sm font-semibold border-b border-white/60 pb-2">
         <span>{partido.id_partido}</span>
@@ -67,7 +67,7 @@ function PartidoCard({ partido, equipos, onClick, calentando }) {
             className="w-8 h-8 object-contain"
             onError={(e) => e.currentTarget.src = escudoDefault}
           />
-          <span className={partido.pista === "Pista 1" ? "text-[#d40000]" : "text-[#00c0eb]"}>{partido.equipo_local}</span>
+          <span className={partido.pista === "Pista 1" ? "text-[#d40000]" : "text-[#d4d4d4]"}>{partido.equipo_local}</span>
         </div>
 
         <span>{partido.LocGlobal ?? "-"}</span>
@@ -82,7 +82,7 @@ function PartidoCard({ partido, equipos, onClick, calentando }) {
             className="w-8 h-8 object-contain"
             onError={(e) => e.currentTarget.src = escudoDefault}
           />
-          <span className={partido.pista === "Pista 1" ? "text-[#ccff00]" : "text-[#d4d4d4]"}>{partido.equipo_visitante}</span>
+          <span className={partido.pista === "Pista 1" ? "text-[#ccff00]" : "text-[#00c0eb]"}>{partido.equipo_visitante}</span>
         </div>
 
         <span>{partido.VisGlobal ?? "-"}</span>
@@ -342,7 +342,7 @@ pistas.forEach(pista => {
       {clavesOrdenadas.map(clave => (
         <div key={clave} className="space-y-3">
           <h2 className="text-2xl text-blanco font-bold">{clave}</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4 place-items-center">
             {grupos[clave].sort((a, b) => a.jornada - b.jornada).map(p => (
               <PartidoCard
                 key={p.id_partido}
