@@ -45,9 +45,9 @@ export async function POST({ request }: { request: Request }) {
             // Buscar partidos designados
             const { data } = await supabaseAdmin
                 .from(TablaPartidos)
-                .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado')
+                .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado, jornada')
                 .or(`arbitro.eq.${Administradores?.nombre},oficial_1.eq.${Administradores?.nombre},oficial_2.eq.${Administradores?.nombre}`)
-                .order('id', { ascending: true });
+                .order('jornada', { ascending: true });
 
             partidos_designados = data || [];
 
