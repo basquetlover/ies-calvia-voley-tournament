@@ -1,7 +1,18 @@
 ---
 import { BASES_COMPETICION } from "@const/base-competicion"
+
+const UltimaActualizacion = "12 de març de 2026"
 ---
 <section class="max-w-5xl h-auto m-auto my-10">
+    <div class="flex items-center gap-2 text-sm text-gray-400 mt-2 mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5  opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10m-11 9h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z" />
+        </svg>
+        <span>
+            Darrera actualització: 
+            <span class="font-medium">{UltimaActualizacion}</span>
+        </span>
+    </div>
         {
             BASES_COMPETICION.map(({titulo, articulos, numero}) => (
                 <h3 class="text-accent text-3xl font-bold mt-10">{numero}. {titulo}</h3>
@@ -13,7 +24,7 @@ import { BASES_COMPETICION } from "@const/base-competicion"
                                     {numero}
                                 </span>
                                 <p>
-                                 {texto}
+                                    {texto}
                                 </p>
                             </li>
                         ))
