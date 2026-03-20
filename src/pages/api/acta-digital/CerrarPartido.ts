@@ -15,18 +15,42 @@ export async function POST({ request }: { request: Request }) {
     let id_equipoG = "";
     let id_equipoP = "";
 
-    if(LocSets > VisSets){
-        id_equipoG = nombreEquipoLocal;
-        id_equipoP = nombreEquipoVisitante;
-    } else if(VisSets > LocSets){
-        id_equipoP = nombreEquipoLocal;
-        id_equipoG = nombreEquipoVisitante;
-    }
+   
+
+    //const id_equipo = 'partido_38'; // Cambia esto al ID que necesites
+    const { data: ResultadoPartido, error: ErrorResultadoPartido } = await supabaseAdmin
+        .from(TablaPartidos)
+        .select('LocSet1, VisSet1, LocSet2, VisSet2, LocSet3, VisSet3')
+        .eq('id_partido', id_partido)
+        .single();
+    
+        let totalLocPuntos = 0;
+        let totalVisPuntos = 0;
+        if (ResultadoPartido) {
+            totalLocPuntos = (Number(ResultadoPartido.LocSet1) || 0) + (Number(ResultadoPartido.LocSet2) || 0) + (Number(ResultadoPartido.LocSet3) || 0);
+            totalVisPuntos = (Number(ResultadoPartido.VisSet1) || 0) + (Number(ResultadoPartido.VisSet2) || 0) + (Number(ResultadoPartido.VisSet3) || 0);
+        }
+
+        if(LocSets > VisSets){
+          id_equipoG = nombreEquipoLocal;
+          id_equipoP = nombreEquipoVisitante;
+        } else if(VisSets > LocSets){
+            id_equipoP = nombreEquipoLocal;
+            id_equipoG = nombreEquipoVisitante;
+        } else if(LocSets === VisSets){
+              if(totalLocPuntos > totalVisPuntos){
+                  id_equipoG = nombreEquipoLocal;
+                  id_equipoP = nombreEquipoVisitante;
+              } else if(totalVisPuntos > totalLocPuntos){
+                  id_equipoP = nombreEquipoLocal;
+                  id_equipoG = nombreEquipoVisitante;
+              }
+        }
     console.log("Equipo Ganador:", id_equipoG)
     console.log("Equipo Perdedor:", id_equipoP)
 
-    //const id_equipo = 'partido_38'; // Cambia esto al ID que necesites
-    
+
+
     // Función para extraer el número del ID
     function extractPartidoNumber(id: string) {
         // Usamos una expresión regular para capturar el número
