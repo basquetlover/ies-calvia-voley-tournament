@@ -342,7 +342,7 @@ pistas.forEach(pista => {
       {clavesOrdenadas.map(clave => (
         <div key={clave} className="space-y-3">
           <h2 className="text-2xl text-blanco font-bold">{clave}</h2>
-          <div className="grid grid-cols-2 gap-4 place-items-center">
+          <div className="flex flex-wrap gap-4 place-items-center">
             {grupos[clave].sort((a, b) => a.jornada - b.jornada).map(p => (
               <PartidoCard
                 key={p.id_partido}
