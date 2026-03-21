@@ -64,6 +64,121 @@
   }
 }
 
+.scroll-izq{
+  animation: scrollingIZQ 15s linear infinite;
+}
+.scroll-der{
+  animation: scrollingDER 15s linear infinite ;
+}
+.shadow-izq{
+  -webkit-box-shadow: inset 30px 1px 50px 0px #1B1D20; 
+  box-shadow: inset 30px 1px 50px 0px #1B1D20;
+}
+.shadow-der{
+  -webkit-box-shadow: inset -30px 1px 50px 0px #1B1D20; 
+  box-shadow: inset -30px 1px 50px 0px #1B1D20;
+}
+
+@keyframes scrollingIZQ {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+@keyframes scrollingDER {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Animación loop infinito - IZQUIERDA */
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); /* Se mueve exactamente la mitad porque duplicamos los elementos */
+    }
+}
+
+/* Animación loop infinito - DERECHA */
+@keyframes scroll-right {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.infinite-scroll-container {
+    gap: var(--gap-size);
+    animation: scroll-left 60s linear infinite;
+}
+
+.scroll-left {
+    animation: scroll-left 60s linear infinite;
+}
+
+.scroll-right {
+    animation: scroll-right 60s linear infinite;
+}
+
+.scroll-item {
+    flex-shrink: 0;
+    width: var(--item-width);
+}
+
+/* ANIMACIÓN IZQUIERDA (sin salto) */
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-100% / 3)); /* Para 3 copias */
+    }
+}
+
+/* ANIMACIÓN DERECHA (sin salto) */
+@keyframes scroll-right {
+    0% {
+        transform: translateX(calc(-100% / 3));
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Pantalla 1920px optimizada */
+@media (min-width: 1920px) {
+    .infinite-scroll-container {
+        animation-duration: 35s; /* Velocidad perfecta para 1920px */
+    }
+}
+
+/* Responsive */
+@media (max-width: 1920px) {
+    .infinite-scroll-container {
+        animation-duration: 25s;
+    }
+}
+
+@media (max-width: 1440px) {
+    .infinite-scroll-container {
+        animation-duration: 15s;
+    }
+}
+
+/* Pausa hover */
+.infinite-scroll-container:hover {
+    animation-play-state: paused;
+}
 /* ----------------------------------------
    ✨ PARTICULAS INFINITAS DESDE EL TEXTO
 ---------------------------------------- */

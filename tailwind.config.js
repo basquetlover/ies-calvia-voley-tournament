@@ -40,6 +40,10 @@ export default {
     "0%": { opacity: "1", transform: "scale(1)" },
     "100%": { opacity: "0", transform: "scale(0)" },
   },
+  'infinite-scroll': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-100%)' },
+        }
 },
 animation: {
   "cuadrado-in": "cuadrado-in 0.3s ease-out both",

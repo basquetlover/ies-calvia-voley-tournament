@@ -2,22 +2,25 @@ import { useEffect, useState } from "react";
 import ClasificacionReact from "./ClasificacionReact";
 import MarcadorPabellon from "./MarcadorPabellon";
 import ProximosPartidos from "./ProximosPartidos";
+import EscudosCarrusel from "./EscudosCarrusel.jsx";
 // import CuadradosTransition from "./CuadradosTransition"; // TRANSICIÓN DESACTIVADA
 
 const Pantalla = () => {
 
   const PANTALLAS = [
-    "marcador",
     "logo",
+    "marcador",
     "pistas",
     "marcador",
     "clasificacion",
     "marcador",
     "despues"
   ];
+  // const PANTALLAS = [
+  //   "logo",]
 
   const DURACIONES = {
-    logo: 2000,
+    logo: 8000,
     pistas: 2500,
     clasificacion: 15000,
     marcador: 30000,
@@ -123,6 +126,36 @@ const Pantalla = () => {
   }, [indice]);
 
   // ----------------------------------------------------
+  // Equipos Inscritos
+  // ----------------------------------------------------
+
+  const [equiposInscritos, setEquiposInscritos] = useState([]);
+  const [equiposTop, setEquiposTop] = useState([]);
+  const [equiposBottom, setEquiposBottom] = useState([]);
+  useEffect(() => {
+    const fetchEquipos = async () => {
+      try {
+        const res = await fetch("/api/usuario/EquiposInscritos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        setEquiposInscritos(data);
+        data.forEach((equipo, index) => {
+          if (equipo.id % 2 === 0) {
+            setEquiposTop((prev) => [...prev, equipo]);
+          } else {
+            setEquiposBottom((prev) => [...prev, equipo]);
+          }
+        });
+      } catch (err) {
+        console.error("Error fetching equipos:", err);
+      }
+    };
+    fetchEquipos();
+  }, []);
+
+  // ----------------------------------------------------
   // RENDER
   // ----------------------------------------------------
 
@@ -130,39 +163,44 @@ const Pantalla = () => {
     <div className="w-full  h-screen flex items-center place-content-center">
 
     
-    <div className="w-[1920px] h-[1080px] bg-gris mx-auto my-auto relative overflow-hidden">
+    {/* <div className="w-[1920px] h-[1080pxg] bg-gris mx-auto my-auto relative overflow-hidden"> */}
 
-      {pantalla === "logo" && (
-        <div className="absolute inset-0 flex gap-x-10 items-center justify-center">
-          <img src="/img/team-teto.png" className="max-w-2xl" />
-          <img src="/img/logo_torneo.png" className="max-w-2xl" />
-          <img src="/img/ies-calvia.png" className="max-w-2xl" />
+      {/* {pantalla === "logo" && ( */}
+        <div className={`${pantalla === "logo"? "": "hidden"} w-full h-screen grid grid-rows-[auto_1fr_auto] gap-4 items-center justify-items-center overflow-hidden`}>
+          <EscudosCarrusel equipos={equiposTop} sentido={"izquierda"} />
+          <div className="inset-0 w-full g-full grid grid-cols-3 gap-4 items-center justify-items-center">
+            <img src="/img/team-teto.png" className="max-w-2xl" />
+            <img src="/img/logo_torneo.png" className="max-w-2xl" />
+            <img src="/img/ies-calvia.png" className="max-w-2xl" />
+          </div>
+          <EscudosCarrusel equipos={equiposBottom} sentido={"derecha"} />
+
         </div>
-      )}
+      {/* // )} */}
 
-      {pantalla === "pistas" && (
-        <div className="absolute inset-0 flex items-center justify-center">
+      {/* {pantalla === "pistas" && ( */}
+        <div className={`${pantalla === "pistas" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}>
           <img
             src="/img/distribucion-pistas.png"
             className="w-full h-full rounded"
           />
         </div>
-      )}
+      {/* )} */}
 
-      {pantalla === "clasificacion" && (
-        <div className="absolute inset-0 flex items-center justify-center">
+      {/* {pantalla === "clasificacion" && ( */}
+        <div className={`${pantalla === "clasificacion" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}>
           <ClasificacionReact />
         </div>
-      )}
+      {/* )} */}
 
-      {pantalla === "marcador" && (
-        <div className="absolute inset-0 flex items-center justify-center">
+      {/* {pantalla === "marcador" && ( */}
+        <div className={`${pantalla === "marcador" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}>
           <MarcadorPabellon /> 
         </div>
-      )}
+      {/* )} */}
 
-      {pantalla === "despues" && (
-        <div className="absolute inset-0 flex items-center justify-center">
+      {/* {pantalla === "despues" && ( */}
+        <div className={`${pantalla === "despues" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}>
           <div className="w-48 h-49 absolute top-10 left-20">
             <img src="/favicon.svg" className="w-48 h-48" />
           </div>
@@ -187,7 +225,7 @@ const Pantalla = () => {
             </div>
           <ProximosPartidos />
         </div>
-      )}
+      {/* )} */}
 
       {/* 🔥 TRANSICIÓN DESACTIVADA */}
       {/*
@@ -203,7 +241,7 @@ const Pantalla = () => {
         </div>
       )}
 
-    </div>
+    {/* </div> */}
     </div>
   );
 };
