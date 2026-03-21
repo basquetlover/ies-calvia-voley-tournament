@@ -146,7 +146,7 @@ export async function POST({ request }: { request: Request }) {
 
     const proxs = proximos
       .filter((p) => p.pista === nombrePista)
-      .slice(0, 3);
+      .slice(0, 2);
 
         const proximosConTipo = await Promise.all(
         proxs.map(async (p) => {

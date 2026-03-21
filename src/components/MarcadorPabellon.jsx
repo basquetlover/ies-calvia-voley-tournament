@@ -471,7 +471,7 @@ useEffect(() => {
 
             
         </div>
-        <div className="w-full h-auto b absolute bottom-32 z-30 left-0 flex flex-row items-center justify-evenly gap-x-20 p-4">
+        <div className="w-full h-auto  absolute bottom-10 z-30 left-0 flex flex-row items-center justify-evenly gap-x-20 p-4">
             <img src="/img/team-teto.png" class="w-48 h-48" />
             <img src="/favicon.svg" alt="Logo tonerno" class="w-64 h-64" />
             <img src="/img/ies-calvia.png" class="w-48 h-48" />

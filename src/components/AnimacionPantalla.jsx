@@ -3,6 +3,7 @@ import ClasificacionReact from "./ClasificacionReact";
 import MarcadorPabellon from "./MarcadorPabellon";
 import ProximosPartidos from "./ProximosPartidos";
 import EscudosCarrusel from "./EscudosCarrusel.jsx";
+import MiniMarcador from "./MiniMarcador.jsx";
 // import CuadradosTransition from "./CuadradosTransition"; // TRANSICIÓN DESACTIVADA
 
 const Pantalla = () => {
@@ -17,7 +18,7 @@ const Pantalla = () => {
     "despues"
   ];
   // const PANTALLAS = [
-  //   "logo",]
+  //   "pistas",]
 
   const DURACIONES = {
     logo: 8000,
@@ -179,16 +180,19 @@ const Pantalla = () => {
       {/* // )} */}
 
       {/* {pantalla === "pistas" && ( */}
-        <div className={`${pantalla === "pistas" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}>
-          <img
-            src="/img/distribucion-pistas.png"
-            className="w-full h-full rounded"
-          />
+        <div className={`${pantalla === "pistas" ? "absolute" : "hidden"}  inset-0 flex items-center justify-center`}>
+          <div className="w-screen h-screen  grid grid-rows-[auto_1fr] overflow-hidden items-start justify-items-center">
+            <MiniMarcador />
+            <img
+              src="/img/distribucion-pistas.png"
+              className="h-full w-max object-cover  rounded"
+            />
+          </div>
         </div>
       {/* )} */}
 
       {/* {pantalla === "clasificacion" && ( */}
-        <div className={`${pantalla === "clasificacion" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}>
+        <div className={`${pantalla === "clasificacion" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}> 
           <ClasificacionReact />
         </div>
       {/* )} */}
@@ -201,6 +205,9 @@ const Pantalla = () => {
 
       {/* {pantalla === "despues" && ( */}
         <div className={`${pantalla === "despues" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}>
+          <div className="w-screen h-screen  grid grid-rows-[auto_1fr] overflow-hidden items-start justify-items-center">
+            <MiniMarcador />
+            <div className="relative border-t border-amarillo w-[95%] mx-auto flex items-center justify-center inset-0  h-full">
           <div className="w-48 h-49 absolute top-10 left-20">
             <img src="/favicon.svg" className="w-48 h-48" />
           </div>
@@ -224,6 +231,8 @@ const Pantalla = () => {
             </div>
             </div>
           <ProximosPartidos />
+          </div>
+          </div>
         </div>
       {/* )} */}
 

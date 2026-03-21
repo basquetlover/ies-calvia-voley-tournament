@@ -45,15 +45,15 @@ useEffect(() => {
 
   return (
     
-   <div className="grid grid-flow-col transform scale-[1.35] mt-20 gap-20 ">
+   <div className="grid grid-flow-col transform  mt-20 gap-40 ">
     {partidos.map((p) => (
   <div key={p.id_partido} className={`${p.proximos.length === 0 ? "hidden" : "w-max flex flex-col items-center gap-5"}`}>
-    <h2 className="text-6xl uppercase font-bold text-amarillo">
+    <h2 className="text-7xl uppercase font-bold text-amarillo">
       {p.pista}
     </h2>
     {p.enDirecte?.id_partido && (
       <div
-      className={`w-[500px] transform scale-105  flex flex-col items-center place-content-center border-2 border-blanco rounded-md p-2 ${p.enDirecte?.estado === "En Directe" ? "border-rojo bg-rojo bg-opacity-10" : " hidden"
+      className={`w-[500px] mb-5 scale-125 transform  flex flex-col items-center place-content-center border-2 border-blanco rounded-md p-2 ${p.enDirecte?.estado === "En Directe" ? "border-rojo bg-rojo bg-opacity-10" : " hidden"
       }`}
     >
       <div className="w-full h-auto grid grid-cols-3 place-items-center text-lg text-blanco">
@@ -131,12 +131,12 @@ useEffect(() => {
     )}
 
     {p.proximos.map((prox, index) => (
-    <div className={`w-[400px] h-32 px-2  gap-2 rounded-lg flex flex-col  place-content-center  text-center ${index === 0 ? "bg-amarillo text-azul font-semibold" : "bg-azul-suave text-blanco"}`}>
-        <p className="text-lg">{prox.tipo}</p>
-    <div class={`grid grid-cols-[60px_1fr_30px_1fr_60px] items-center   `}> 
+    <div className={`w-[500px] h-32 mb-2 scale-110 px-2  gap-2 rounded-lg flex flex-col  place-content-center  text-center ${index === 0 ? "bg-amarillo text-azul font-semibold" : "bg-azul-suave text-blanco"}`}>
+        <p className="text-2xl font-semibold">{prox.tipo}</p>
+    <div class={`grid grid-cols-[60px_1fr_30px_1fr_60px] mx-4 items-center  text-xl `}> 
       <div>
         {prox.escudo_equipo_local?.trim() ? (
-              <img src={prox.escudo_equipo_local} class="w-14 h-14" alt={prox.equipo_local} />
+              <img src={prox.escudo_equipo_local} class="w-20 h-auto aspect-square object-cover" alt={prox.equipo_local} />
             ) : (
               <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-w-10" fill="none" viewBox="0 0 650 650">
                 <circle cx="325" cy="325" r="315" stroke="#fff" strokeWidth="20" />
@@ -150,7 +150,7 @@ useEffect(() => {
         <p>{prox.equipo_visitante}</p>
         <div>
             {prox.escudo_equipo_visitante?.trim() ? (
-              <img src={prox.escudo_equipo_visitante} class="w-14 h-14" alt={prox.equipo_visitante} />
+              <img src={prox.escudo_equipo_visitante} class="w-20 h-auto aspect-square object-cover" alt={prox.equipo_visitante} />
             ) : (
               <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-w-10" fill="none" viewBox="0 0 650 650">
                 <circle cx="325" cy="325" r="315" stroke="#fff" strokeWidth="20" />
