@@ -7,7 +7,7 @@ import MiniMarcador from "./MiniMarcador.jsx";
 // import CuadradosTransition from "./CuadradosTransition"; // TRANSICIÓN DESACTIVADA
 
 const Pantalla = () => {
-
+  setTimeout(() => location.reload(), 2 * 60 * 60 * 1000); // Recarga cada 2 horas para evitar problemas de memoria o errores inesperados
   const PANTALLAS = [
     "logo",
     "marcador",
