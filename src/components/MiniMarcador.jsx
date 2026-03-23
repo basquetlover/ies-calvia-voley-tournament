@@ -39,7 +39,7 @@ export default function MiniMarcador() {
     }
     
     cargarPartidos();
-    const intervalo = setInterval(cargarPartidos, 30*1000); // cada 3 segundos
+    const intervalo = setInterval(cargarPartidos, 3*1000); // cada 3 segundos
     return () => clearInterval(intervalo);
     }, []);
 return(
