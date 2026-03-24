@@ -8,17 +8,17 @@ import MiniMarcador from "./MiniMarcador.jsx";
 
 const Pantalla = () => {
   setTimeout(() => location.reload(), 2 * 60 * 60 * 1000); // Recarga cada 2 horas para evitar problemas de memoria o errores inesperados
-  const PANTALLAS = [
-    "logo",
-    "marcador",
-    "pistas",
-    "marcador",
-    "clasificacion",
-    "marcador",
-    "despues"
-  ];
   // const PANTALLAS = [
-  //   "pistas","despues"]
+  //   "logo",
+  //   "marcador",
+  //   "pistas",
+  //   "marcador",
+  //   "clasificacion",
+  //   "marcador",
+  //   "despues"
+  // ];
+   const PANTALLAS = [
+     "clasificacion",]
 
   const DURACIONES = {
     logo: 8000,

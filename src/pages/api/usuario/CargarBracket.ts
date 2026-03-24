@@ -33,6 +33,32 @@ async function fetchEscudo(nombreEquipo: string): Promise<string> {
   return error || !data ? "" : data.escudo;
 }
 
+async function fetchSiglas(nombreEquipo: string) {
+  if (!nombreEquipo) return "";
+  const { data, error } = await supabaseAdmin
+    .from(TablaEquipos)
+    .select("siglas")
+    .eq("nombre_equipo", nombreEquipo)
+    .single();
+
+  return error || !data ? "" : data.siglas;
+}
+
+async function traducirEquipo(nombre: string) {
+  if (!nombre) return "";
+
+  // comprobamos si contiene "guanyador"
+  if (nombre.toLowerCase().includes("guanyador")) {
+    return "PDT";
+  }
+
+  const siglas = await fetchSiglas(nombre);
+  
+  return siglas;
+
+  //return nombre;
+}
+
 export async function POST({ request }: { request: Request }) {
 
 
@@ -114,15 +140,19 @@ const { data: ConfTorneo, error } = await supabaseAdmin
         .single();
 
       if (!error && partido) {
+        const equipoLocal = await traducirEquipo(partido.equipo_local);
+        const equipoVisitante = await traducirEquipo(partido.equipo_visitante);
         const escudoLocal = await fetchEscudo(partido.equipo_local);
         const escudoVis = await fetchEscudo(partido.equipo_visitante);
+        const siglasLocal = await fetchSiglas(partido.equipo_local);
+        const siglasVis = await fetchSiglas(partido.equipo_visitante);
 
         resultados.push({
           bracket,
           pista: partido.pista || "Sin Pista",
-          equipo_local: partido.equipo_local || "",
+          equipo_local: equipoLocal,
           escudo_local: escudoLocal,
-          equipo_visitante: partido.equipo_visitante || "",
+          equipo_visitante: equipoVisitante,
           escudo_visitante: escudoVis,
           resultado_local: partido.LocGlobal || "-",
           resultado_visitante: partido.VisGlobal || "-",
