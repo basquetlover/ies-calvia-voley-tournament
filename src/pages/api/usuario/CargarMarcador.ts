@@ -36,6 +36,17 @@ async function fetchEscudo(nombreEquipo: string): Promise<string> {
   return error || !data ? "" : data.escudo;
 }
 
+async function fetchSiglas(nombreEquipo: string) {
+  if (!nombreEquipo) return "";
+  const { data, error } = await supabaseAdmin
+    .from(TablaEquipos)
+    .select("siglas")
+    .eq("nombre_equipo", nombreEquipo)
+    .single();
+
+  return error || !data ? "" : data.siglas;
+}
+
 export async function POST({ request }: { request: Request }) {
 
 
@@ -121,6 +132,8 @@ export async function POST({ request }: { request: Request }) {
         }
         const escudoLocal = await fetchEscudo(p.equipo_local);
         const escudoVis = await fetchEscudo(p.equipo_visitante);
+        const siglasLocal = await fetchSiglas(p.equipo_local);
+        const siglasVis = await fetchSiglas(p.equipo_visitante);
 
       return {
         id_partido: p.id_partido,
@@ -129,6 +142,8 @@ export async function POST({ request }: { request: Request }) {
         escudo_equipo_local: escudoLocal,
         equipo_visitante: p.equipo_visitante,
         escudo_equipo_visitante: escudoVis,
+        siglas_equipo_local: siglasLocal,
+        siglas_equipo_visitante: siglasVis,
         pista: p.pista,
         setActual, // nuevo campo
         marcador: {

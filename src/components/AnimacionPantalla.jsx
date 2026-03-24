@@ -18,7 +18,7 @@ const Pantalla = () => {
     "despues"
   ];
   // const PANTALLAS = [
-  //   "pistas",]
+  //   "pistas","despues"]
 
   const DURACIONES = {
     logo: 8000,
@@ -179,17 +179,23 @@ const Pantalla = () => {
         </div>
       {/* // )} */}
 
-      {/* {pantalla === "pistas" && ( */}
+      {pantalla === "pistas" && (
         <div className={`${pantalla === "pistas" ? "absolute" : "hidden"}  inset-0 flex items-center justify-center`}>
-          <div className="w-screen h-screen  grid grid-rows-[auto_1fr] overflow-hidden items-start justify-items-center">
-            <MiniMarcador />
+          <div className="w-screen h-screen relative grid grid-rows-[1fr_auto] overflow-hidden items-start justify-items-center">
+            <div className="relative h-[1080px] w-[1920px]">
+
             <img
               src="/img/distribucion-pistas.png"
-              className="h-full w-max object-cover  rounded"
+              className="h-full w-max object-cover rounded"
             />
+            </div>
+            <div className="w-full mx-auto bg-gris fixed bottom-0">
+              <MarcadorPabellon tipoMarcador="Mini" active={pantalla === "pistas" ? true : false} />
+            </div>
+
           </div>
         </div>
-      {/* )} */}
+       )}
 
       {/* {pantalla === "clasificacion" && ( */}
         <div className={`${pantalla === "clasificacion" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}> 
@@ -197,17 +203,17 @@ const Pantalla = () => {
         </div>
       {/* )} */}
 
-      {/* {pantalla === "marcador" && ( */}
+       {pantalla === "marcador" && ( 
         <div className={`${pantalla === "marcador" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}>
-          <MarcadorPabellon /> 
+        <MarcadorPabellon tipoMarcador="Completo" active={pantalla === "marcador" ? true : false} /> 
         </div>
-      {/* )} */}
+       )} 
 
-      {/* {pantalla === "despues" && ( */}
+      {pantalla === "despues" && (
         <div className={`${pantalla === "despues" ? "absolute" : "hidden"} inset-0 flex items-center justify-center`}>
-          <div className="w-screen h-screen  grid grid-rows-[auto_1fr] overflow-hidden items-start justify-items-center">
-            <MiniMarcador />
-            <div className="relative border-t border-amarillo w-[95%] mx-auto flex items-center justify-center inset-0  h-full">
+          <div className="w-screen h-screen  grid grid-rows-[1fr_auto] overflow-hidden items-start justify-items-center">
+            
+            <div className="relative border-b border-amarillo w-[95%] mx-auto flex items-center justify-center inset-0  h-full">
           <div className="w-48 h-49 absolute top-10 left-20">
             <img src="/favicon.svg" className="w-48 h-48" />
           </div>
@@ -232,9 +238,12 @@ const Pantalla = () => {
             </div>
           <ProximosPartidos />
           </div>
+
+          <MarcadorPabellon tipoMarcador="Mini" active={pantalla === "despues" ? true : false} />
+
           </div>
         </div>
-      {/* )} */}
+       )} 
 
       {/* 🔥 TRANSICIÓN DESACTIVADA */}
       {/*
