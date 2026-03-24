@@ -11,8 +11,8 @@ const Pantalla = () => {
   const PANTALLAS = [
     "logo",
     "marcador",
-    "pistas",
-    "marcador",
+    // "pistas",
+    // "marcador",
     "clasificacion",
     "marcador",
     "despues"
@@ -182,15 +182,20 @@ const Pantalla = () => {
       {pantalla === "pistas" && (
         <div className={`${pantalla === "pistas" ? "absolute" : "hidden"}  inset-0 flex items-center justify-center`}>
           <div className="w-screen h-screen relative grid grid-rows-[1fr_auto] overflow-hidden items-start justify-items-center">
-            <div className="relative h-[1080px] w-[1920px]">
-
-            <img
-              src="/img/distribucion-pistas.png"
-              className="h-full w-max object-cover rounded"
-            />
+            <div className="relative h-[872px] w-full flex items-center justify-center overflow-hidden">
+              
+              <img
+                src="/img/distribucion-pistas.png"
+                className="h-[872px] w-full  rounded"
+              />
+              
             </div>
+
             <div className="w-full mx-auto bg-gris fixed bottom-0">
-              <MarcadorPabellon tipoMarcador="Mini" active={pantalla === "pistas" ? true : false} />
+              <MarcadorPabellon 
+                tipoMarcador="Mini" 
+                active={pantalla === "pistas"} 
+              />
             </div>
 
           </div>
