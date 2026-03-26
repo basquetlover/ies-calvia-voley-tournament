@@ -16,7 +16,7 @@ export default function BracketAutoRefresh({equipos, sentido}) {
                 }`}
                 style={{ 
                     '--gap-size': '8rem',  // 28 * 0.25rem = 7rem (tu gap-x-28)
-                    '--item-width': '125px'
+                    '--item-width': '165px'
                 }}
             >
                 {equiposInfinitos.map((equipo, index) => (
@@ -27,7 +27,7 @@ export default function BracketAutoRefresh({equipos, sentido}) {
                         <img 
                             src={equipo.escudo} 
                             alt={equipo.nombre} 
-                            className="w-[125px] h-auto aspect-square rounded object-cover"
+                            className="w-[165px] h-auto aspect-square rounded object-cover"
                         />
                     </div>
                 ))}
