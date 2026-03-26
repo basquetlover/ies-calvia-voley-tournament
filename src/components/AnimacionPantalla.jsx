@@ -259,8 +259,8 @@ const Pantalla = () => {
       */}
 
       {isPaused && (
-        <div className="fixed bottom-8 right-8 z-50 bg-black/50 p-4 rounded-full">
-          ⏸
+        <div className="fixed bottom-0 h-[1px] right-0 z-50 w-2 bg-amarillo border-t border-amarillo  rounded-full">
+          &nbsp;
         </div>
       )}
 
