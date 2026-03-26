@@ -49,7 +49,7 @@ function PartidoCard({ partido, equipos, onClick, calentando }) {
   const escudoVisitante = partido.escudo_visitante || escudoDefault;
 
   return (
-    <div onClick={onClick} className={`cursor-pointer rounded-xl p-4 shadow-md ${estadoStyles[partido.estado]} ${partido.pista === "Pista 2" ? "col-start-2": "col-start-1"} row-start-1`}>
+    <div onClick={onClick} className={`cursor-pointer rounded-xl p-4 shadow-md ${estadoStyles[partido.estado]}  row-start-1`}>
 
       <div className="grid grid-cols-4 text-sm font-semibold border-b border-white/60 pb-2">
         <span>{partido.id_partido}</span>
@@ -338,8 +338,8 @@ pistas.forEach(pista => {
 
       {clavesOrdenadas.map(clave => (
         <div key={clave} className="space-y-3">
-          <h2 className="text-2xl font-bold">{clave}</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <h2 className="text-2xl text-blanco font-bold">{clave}</h2>
+          <div className="flex flex-wrap gap-4">
             {grupos[clave].sort((a, b) => a.jornada - b.jornada).map(p => (
               <PartidoCard
                 key={p.id_partido}
