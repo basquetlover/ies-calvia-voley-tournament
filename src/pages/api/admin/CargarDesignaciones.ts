@@ -37,11 +37,49 @@ export async function POST({ request }: { request: Request }) {
 
         const { data: Administradores } = await supabaseAdmin
             .from('Administradores')
-            .select('nombre')
+            .select('nombre, rango')
             .or(`user_email.eq.${usuario?.email},user_email.eq.${usuario?.email_microsoft}`)
             .single();
 
-        try {
+            if(Administradores?.rango === "Owner" || Administradores?.rango === "Co-Owner"){
+                  try {
+            // Buscar partidos designados
+            const { data } = await supabaseAdmin
+                .from(TablaPartidos)
+                .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado, jornada')
+                .order('jornada', { ascending: true });
+
+            partidos_designados = data || [];
+
+            // Obtener nombres únicos de equipos
+            const equiposNombres = [
+                ...new Set(
+                    partidos_designados.flatMap(p =>
+                        [p.equipo_local, p.equipo_visitante]
+                    )
+                )
+            ];
+
+            // Buscar escudos
+            const { data: equipos } = await supabaseAdmin
+                .from(TablaEquipos)
+                .select('nombre_equipo, escudo')
+                .in('nombre_equipo', equiposNombres);
+
+            escudosMappartidos_designados = equipos?.reduce(
+                (acc: Record<string, string>, equipo: Equipo) => {
+                    acc[equipo.nombre_equipo] = equipo.escudo;
+                    return acc;
+                },
+                {}
+            ) || {};
+
+        } catch (err) {
+            console.error('Error al obtener datos:', err);
+        }
+
+        } else{
+              try {
             // Buscar partidos designados
             const { data } = await supabaseAdmin
                 .from(TablaPartidos)
@@ -77,7 +115,9 @@ export async function POST({ request }: { request: Request }) {
         } catch (err) {
             console.error('Error al obtener datos:', err);
         }
-
+        }
+      
+        
         // 👉 ÚNICO ARRAY FINAL
         const resultado = [
             partidos_designados,
