@@ -89,7 +89,7 @@ useEffect(() => {
 
     
    
-    <div class="absolute w-12 h-28 bg-accent top-[50%] right-[-36px]  linea-octavos-down rotate-180">
+    <div class="absolute w-12 h-28 bg-accent top-[55%] right-[-36px]  linea-octavos-down rotate-180">
         &nbsp;
     </div>
 </div>
@@ -119,7 +119,7 @@ useEffect(() => {
     
 
   
-    <div class="absolute w-12 h-28 bg-accent top-[50%] right-[-36px] -translate-y-3/4 linea-octavos-up rotate-180 -z-10">
+    <div class="absolute w-12 h-28 bg-accent top-[45%] right-[-36px] -translate-y-3/4 linea-octavos-up rotate-180 -z-10">
         &nbsp;
     </div>
 </div>
@@ -128,7 +128,7 @@ useEffect(() => {
 {partidosObj["octavos_3"] && (
 <div class="col-start-1 row-start-3"> 
 <div class="w-max flex flex-col gap-2 transform scale-[1.3] bg-gris-claro rounded-lg p-2 relative ">
-    <div class="absolute w-12 h-28 bg-accent top-[50%] right-[-36px]  linea-octavos-down rotate-180 -z-10">
+    <div class="absolute w-12 h-28 bg-accent top-[55%] right-[-36px]  linea-octavos-down rotate-180 -z-10">
         &nbsp;
     </div>
     {/* {/* <!-- Equipo 1 --> */} 
@@ -156,7 +156,7 @@ useEffect(() => {
 {partidosObj["octavos_4"] && (
 <div class="col-start-1 row-start-4">
     <div class="w-max flex flex-col gap-2 transform scale-[1.3] bg-gris-claro rounded-lg p-2 relative ">
-    <div class="absolute w-12 h-28 bg-accent top-[50%] right-[-36px] -translate-y-3/4 linea-octavos-up rotate-180 -z-10">
+    <div class="absolute w-12 h-28 bg-accent top-[45%] right-[-36px] -translate-y-3/4 linea-octavos-up rotate-180 -z-10">
         &nbsp;
     </div>
         {/* {/* <!-- Equipo 1 --> */} 
@@ -201,7 +201,7 @@ useEffect(() => {
         nombre={partidosObj["octavos_5"]?.equipo_visitante}
         resultado={partidosObj["octavos_5"]?.resultado_visitante}
     />
-        <div class="absolute w-12 h-28 bg-accent top-[50%] left-[-36px]  linea-octavos-up rotate-180 -z-10">
+        <div class="absolute w-12 h-28 bg-accent top-[55%] left-[-36px]  linea-octavos-up rotate-180 -z-10">
         &nbsp;
     </div>
     </div>
@@ -229,7 +229,7 @@ useEffect(() => {
         nombre={partidosObj["octavos_6"]?.equipo_visitante}
         resultado={partidosObj["octavos_6"]?.resultado_visitante}
     />
-         <div class="absolute w-12 h-28 bg-accent top-[50%] left-[-36px] -translate-y-3/4 linea-octavos-down rotate-180 -z-10">
+         <div class="absolute w-12 h-28 bg-accent top-[45%] left-[-36px] -translate-y-3/4 linea-octavos-down rotate-180 -z-10">
         &nbsp;
     </div>
     </div>
@@ -258,7 +258,7 @@ useEffect(() => {
         nombre={partidosObj["octavos_7"]?.equipo_visitante}
         resultado={partidosObj["octavos_7"]?.resultado_visitante}
     />
-        <div class="absolute w-12 h-28 bg-accent top-[50%] left-[-36px]  linea-octavos-up rotate-180 -z-10">
+        <div class="absolute w-12 h-28 bg-accent top-[55%] left-[-36px]  linea-octavos-up rotate-180 -z-10">
         &nbsp;
     </div>
     </div>
@@ -286,7 +286,7 @@ useEffect(() => {
         nombre={partidosObj["octavos_8"]?.equipo_visitante}
         resultado={partidosObj["octavos_8"]?.resultado_visitante}
     />
-        <div class="absolute w-12 h-28 bg-accent top-[50%] left-[-36px] -translate-y-3/4 linea-octavos-down rotate-180 -z-10">
+        <div class="absolute w-12 h-28 bg-accent top-[45%] left-[-36px] -translate-y-3/4 linea-octavos-down rotate-180 -z-10">
         &nbsp;
     </div>
     </div>
@@ -315,7 +315,7 @@ useEffect(() => {
         nombre={partidosObj["quartos_1"]?.equipo_visitante}
         resultado={partidosObj["quartos_1"]?.resultado_visitante}
     />
-    <div class="absolute w-12 h-52 bg-accent top-[51%] right-[-36px]  linea-cuartos-down rotate-180 -z-10">
+    <div class="absolute w-12 h-52 bg-accent top-[56%] right-[-36px]  linea-cuartos-down rotate-180 -z-10">
         &nbsp;
     </div>
     </div>
@@ -344,7 +344,7 @@ useEffect(() => {
         nombre={partidosObj["quartos_2"]?.equipo_visitante}
         resultado={partidosObj["quartos_2"]?.resultado_visitante}
     />
-        <div class="absolute w-12 h-52 bg-accent top-[34%]  right-[-36px] -translate-y-3/4 linea-cuartos-up rotate-180 -z-10">
+        <div class="absolute w-12 h-52 bg-accent top-[26%]  right-[-36px] -translate-y-3/4 linea-cuartos-up rotate-180 -z-10">
         &nbsp;
     </div>
     </div>
@@ -373,7 +373,7 @@ useEffect(() => {
         nombre={partidosObj["quartos_3"]?.equipo_visitante}
         resultado={partidosObj["quartos_3"]?.resultado_visitante}
     />
-        <div class="absolute w-12 h-52 bg-accent top-[51%] left-[-36px]  linea-cuartos-up rotate-180 -z-10">
+        <div class="absolute w-12 h-52 bg-accent top-[56%] left-[-36px]  linea-cuartos-up rotate-180 -z-10">
         &nbsp;
     </div>
     </div>
@@ -402,7 +402,7 @@ useEffect(() => {
         nombre={partidosObj["quartos_4"]?.equipo_visitante}
         resultado={partidosObj["quartos_4"]?.resultado_visitante}
     />
-        <div class="absolute w-12 h-52 bg-accent top-[34%] left-[-36px] -translate-y-3/4 linea-cuartos-down rotate-180 -z-10">
+        <div class="absolute w-12 h-52 bg-accent top-[26%] left-[-36px] -translate-y-3/4 linea-cuartos-down rotate-180 -z-10">
         &nbsp;
     </div>
     </div>
