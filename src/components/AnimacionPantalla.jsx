@@ -262,7 +262,7 @@ const Pantalla = () => {
         <div className="fixed bottom-0 h-[1px] right-0 z-50 w-2 bg-amarillo border-t border-amarillo  rounded-full">
           &nbsp;
         </div>
-      )}
+      )} 
 
     {/* </div> */}
     </div>
