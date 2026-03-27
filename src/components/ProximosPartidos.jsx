@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import './EstilosReact.css';
 
-
+import { createClient } from "@supabase/supabase-js";
 
 
 export default function BracketAutoRefresh() {
+
+        const supabaseUrl = "https://aimtsdmsojunxazbxfue.supabase.co";
+        const supabaseAnonKey = "sb_publishable_JVARTG3Ed4c6FHr0BtMYAw_cUSnTrg7";
+      
+        const supabaseReact = createClient(
+        supabaseUrl,
+        supabaseAnonKey
+      );
+      
+
 const [partidos, setPartidos] = useState([]);
 useEffect(() => {
   async function cargarPartidos() {
@@ -30,8 +40,21 @@ useEffect(() => {
     }
   }
 
+
    cargarPartidos();
-  const intervalo = setInterval(cargarPartidos, 60 *1000); // cada 5 minutos
+    const channel = supabaseReact
+    .channel('realtime-marcador')
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: "PartidosSS26",
+    }, cargarPartidos)
+    .subscribe();
+
+  return () => {
+    supabaseReact.removeChannel(channel);
+  };
+  //const intervalo = setInterval(cargarPartidos, 60 *1000); // cada 5 minutos
     const handleKeyPress = (event) => {
     if (event.key.toLowerCase() === 'r') {
       cargarPartidos();

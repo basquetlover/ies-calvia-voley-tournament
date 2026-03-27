@@ -3,7 +3,7 @@ import ClasificacionReact from "./ClasificacionReact";
 import MarcadorPabellon from "./MarcadorPabellon";
 import ProximosPartidos from "./ProximosPartidos";
 import EscudosCarrusel from "./EscudosCarrusel.jsx";
-import MiniMarcador from "./MiniMarcador.jsx";
+//import MiniMarcador from "./MiniMarcador.jsx";
 // import CuadradosTransition from "./CuadradosTransition"; // TRANSICIÓN DESACTIVADA
 
 const Pantalla = () => {

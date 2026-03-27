@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 import './EstilosReact.css';
-
+import { createClient } from "@supabase/supabase-js";
 
 
 
 export default function BracketAutoRefresh({tipoMarcador, active}) {
+  const supabaseUrl = "https://aimtsdmsojunxazbxfue.supabase.co";
+  const supabaseAnonKey = "sb_publishable_JVARTG3Ed4c6FHr0BtMYAw_cUSnTrg7";
+
+  const supabaseReact = createClient(
+  supabaseUrl,
+  supabaseAnonKey
+);
 
 if(active === false) return null;
 
 const [partidos, setPartidos] = useState([]);
 const [numPartidos, setNumPartidos] = useState(0);
-useEffect(() => {
-  async function cargarPartidos() {
+
+async function cargarPartidos() {
     //setLoading(true);
     try {
     //   const res = await fetch('/api/usuario/CargarBracket');
@@ -45,9 +52,31 @@ useEffect(() => {
     }
   }
 
-   cargarPartidos();
-  const intervalo = setInterval(cargarPartidos, 3*1000); // cada 3 segundos
-  return () => clearInterval(intervalo);
+useEffect(() => {
+  
+  cargarPartidos();
+
+  const channel = supabaseReact
+    .channel('realtime-marcador')
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: "PartidosSS26",
+    }, cargarPartidos)
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: "HistorialSS26",
+    }, cargarPartidos)
+    .subscribe();
+
+  return () => {
+    supabaseReact.removeChannel(channel);
+  };
+
+  //  cargarPartidos();
+  //const intervalo = setInterval(cargarPartidos, 3*1000); // cada 3 segundos
+  //return () => clearInterval(intervalo);
 }, []);
 
     
@@ -492,7 +521,7 @@ useEffect(() => {
         <>
             <div className="h-52 px-5 w-full flex items-center justify-center">
         {
-            numPartidos === 2 ? (
+            numPartidos === 2 && (
                 <>
                 <div className="w-full grid grid-cols-2 grid-rows-1 place-items-center ">
 
@@ -656,7 +685,10 @@ useEffect(() => {
 
                 </div>
                 </>
-            ):(
+            )
+        }
+        {
+          numPartidos === 1 && (
                 <>
                 <div>
         {
@@ -737,6 +769,12 @@ useEffect(() => {
         </div>
                 </>
             )
+        }
+        {
+          numPartidos === 0 && (
+            <>
+            </>
+          )
         }
        
     </div>

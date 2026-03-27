@@ -5,13 +5,23 @@ import EquipoBoxDer from "./EquipoBoxDer";
 import EquipoIzq from "./EquipoIzq";
 import EquipoDer from "./EquipoDer";
 import './EstilosReact.css';
-
+import { createClient } from "@supabase/supabase-js";
 const traducirPartido = (str) => {
   const match = str.match(/\d+$/);
   return `Partit ${match ? match[0] : ""}`;
 };
 
 export default function BracketAutoRefresh() {
+
+      const supabaseUrl = "https://aimtsdmsojunxazbxfue.supabase.co";
+      const supabaseAnonKey = "sb_publishable_JVARTG3Ed4c6FHr0BtMYAw_cUSnTrg7";
+    
+      const supabaseReact = createClient(
+      supabaseUrl,
+      supabaseAnonKey
+    );
+    
+
 const [partidos, setPartidos] = useState([]);
 const [loading, setLoading] = useState(true);
 const [partidosObj, setPartidosObj] = useState({});
@@ -48,7 +58,19 @@ useEffect(() => {
   }
 
   cargarPartidos();
-  const intervalo = setInterval(cargarPartidos, 3 * 60 *1000); // cada 3 minutos
+  const channel = supabaseReact
+    .channel('realtime-marcador')
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: "PartidosSS26",
+    }, cargarPartidos)
+    .subscribe();
+
+  return () => {
+    supabaseReact.removeChannel(channel);
+  };
+  //const intervalo = setInterval(cargarPartidos, 3 * 60 *1000); // cada 3 minutos
     const handleKeyPress = (event) => {
     if (event.key.toLowerCase() === 'r') {
       cargarPartidos();
