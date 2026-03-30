@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { createClient } from "@supabase/supabase-js";
 const pistas = ["Pista 1", "Pista 2", "Pista Central"];
 const bracketsOrden = ["octavos", "cuartos", "semi", "final", "3r i 4t", "perdedores"];
 const estados = ["Per Jugar", "En Directe", "Finalitzat"];
@@ -233,12 +233,22 @@ function EditPartidoForm({ partido, onClose, onSave, equipos, voluntarios }) {
 
 // Componente principal
 export default function CargarPartidos() {
+        const supabaseUrl = "https://aimtsdmsojunxazbxfue.supabase.co";
+        const supabaseAnonKey = "sb_publishable_JVARTG3Ed4c6FHr0BtMYAw_cUSnTrg7";
+      
+        const supabaseReact = createClient(
+        supabaseUrl,
+        supabaseAnonKey
+      );
+
   const [partidos, setPartidos] = useState([]);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [partidoSeleccionado, setPartidoSeleccionado] = useState(null);
   const [voluntarios, setVoluntarios] = useState([]);
   const [equipos, setEquipos] = useState([]);
   const [orden, setOrden] = useState("jornada");
+
+
 
   const fetchEquipos = async () => {
     try { 
@@ -265,7 +275,20 @@ export default function CargarPartidos() {
   };
 
   useEffect(() => { fetchEquipos(); fetchPartidos(); fetchVoluntarios(); }, []);
+  useEffect(() => {
+      const channel = supabaseReact
+    .channel('realtime-marcador')
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: "PartidosSS26",
+    }, actualizarDatos)
+    .subscribe();
 
+  return () => {
+    supabaseReact.removeChannel(channel);
+  };
+  }, []);
   const abrirModal = (p) => { setPartidoSeleccionado(p); setModalAbierto(true); };
   const cerrarModal = () => { setPartidoSeleccionado(null); setModalAbierto(false); };
   const refrescarLista = () => fetchPartidos();

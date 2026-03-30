@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { createClient } from "@supabase/supabase-js";
 const pistas = ["Pista 1", "Pista 2", "Pista Central"];
 const bracketsOrden = ["octavos", "cuartos", "semi", "final", "3r i 4t", "perdedores"];
 const estados = ["Per Jugar", "En Directe", "Finalitzat"];
@@ -233,6 +233,13 @@ function EditPartidoForm({ partido, onClose, onSave, equipos, voluntarios }) {
 
 // Componente principal
 export default function CargarPartidos() {
+     const supabaseUrl = "https://aimtsdmsojunxazbxfue.supabase.co";
+          const supabaseAnonKey = "sb_publishable_JVARTG3Ed4c6FHr0BtMYAw_cUSnTrg7";
+        
+          const supabaseReact = createClient(
+          supabaseUrl,
+          supabaseAnonKey
+        );
   const [partidos, setPartidos] = useState([]);
 
   const [voluntarios, setVoluntarios] = useState([]);
@@ -274,6 +281,20 @@ export default function CargarPartidos() {
     fetchVoluntarios()
   ]);
 };
+  useEffect(() => {
+      const channel = supabaseReact
+    .channel('realtime-marcador')
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: "PartidosSS26",
+    }, actualizarDatos)
+    .subscribe();
+
+  return () => {
+    supabaseReact.removeChannel(channel);
+  };
+  }, []);
 
   // Determinar partidos “calentando”
   const partidosCalentando = {};
