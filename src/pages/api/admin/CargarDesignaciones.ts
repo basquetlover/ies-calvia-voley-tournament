@@ -14,22 +14,21 @@ export async function POST({ request }: { request: Request }) {
         let TablaPartidos = `Partidos${ConfTorneo?.id_torneo}`;
         let TablaEquipos = `Equipos${ConfTorneo?.id_torneo}`;
 
-        
-
         interface Equipo {
             nombre_equipo: string;
             escudo: string;
         }
 
         interface Partido {
-            equipo_local: string;
-            equipo_visitante: string;
-            arbitro: string;
-            oficial_1: string;
-            oficial_2: string;
-            pista: string;
+            equipo_local: string | null;
+            equipo_visitante: string | null;
+            arbitro: string | null;
+            oficial_1: string | null;
+            oficial_2: string | null;
+            pista: string | null;
             id_partido: string;
             estado: string;
+            jornada: number;
         }
 
         let partidos_designados: Partido[] = [];
@@ -41,26 +40,69 @@ export async function POST({ request }: { request: Request }) {
             .or(`user_email.eq.${usuario?.email},user_email.eq.${usuario?.email_microsoft}`)
             .single();
 
-            if(Administradores?.rango === "Owner" || Administradores?.rango === "Co-Owner"){
-                  try {
-            // Buscar partidos designados
-            const { data } = await supabaseAdmin
+        try {
+            // 🔹 TODOS LOS PARTIDOS (para sacar TODAS las jornadas)
+            const { data: todosPartidos } = await supabaseAdmin
                 .from(TablaPartidos)
-                .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado, jornada')
-                .order('jornada', { ascending: true });
+                .select('jornada');
+
+            const todasJornadas = [
+                ...new Set(todosPartidos?.map(p => p.jornada))
+            ];
+
+            // 🔹 PARTIDOS SEGÚN RANGO
+            let query = supabaseAdmin
+                .from(TablaPartidos)
+                .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado, jornada');
+
+            if (!(Administradores?.rango === "Owner" || Administradores?.rango === "Co-Owner")) {
+                query = query.or(
+                    `arbitro.eq.${Administradores?.nombre},oficial_1.eq.${Administradores?.nombre},oficial_2.eq.${Administradores?.nombre}`
+                );
+            }
+
+            const { data } = await query.order('jornada', { ascending: true });
 
             partidos_designados = data || [];
 
-            // Obtener nombres únicos de equipos
+            // 🔹 JORNADAS CON DESIGNACIÓN
+            const jornadasConDesignacion = [
+                ...new Set(partidos_designados.map(p => p.jornada))
+            ];
+
+            // 🔹 JORNADAS DE DESCANSO
+            const jornadasDescanso = todasJornadas.filter(
+                j => !jornadasConDesignacion.includes(j)
+            );
+
+            // 🔹 CREAR PARTIDOS "DESCANS"
+            const partidosDescanso: Partido[] = jornadasDescanso.map(jornada => ({
+                equipo_local: null,
+                equipo_visitante: null,
+                arbitro: null,
+                oficial_1: null,
+                oficial_2: null,
+                pista: null,
+                id_partido: `descanso_${jornada}`,
+                estado: 'Descans',
+                jornada
+            }));
+
+            // 🔹 UNIR Y ORDENAR
+            partidos_designados = [
+                ...partidos_designados,
+                ...partidosDescanso
+            ].sort((a, b) => a.jornada - b.jornada);
+
+            // 🔹 OBTENER ESCUDOS (solo de partidos reales)
             const equiposNombres = [
                 ...new Set(
-                    partidos_designados.flatMap(p =>
-                        [p.equipo_local, p.equipo_visitante]
-                    )
+                    partidos_designados
+                        .filter(p => p.equipo_local && p.equipo_visitante)
+                        .flatMap(p => [p.equipo_local, p.equipo_visitante])
                 )
             ];
 
-            // Buscar escudos
             const { data: equipos } = await supabaseAdmin
                 .from(TablaEquipos)
                 .select('nombre_equipo, escudo')
@@ -78,52 +120,10 @@ export async function POST({ request }: { request: Request }) {
             console.error('Error al obtener datos:', err);
         }
 
-        } else{
-              try {
-            // Buscar partidos designados
-            const { data } = await supabaseAdmin
-                .from(TablaPartidos)
-                .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado, jornada')
-                .or(`arbitro.eq.${Administradores?.nombre},oficial_1.eq.${Administradores?.nombre},oficial_2.eq.${Administradores?.nombre}`)
-                .order('jornada', { ascending: true });
-
-            partidos_designados = data || [];
-
-            // Obtener nombres únicos de equipos
-            const equiposNombres = [
-                ...new Set(
-                    partidos_designados.flatMap(p =>
-                        [p.equipo_local, p.equipo_visitante]
-                    )
-                )
-            ];
-
-            // Buscar escudos
-            const { data: equipos } = await supabaseAdmin
-                .from(TablaEquipos)
-                .select('nombre_equipo, escudo')
-                .in('nombre_equipo', equiposNombres);
-
-            escudosMappartidos_designados = equipos?.reduce(
-                (acc: Record<string, string>, equipo: Equipo) => {
-                    acc[equipo.nombre_equipo] = equipo.escudo;
-                    return acc;
-                },
-                {}
-            ) || {};
-
-        } catch (err) {
-            console.error('Error al obtener datos:', err);
-        }
-        }
-      
-        
-        // 👉 ÚNICO ARRAY FINAL
         const resultado = [
             partidos_designados,
             escudosMappartidos_designados
         ];
-        //console.log("Resultado CargarDesignaciones:", resultado);
 
         return new Response(JSON.stringify(resultado), { status: 200 });
 
