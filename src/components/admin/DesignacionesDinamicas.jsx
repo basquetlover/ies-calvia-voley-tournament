@@ -61,6 +61,10 @@ const escudosMap = partidos[1] || {};
     <div className="flex flex-col gap-2">
 
       {partidos_designados.map((partido) => {
+        const supervisionActual = (partido.supervision || "").trim();
+        const mostrarCapaSupervision =
+          supervisionActual === "Inválid" || supervisionActual === "Revisant";
+        const supervisionBloqueante = supervisionActual === "Inválid";
         
   // 👉 CASO DESCANSO
   if (partido.estado === "Descans") {
@@ -85,11 +89,12 @@ const escudosMap = partidos[1] || {};
     <>
     <p className="text-xl text-blanco text-semibold">Jornada {partido.jornada}</p>
     
-    <div key={partido.id_partido} className="bg-amarillo h-auto w-[400px] rounded-lg">
+    <div key={partido.id_partido} className="bg-amarillo h-auto w-[400px] relative rounded-lg overflow-hidden">
 
       {/* Pista y ID */}
       <div className="text-gris w-full flex flex-row items-center place-content-around">
         <p>{partido.pista}</p>
+        <p>{partido.estado}</p>
         <p>{partido.id_partido}</p>
       </div>
 
@@ -141,7 +146,7 @@ const escudosMap = partidos[1] || {};
       <div className="w-full h-auto flex flex-row items-center place-content-around">
 
         {/* Acta Digital */}
-        {partido.estado !== "Finalitzat" ? (
+        {partido.estado !== "Finalitzat" && !supervisionBloqueante ? (
           <a
             href={`/admin/acta-digital/app?partidoID="${partido.id_partido}"`}
             className="w-max h-max px-2 py-2 rounded-md bg-azul-suave text-blanco mb-1"
@@ -157,6 +162,26 @@ const escudosMap = partidos[1] || {};
           </div>
         )}
       </div>
+
+      {mostrarCapaSupervision && (
+        <div
+          className={`absolute inset-0 z-10 flex items-center justify-center rounded-lg ${
+            supervisionBloqueante
+              ? "bg-black/55 cursor-not-allowed"
+              : "bg-amber-900/25 pointer-events-none"
+          }`}
+        >
+          <div
+            className={`rounded-xl px-3 py-2 text-sm font-semibold shadow-lg ${
+              supervisionBloqueante
+                ? "bg-rojo-claro text-rojo"
+                : "bg-amarillo text-azul-suave"
+            }`}
+          >
+            {supervisionActual}
+          </div>
+        </div>
+      )}
 
     </div>
     </>

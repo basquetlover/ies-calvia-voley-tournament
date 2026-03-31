@@ -27,7 +27,8 @@ export async function POST({ request }: { request: Request }) {
             oficial_2: string | null;
             pista: string | null;
             id_partido: string;
-            estado: string;
+            estado: string | null;
+            supervision: string | null;
             jornada: number;
         }
 
@@ -53,7 +54,7 @@ export async function POST({ request }: { request: Request }) {
             // 🔹 PARTIDOS SEGÚN RANGO
             let query = supabaseAdmin
                 .from(TablaPartidos)
-                .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado, jornada');
+                .select('equipo_local, equipo_visitante, pista, id_partido, arbitro, oficial_1, oficial_2, estado, jornada, supervision');
 
             if (!(Administradores?.rango === "Owner" || Administradores?.rango === "Co-Owner")) {
                 query = query.or(
@@ -84,7 +85,8 @@ export async function POST({ request }: { request: Request }) {
                 oficial_2: null,
                 pista: null,
                 id_partido: `descanso_${jornada}`,
-                estado: 'Descans',
+                estado: null,
+                supervision: null,
                 jornada
             }));
 
