@@ -1,11 +1,45 @@
 import { useEffect, useRef, useState } from "react";
 import './ActaApp.css';
 import GuardarJugada from "./HistorialJugadas.jsx";
-
-const ActaDigitalApp = ( { nombreEquipoLocal, nombreEquipoVisitante, jugadoresLocal, tiempoUltimaJugada="00:00", jugadoresVisitante, escudo_equipo_local, escudo_equipo_visitante, pista, arbitro, oficial_1, oficial_2, id_partido } ) => {
+import { createClient } from "@supabase/supabase-js";
+ import { useRouter } from "next/navigation";
+const ActaDigitalApp = ( { nombreEquipoLocal, nombreEquipoVisitante, jugadoresLocal, tiempoUltimaJugada="00:00", jugadoresVisitante, escudo_equipo_local, escudo_equipo_visitante, pista, arbitro, oficial_1, oficial_2, id_partido, rango } ) => {
     // const jugadoresLocal = Array.from({ length: 9 }, () => ({ nombre: "", img: "" }));
     // const jugadoresVisitante = Array.from({ length: 9 }, () => ({ nombre: "", img: "" }));
-    
+    const supabaseUrl = "https://aimtsdmsojunxazbxfue.supabase.co";
+              const supabaseAnonKey = "sb_publishable_JVARTG3Ed4c6FHr0BtMYAw_cUSnTrg7";
+            
+              const supabaseReact = createClient(
+              supabaseUrl,
+              supabaseAnonKey
+            );
+
+           
+
+const router = useRouter();
+
+useEffect(() => {
+  const SuprimirAcceso = (payload) => {
+    const nuevoEstado = payload.new?.estado;
+
+    if (nuevoEstado === "Revisant") {
+      router.push("/admin/designaciones");
+    }
+  };
+
+  const channel = supabaseReact
+    .channel('realtime-marcador')
+    .on('postgres_changes', {
+      event: 'UPDATE',
+      schema: 'public',
+      table: "PartidosSS26",
+    }, SuprimirAcceso)
+    .subscribe();
+
+  return () => {
+    supabaseReact.removeChannel(channel);
+  };
+}, []);
 
     const PUNTOS = [
     {

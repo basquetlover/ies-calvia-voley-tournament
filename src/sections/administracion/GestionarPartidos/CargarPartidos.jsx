@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 const pistas = ["Pista 1", "Pista 2", "Pista Central"];
 const bracketsOrden = ["octavos", "cuartos", "semi", "final", "3r i 4t", "perdedores"];
-const estados = ["Per Jugar", "En Directe", "Finalitzat"];
+const estados = ["Per Jugar", "En Directe", "Finalitzat", "Revisant"];
 
 // Normaliza brackets
 function normalizarBracket(bracket) {
