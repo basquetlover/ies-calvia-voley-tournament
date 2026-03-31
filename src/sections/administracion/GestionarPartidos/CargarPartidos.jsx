@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 const pistas = ["Pista 1", "Pista 2", "Pista Central"];
 const bracketsOrden = ["octavos", "cuartos", "semi", "final", "3r i 4t", "perdedores"];
-const estados = ["Per Jugar", "En Directe", "Finalitzat", "Revisant"];
+const estados = ["Per Jugar", "En Directe", "Finalitzat"];
+const supervision = ["Revisant", "Validat", "Sense supervisió", "Inválid"];
+const supervisionOrden = [...supervision, "Sense supervisió"];
+
+function normalizarSupervision(valor) {
+  const estado = (valor ?? "").trim();
+  return estado || "Sense supervisió";
+}
 
 // Normaliza brackets
 function normalizarBracket(bracket) {
@@ -47,6 +54,13 @@ function PartidoCard({ partido, equipos, onClick, calentando }) {
 
   const escudoLocal = partido.escudo_local || escudoDefault;
   const escudoVisitante = partido.escudo_visitante || escudoDefault;
+  const supervisionActual = normalizarSupervision(partido.supervision);
+  const supervisionStyles = {
+    Revisant: "border-amber-300/40 bg-amber-500/20 text-amber-100",
+    Validat: "border-emerald-300/40 bg-emerald-500/20 text-emerald-100",
+    "Inválid": "border-rose-300/40 bg-rose-500/20 text-rose-100",
+    "Sense supervisió": "border-slate-300/40 bg-slate-500/20 text-slate-100",
+  };
 
   return (
     <div onClick={onClick} className={`cursor-pointer rounded-xl max-w-80 p-4 shadow-md ${estadoStyles[partido.estado]} ${partido.pista === "Pista 2" ? "col-start-2": "col-start-1"} row-start-1`}>
@@ -94,11 +108,17 @@ function PartidoCard({ partido, equipos, onClick, calentando }) {
         <span className="text-center">{partido.oficial_2}</span>
       </div>
 
-      {calentando && (
-        <div className="text-yellow-300 text-xs font-semibold">
-          Calentando 🔥
-        </div>
-      )}
+      <div className="mt-3 flex items-center justify-between gap-2">
+        <span className={`rounded-full border px-2 py-1 text-xs font-semibold ${supervisionStyles[supervisionActual] || supervisionStyles["Sense supervisió"]}`}>
+          Supervisión: {supervisionActual}
+        </span>
+
+        {calentando && (
+          <div className="text-yellow-300 text-xs font-semibold">
+            Calentando 🔥
+          </div>
+        )}
+      </div>
 
     </div>
   );
@@ -142,24 +162,31 @@ function EquiposResult({ formData, handleChange, equipos }) {
 
 function InfoPartido({ formData, handleChange }) {
   return (
-    <div className="flex gap-4 mt-2">
-      <div className="flex-1">
+    <div className="flex gap-4 mt-2 flex-wrap">
+      <div className="flex-1 min-w-36">
         <label>Pista</label>
         <select name="pista" value={formData.pista} onChange={handleChange} className="w-full p-2 rounded bg-gray-800 text-white">
           {pistas.map(p => <option key={p} value={p}>{p}</option>)}
         </select>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 min-w-36">
         <label>Estado</label>
         <select name="estado" value={formData.estado} onChange={handleChange} className="w-full p-2 rounded bg-gray-800 text-white">
           {estados.map(e => <option key={e} value={e}>{e}</option>)}
         </select>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 min-w-36">
+        <label>Supervisión</label>
+        <select name="supervision" value={formData.supervision || ""} onChange={handleChange} className="w-full p-2 rounded bg-gray-800 text-white">
+          <option value="">Sense supervisió</option>
+          {supervision.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </div>
+      <div className="flex-1 min-w-28">
         <label>Jornada</label>
         <input type="number" name="jornada" value={formData.jornada} onChange={handleChange} className="w-full p-2 rounded bg-gray-800 text-white"/>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 min-w-40">
         <label>Bracket</label>
         <select name="bracket" disabled value={formData.bracket} onChange={handleChange} className="w-full p-2 rounded bg-gray-800 text-white">
           {bracketsOrden.map(b => <option key={b} value={b}>{b}</option>)}
@@ -319,7 +346,13 @@ pistas.forEach(pista => {
   // Agrupar
   const grupos = {};
   partidos.forEach(p => {
-    let clave = orden === "pista" ? p.pista : orden === "bracket" ? normalizarBracket(p.bracket) : `Jornada ${p.jornada}`;
+    let clave;
+
+    if (orden === "pista") clave = p.pista;
+    else if (orden === "bracket") clave = normalizarBracket(p.bracket);
+    else if (orden === "supervision") clave = normalizarSupervision(p.supervision);
+    else clave = `Jornada ${p.jornada}`;
+
     if (!grupos[clave]) grupos[clave] = [];
     grupos[clave].push(p);
   });
@@ -327,6 +360,7 @@ pistas.forEach(pista => {
   let clavesOrdenadas = Object.keys(grupos);
   if (orden === "bracket") clavesOrdenadas = bracketsOrden.filter(b => grupos[b]);
   if (orden === "pista") clavesOrdenadas = pistas.filter(p => grupos[p]);
+  if (orden === "supervision") clavesOrdenadas = supervisionOrden.filter(s => grupos[s]);
   if (orden === "jornada") clavesOrdenadas.sort((a, b) => parseInt(a.replace("Jornada ", "")) - parseInt(b.replace("Jornada ", "")));
 
   return (
@@ -351,6 +385,13 @@ pistas.forEach(pista => {
           className={`px-3 py-1 rounded ${orden === "bracket" ? "bg-blue-600" : "bg-gray-700"}`}
         >
           Bracket
+        </button>
+
+        <button 
+          onClick={() => setOrden("supervision")} 
+          className={`px-3 py-1 rounded ${orden === "supervision" ? "bg-blue-600" : "bg-gray-700"}`}
+        >
+          Supervisión
         </button>
 
         {/* Botón actualizar */}

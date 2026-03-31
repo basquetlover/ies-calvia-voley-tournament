@@ -1,6 +1,7 @@
 ---
 import LayoutAllSinMenu from '@layouts/LayoutAllSinMenu.astro';
 import ActaDigitalApp from "@pages/admin/acta-digital/ActaApp.jsx";
+import { verificarSesion } from 'src/lib/session';
 import { supabaseAdmin } from 'src/lib/supabase';
 
 const { data: ConfTorneo, error: ConfTorneoErr } = await supabaseAdmin
@@ -35,6 +36,7 @@ let pista = "";
 let arbitro = "";
 let oficial_1 = "";
 let oficial_2 = "";
+let supervision = "";
 
 let jugadoresLocal: Jugador[] = [];
 let id_equipo_local = "";
@@ -47,7 +49,7 @@ let escudo_equipo_visitante = "";
 let referencia_EV = "";
 const { data, error } = await supabaseAdmin
     .from(TablaPartidos)
-    .select('equipo_local, equipo_visitante, pista, estado, id_partido, arbitro, oficial_1, oficial_2')
+    .select('equipo_local, equipo_visitante, pista, estado, id_partido, arbitro, oficial_1, oficial_2, supervision')
     .eq('id_partido', id_partido)
     .maybeSingle();
 
@@ -60,6 +62,7 @@ const { data, error } = await supabaseAdmin
     arbitro = data.arbitro;
     oficial_1 = data.oficial_1;
     oficial_2 = data.oficial_2;
+    supervision = data.supervision ?? "";
     estado = data.estado;
   }
 
@@ -172,7 +175,26 @@ if (EntrenadorVisitante) {
     }
 //     console.log(EntrenadorVisitante);
  }
-
+const usuario = await verificarSesion(Astro.request);
+let rango = "";
+if(usuario){
+    console.log("usuario:", usuario.email, usuario.nombre, usuario.curso)
+    const { data: adminData, error } = await supabaseAdmin
+            .from("Administradores")
+            .select("rango, user_email")
+            .or(`user_email.eq.${usuario.email},user_email.eq.${usuario.email_microsoft}`)
+            .in('rango', ['Owner', 'Co-Owner', 'Staff', 'Oficial de Mesa', 'Arbitro', 'Professor'])
+            .single();
+if(error){
+    console.log(
+        "Usuario sin cuenta de admin"
+    )
+}
+// adminData?.rango === "Owner" || 
+if(adminData){
+    rango = adminData.rango;
+}
+}
 ---
 <LayoutAllSinMenu title='Acta Digital'>
 
@@ -188,7 +210,8 @@ if (EntrenadorVisitante) {
     oficial_1={oficial_1}
     oficial_2={oficial_2}
     id_partido={id_partido}
-    rango={"admin"}
+    rango={rango}
+    supervision={supervision}
     />
 
     

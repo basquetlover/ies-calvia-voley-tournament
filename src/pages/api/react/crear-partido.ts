@@ -38,6 +38,7 @@ const { data, error } = await supabaseAdmin
         id_partido: partido_id,
         pista: pista,
         estado: estado,
+        supervision: "Revisant",
         equipo_local: equipo_local,
         equipo_visitante: equipo_visitante,
         LocGlobal: "-",

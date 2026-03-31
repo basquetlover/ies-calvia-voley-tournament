@@ -1,9 +1,24 @@
 import { useEffect, useRef, useState } from "react";
-import './ActaApp.css';
+import "./ActaApp.css";
 import GuardarJugada from "./HistorialJugadas.jsx";
 import { createClient } from "@supabase/supabase-js";
- import { useRouter } from "next/navigation";
-const ActaDigitalApp = ( { nombreEquipoLocal, nombreEquipoVisitante, jugadoresLocal, tiempoUltimaJugada="00:00", jugadoresVisitante, escudo_equipo_local, escudo_equipo_visitante, pista, arbitro, oficial_1, oficial_2, id_partido, rango } ) => {
+
+const ActaDigitalApp = ({
+  nombreEquipoLocal,
+  nombreEquipoVisitante,
+  jugadoresLocal,
+  tiempoUltimaJugada = "00:00",
+  jugadoresVisitante,
+  escudo_equipo_local,
+  escudo_equipo_visitante,
+  pista,
+  arbitro,
+  oficial_1,
+  oficial_2,
+  id_partido,
+  rango,
+  supervision = "",
+}) => {
     // const jugadoresLocal = Array.from({ length: 9 }, () => ({ nombre: "", img: "" }));
     // const jugadoresVisitante = Array.from({ length: 9 }, () => ({ nombre: "", img: "" }));
     const supabaseUrl = "https://aimtsdmsojunxazbxfue.supabase.co";
@@ -14,32 +29,44 @@ const ActaDigitalApp = ( { nombreEquipoLocal, nombreEquipoVisitante, jugadoresLo
               supabaseAnonKey
             );
 
-           
-
-const router = useRouter();
+const [estadoSupervision, setEstadoSupervision] = useState(supervision || "");
+const esAdminPrincipal = rango === "Owner" || rango === "Co-Owner";
+const actaBloqueada = !esAdminPrincipal && estadoSupervision === "Revisant";
+const redireccionAutomatica = !esAdminPrincipal && estadoSupervision === "Inválid";
 
 useEffect(() => {
-  const SuprimirAcceso = (payload) => {
-    const nuevoEstado = payload.new?.estado;
+  setEstadoSupervision(supervision || "");
+}, [supervision]);
 
-    if (nuevoEstado === "Revisant") {
-      router.push("/admin/designaciones");
-    }
+useEffect(() => {
+  if (redireccionAutomatica && typeof window !== "undefined") {
+    window.location.replace("/admin/designaciones");
+  }
+}, [redireccionAutomatica]);
+
+useEffect(() => {
+  if (esAdminPrincipal) return;
+
+  const suprimirAcceso = (payload) => {
+    if (String(payload.new?.id_partido) !== String(id_partido)) return;
+
+    const nuevoEstado = payload.new?.supervision || "";
+    setEstadoSupervision(nuevoEstado);
   };
 
   const channel = supabaseReact
-    .channel('realtime-marcador')
+    .channel(`realtime-marcador-${id_partido}`)
     .on('postgres_changes', {
       event: 'UPDATE',
       schema: 'public',
       table: "PartidosSS26",
-    }, SuprimirAcceso)
+    }, suprimirAcceso)
     .subscribe();
 
   return () => {
     supabaseReact.removeChannel(channel);
   };
-}, []);
+}, [esAdminPrincipal, id_partido]);
 
     const PUNTOS = [
     {
@@ -327,24 +354,136 @@ useEffect(() => {
   //Enviar datos
     const [historial, setHistorial] = useState([]); 
     const [ultimo, setUltimo] = useState(null);
+    const sincronizandoHistorialRef = useRef(false);
+
+    const aplicarHistorialDesdeDB = (historialCargado = []) => {
+      const historialSeguro = Array.isArray(historialCargado) ? historialCargado : [];
+
+      setHistorial(historialSeguro);
+
+      if (historialSeguro.length === 0) {
+        setUltimo(null);
+        setOrdenes([]);
+        setMinutos(0);
+        setSegundos(0);
+        setLocPuntos(0);
+        setLocSets(0);
+        setVisPuntos(0);
+        setVisSets(0);
+        setLocSet1("-");
+        setVisSet1("-");
+        setLocSet2("-");
+        setVisSet2("-");
+        setLocSet3("-");
+        setVisSet3("-");
+        return;
+      }
+
+      const ultima = historialSeguro[historialSeguro.length - 1];
+      const { minutos, segundos } = separarMinutosSegundos(ultima.tiempo || "00:00");
+      const antiguas_ordenes = historialSeguro
+        .map((j) => j.orden.toString().padStart(4, "0"))
+        .sort((a, b) => Number(a) - Number(b));
+
+      setOrdenes(antiguas_ordenes);
+      setUltimo(ultima);
+      setMinutos(minutos);
+      setSegundos(segundos);
+      setLocPuntos(Number(ultima.nuevoLoc) || 0);
+      setLocSets(Number(ultima.nuevoLocSet) || 0);
+      setVisPuntos(Number(ultima.nuevoVis) || 0);
+      setVisSets(Number(ultima.nuevoVisSet) || 0);
+
+      setLocSet1("-");
+      setVisSet1("-");
+      setLocSet2("-");
+      setVisSet2("-");
+      setLocSet3("-");
+      setVisSet3("-");
+
+      const finSets = historialSeguro.filter((j) => j.tipo === "FinSet");
+
+      finSets.forEach((finSet, index) => {
+        const jugada = historialSeguro.find(
+          (j) => j.orden === finSet.orden && j.tipo !== "FinSet"
+        );
+
+        if (jugada) {
+          switch (index) {
+            case 0:
+              setLocSet1(jugada.nuevoLoc);
+              setVisSet1(jugada.nuevoVis);
+              break;
+            case 1:
+              setLocSet2(jugada.nuevoLoc);
+              setVisSet2(jugada.nuevoVis);
+              break;
+            case 2:
+              setLocSet3(jugada.nuevoLoc);
+              setVisSet3(jugada.nuevoVis);
+              break;
+            default:
+              break;
+          }
+        }
+      });
+    };
+
+    const sincronizarHistorialDesdeDB = async () => {
+      if (typeof window === "undefined" || !id_partido || sincronizandoHistorialRef.current) return;
+
+      sincronizandoHistorialRef.current = true;
+
+      try {
+        const res = await fetch("/api/acta-digital/CargarPartido", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_partido }),
+        });
+
+        if (!res.ok) throw new Error("Error al cargar historial desde DB");
+
+        const resultado = await res.json();
+        const dbHistorial = Array.isArray(resultado.HistorialGuardado) ? resultado.HistorialGuardado : [];
+        const historialDBTransformado = dbHistorial
+          .map((jugadaDB) => ({
+            tipo: jugadaDB.tipoPunto,
+            jugador: jugadaDB.nombre,
+            idEquipo: jugadaDB.id_equipo,
+            tiempo: jugadaDB.tiempo,
+            orden: jugadaDB.orden,
+            nuevoLoc: jugadaDB.locPuntos,
+            nuevoLocSet: jugadaDB.locSet,
+            nuevoVis: jugadaDB.visPuntos,
+            nuevoVisSet: jugadaDB.visSet,
+            estado: "Completo",
+          }))
+          .sort((a, b) => Number(a.orden) - Number(b.orden));
+
+        localStorage.removeItem(`historial_${id_partido}`);
+        localStorage.setItem(`historial_${id_partido}`, JSON.stringify(historialDBTransformado));
+        aplicarHistorialDesdeDB(historialDBTransformado);
+      } catch (err) {
+        console.error("Fallo al sincronizar historial desde DB:", err);
+      } finally {
+        sincronizandoHistorialRef.current = false;
+      }
+    };
 
     //Cargar Datos Partido
 useEffect(() => {
   if (typeof window === "undefined" || !id_partido) return;
 
   const cargarDatos = async () => {
-    // 1️⃣ Cargar historial desde localStorage
     const dataGuardada = localStorage.getItem(`historial_${id_partido}`);
     const parsedHistorial = dataGuardada ? JSON.parse(dataGuardada) : [];
 
-    setHistorial(parsedHistorial);
+    aplicarHistorialDesdeDB(parsedHistorial);
 
-    // 2️⃣ Cargar informes desde localStorage
     const informesGuardados = localStorage.getItem(`informes_${id_partido}`) || "[]";
     const informesArray = JSON.parse(informesGuardados);
     setInformes(informesArray);
 
-    // 3️⃣ Crear confirmaciones basadas en el estado de cada jugada
     const nuevasConfirmaciones = parsedHistorial.map((jugada) => {
       const horaActual = new Date().toLocaleTimeString();
       let mensaje = "";
@@ -372,139 +511,11 @@ useEffect(() => {
     });
     setConfirmaciones(nuevasConfirmaciones);
 
-    // 4️⃣ Actualizar los últimos valores del partido
-    if (parsedHistorial.length > 0) {
-      const ultima = parsedHistorial[parsedHistorial.length - 1];
-      const { minutos, segundos } = separarMinutosSegundos(ultima.tiempo);
-        const antiguas_ordenes = parsedHistorial
-        .map(j => j.orden.toString().padStart(4, "0")) // mantener formato string
-        .sort((a, b) => Number(a) - Number(b));     // ordenamos de menor a mayor
-
-        console.log(antiguas_ordenes);
-        setOrdenes(antiguas_ordenes)
-      setUltimo(ultima);
-      setMinutos(minutos);
-      setSegundos(segundos);
-      setLocPuntos(ultima.nuevoLoc);
-      setLocSets(ultima.nuevoLocSet);
-      setVisPuntos(ultima.nuevoVis);
-      setVisSets(ultima.nuevoVisSet);
-
-                      const finSets = parsedHistorial.filter(j => j.tipo === "FinSet");
-
-                // 2. Para cada FinSet, buscar la jugada que comparte el mismo orden
-                finSets.forEach((finSet, index) => {
-                const jugada = parsedHistorial.find(
-                    j => j.orden === finSet.orden && j.tipo !== "FinSet"
-                );
-
-                if (jugada) {
-                    // 3. Guardar en los estados correspondientes
-                    switch (index) {
-                    case 0:
-                        setLocSet1(jugada.nuevoLoc);
-                        setVisSet1(jugada.nuevoVis);
-                        break;
-                    case 1:
-                        setLocSet2(jugada.nuevoLoc);
-                        setVisSet2(jugada.nuevoVis);
-                        break;
-                    case 2:
-                        setLocSet3(jugada.nuevoLoc);
-                        setVisSet3(jugada.nuevoVis);
-                        break;
-                    default:
-                        break;
-                    }
-                }
-                });
-
-    } else {
-      console.log("No existe historial para este partido, cargando desde DB...");
-      try {
-        const res = await fetch("/api/acta-digital/CargarPartido", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id_partido }),
-        });
-
-        if (!res.ok) throw new Error("Error al cargar historial desde DB");
-
-        const resultado = await res.json();
-        const dbHistorial = resultado.HistorialGuardado || [];
-        // Transformamos todos los elementos al formato interno
-          const historialDBTransformado = dbHistorial.map(jugadaDB => ({
-            tipo: jugadaDB.tipoPunto,
-            jugador: jugadaDB.nombre,
-            idEquipo: jugadaDB.id_equipo,
-            tiempo: jugadaDB.tiempo,
-            orden: jugadaDB.orden,
-            nuevoLoc: jugadaDB.locPuntos,
-            nuevoLocSet: jugadaDB.locSet,
-            nuevoVis: jugadaDB.visPuntos,
-            nuevoVisSet: jugadaDB.visSet,
-            estado: "Completo"
-          }));
-
-          setHistorial(historialDBTransformado);
-          localStorage.setItem(`historial_${id_partido}`, JSON.stringify(historialDBTransformado));
-          // 3️⃣ Actualizar datos del último
-          if (historialDBTransformado.length > 0) {
-            const ultima = historialDBTransformado[historialDBTransformado.length - 1];
-            const { minutos, segundos } = separarMinutosSegundos(ultima.tiempo);
-            const antiguas_ordenes = historialDBTransformado
-            .map(j => j.orden.toString().padStart(4, "0")) // mantener formato string
-            .sort((a, b) => Number(a) - Number(b));   // ordenamos de menor a mayor
-
-            console.log(antiguas_ordenes);
-            setOrdenes(antiguas_ordenes)
-            setUltimo(ultima);
-            setMinutos(minutos);
-            setSegundos(segundos);
-            setLocPuntos(ultima.nuevoLoc);
-            setLocSets(ultima.nuevoLocSet);
-            setVisPuntos(ultima.nuevoVis);
-            setVisSets(ultima.nuevoVisSet);
-
-                // 1. Buscar jugadas FinSet
-                const finSets = historialDBTransformado.filter(j => j.tipo === "FinSet");
-
-                // 2. Para cada FinSet, buscar la jugada que comparte el mismo orden
-                finSets.forEach((finSet, index) => {
-                const jugada = historialDBTransformado.find(
-                    j => j.orden === finSet.orden && j.tipo !== "FinSet"
-                );
-
-                if (jugada) {
-                    // 3. Guardar en los estados correspondientes
-                    switch (index) {
-                    case 0:
-                        setLocSet1(jugada.nuevoLoc);
-                        setVisSet1(jugada.nuevoVis);
-                        break;
-                    case 1:
-                        setLocSet2(jugada.nuevoLoc);
-                        setVisSet2(jugada.nuevoVis);
-                        break;
-                    case 2:
-                        setLocSet3(jugada.nuevoLoc);
-                        setVisSet3(jugada.nuevoVis);
-                        break;
-                    default:
-                        break;
-                    }
-                }
-                });
-          }
-
-        
-      } catch (err) {
-        console.error("Fallo al cargar historial desde DB:", err);
-        setHistorial([]);
-      }
+    if (parsedHistorial.length === 0 || estadoSupervision === "Revisant") {
+      console.log("Sincronizando historial completo desde DB...");
+      await sincronizarHistorialDesdeDB();
     }
 
-    // 5️⃣ Cargar configuración desde localStorage
     const confGuardada = localStorage.getItem(`Configuracion_${id_partido}`);
     if (confGuardada) {
       try {
@@ -521,7 +532,34 @@ useEffect(() => {
   };
 
   cargarDatos();
-}, [id_partido]);
+}, [id_partido, estadoSupervision]);
+
+useEffect(() => {
+  if (typeof window === "undefined" || !id_partido || esAdminPrincipal || estadoSupervision !== "Revisant") return;
+
+  sincronizarHistorialDesdeDB();
+
+  const sincronizarPorRealtime = async (payload) => {
+    const idPartidoEvento = payload.new?.id_partido ?? payload.old?.id_partido;
+
+    if (idPartidoEvento && String(idPartidoEvento) !== String(id_partido)) return;
+
+    await sincronizarHistorialDesdeDB();
+  };
+
+  const channel = supabaseReact
+    .channel(`realtime-historial-${id_partido}`)
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: "HistorialSS26",
+    }, sincronizarPorRealtime)
+    .subscribe();
+
+  return () => {
+    supabaseReact.removeChannel(channel);
+  };
+}, [esAdminPrincipal, estadoSupervision, id_partido]);
 
   const EnviarDaots = async (nuevoLoc, nuevoVis, tipo, idEquipo, jugador) => {
     console.log("Funcion enviar datos")
@@ -1598,8 +1636,17 @@ const ModificarJugada = async () => {
                     </div>
                 </div>
 
+                
+
                 {/* Botones */}
-                <div class="w-64 h-14 flex flex-row items-center place-content-between">
+                <div class="w-80 h-14 flex flex-row items-center place-content-between">
+                    <div class="w-14 h-14 bg-gris rounded-md flex items-center place-content-center cursor-pointer">
+                    <a href="/admin/designaciones" class="w-14 h-14 bg-amarillo rounded-md flex items-center fill-azul-suave place-content-center cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" viewBox="0 -960 960 960">
+                        <path d="M200-120q-33 0-56.5-23.5T120-200v-160h80v160h560v-560H200v160h-80v-160q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120zm220-160-56-58 102-102H120v-80h346L364-622l56-58 200 200z"/>
+                        </svg>
+                    </a>
+                </div>
                     <div onClick={ReenviarDatos} class="w-14 h-14 bg-gris rounded-md">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100">
                             
@@ -1999,6 +2046,30 @@ const ModificarJugada = async () => {
                 </div>
             </div>
         </div>
+
+        {actaBloqueada && (
+            <div class="absolute top-0 left-0 z-30 flex h-full w-full items-center place-content-center bg-gris bg-opacity-95 px-6">
+                <div class="w-full max-w-2xl rounded-2xl border-2 border-amarillo bg-gris-claro p-6 text-center shadow-2xl">
+                    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-amarillo">Supervisión</p>
+                    <h2 class="mt-3 text-3xl font-bold text-blanco">Acta bloqueada temporalmente</h2>
+                    <p class="mt-4 text-lg text-gray-200">
+                        El partido está en estado <span class="font-semibold text-amarillo">Revisant</span>, así que el acta queda bloqueada hasta que finalice la supervisión.
+                    </p>
+                    <p class="mt-2 text-sm text-gray-300">
+                        Cuando cambie a otro estado, esta pantalla se volverá a habilitar automáticamente.
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap items-center justify-center gap-4">
+                        <a
+                            href="/admin/designaciones"
+                            class="rounded-full bg-amarillo px-5 py-3 text-lg font-semibold text-azul-suave"
+                        >
+                            Salir a designaciones
+                        </a>
+                    </div>
+                </div>
+            </div>
+        )}
     </section>
 
 

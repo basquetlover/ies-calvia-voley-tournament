@@ -1,62 +1,71 @@
+import type { APIRoute } from "astro";
 import { supabaseAdmin } from "src/lib/supabase";
 
-const { data: ConfTorneo, error } = await supabaseAdmin
-  .from('Configuracion')
-  .select('id_torneo, nombre')
-  .eq('estado', 'Actual')
-  .single();
+async function obtenerTablasActivas() {
+  const { data: confTorneo, error } = await supabaseAdmin
+    .from("Configuracion")
+    .select("id_torneo, nombre")
+    .eq("estado", "Actual")
+    .single();
 
-let TablaPartidos = `Partidos${ConfTorneo?.id_torneo}`;
-let TablaEquipos = `Equipos${ConfTorneo?.id_torneo}`;
-//console.log("TablaPartidos:", TablaPartidos);
-
-export async function POST({ request }: { request: Request }) {
-
-  // 1️⃣ Obtener partidos
-  const { data: ListaPartidos, error } = await supabaseAdmin
-    .from(TablaPartidos)
-    .select('*')
-    .order('id', { ascending: true });
-
-  if (error) {
-    console.log("Error al obtener Partidos:", error);
+  if (error || !confTorneo?.id_torneo) {
+    throw new Error(error?.message || "No se encontró un torneo activo");
   }
 
-  if (!ListaPartidos) {
-    return new Response(JSON.stringify({ ListaPartidos: [] }), { status: 200 });
-  }
-
-  // 2️⃣ Obtener todos los equipos con su escudo
-  const { data: Equipos, error: errorEquipos } = await supabaseAdmin
-    .from(TablaEquipos)
-    .select('nombre_equipo, escudo');
-
-  if (errorEquipos) {
-    console.log("Error al obtener equipos:", errorEquipos);
-  }
-
-  // 3️⃣ Crear mapa nombre -> escudo
-  const mapaEscudos: Record<string, string> = {};
-
-  Equipos?.forEach((equipo) => {
-    mapaEscudos[equipo.nombre_equipo] = equipo.escudo;
-  });
-
-  // 4️⃣ Añadir escudos a los partidos
-  const PartidosConEscudos = ListaPartidos.map((partido: any) => ({
-    ...partido,
-    escudo_local: mapaEscudos[partido.equipo_local] || null,
-    escudo_visitante: mapaEscudos[partido.equipo_visitante] || null
-  }));
-
-  // const { data: ListaPartidos2, error: error2 } = await supabaseAdmin
-  //   .from(TablaPartidos)
-  //   .select('id_partido, equipo_local, equipo_visitante, pista, jornada')
-  //   .order('id', { ascending: true });
-  //console.log("Partidos con escudos:", PartidosConEscudos);
- // console.log("Lista Partidos", ListaPartidos2);
-  return new Response(
-    JSON.stringify({ ListaPartidos: PartidosConEscudos }),
-    { status: 200 }
-  );
+  return {
+    TablaPartidos: `Partidos${confTorneo.id_torneo}`,
+    TablaEquipos: `Equipos${confTorneo.id_torneo}`,
+  };
 }
+
+export const POST: APIRoute = async () => {
+  try {
+    const { TablaPartidos, TablaEquipos } = await obtenerTablasActivas();
+
+    const { data: listaPartidos, error: partidosError } = await supabaseAdmin
+      .from(TablaPartidos)
+      .select("*")
+      .order("jornada", { ascending: true })
+      .order("id_partido", { ascending: true });
+
+    if (partidosError) {
+      console.log("Error al obtener Partidos:", partidosError);
+      return new Response(
+        JSON.stringify({ ListaPartidos: [], error: partidosError.message }),
+        { status: 500 }
+      );
+    }
+
+    const { data: equipos, error: equiposError } = await supabaseAdmin
+      .from(TablaEquipos)
+      .select("nombre_equipo, escudo");
+
+    if (equiposError) {
+      console.log("Error al obtener equipos:", equiposError);
+    }
+
+    const mapaEscudos: Record<string, string | null> = {};
+
+    equipos?.forEach((equipo: { nombre_equipo: string; escudo: string | null }) => {
+      mapaEscudos[equipo.nombre_equipo] = equipo.escudo;
+    });
+
+    const partidosConEscudos = (listaPartidos ?? []).map((partido: any) => ({
+      ...partido,
+      supervision: partido.supervision ?? "",
+      escudo_local: mapaEscudos[partido.equipo_local] || null,
+      escudo_visitante: mapaEscudos[partido.equipo_visitante] || null,
+    }));
+
+    return new Response(
+      JSON.stringify({ ListaPartidos: partidosConEscudos }),
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error en lista-partidos:", error);
+    return new Response(
+      JSON.stringify({ ListaPartidos: [], error: "No se pudieron cargar los partidos" }),
+      { status: 500 }
+    );
+  }
+};
