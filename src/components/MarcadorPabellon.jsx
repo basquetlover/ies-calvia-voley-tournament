@@ -541,7 +541,7 @@ useEffect(() => {
                         </div>
                         
                         <div className="w-max h-max">
-                            <p className="text-[80px] text-blanco font-bold">
+                            <p className="text-[75px] text-blanco font-bold">
                                 {partido.marcador.global.local}
                             </p>
                         </div>
@@ -585,7 +585,7 @@ useEffect(() => {
                             </p>
                         </div>
                         <div className="w-max h-max">
-                            <p id="nombre_equipo_visitante" className="w-auto h-auto text-center text-[80px] font-bold bg-transparent text-blanco">
+                            <p id="nombre_equipo_visitante" className="w-auto h-auto text-center text-[75px] font-bold bg-transparent text-blanco">
                                 {partido.marcador.global.visitante}
                             </p>
                         </div>
@@ -620,7 +620,7 @@ useEffect(() => {
                         </div>
                         
                         <div className="w-max h-max">
-                            <p className="text-[80px] text-blanco font-bold">
+                            <p className="text-[75px] text-blanco font-bold">
                                 {partido.marcador.global.local}
                             </p>
                         </div>
@@ -664,7 +664,7 @@ useEffect(() => {
                             </p>
                         </div>
                         <div className="w-max h-max">
-                            <p id="nombre_equipo_visitante" className="w-auto h-auto text-center text-[80px] font-bold bg-transparent text-blanco">
+                            <p id="nombre_equipo_visitante" className="w-auto h-auto text-center text-[75px] font-bold bg-transparent text-blanco">
                                 {partido.marcador.global.visitante}
                             </p>
                         </div>
@@ -705,7 +705,7 @@ useEffect(() => {
                         </div>
                         
                         <div className="w-max h-max">
-                            <p className="text-[80px] text-blanco font-bold">
+                            <p className="text-[75px] text-blanco font-bold">
                                 {partido.marcador.global.local}
                             </p>
                         </div>
@@ -749,7 +749,7 @@ useEffect(() => {
                             </p>
                         </div>
                         <div className="w-max h-max">
-                            <p id="nombre_equipo_visitante" className="w-auto h-auto text-center text-[80px] font-bold bg-transparent text-blanco">
+                            <p id="nombre_equipo_visitante" className="w-auto h-auto text-center text-[75px] font-bold bg-transparent text-blanco">
                                 {partido.marcador.global.visitante}
                             </p>
                         </div>
