@@ -7,6 +7,7 @@ import GaleriaFotos from "@sections/usuarios/Galeria.astro";
 import SpamDescarga from "@sections/usuarios/SpamDescarga.astro";
 import GaleriaSS from "@sections/usuarios/GaleriaSS.astro";
 import GaleriaN25 from "@sections/usuarios/GaleriaN25.astro";
+import GaleriaSS26 from "@sections/usuarios/GaleriaSS26.astro";
 
 const diaPublicacion = new Date("2026-03-11");
 const hoy = new Date();
@@ -43,7 +44,7 @@ const edicion4Disponible = false; // Cambia a true cuando la edición 4 esté di
         
     </div>
 
-    <div id="btn-edicion-3" class={` ${edicion3Disponible ? "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0" : "p-3 text-blanco cursor-not-allowed relative rounded-t shrink-0"} `}>
+    <div id="btn-edicion-3" class={` ${!edicion4Disponible ? "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0" : "p-3 text-blanco cursor-pointer relative rounded-t shrink-0"} `}>
         <p>Nadal 2025</p>
         {
             !edicion3Disponible && (
@@ -71,7 +72,7 @@ const edicion4Disponible = false; // Cambia a true cuando la edición 4 esté di
                 edicion4Disponible ? (
                     
                         <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa 2026</h2>
-                        // <GaleriaSS26 />
+                         <GaleriaSS26 />
                     
                 ) : (
                    <div>
