@@ -141,7 +141,7 @@ import {IMG} from "@const/img-torneo-ss26" // Asegúrate de que esta importació
             imageElement.classList.add('w-96', 'h-60', 'overflow-hidden', 'relative', 'xs:scale-90', 'sm:scale-90', 'md:scale-100', 'scale-100', 'text-blanco');
             imageElement.id = `image-SS26-${index}`
             imageElement.innerHTML = `
-                <img src="${img.referencia}" alt="Imagen ${displayedImages - 50 + index + 1}" loading="lazy" class="h-full w-auto mx-auto img" />
+                <img src="/img/torneoSS26/${img.referencia}" alt="Imagen ${displayedImages - 50 + index + 1}" loading="lazy" class="h-full w-auto mx-auto img" />
                 
             `;
             photoContainer.appendChild(imageElement);

@@ -1,50 +1,11 @@
 export const IMG = [
 
-{
-    referencia: `00026-191.jpg`
-},
-{
-    referencia: `00026-192.jpg`
-},
-{
-    referencia: `00026-193.jpg`
-},
-{
-    referencia: `00026-194.jpg`
-},
-{
-    referencia: `00026-195.jpg`
-},
-{
-    referencia: `00026-196.jpg`
-},
-{
-    referencia: `00026-197.jpg`
-},
-{
-    referencia: `00026-198.jpg`
-},
-{
-    referencia: `00026-199.jpg`
-},
-{
-    referencia: `00026-200.jpg`
-},
-{
-    referencia: `00026-201.jpg`
-},
-{
-    referencia: `00026-202.jpg`
-},
-{
-    referencia: `00026-203.jpg`
-},
-{
-    referencia: `00026-204.jpg`
-},
-{
-    referencia: `00026-205.jpg`
-},
+// {
+//     referencia: `00026-204.jpg`
+// },
+// {
+//     referencia: `00026-205.jpg`
+// },
 {
     referencia: `00026.jpg`
 },

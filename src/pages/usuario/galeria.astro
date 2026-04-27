@@ -66,7 +66,7 @@ const edicion4Disponible = false; // Cambia a true cuando la edición 4 esté di
 </div>
         <div class="w-full h-auto my-5">
 
-             <!-- Torneo Navidad 2025 -->
+             <!-- Torneo Navidad 2026 -->
              <div id="edicio-4" class={`edicio-3 ${edicion4Disponible ? "" : "hidden"}`}>
              {
                 edicion4Disponible ? (
@@ -86,7 +86,7 @@ const edicion4Disponible = false; // Cambia a true cuando la edición 4 esté di
              </div>
             
             <!-- Torneo Navidad 2025 -->
-             <div id="edicio-3" class={`edicio-3 ${edicion3Disponible ? "" : "hidden"}`}>
+             <div id="edicio-3" class={`edicio-3 ${edicion4Disponible ? "hidden" : ""}`}>
              {
                 edicion3Disponible ? (
                     
@@ -105,7 +105,7 @@ const edicion4Disponible = false; // Cambia a true cuando la edición 4 esté di
              </div>
             
             <!-- Torneo Semana Santa 2025 -->
-            <div id="edicio-2" class={`edicio-2 ${edicion3Disponible ? "hidden" : ""}`}>
+            <div id="edicio-2" class={`edicio-2 ${edicion4Disponible ? "hidden" : ""}`}>
                 <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa</h2>
                 <GaleriaSS />
             </div>
