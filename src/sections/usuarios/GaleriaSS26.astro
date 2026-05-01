@@ -94,7 +94,7 @@ if(usuario){
    
     {IMG.slice(0, 50).map((img, index) => (
         <div class={`w-96 h-60 overflow-hidden relative xs:scale-90 sm:scale-90 md:scale-100 scale-100 text-blanco ${block === true ? " cursor-pointer" : " cursor-not-allowed "} `} id={`image-SS26-${index}`}>
-            <img src={`/img/torneoSS26/IES Calvià Carnestoltes 2026  ${img.referencia}`} alt={`Imagen ${index + 1}`} loading="lazy" class="h-full w-auto mx-auto img" />
+            <img src={`/img/torneoSS26/${img.referencia}`} alt={`Imagen ${index + 1}`} loading="lazy" class="h-full w-auto mx-auto img" />
             {/* <img src="/img/img-block.png" alt="" loading="lazy" class={`placeholder w-96 h-60 ${block === true ? " opacity-0" : " opacity-100 "} `} /> */}
         </div>
     ))}
@@ -102,7 +102,7 @@ if(usuario){
     
 </div>
 <div class="w-full flex items-center place-content-center">
-    <button id="load-more-SS26" class="mt-4 mx-auto w-max p-2 bg-azul-suave text-white rounded">Cargar más fotos</button>
+    <button id="load-more-SS26" class="mt-4 mx-auto w-max p-2 bg-azul-suave text-white rounded">Carregar més fotos</button>
 </div>
 
 <!-- {
@@ -141,7 +141,7 @@ import {IMG} from "@const/img-torneo-ss26" // Asegúrate de que esta importació
             imageElement.classList.add('w-96', 'h-60', 'overflow-hidden', 'relative', 'xs:scale-90', 'sm:scale-90', 'md:scale-100', 'scale-100', 'text-blanco');
             imageElement.id = `image-SS26-${index}`
             imageElement.innerHTML = `
-                <img src="${img.referencia}" alt="Imagen ${displayedImages - 50 + index + 1}" loading="lazy" class="h-full w-auto mx-auto img" />
+                <img src="/img/torneoSS26/${img.referencia}" alt="Imagen ${displayedImages - 50 + index + 1}" loading="lazy" class="h-full w-auto mx-auto img" />
                 
             `;
             photoContainer.appendChild(imageElement);
