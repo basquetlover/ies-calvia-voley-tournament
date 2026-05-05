@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import CryptoJS from 'crypto-js';
 import { supabaseAdmin } from "../../../lib/supabase"; // Asegúrate de que esto apunte a tu configuración de Supabase
 import { Resend } from 'resend';
+import { enviarEmailApi } from "src/utils/emailSend";
 interface Usuario {
     id: string;
     nombre: string;
@@ -449,29 +450,46 @@ a[x-apple-data-detectors],
 
 //Realizador Inscripcion
 
+// try {
+//   const { data, error } = await resend.emails.send({
+//     from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
+//     to: [email], // Asegúrate de que esta variable tenga el valor correcto
+//     subject: `🔐 Restableix la teva contrasenya`,
+//     html: emailBody,
+//   });
+
+//   if (error) {
+//     throw new Error(error.message); // Lanza un error si hay un problema
+//   }
+
+//   console.log("Correo enviado correctamente", data);
+//   let asunto = `🔐 Restableix la teva contrasenya`
+//   const { data: Emails, error: EmailsError } = await supabaseAdmin
+//   .from('Emails')
+//   .insert([
+//     { destinatario: email, asunto: asunto, contenido: emailBody, id_resend: data?.id },
+//   ])
+//   .select()
+// } catch (error) {
+//   console.error("Error al enviar el correo:", error);
+// }
+
 try {
-  const { data, error } = await resend.emails.send({
-    from: 'IES Calvià Voley Tournament <hi@marketing.iescalvia-voley.com>',
-    to: [email], // Asegúrate de que esta variable tenga el valor correcto
-    subject: `🔐 Restableix la teva contrasenya`,
+  await enviarEmailApi({
+    to: email,
+    subject: "🔐 Restableix la teva contrasenya",
     html: emailBody,
+    origen: "voley_tournament"
   });
 
-  if (error) {
-    throw new Error(error.message); // Lanza un error si hay un problema
-  }
+} catch (EmailError) {
+  console.error("Error enviando email:", EmailError);
 
-  console.log("Correo enviado correctamente", data);
-  let asunto = `🔐 Restableix la teva contrasenya`
-  const { data: Emails, error: EmailsError } = await supabaseAdmin
-  .from('Emails')
-  .insert([
-    { destinatario: email, asunto: asunto, contenido: emailBody, id_resend: data?.id },
-  ])
-  .select()
-} catch (error) {
-  console.error("Error al enviar el correo:", error);
+  
 }
+
+  // console.log({ data });
+
 
     // Redirigir a la página principal
     return new Response(
