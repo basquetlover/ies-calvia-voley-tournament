@@ -13,7 +13,6 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/partytown": "^2.1.7",
     "@astrojs/react": "^5.0.4",
-    "@astrojs/tailwind": "^6.0.2",
     "@astrojs/vercel": "^10.0.6",
     "@cubejs-client/core": "^0.31.0",
     "@lucia-auth/adapter-drizzle": "^1.1.0",
@@ -36,7 +35,6 @@
     "react-dom": "^19.2.1",
     "resend": "^4.0.1",
     "solid-js": "^1.9.5",
-    "tailwindcss": "^3.4.15",
     "typescript": "^5.6.3",
     "ws": "^8.18.1"
   },
@@ -44,6 +42,7 @@
     "node": "22.x"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.0",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/crypto-js": "^4.2.2",
@@ -51,6 +50,9 @@
     "@types/qrcode": "^1.5.5",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
-    "parcel": "^2.6.2"
+    "autoprefixer": "^10.5.0",
+    "parcel": "^2.6.2",
+    "postcss": "^8.5.14",
+    "tailwindcss": "^4.3.0"
   }
 }

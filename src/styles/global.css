@@ -1,0 +1,73 @@
+@import "tailwindcss";
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* 🎨 Tema (ANTES era tailwind.config.js → theme.extend) */
+@theme {
+  --color-azul: #0E347D;
+  --color-azul-suave: #0140B9;
+  --color-azul-claro: #3C81F6;
+  --color-accent: #1666FF;
+  --color-amarillo: #FFC700;
+  --color-gris-claro: #313131;
+  --color-gris: #1B1D20;
+  --color-blanco: #FFFFFF;
+  --color-cancelar: #A83434;
+  --color-aceptar: #34A853;
+  --color-gold: #EFBF04;
+  --color-naranja: #D27C2C;
+  --color-naranja-claro: #FFBF65;
+  --color-rojo: #A83434;
+  --color-rojo-claro: #E63946;
+  --color-verde: #13702C;
+  --color-verde-claro: #50C878;
+  --color-magenta: #c23a97;
+
+  /* breakpoints */
+  --breakpoint-xs: 250px;
+  --breakpoint-sm: 720px;
+  --breakpoint-md: 800px;
+}
+
+/* 🎬 Animaciones */
+@keyframes cuadrado-in {
+  0% { opacity: 0; transform: scale(0); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes cuadrado-out {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+@keyframes infinite-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes pulsar {
+  0% { box-shadow: 0 0 0 rgba(255, 0, 0, 0); }
+  50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
+  100% { box-shadow: 0 0 0 rgba(255, 0, 0, 0); }
+}
+
+/* 🧩 utilidades custom (ANTES plugin addUtilities) */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.espacio {
+  border-collapse: separate;
+  border-spacing: 5px;
+}
+
+.espacio th,
+.espacio td {
+  padding: 2px;
+}

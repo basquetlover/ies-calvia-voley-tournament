@@ -5,7 +5,7 @@ import Nav from '@components/panel/Nav.astro';
 import NivelSeguridad from '@components/panel/NivelSeguridad.astro';
 import Notificaciones from '@components/panel/Notificaciones.astro';
 import { verificarAdminSesion } from 'src/lib/usuario_panel';
-
+import "../styles/global.css";
 const url = new URL(Astro.request.url);
 const redirect = url.pathname + url.search;
 

@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 
 import vercel from '@astrojs/vercel';
 
@@ -18,7 +18,7 @@ export default defineConfig({
   },
   // site: 'https://ies-calvia-voley-tournament.vercel.app/',
   site: 'https://iescalvia-voley.com',
-  integrations: [tailwind(), partytown({
+  integrations: [ partytown({
       config: {
         forward: ["dataLayer.push"],
       },
@@ -26,6 +26,7 @@ export default defineConfig({
   output: 'server',
   adapter: vercel(),
   vite: {
+    plugins: [tailwindcss()],
     define: {
       'import.meta.env.PUBLIC_SUPABASE_URL': JSON.stringify(process.env.PUBLIC_SUPABASE_URL),
       'import.meta.env.PUBLIC_SUPABASE_ANON_KEY': JSON.stringify(process.env.PUBLIC_SUPABASE_ANON_KEY),
