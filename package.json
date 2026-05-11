@@ -41,7 +41,7 @@
     "ws": "^8.18.1"
   },
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
