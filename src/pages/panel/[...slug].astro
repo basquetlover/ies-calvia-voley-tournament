@@ -1,0 +1,31 @@
+---
+import LayoutPanel from "@layouts/LayoutPanel.astro";
+const torneoID = new URL(Astro.request.url).searchParams.get('torneoID') || undefined;
+---
+
+<LayoutPanel title="Pàgina no trobada">
+    <div class="w-full h-full flex flex-col items-center place-content-center text-center ">
+        
+
+        <div class="h-96 max-w-xl flex flex-col items-center bg-gris-claro px-10 py-5 rounded-xl border border-gray-400 gap-y-3 mt-10">
+            <!-- <span class="p-4 bg-red-700 w-max h-max rounded-full flex items-center place-content-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 fill-red-400" viewBox="0 -960 960 960">
+                    <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920t141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v52q-18-6-37.5-9t-42.5-3q-116 0-198 82t-82 198q0 45 13 84t37 76zm338.5-18.5Q520-157 520-240t58.5-141.5T720-440t141.5 58.5T920-240 861.5-98.5 720-40 578.5-98.5M360-640h240v-80q0-50-35-85t-85-35-85 35-35 85zm402.5 382.5Q780-275 780-300t-17.5-42.5T720-360t-42.5 17.5T660-300t17.5 42.5T720-240t42.5-17.5M776-134q26-14 43-39-23-14-48-20.5t-51-6.5-51 6.5-48 20.5q17 25 43 39t56 14 56-14"/>
+                </svg>
+            </span> -->
+            <h1 class="text-6xl font-bold text-accent">404</h1>
+            <p class="text-2xl font-bold text-blanco">Aquesta pàgina no existeix</p>
+            <p>La pàgina que estàs buscant no està disponible o ha estat moguda.</p>
+            <a href="/panel" class="flex items-center place-content-center w-full py-3 bg-azul-suave hover:bg-azul-suave/50 rounded-2xl text-blanco fill-blanco">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 -960 960 960">
+                        <path d="M400-240 160-480l240-240 56 58-142 142h486v80H314l142 142z"/>
+                    </svg>
+                </span>
+                Tornar al panell principal
+            </a>
+            <div class="w-full h-[2px] my-2 bg-gray-600">&nbsp;</div>
+            <p class="text-xs text-gray-400">Revisa l'URL o torna a l'inici</p>
+        </div>
+    </div>
+</LayoutPanel>

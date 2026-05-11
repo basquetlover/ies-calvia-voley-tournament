@@ -1,0 +1,29 @@
+---
+import AccionesRapidas from "@components/panel/index/AccionesRapidas.astro";
+import EquiposEstadoChart from "@components/panel/index/Grafico";
+
+import ResumenGeneralReact from "@components/panel/index/ResumenGeneralReact";
+import UltimaActividad from "@components/panel/index/UltimaActividad";
+import LayoutPanel from "@layouts/LayoutPanel.astro";
+
+const url = new URL(Astro.request.url);
+const torneoID = url.searchParams.get('torneoID') || "";
+---
+<LayoutPanel title="Tauler de Control">
+    <section class="max-w-7xl mt-5 px-2 w-auto mx-auto">
+        <h2 class="text-5xl text-blanco font-bold">Panell de Control</h2>
+        <h4 class="text-gray-500 mt-2 text-xl font-semibold">Gestió del torneig de vòlei</h4>
+
+        
+        <ResumenGeneralReact torneoID={torneoID} client:load/>
+        <AccionesRapidas />
+        <div class="w-full grid grid-cols-[2fr_1fr] gap-4 mt-6">
+            <UltimaActividad torneoID={torneoID} client:load />
+            <div>
+                
+                <EquiposEstadoChart torneoID={torneoID} client:load />
+            </div>
+        </div>
+    </section>
+    
+</LayoutPanel>

@@ -1,0 +1,19 @@
+---
+import PreviewEquipo from "@components/panel/equips/PreviewEquipo";
+import LayoutPanel from "@layouts/LayoutPanel.astro";
+
+const url = new URL(Astro.request.url);
+const torneoID = url.searchParams.get('torneoID');
+const equipoID = url.searchParams.get('equipoID');
+const accion = url.searchParams.get('accio');
+
+console.log("Configuración página", torneoID, equipoID, accion)
+---
+
+<LayoutPanel title="Informació Equip">
+    {
+        accion === "ver" && (
+            <PreviewEquipo torneoID={torneoID} equipoID={equipoID} client:load/>
+        )
+    }
+</LayoutPanel>
