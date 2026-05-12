@@ -80,7 +80,7 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                 </div>
             </div>
             {data ? (
-                <div className="flex-1 overflow-y-auto overflow-x-hidden">
+                <div className="flex-1 overflow-y-auto overflow-x-hidden p-2">
                     <div className="max-w-6xl mx-auto mt-10 mb-10">
 
                         {/* Info General */}
