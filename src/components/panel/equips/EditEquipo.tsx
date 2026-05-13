@@ -101,7 +101,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                             <div className="flex flex-col gap-y-4">
                                 <span className="flex flex-col">
                                     <p className="text-gray-400 text-sm">Nom de l'equip</p>
-                                    <p className="font-semibold">{data.nombre_equipo}</p>
+                                    <input type="text" className="font-semibold px-2 border border-gray-600 border-dashed rounded-lg py-1" value={data.nombre_equipo}/>
                                 </span>
                                 <span className="flex flex-col">
                                     <p className="text-gray-400 text-sm">Responsable del registre</p>
