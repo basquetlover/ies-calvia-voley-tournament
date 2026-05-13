@@ -1,4 +1,5 @@
 ---
+import EditEquipo from "@components/panel/equips/EditEquipo";
 import PreviewEquipo from "@components/panel/equips/PreviewEquipo";
 import LayoutPanel from "@layouts/LayoutPanel.astro";
 
@@ -14,6 +15,11 @@ console.log("Configuración página", torneoID, equipoID, accion)
     {
         accion === "ver" && (
             <PreviewEquipo torneoID={torneoID} equipoID={equipoID} client:load/>
+        )
+    }
+    {
+        accion === "editar" && (
+            <EditEquipo  torneoID={torneoID} equipoID={equipoID} client:load/>
         )
     }
 </LayoutPanel>

@@ -27,7 +27,7 @@ profesor: any;
 cuerpo_tecnico: any[];
 }
 
-export default function PreviewEquipo({ torneoID, equipoID }: Props) {
+export default function EditEquipo({ torneoID, equipoID }: Props) {
     const [data, setData] = useState<EquipoData | null>(null);
     const [error, setError] = useState(false);
 
@@ -71,15 +71,15 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                     Tancar
                 </a>
                 <div className="flex items-center gap-10">
-                    <a href={`/panel/info/equip?torneoID=${torneoID}&equipoID=${equipoID}&accio=editar`} className="px-3 py-2 border flex flex-row items-center gap-x-2 border-gray-500 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 fill-blanco" viewBox="0 -960 960 960">
-                            <path d="M200-200h57l391-391-57-57-391 391zm-80 80v-170l528-527q12-11 26.5-17t30.5-6 31 6 26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120zm640-584-56-56zm-141 85-28-29 57 57z"/>
-                        </svg>
+                    {/* <a href={`/panel/info/equip?torneoID=${torneoID}&equipoID=${equipoID}&accio=editar`} className="px-3 py-2 border border-gray-500 rounded-xl">
                         Editar equip
-                    </a>
-                    <a href={`/panel/info/equip?torneoID=${torneoID}&equipoID=${equipoID}&accio=evaluar`} className="px-3 py-2 rounded-xl bg-accent">
-                        Avaluar equip
-                    </a>
+                    </a> */}
+                    <div className="px-3 py-2 rounded-xl flex flex-row items-center gap-x-2 bg-accent">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 fill-blanco" viewBox="0 -960 960 960">
+                            <path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480zm-80 34L646-760H200v560h560zM565-275q35-35 35-85t-35-85-85-35-85 35-35 85 35 85 85 35 85-35M240-560h360v-160H240zm-40-86v446-560z"/>
+                        </svg>
+                        Guardar canvis
+                    </div>
                 </div>
             </div>
             {data ? (
@@ -191,13 +191,14 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                                         </div>
                                     </div>    
                                 ):(
-                                    <div className="w-full px-8 py-5 bg-gris-claro flex items-center gap-x-2 border border-dashed border-gray-600 rounded-2xl">
+                                    <div className="w-full px-8 py-5 relative bg-gris-claro flex items-center gap-x-2 border border-dashed border-gray-600 rounded-2xl">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" className="fill-blanco w-6 h-6" viewBox="0 -960 960 960">
                                                 <path d="M234-276q51-39 114-61.5T480-360t132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800t-226.5 93.5T160-480q0 59 19.5 111t54.5 93m146.5-204.5Q340-521 340-580t40.5-99.5T480-720t99.5 40.5T620-580t-40.5 99.5T480-440t-99.5-40.5M480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m100-95.5q47-15.5 86-44.5-39-29-86-44.5T480-280t-100 15.5-86 44.5q39 29 86 44.5T480-160t100-15.5M523-537q17-17 17-43t-17-43-43-17-43 17-17 43 17 43 43 17 43-17m-43 317"/>
                                             </svg>
                                         </span>
                                         No s'ha assignat cap entrenador per a aquest equip.
+                                        <p className="absolute right-5 hover:underline cursor-pointer text-azul-claro">Afegir entrenador</p>
                                     </div>
                                 )
                             }
@@ -273,13 +274,14 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                                         </div>
                                     </div>    
                                 ):(
-                                    <div className="w-full px-8 py-5 bg-gris-claro flex items-center gap-x-2 border border-dashed border-gray-600 rounded-2xl">
+                                    <div className="w-full px-8 py-5 relative bg-gris-claro flex items-center gap-x-2 border border-dashed border-gray-600 rounded-2xl">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" className="fill-blanco w-6 h-6" viewBox="0 -960 960 960">
                                                 <path d="M234-276q51-39 114-61.5T480-360t132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800t-226.5 93.5T160-480q0 59 19.5 111t54.5 93m146.5-204.5Q340-521 340-580t40.5-99.5T480-720t99.5 40.5T620-580t-40.5 99.5T480-440t-99.5-40.5M480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m100-95.5q47-15.5 86-44.5-39-29-86-44.5T480-280t-100 15.5-86 44.5q39 29 86 44.5T480-160t100-15.5M523-537q17-17 17-43t-17-43-43-17-43 17-17 43 17 43 43 17 43-17m-43 317"/>
                                             </svg>
                                         </span>
                                         No s'ha assignat cap professor jugador per a aquest equip.
+                                        <p className="absolute right-5 hover:underline cursor-pointer text-azul-claro">Afegir professor</p>
                                     </div>
                                 )
                             }
@@ -294,11 +296,11 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                             </span>
                             Cos Técnic ({data.cuerpo_tecnico.length})
                         </h3>
-                        <div className="w-full  h-auto items-center grid grid-cols-3  mt-5 max-sm:flex max-sm:flex-wrap gap-5">
+                        
                             {
-                                data.cuerpo_tecnico.length > 0 ? (
-                                    
-                                        data.cuerpo_tecnico.map((staff, i) => (
+                                data.cuerpo_tecnico.length > 0 && (
+                                    <div className="w-full  h-auto items-center grid grid-cols-3  mt-5 max-sm:flex max-sm:flex-wrap gap-5">
+                                        {data.cuerpo_tecnico.map((staff, i) => (
                                             <div className="w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5">
                                                 <p className="text-xl text-azul-claro">Cos Técnic {i+1}</p>
                                                 <p className="font-semibold text-lg">{staff.nombre} {staff._1r_apellido} {staff._2n_apellido}</p>
@@ -319,20 +321,12 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                                                     <textarea className="bg-gris w-full min-h-10 rounded-xl p-2 text-blanco resize-none" disabled placeholder="No hi ha observacions disponibles."/>
                                                 </div>
                                             </div>
-                                        ))
+                                        ))}
+                                        </div>
                                     
-                                ):(
-                                    <div className="w-full px-8 py-5 bg-gris-claro flex items-center gap-x-2 border border-dashed border-gray-600 rounded-2xl">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="fill-blanco w-6 h-6" viewBox="0 -960 960 960">
-                                                <path d="M234-276q51-39 114-61.5T480-360t132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800t-226.5 93.5T160-480q0 59 19.5 111t54.5 93m146.5-204.5Q340-521 340-580t40.5-99.5T480-720t99.5 40.5T620-580t-40.5 99.5T480-440t-99.5-40.5M480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m100-95.5q47-15.5 86-44.5-39-29-86-44.5T480-280t-100 15.5-86 44.5q39 29 86 44.5T480-160t100-15.5M523-537q17-17 17-43t-17-43-43-17-43 17-17 43 17 43 43 17 43-17m-43 317"/>
-                                            </svg>
-                                        </span>
-                                        No s'ha assignat cap membre de cos técnic per a aquest equip.
-                                    </div>
                                 )
                             }
-                        </div>
+                        
 
 
                     </div>
