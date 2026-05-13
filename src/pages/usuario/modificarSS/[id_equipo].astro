@@ -589,7 +589,7 @@ const handleCheckboxChange = (index: number) => {
   
       <!--Jugadores -->
   {jugadores.map((jugador, index) => (
-        <div class="w-[100%] h-[2px] my-0 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
+        <div class="w-[100%] h-0.5 my-0 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
         <div class="flex flex-row gap-2 items-end">
           <p class={`text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ${jugador.observaciones !== "" ? "bg-rojo": "bg-verde"}`}>{index + 1}. Jugador</p>
           <p class="text-blanco  bg-cancelar bg-opacity-55 w-max h-max p-2 rounded-md text-base ">Obligatori</p>
@@ -817,7 +817,7 @@ const handleCheckboxChange = (index: number) => {
       ))} 
   
    {jugadores_extra.map((jugador, index) => (
-    <div class="w-[95%] h-[2px] my-10 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
+    <div class="w-[95%] h-0.5 my-10 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
     <div class="flex flex-row gap-2 items-end">
           <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1 + jugadores.length}. Jugador</p>
           <span id={`extra_capitan_${index}`} class="p-2 bg-gris-claro bg-opacity-55 flex items-center place-content-center rounded-full">
@@ -1193,7 +1193,7 @@ const handleCheckboxChange = (index: number) => {
     <p class="text-gray-500 text-sm">(No poden jugar)</p>
   </div>
   {staff.map((jugador, index) => (
-    <div class="w-[95%] h-[2px] my-10 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
+    <div class="w-[95%] h-0.5 my-10 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
     <div class="flex flex-row gap-2 items-end">
           <p class={`text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ${jugador.observaciones !== "" ? "bg-rojo": "bg-verde"}`}>{index + 1}. Staff</p>
           
@@ -1420,7 +1420,7 @@ const handleCheckboxChange = (index: number) => {
   ))} 
 
 {Staff_extra.map((jugador, index) => (
-  <div class="w-[95%] h-[2px] my-10 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
+  <div class="w-[95%] h-0.5 my-10 mx-auto border-none z-0 rounded-full bg-accent select-none">&nbsp;</div>
   <div class="flex flex-row gap-2 items-end">
         <p class="text-blanco font-semibold bg-azul bg-opacity-55 w-max h-max p-2 rounded-md text-xl ">{index + 1 + staff.length}. Staff</p>
         
