@@ -49,9 +49,14 @@ const pathname = urlActual.pathname;
 ---
 
 <div class="w-56 h-screen overflow-x-hidden no-scrollbar flex flex-col bg-gris-claro">
-    <div class="w-full  p-4">
+    <div class="w-full flex lfex-row items-center place-content-around max-md:px-4 my-2">
+        <span class="btn-MenuDesktop max-md:block hidden w-max h-max  rounded-full cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224z"/>
+            </svg>
+        </span>
         <!-- <img src="/img/logo_torneo.png" alt="Logo" class="w-28 h-28 mx-auto my-4" /> -->
-        <h2 class="text-azul-claro text-3xl font-semibold text-center">Zona Staff</h2>
+        <h2 class="text-azul-claro text-3xl max-md:text-2xl font-semibold text-center">Zona Staff</h2>
     </div>
     {orden.map((nivel, index) => {
         const seccion = secciones[nivel];

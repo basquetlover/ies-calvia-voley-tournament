@@ -11,13 +11,13 @@ const torneoID = url.searchParams.get('torneoID') || "";
 ---
 <LayoutPanel title="Tauler de Control">
     <section class="max-w-7xl mt-5 px-2 w-auto mx-auto">
-        <h2 class="text-5xl text-blanco font-bold">Panell de Control</h2>
+        <h2 class="text-5xl max-md:text-4xl text-blanco font-bold">Panell de Control</h2>
         <h4 class="text-gray-500 mt-2 text-xl font-semibold">Gestió del torneig de vòlei</h4>
 
         
         <ResumenGeneralReact torneoID={torneoID} client:load/>
         <AccionesRapidas />
-        <div class="w-full grid grid-cols-[2fr_1fr] gap-4 mt-6">
+        <div class="w-full grid md:grid-cols-[2fr_1fr] max-md:grid-rows-[1fr_auto] gap-4 mt-6">
             <UltimaActividad torneoID={torneoID} client:load />
             <div>
                 

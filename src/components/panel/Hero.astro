@@ -15,10 +15,10 @@ const torneoSeleccionado =
   ConfTorneo?.find(t => t.id_torneo === torneoID) ?? ConfTorneo?.[0];
 ---
 
-<div class="flex items-center justify-between mr-2 w-full">
+<div class="flex items-center max-md:justify-end md:justify-between mr-2 w-full">
   
   <!-- TÍTULO -->
-  <h2 class="text-azul-claro text-2xl font-semibold">
+  <h2 class="text-azul-claro max-md:hidden text-2xl font-semibold">
     Tauler de Control
   </h2>
 

@@ -135,7 +135,7 @@ beforeDraw(chart: any) {
 
 if (loading) {
     return (
-    <div className="flex w-full h-[500px] bg-gris-claro items-center justify-center">
+    <div className="flex w-full h-130 bg-gris-claro items-center justify-center">
         <p className="text-gray-500">
         Cargando gráfico...
         </p>
@@ -144,7 +144,7 @@ if (loading) {
 }
 
 return (
-    <div className="w-full h-[500px] max-w-md rounded-2xl bg-gris-claro p-6 shadow-lg">
+    <div className="w-full h-130 max-w-md rounded-2xl bg-gris-claro p-6 shadow-lg">
         <h4 className="font-bold text-blanco text-3xl">Estat de les inscripcions</h4>
     <div className="relative mx-auto h-[225px] w-[225px] mt-5">
         <Doughnut

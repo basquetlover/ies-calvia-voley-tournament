@@ -108,7 +108,7 @@ if (loading) return <p>Carregant...</p>;
 if (error) return <p>{error}</p>;
 
 return (
-    <div className='h-[500px] bg-gris-claro rounded-2xl overflow-y-hidden p-4'>
+    <div className='md:h-130 max-md:h-160 bg-gris-claro rounded-2xl overflow-y-hidden p-4'>
 
     {/* HEADER */}
     <div className="flex items-center justify-between mb-4">
@@ -165,16 +165,16 @@ return (
     {/* LISTA */}
     <div className='flex flex-col gap-y-4'>
         {actividad.map((item, i) => (
-        <div key={i} className="w-full px-4 py-3 grid grid-cols-[auto_1fr_auto] gap-x-2 items-center rounded-xl border border-transparent hover:border-azul-claro transition-colors">
+        <div key={i} className="w-full px-4 py-3 max-md:px-1 grid grid-cols-[auto_1fr_auto] gap-x-2 items-center rounded-xl border border-transparent hover:border-azul-claro transition-colors">
             <span className="">
-              {ICONS[item.tipo as keyof typeof ICONS]}
+                {ICONS[item.tipo as keyof typeof ICONS]}
             </span>
             <span className='flex flex-col items-start'>
                 <p><span className='font-semibold'>{item.accio}:</span> {item.referencia}</p>
                 {item.detalle && <p className='text-sm text-gray-500'>{item.detalle}</p>}
             </span>
             
-            <p className='text-gray-500 flex flex-col gap-y-1'>
+            <p className='text-gray-500 flex max-md:text-sm flex-col gap-y-1'>
                 {/* <span>
                     {item.fecha_exacta}
                 </span> */}

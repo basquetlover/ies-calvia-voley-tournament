@@ -4,10 +4,10 @@ const torneoID = new URL(Astro.request.url).searchParams.get('torneoID') || unde
 
 <div class=" mt-10">
     <h3 class="text-2xl font-bold">Accions Ràpides</h3>
-    <div class="flex flex-wrap gap-4 mt-3 items-center place-content-around">
+    <div class="flex flex-wrap gap-4  mt-3 items-center place-content-around">
 
     
-        <a href={`/panel/equips?torneoID=${torneoID}`} class="bg-gris-claro hover:bg-accent duration-300 cursor-pointer min-w-52 max-w-72 h-32 flex flex-col gap-y-2 items-center place-content-center rounded-2xl p-4 relative">
+        <a href={`/panel/equips?torneoID=${torneoID}`} class="bg-gris-claro hover:bg-accent duration-300 cursor-pointer md:min-w-52 md:max-w-72 max-md:w-[90%] h-32 flex flex-col gap-y-2 items-center place-content-center rounded-2xl p-4 relative">
             <span class="p-2 rounded-full bg-azul-claro/30">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" class="injected-svg" color="#000" data-src="https://cdn.hugeicons.com/icons/add-team-02-bulk-rounded.svg?v=1.0.0" viewBox="0 0 24 24">
                     <path  d="M6.25 7.5a4.25 4.25 0 1 1 8.5 0 4.25 4.25 0 0 1-8.5 0" opacity=".4"/><path  d="M14.023 11.724A5.49 5.49 0 0 0 16 7.5a5.49 5.49 0 0 0-1.977-4.224q.236-.026.477-.026a4.25 4.25 0 1 1-.477 8.474"/><path  fill-rule="evenodd" d="M18.75 12.75a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2h-2a1 1 0 1 1 0-2h2v-2a1 1 0 0 1 1-1" clip-rule="evenodd"/><path d="M15.977 14.5a3 3 0 0 0-.356-.188c-1.482-.676-3.242-1.062-5.121-1.062s-3.64.386-5.121 1.062C3.9 14.986 3.25 16.534 3.25 17.97c0 .433 0 .904.043 1.227.048.356.16.731.47 1.04s.684.422 1.04.47c.323.043.72.043 1.152.043h9.09c.433 0 .83 0 1.152-.043a2.3 2.3 0 0 0 .468-.11 2.2 2.2 0 0 1-.165-.847V19h-.75a2.25 2.25 0 0 1 0-4.5z" opacity=".4"/>
@@ -16,7 +16,7 @@ const torneoID = new URL(Astro.request.url).searchParams.get('torneoID') || unde
             <p class="font-semibold text-lg">Evaluar Equips</p>
         </a>
 
-        <a href={`/panel/voluntaris?torneoID=${torneoID}`} class="bg-gris-claro hover:bg-accent duration-300 cursor-pointer min-w-52 max-w-72 h-32 flex flex-col gap-y-2 items-center place-content-center rounded-2xl p-4 relative">
+        <a href={`/panel/voluntaris?torneoID=${torneoID}`} class="bg-gris-claro hover:bg-accent duration-300 cursor-pointer md:min-w-52 md:max-w-72 max-md:w-[90%] h-32 flex flex-col gap-y-2 items-center place-content-center rounded-2xl p-4 relative">
             <span class="p-2 rounded-full bg-azul-claro/30">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" class="injected-svg" color="#000" data-src="https://cdn.hugeicons.com/icons/add-team-02-bulk-rounded.svg?v=1.0.0" viewBox="0 0 24 24">
                     <path fill-rule="evenodd" d="M17.25 12.75a1 1 0 0 1 1 1v2.5h2.5a1 1 0 1 1 0 2h-2.5v2.5a1 1 0 1 1-2 0v-2.5h-2.5a1 1 0 1 1 0-2h2.5v-2.5a1 1 0 0 1 1-1" clip-rule="evenodd"/><path d="M15 20.75H3a.75.75 0 0 1-.75-.75 7.75 7.75 0 0 1 5.995-7.55A5.252 5.252 0 0 1 10 2.25a5.25 5.25 0 0 1 1.755 10.2A7.7 7.7 0 0 1 15 14.078V15h-1.25a2.25 2.25 0 0 0 0 4.5H15z" opacity=".4"/>
@@ -25,7 +25,7 @@ const torneoID = new URL(Astro.request.url).searchParams.get('torneoID') || unde
             <p class="font-semibold text-lg">Evaluar Voluntaris</p>
         </a>
 
-        <a href={`/panel/partits?torneoID=${torneoID}`} class="bg-gris-claro hover:bg-accent duration-300 cursor-pointer min-w-52 max-w-72 h-32 flex flex-col gap-y-2 items-center place-content-center rounded-2xl p-4 relative">
+        <a href={`/panel/partits?torneoID=${torneoID}`} class="bg-gris-claro hover:bg-accent duration-300 cursor-pointer md:min-w-52 md:max-w-72 max-md:w-[90%] h-32 flex flex-col gap-y-2 items-center place-content-center rounded-2xl p-4 relative">
             <span class="p-2 rounded-full bg-azul-claro/30">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" fill="none" class="injected-svg" color="#000" data-src="https://cdn.hugeicons.com/icons/add-circle-bulk-rounded.svg?v=1.0.0" viewBox="0 0 24 24">
                     <path  d="M12 1.25c5.937 0 10.75 4.813 10.75 10.75S17.937 22.75 12 22.75 1.25 17.937 1.25 12 6.063 1.25 12 1.25" opacity=".4"/><path  d="M11 16v-3H8a1 1 0 1 1 0-2h3V8a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0"/>
@@ -34,7 +34,7 @@ const torneoID = new URL(Astro.request.url).searchParams.get('torneoID') || unde
             <p class="font-semibold text-lg">Gestionar Partits</p>
         </a>
 
-        <a href={`/panel/noticies?torneoID=${torneoID}`} class="bg-gris-claro hover:bg-accent duration-300 cursor-pointer min-w-52 max-w-72 h-32 flex flex-col gap-y-2 items-center place-content-center rounded-2xl p-4 relative">
+        <a href={`/panel/noticies?torneoID=${torneoID}`} class="bg-gris-claro hover:bg-accent duration-300 cursor-pointer md:min-w-52 md:max-w-72 max-md:w-[90%] h-32 flex flex-col gap-y-2 items-center place-content-center rounded-2xl p-4 relative">
             <span class="p-2 rounded-full bg-azul-claro/30">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-blanco" viewBox="0 -960 960 960">
                     <path d="M720-440v-80h160v80zm48 280-128-96 48-64 128 96zm-80-480-48-64 128-96 48 64zM200-200v-160h-40q-33 0-56.5-23.5T80-440v-80q0-33 23.5-56.5T160-600h160l200-120v480L320-360h-40v160zm240-182v-196l-98 58H160v80h182zm120 36v-268q27 24 43.5 58.5T620-480t-16.5 75.5T560-346M300-480"/>

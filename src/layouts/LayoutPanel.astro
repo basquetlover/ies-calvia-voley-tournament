@@ -68,7 +68,7 @@ if(usuario && usuario.rango !== "") {
             usuario_admin ? (<>
                 <div id="layout" class="h-dvh grid grid-cols-[auto_1fr] overflow-hidden">
 					<div>
-						<div id="MenuDesktop" class="overflow-hidden w-56 transition-all duration-300 ease-in-out">
+						<div id="MenuDesktop" class="overflow-hidden max-md:absolute max-md:bg-gris/60 max-md:z-50 max-md:w-0 w-56 transition-all duration-300 ease-in-out">
 							<div class="h-[98%]">
 								<Nav usuario={usuario_admin} />
 							</div>
@@ -76,8 +76,8 @@ if(usuario && usuario.rango !== "") {
 					</div>
 
 					<div class="grid grid-rows-[auto_auto_1fr_auto] overflow-hidden h-dvh">
-						<div class="flex items-center gap-x-4 w-full border-b border-gris-claro">
-							<span id="btn-MenuDesktop" class="w-max h-max p-2 hover:bg-rosa/50 rounded-full cursor-pointer">
+						<div class="flex  items-center gap-x-4 w-full border-b border-gris-claro">
+							<span class="btn-MenuDesktop w-max h-max p-2 hover:bg-rosa/50 rounded-full cursor-pointer">
 								
 								<svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 -960 960 960">
 									<path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
@@ -147,20 +147,28 @@ if(usuario && usuario.rango !== "") {
 }
 </style>
 <script>
-const btnMenuDesktop = document.getElementById('btn-MenuDesktop');
+const btnsMenuDesktop = document.querySelectorAll('.btn-MenuDesktop');
 const menuDesktop = document.getElementById('MenuDesktop');
 
 let abierto = true;
 
-btnMenuDesktop?.addEventListener('click', () => {
-    abierto = !abierto;
+btnsMenuDesktop.forEach(btn => {
+    btn.addEventListener('click', () => {
+        abierto = !abierto;
 
-    if (abierto) {
-        menuDesktop?.classList.remove('w-0');
-        menuDesktop?.classList.add('w-56');
-    } else {
-        menuDesktop?.classList.remove('w-56');
-        menuDesktop?.classList.add('w-0');
-    }
+        if (abierto) {
+            menuDesktop?.classList.remove('w-0');
+            menuDesktop?.classList.add('w-56');
+
+            menuDesktop?.classList.remove('max-md:w-0');
+            menuDesktop?.classList.add('max-md:w-full');
+        } else {
+            menuDesktop?.classList.remove('w-56');
+            menuDesktop?.classList.add('w-0');
+
+            menuDesktop?.classList.remove('max-md:w-full');
+            menuDesktop?.classList.add('max-md:w-0');
+        }
+    });
 });
 </script>

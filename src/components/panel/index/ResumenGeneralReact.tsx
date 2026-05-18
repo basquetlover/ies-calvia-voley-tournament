@@ -74,7 +74,7 @@ useEffect(() => {
       {nombres.map(nombre => {
         const seccion = secciones?.find(s => s.nombre === nombre);
         return (
-          <div key={nombre} className="bg-gris-claro min-w-52 w-auto max-w-72 h-32 flex flex-col place-content-center rounded-2xl p-4 relative border border-transparent hover:border-azul-claro transition ">
+          <div key={nombre} className="bg-gris-claro md:min-w-52 md:max-w-72 max-md:w-[90%] h-32 flex flex-col place-content-center rounded-2xl p-4 relative border border-transparent hover:border-azul-claro transition ">
             <h3 className="text-lg text-gray-500 font-semibold">{nombre}</h3>
             <p className="text-6xl font-bold flex flex-row items-end">
               {loading || !seccion ? (
