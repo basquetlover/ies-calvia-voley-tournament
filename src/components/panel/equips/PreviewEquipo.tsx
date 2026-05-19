@@ -61,23 +61,23 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
     return(
         <>
         <div className="w-full h-full flex flex-col overflow-hidden">
-            <div className="w-full flex flex-row items-center place-content-between border-b border-gray-500 px-4 py-2 shrink-0">
-                <a href={`/panel/equips?torneoID=${torneoID}`} className="flex items-center px-2 py-1 rounded-full hover:bg-gris-claro/50 duration-300 gap-x-1">
+            <div className="w-full max-md:grid grid-cols-[auto_1fr] max-md:gap-4 md:flex flex-row items-center place-content-between border-b border-gray-500 md:px-4 py-2 shrink-0">
+                <a href={`/panel/equips?torneoID=${torneoID}`} className="max-md:w-max max-md:text-sm flex items-center px-2 py-1 rounded-full hover:bg-gris-claro/50 duration-300 gap-x-1">
                     <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 -960 960 960">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 max-md:w-4 max-md:h-4" viewBox="0 -960 960 960">
                             <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224z"/>
                         </svg>
                     </span>
                     Tancar
                 </a>
-                <div className="flex items-center gap-10">
-                    <a href={`/panel/info/equip?torneoID=${torneoID}&equipoID=${equipoID}&accio=editar`} className="px-3 py-2 border flex flex-row items-center gap-x-2 border-gray-500 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 fill-blanco" viewBox="0 -960 960 960">
+                <div className="md:flex grid-cols-2 max-md:grid max-md:gap-4 max-md:place-items-center items-center md:gap-10">
+                    <a href={`/panel/info/equip?torneoID=${torneoID}&equipoID=${equipoID}&accio=editar`} className="max-md:w-max max-md:text-sm px-3 py-2 border flex flex-row items-center gap-x-2 border-gray-500 rounded-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5  fill-blanco" viewBox="0 -960 960 960">
                             <path d="M200-200h57l391-391-57-57-391 391zm-80 80v-170l528-527q12-11 26.5-17t30.5-6 31 6 26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120zm640-584-56-56zm-141 85-28-29 57 57z"/>
                         </svg>
                         Editar equip
                     </a>
-                    <a href={`/panel/info/equip?torneoID=${torneoID}&equipoID=${equipoID}&accio=evaluar`} className="px-3 py-2 rounded-xl bg-accent">
+                    <a href={`/panel/info/equip?torneoID=${torneoID}&equipoID=${equipoID}&accio=evaluar`} className="max-md:w-max max-md:text-sm px-3 py-2 rounded-xl bg-accent">
                         Avaluar equip
                     </a>
                 </div>
@@ -96,7 +96,7 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                             </span>
                             Informació de l'equip
                         </h3>
-                        <div className="w-full h-40 bg-gris-claro rounded-2xl border items-center px-4 border-gray-600 mt-5 grid grid-cols-[auto_1fr_1fr] gap-5">
+                        <div className="w-full min-h-40 py-4 bg-gris-claro rounded-2xl border items-center px-4 border-gray-600 mt-5 grid max-md:grid-rows-[auto_1fr_1fr] md:grid-cols-[auto_1fr_1fr] gap-5">
                             <img src={data.escudo} className="w-32 h-32 rounded-lg"/>
                             <div className="flex flex-col gap-y-4">
                                 <span className="flex flex-col">
@@ -212,7 +212,7 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                             </span>
                             Jugadors ({data.jugadores.length})
                         </h3>
-                        <div className="w-full  h-auto items-center grid grid-cols-3  mt-5 max-sm:flex max-sm:flex-wrap gap-5">
+                        <div className="w-full max-sm:place-content-center h-auto items-center grid grid-cols-3  mt-5 max-sm:flex max-sm:flex-wrap gap-5">
                             {
                                         data.jugadores.map((jugador, i) => (
                                             <div className="w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5">

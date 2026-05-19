@@ -96,7 +96,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                             </span>
                             Informació de l'equip
                         </h3>
-                        <div className="w-full h-40 bg-gris-claro rounded-2xl border items-center px-4 border-gray-600 mt-5 grid grid-cols-[auto_1fr_1fr] gap-5">
+                        <div className="w-full min-h-40 py-5 bg-gris-claro rounded-2xl border items-center px-4 border-gray-600 mt-5 grid max-md:grid-rows-[auto_1fr_1fr] md:grid-cols-[auto_1fr_1fr] gap-5">
                             <img src={data.escudo} className="w-32 h-32 rounded-lg"/>
                             <div className="flex flex-col gap-y-4">
                                 <span className="flex flex-col">
@@ -191,14 +191,14 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                                         </div>
                                     </div>    
                                 ):(
-                                    <div className="w-full px-8 py-5 relative bg-gris-claro flex items-center gap-x-2 border border-dashed border-gray-600 rounded-2xl">
+                                    <div className="w-full md:px-8 max-md:px-3 py-5 max-md:pb-10 relative bg-gris-claro flex items-center gap-x-2 border border-dashed border-gray-600 rounded-2xl">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" className="fill-blanco w-6 h-6" viewBox="0 -960 960 960">
                                                 <path d="M234-276q51-39 114-61.5T480-360t132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800t-226.5 93.5T160-480q0 59 19.5 111t54.5 93m146.5-204.5Q340-521 340-580t40.5-99.5T480-720t99.5 40.5T620-580t-40.5 99.5T480-440t-99.5-40.5M480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m100-95.5q47-15.5 86-44.5-39-29-86-44.5T480-280t-100 15.5-86 44.5q39 29 86 44.5T480-160t100-15.5M523-537q17-17 17-43t-17-43-43-17-43 17-17 43 17 43 43 17 43-17m-43 317"/>
                                             </svg>
                                         </span>
                                         No s'ha assignat cap entrenador per a aquest equip.
-                                        <p className="absolute right-5 hover:underline cursor-pointer text-azul-claro">Afegir entrenador</p>
+                                        <p className="max-md:bottom-3 max-md:left-1/2 max-md:-translate-x-1/2 absolute md:right-5 hover:underline cursor-pointer text-azul-claro">Afegir entrenador</p>
                                     </div>
                                 )
                             }
@@ -213,7 +213,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                             </span>
                             Jugadors ({data.jugadores.length})
                         </h3>
-                        <div className="w-full  h-auto items-center grid grid-cols-3  mt-5 max-sm:flex max-sm:flex-wrap gap-5">
+                        <div className="w-full max-sm:place-content-center h-auto items-center grid grid-cols-3  mt-5 max-sm:flex max-sm:flex-wrap gap-5">
                             {
                                         data.jugadores.map((jugador, i) => (
                                             <div className="w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5">
@@ -274,14 +274,14 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                                         </div>
                                     </div>    
                                 ):(
-                                    <div className="w-full px-8 py-5 relative bg-gris-claro flex items-center gap-x-2 border border-dashed border-gray-600 rounded-2xl">
+                                    <div className="w-full md:px-8 max-md:px-3 py-5 max-md:pb-10 relative bg-gris-claro flex items-center gap-x-2 border border-dashed border-gray-600 rounded-2xl">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" className="fill-blanco w-6 h-6" viewBox="0 -960 960 960">
                                                 <path d="M234-276q51-39 114-61.5T480-360t132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800t-226.5 93.5T160-480q0 59 19.5 111t54.5 93m146.5-204.5Q340-521 340-580t40.5-99.5T480-720t99.5 40.5T620-580t-40.5 99.5T480-440t-99.5-40.5M480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m100-95.5q47-15.5 86-44.5-39-29-86-44.5T480-280t-100 15.5-86 44.5q39 29 86 44.5T480-160t100-15.5M523-537q17-17 17-43t-17-43-43-17-43 17-17 43 17 43 43 17 43-17m-43 317"/>
                                             </svg>
                                         </span>
                                         No s'ha assignat cap professor jugador per a aquest equip.
-                                        <p className="absolute right-5 hover:underline cursor-pointer text-azul-claro">Afegir professor</p>
+                                        <p className="max-md:bottom-3 max-md:left-1/2 max-md:-translate-x-1/2 absolute md:right-5 hover:underline cursor-pointer text-azul-claro">Afegir professor</p>
                                     </div>
                                 )
                             }
