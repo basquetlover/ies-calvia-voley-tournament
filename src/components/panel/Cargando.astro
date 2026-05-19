@@ -1,0 +1,61 @@
+<script>
+    window.addEventListener('load', function(){
+    document.getElementById('cargando')?.classList.toggle('loader-off')
+})
+</script>
+<div class="w-full h-full loader flex items-center place-content-center z-50 bg-gris fixed" id="cargando">
+    <div class="">
+        <div class="relative flex items-center justify-center mb-10">
+            <div class="absolute w-24 h-24 rounded-full bg-azul-suave/20 loading-ring"></div>
+            <div class="absolute w-32 h-32 rounded-full border-2 border-azul-suave/30 loading-ring" style="animation-delay: 0.5s"></div>
+            <div class="z-10 w-20 h-20 bg-gris-claro rounded-full flex items-center justify-center shadow-xl border border-outline-variant">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" class=" w-10 h-10 fill-azul-claro" fill="none">
+                    <path  d="M30 13.333 27.917 8.75l-4.584-2.083 4.584-2.084L30 0l2.083 4.583 4.584 2.084-4.584 2.083zm0 23.334-2.083-4.584L23.333 30l4.584-2.083L30 23.333l2.083 4.584L36.667 30l-4.584 2.083zm-16.667-5L9.167 22.5 0 18.333l9.167-4.166L13.333 5l4.167 9.167 9.167 4.166L17.5 22.5zm0-8.084L15 20l3.583-1.667L15 16.667l-1.667-3.584-1.666 3.584-3.584 1.666L11.667 20zm0-5.25"/>
+                </svg>
+            </span>
+            </div>
+        </div>
+
+        <div class="text-center space-y-2">
+            <h2 class="text-2xl font-bold">Carregant contingut...</h2>
+            <p class="font-light">Preparant la informació del torneig</p>
+            <div class="flex items-center justify-center gap-1">
+            <span class="w-2 h-2 bg-azul-claro rounded-full animate-pulse"></span>
+            <p class="text-sm font-light text-azul-claro tracking-widest uppercase">Connectant amb el sistema...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes pulse-ring {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 0.3; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+        @keyframes skeleton-shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton-shimmer {
+            background: linear-gradient(90deg, #313131 25%, #3d3d3d 50%, #313131 75%);
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 2s infinite linear;
+        }
+        .loading-ring {
+            animation: pulse-ring 2.5s infinite ease-in-out;
+        }
+
+    .loader{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        clip-path: circle(100% at 50% 50%);
+    }
+    .loader-off{
+        display: hidden;
+        clip-path: circle(0% at 100% 0%);
+    }
+</style>
