@@ -20,7 +20,7 @@ siglas: string,
 probl_tit_logo: null,
 inscriptor_email?: string,
 inscriptor_nombre?: string,
-email_capitan: 'hhernandezutrera@alu.ibeducacio.eu',
+email_capitan: string,
 jugadores: any[];
 entrenador: any;
 profesor: any;

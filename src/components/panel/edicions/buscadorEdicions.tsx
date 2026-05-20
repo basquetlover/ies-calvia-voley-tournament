@@ -52,7 +52,7 @@ const formatearFecha = (fecha: string) => {
             {data.map((edicion) => (
                 <div
                     key={edicion.id_torneo}
-                    className="w-115 h-60 bg-gris-claro rounded-2xl p-4"
+                    className="w-115 h-62 bg-gris-claro rounded-2xl p-4"
                 >
                     <div className="w-full grid grid-cols-[1fr_auto]">
                         <p className="text-2xl font-bold">{edicion.nombre}</p>

@@ -138,6 +138,9 @@ export const CURSO_2B = [
     {
         label: "2n BAT E",
     },
+    {
+        label: "2n BAT F",
+    },
 ]
 
 export const CURSO_FP = [
