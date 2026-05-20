@@ -86,6 +86,12 @@ export const Paginas = [
     id: "equips",
     ruta: "/panel/info/equip",
     nivel_seguridad: 2,
+  },
+  {
+    nombre: "Info Edició",
+    id: "edicions",
+    ruta: "/panel/info/edicio",
+    nivel_seguridad: 3,
   }
 ];
 

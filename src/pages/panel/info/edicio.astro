@@ -1,0 +1,30 @@
+---
+import EditarEdicion from "@components/panel/edicions/editarEdicion";
+import LayoutPanel from "@layouts/LayoutPanel.astro";
+
+const url = new URL(Astro.request.url);
+const torneoID = url.searchParams.get('torneoID');
+const equipoID = url.searchParams.get('equipoID');
+const accion = url.searchParams.get('accio');
+
+let title = "Informació Edició"
+
+if(accion === "editar"){
+    title = "Modificar Edició"
+}
+
+console.log("Configuración página", torneoID, equipoID, accion)
+---
+
+<LayoutPanel title={title}>
+    {
+        accion === "ver" && (
+            <></>
+        )
+    }
+    {   
+        accion === "editar" && (
+            <EditarEdicion torneoID={torneoID} client:load />
+        )
+    }
+</LayoutPanel>

@@ -6,6 +6,7 @@
 /* 🎨 Tema (ANTES era tailwind.config.js → theme.extend) */
 @theme {
   --color-azul: #0E347D;
+  --color-primary: #b2c5ff;
   --color-azul-suave: #0140B9;
   --color-azul-claro: #3C81F6;
   --color-accent: #1666FF;
