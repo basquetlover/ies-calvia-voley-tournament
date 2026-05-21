@@ -26,7 +26,7 @@ try {
     //     ...Configuracion
     // };
 
-    console.log(Configuracion)
+    // console.log(Configuracion)
 
     return new Response(JSON.stringify(Configuracion), {
     status: 200,

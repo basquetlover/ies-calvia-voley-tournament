@@ -1,11 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@components/panel/StylesReact.css"
-
+import { useToast } from '@components/panel/Toast';
 type Props = {
 torneoID?: string | null;
+url: string;
+accion: string;
+usuario: any;
 };
+
+type Seccion =
+    | "info"
+    | "equipos"
+    | "voluntarios"
+    | "reglas"
+    | "entrenador"
+    | "profesores"
+    | "general"
+    | "cursos"
+    | "dominios";
+
+type ErrorData = {
+    seccion: Seccion;
+    mensaje: string;
+};
+
 
 interface Edicio {
   id: number | null,
@@ -26,12 +46,24 @@ interface Edicio {
   profesor: string,
   dom_alumnos: string,
   dom_profesores: string,
+  equipo_mixto: string,
+  min_masc: number,
+  min_fem: number
 }
 
-export default function CrearEdicion({torneoID} : Props){
 
+
+type ApiResponse = {
+    ok: boolean;
+    data?: string;
+    error?: ErrorData;
+};
+
+export default function CrearEdicion({torneoID, url, accion, usuario} : Props){
+    const { addToast } = useToast();
     const [data, setData] = useState<Edicio | null>(null);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState<ErrorData | null>(null);
+    const [enviando, setEnviando] = useState(false)
 
     useEffect(() => {
         const inicializar = async () => {
@@ -55,6 +87,9 @@ export default function CrearEdicion({torneoID} : Props){
                     profesor: "Permitido",
                     dom_alumnos: "@alu.ibeducacio.eu",
                     dom_profesores: "@ibeducacio.eu",
+                    equipo_mixto: "Denegado",
+                    min_masc: 1,
+                    min_fem: 1,
                     cursos: { cursos: [] }   // estructura correcta
                 });
             }
@@ -81,7 +116,7 @@ export default function CrearEdicion({torneoID} : Props){
     }
 
     const handleToggle=(
-        field:"entrenador"|"profesor"
+        field:"entrenador"|"profesor"|"equipo_mixto"
     )=>{
 
         setData(prev=>
@@ -98,11 +133,85 @@ export default function CrearEdicion({torneoID} : Props){
 
     }
 
-    const handleSave=()=>{
+    const refs: Record<Seccion, React.RefObject<HTMLDivElement | null>> = {
+    info: useRef<HTMLDivElement>(null),
+    equipos: useRef<HTMLDivElement>(null),
+    voluntarios: useRef<HTMLDivElement>(null),
+    reglas: useRef<HTMLDivElement>(null),
+    entrenador: useRef<HTMLDivElement>(null),
+    profesores: useRef<HTMLDivElement>(null),
+    general: useRef<HTMLDivElement>(null),
+    cursos: useRef<HTMLDivElement>(null),
+    dominios: useRef<HTMLDivElement>(null),
+};
 
-        console.log("Cambios:",data)
+    const handleSave = async () => {
+    // if(noedit === true){
+    //     addToast({
+    //     type: 'warning',
+    //     message: 'No es pot editar una edició ja finalitzada.',
+    //     duration: 0,
+    //     });
+    //     return
+    // }
+    setEnviando(true)
+    try {
+        setError(null);
 
+        const res = await fetch("/api/panel/CrearEdicion", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                data,
+                url,
+                accion,
+                usuario
+            })
+        });
+
+        const result: ApiResponse = await res.json();
+
+        // error de API
+        if (!res.ok || !result.ok) {
+
+            if (result.error) {
+
+                setError(result.error);
+
+                refs[result.error.seccion]
+                    ?.current
+                    ?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+            }
+            setEnviando(false)
+            return;
+        }
+
+        // éxito
+        
+        addToast({
+        type: 'success',
+        message: 'Edició creada correctament',
+        duration: 5000,
+        });
+        setError(null);
+        setEnviando(false)
+        window.location.replace("/panel/edicions");
+        console.log(result.data);
+
+    } catch (e) {
+        console.error(e);
+
+        setError({
+            seccion: "info",
+            mensaje: "Error del servidor"
+        });
     }
+};
     // Añadir nuevo curso
 const addNewCurso = () => {
     setData(prev => {
@@ -287,7 +396,7 @@ const deleteCurso = (cursoIndex: number) => {
                             {/* <a href={`/panel/info/edicio?torneoID=${torneoID}&accio=editar`} className="px-3 py-2 border border-gray-500 rounded-xl">
                                 Editar edició
                             </a> */}
-                            <div onClick={handleSave} className="px-3 py-2 rounded-xl flex flex-row items-center gap-x-2 bg-accent">
+                            <div onClick={handleSave} className="px-3 py-2 cursor-pointer rounded-xl flex flex-row items-center gap-x-2 bg-accent">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 fill-blanco" viewBox="0 -960 960 960">
                                     <path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480zm-80 34L646-760H200v560h560zM565-275q35-35 35-85t-35-85-85-35-85 35-35 85 35 85 85 35 85-35M240-560h360v-160H240zm-40-86v446-560z"/>
                                 </svg>
@@ -295,6 +404,19 @@ const deleteCurso = (cursoIndex: number) => {
                             </div>
                         </div>
                     </div>
+
+                    {
+            error?.seccion === "general" && (
+                <div className="max-w-150 w-full p-4 bg-red-500/30 rounded-2xl border-l-5 border-red-500">
+                    <p className="text-red-500 uppercase text-lg flex items-center gap-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 fill-red-500" viewBox="0 -960 960 960">
+                            <path d="M440-280h80v-240h-80zm68.5-331.5Q520-623 520-640t-11.5-28.5T480-680t-28.5 11.5T440-640t11.5 28.5T480-600t28.5-11.5M480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m0-80q134 0 227-93t93-227-93-227-227-93-227 93-93 227 93 227 227 93m0-320"/>
+                        </svg>
+                        {error.mensaje}
+                    </p>
+                </div>
+            )
+        }
         {
             data ? (
                 <>
@@ -466,6 +588,44 @@ const deleteCurso = (cursoIndex: number) => {
                                 />
                             </div>
                         </div>
+
+                        <div className="w-full gap-x-4  mt-5">
+                            <div className="w-full grid grid-cols-[1fr_auto] items-center gap-x-4 bg-gris rounded-xl p-4">
+                                <div>
+                                    <p className="text-lg">Fer equips mixtes</p>
+                                    <p className="font-light text-gray-300">Obligar a realitzar equips mixtes</p>
+                                </div>
+                                <button onClick={()=>  handleToggle("equipo_mixto")} className={`w-12 h-6  cursor-pointer rounded-full p-1 flex items-center ${data.equipo_mixto === "Permitido" ? "justify-end bg-primary":"justify-start bg-primary/50"}`}>
+                                    <div className="w-4 h-4 bg-azul-suave rounded-full"></div>
+                                </button>
+                            </div>
+                        </div>
+                        {
+                            data.equipo_mixto === "Permitido" && (
+                                <div className="w-full gap-x-4 grid grid-cols-2 text-blanco max-md:text-sm mt-5">
+                            <div className="grid grid-cols-[1fr_auto] items-center px-2 rounded-xl gap-x-0.5 bg-gris">
+                                <p>Mínim  Masc.</p>
+                                <input 
+                                    type="number" 
+                                    min={0} 
+                                    value={data.min_masc} 
+                                    onChange={(e) => handleChange("min_masc", e.target.value)} 
+                                    className="text-primary w-14 px-2 py-1 h-10 bg-transparent border border-transparent focus:border-primary rounded-lg text-center"
+                                />
+                            </div>
+                            <div className="grid grid-cols-[1fr_auto] items-center px-2 rounded-xl gap-x-0.5 bg-gris">
+                                <p>Máxim  Fem.</p>
+                                <input 
+                                    type="number" 
+                                    min={0} 
+                                    value={data.min_fem} 
+                                    onChange={(e) => handleChange("min_fem", e.target.value)} 
+                                    className="text-primary w-14 px-2 py-1 h-10 bg-transparent border border-transparent focus:border-primary rounded-lg text-center"
+                                />
+                            </div>
+                        </div>
+                            )
+                        }
                         
                     </div>
 

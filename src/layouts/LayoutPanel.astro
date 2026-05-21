@@ -7,6 +7,7 @@ import Notificaciones from '@components/panel/Notificaciones.astro';
 import { verificarAdminSesion } from 'src/lib/usuario_panel';
 import "../styles/global.css";
 import Cargando from '@components/panel/Cargando.astro';
+import ToastContainer  from '@components/panel/Toast.tsx';
 const url = new URL(Astro.request.url);
 const redirect = url.pathname + url.search;
 
@@ -65,6 +66,7 @@ if(usuario && usuario.rango !== "") {
 	</head>
 	<body class="bg-gris overflow-hidden text-blanco fill-blanco">
 		<Cargando />
+		<ToastContainer client:load/>
         {
             usuario_admin ? (<>
                 <div id="layout" class="h-dvh grid grid-cols-[auto_1fr] overflow-hidden">

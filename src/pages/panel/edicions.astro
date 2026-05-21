@@ -10,7 +10,7 @@ const url = new URL(Astro.request.url);
 const usuario = await verificarAdminSesion(Astro.request);
 
 const accion = "crear"
-const permitido = tieneAcceso(
+const permitido = await tieneAcceso(
    url.pathname,
     accion,
     usuario

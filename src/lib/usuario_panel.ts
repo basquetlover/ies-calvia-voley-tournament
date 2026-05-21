@@ -13,6 +13,7 @@ function getNivelSeguridad(rango: string): number {
   return map[rango] ?? 0;
 }
 
+
 export async function verificarAdminSesion(request: Request) {
   const cookieHeader = request.headers.get("cookie");
   const cookies = new Map<string, string>();
@@ -60,26 +61,71 @@ export async function verificarAdminSesion(request: Request) {
   return usuarioFinal;
 }
 
+export async function verificarAdminSesionPorSessionId(sessionId: string) {
+  if (!sessionId) {
+    return null;
+  }
 
+  // Buscar usuario en Supabase
+  const { data: usuario, error } = await supabaseAdmin
+    .from("Usuarios")
+    .select("*")
+    .eq("session_id", sessionId)
+    .single();
 
-export function tieneAcceso(
+  if (error || !usuario) {
+    console.log("Error al verificar sesión por sessionId:", error);
+    return null;
+  }
+
+  // Nivel de seguridad derivado del rango
+  const nivel_seguridad = getNivelSeguridad(usuario.rango);
+
+  // Sustituir email por email_microsoft
+  const { email, email_microsoft, ...rest } = usuario;
+
+  const usuarioFinal = {
+    ...rest,
+    email: email_microsoft ?? email,
+    nivel_seguridad,
+  };
+
+  // console.log("Usuario encontrado por sessionId:", usuarioFinal);
+
+  return usuarioFinal;
+}
+
+export async function tieneAcceso(
     pagina: string,
-    accion: string | null,
-    usuario: any
-): boolean {
+    accion: string | null = null,
+    usuario: any = null,
+    sessionId?: string
+): Promise<boolean> {
+
+    let usuarioFinal = usuario;
+
+    // Si no nos pasan usuario, lo buscamos por sessionId
+    if (!usuarioFinal && sessionId?.trim()) {
+        try {
+            usuarioFinal = await verificarAdminSesionPorSessionId(sessionId);
+        } catch (error) {
+            console.error("Error al obtener usuario por sessionId:", error);
+            return false;
+        }
+    }
+
+    // Seguridad: si sigue sin usuario → acceso denegado
+    if (!usuarioFinal) {
+        return false;
+    }
+
+    console.log
+
 
     // buscar página
     const menuItem = Paginas.find(
         (item) => item.ruta === pagina
     );
-
-    if (
-    !usuario ||
-    !usuario.permisos_panel
-){
-  console.log("falta usuario o permisos_panel")
-    return false;
-}
 
     if (!menuItem) {
         console.warn("Ruta no encontrada:", pagina);
@@ -88,20 +134,48 @@ export function tieneAcceso(
 
     // corregir JSONB string/objeto
     const permisos_panel =
-        typeof usuario.permisos_panel === "string"
-            ? JSON.parse(usuario.permisos_panel)
-            : usuario.permisos_panel;
+        typeof usuarioFinal.permisos_panel === "string"
+            ? JSON.parse(usuarioFinal.permisos_panel)
+            : usuarioFinal.permisos_panel;
 
-    // comprobar nivel seguridad
+    // calcular nivel si no existe
+    const nivelSeguridad =
+        usuarioFinal.nivel_seguridad ??
+        getNivelSeguridad(
+            usuarioFinal.rango || usuarioFinal.staff || ""
+        );
+
+    console.log(
+        "Nivel calculado:",
+        nivelSeguridad
+    );
+
+    // bypass para owners
+    // if (
+    //     usuario.rango === "Owner" ||
+    //     usuario.staff === "Owner"
+    // ) {
+    //     console.log("Bypass Owner");
+    //     return true;
+    // }
+
+    // comprobar nivel
     const tieneNivel =
-        usuario.nivel_seguridad >=
+        nivelSeguridad >=
         (menuItem.nivel_seguridad ?? 0);
 
-    // permisos de esta página
+    console.log(
+        "Nivel requerido:",
+        menuItem.nivel_seguridad,
+        "Tiene:",
+        tieneNivel
+    );
+
+    // permisos página actual
     const permisosPagina =
         permisos_panel?.[menuItem.id] || {};
 
-    // sin nivel -> fuera
+    // sin nivel → fuera
     if (!tieneNivel) {
         return false;
     }
@@ -109,15 +183,15 @@ export function tieneAcceso(
     // acción específica
     if (accion) {
 
-        // existe permiso explícito
+        // permiso explícito
         if (accion in permisosPagina) {
             return permisosPagina[accion] === true;
         }
 
-        // si no existe la acción → usar nivel seguridad
+        // si no existe la acción usar nivel
         return tieneNivel;
     }
 
-    // acceso normal -> requiere permiso ver
+    // acceso normal requiere ver
     return permisosPagina?.ver === true;
 }

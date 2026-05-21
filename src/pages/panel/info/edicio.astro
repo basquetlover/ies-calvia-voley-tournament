@@ -3,16 +3,27 @@ import CrearEdicion from "@components/panel/edicions/CrearEdicion";
 import EditEdicion from "@components/panel/edicions/EditEdicion";
 import PreviewEdicion from "@components/panel/edicions/PreviewEdicion";
 import LayoutPanel from "@layouts/LayoutPanel.astro";
+import { verificarAdminSesion } from "src/lib/usuario_panel";
 
 const url = new URL(Astro.request.url);
+const pathname = url.pathname;
 const torneoID = url.searchParams.get('torneoID');
 const equipoID = url.searchParams.get('equipoID');
 const accion = url.searchParams.get('accio');
+
+const sessionId = Astro.cookies.get("session_id")?.value;
+
+
+
+const usuario = await verificarAdminSesion(Astro.request);
+// console.log("Usuario en edición", usuario)
 
 let title = "Informació Edició"
 
 if(accion === "editar"){
     title = "Modificar Edició"
+} else if(accion === "crear"){
+    title = "Crear nova Edició"
 }
 
 console.log("Configuración página", torneoID, equipoID, accion)
@@ -26,12 +37,12 @@ console.log("Configuración página", torneoID, equipoID, accion)
     }
     {   
         accion === "editar" && (
-            <EditEdicion torneoID={torneoID} client:load />
+            <EditEdicion torneoID={torneoID} url={pathname} accion={accion} usuario={sessionId} client:load />
         )
     }
     {
         accion === "crear" && (
-            <CrearEdicion torneoID={torneoID} client:load/>
+            <CrearEdicion torneoID={torneoID} url={pathname} accion={accion} usuario={sessionId} client:load/>
         )
     }
 </LayoutPanel>

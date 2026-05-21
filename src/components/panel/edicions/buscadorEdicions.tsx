@@ -91,9 +91,9 @@ const formatearFecha = (fecha: string) => {
                     <div className="w-full grid grid-cols-2 gap-4 font-light place-items-center">
                         {
                             edicion.estado === "Finalitzat" ? (
-                                <div className="bg-gray-200/10 w-full h-10 flex items-center place-content-center rounded-xl border border-transparent hover:border-red-400 hover:text-red-400 duration-300 cursor-not-allowed">
+                                <a href={`/panel/info/edicio?torneoID=${edicion.id_torneo}&accio=editar`} className="bg-gray-200/10 w-full h-10 flex items-center place-content-center rounded-xl border border-transparent hover:border-red-400 hover:text-red-400 duration-300 cursor-not-allowed">
                                     Configurar
-                                </div>
+                                </a>
                             ):(
                                 <a href={`/panel/info/edicio?torneoID=${edicion.id_torneo}&accio=editar`} className="bg-azul-suave w-full h-10 flex items-center place-content-center rounded-xl hover:bg-azul-claro duration-300 cursor-pointer">
                                     Configurar
