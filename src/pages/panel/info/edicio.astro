@@ -1,4 +1,6 @@
 ---
+import CrearEdicion from "@components/panel/edicions/CrearEdicion";
+import EditEdicion from "@components/panel/edicions/EditEdicion";
 import PreviewEdicion from "@components/panel/edicions/PreviewEdicion";
 import LayoutPanel from "@layouts/LayoutPanel.astro";
 
@@ -24,7 +26,12 @@ console.log("Configuración página", torneoID, equipoID, accion)
     }
     {   
         accion === "editar" && (
-            <></>
+            <EditEdicion torneoID={torneoID} client:load />
+        )
+    }
+    {
+        accion === "crear" && (
+            <CrearEdicion torneoID={torneoID} client:load/>
         )
     }
 </LayoutPanel>

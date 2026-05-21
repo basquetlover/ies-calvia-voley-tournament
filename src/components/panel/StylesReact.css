@@ -1,0 +1,77 @@
+/* ==================== REACT DATEPICKER - Adaptado a tu diseño ==================== */
+
+.custom-datepicker-calendar {
+  background-color: #27272a !important;     /* Similar a bg-gris */
+  border: 2px solid #3f3f46 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.5) !important;
+  font-family: inherit !important;
+  padding: 8px !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__header {
+  background-color: #27272a !important;
+  border-bottom: 1px solid #3f3f46 !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__current-month,
+.custom-datepicker-calendar .react-datepicker__day-name {
+  color: #e4e4e7 !important;
+  font-weight: 600;
+}
+
+.custom-datepicker-calendar .react-datepicker__day {
+  color: #e4e4e7 !important;
+  border-radius: 8px !important;
+  margin: 2px !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day:hover {
+  background-color: #3f3f46 !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day--selected {
+  background-color: #3b82f6 !important;   /* Cambia por tu color primary */
+  color: white !important;
+  font-weight: 600;
+}
+
+.custom-datepicker-calendar .react-datepicker__day--today {
+  color: #60a5fa;
+}
+
+.custom-datepicker-calendar .react-datepicker__time-list {
+  background-color: #27272a;
+}
+
+.custom-datepicker-calendar .react-datepicker__time-list-item {
+  color: #e4e4e7;
+}
+
+.custom-datepicker-calendar .react-datepicker__time-list-item:hover {
+  background-color: #3f3f46;
+}
+
+.custom-datepicker-calendar .react-datepicker__time-list-item--selected {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+/* Mejorar aspecto de inputs date/datetime en modo oscuro */
+input[type="date"],
+input[type="datetime-local"] {
+  color: white;
+  background-color: #1d1b20; /* ajusta según tu clase "bg-gris" */
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+}
+
+/* Para Firefox */
+input[type="date"],
+input[type="datetime-local"] {
+  color-scheme: dark;
+}
