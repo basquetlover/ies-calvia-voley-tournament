@@ -1,0 +1,23 @@
+---
+
+import BuscadorAdmin from "@components/panel/permisos/buscarAdmin";
+import LayoutPanel from "@layouts/LayoutPanel.astro";
+import { tieneAcceso, verificarAdminSesion } from "src/lib/usuario_panel";
+
+const url = new URL(Astro.request.url);
+
+
+const usuario = await verificarAdminSesion(Astro.request);
+
+const accion = "editar"
+const permitido = await tieneAcceso(
+   url.pathname,
+    accion,
+    usuario
+);
+
+---
+
+<LayoutPanel title="Edicións">
+    <BuscadorAdmin client:load />
+</LayoutPanel>
