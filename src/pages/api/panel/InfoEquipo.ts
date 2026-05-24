@@ -14,6 +14,19 @@ try {
 
     const TablaEquipos = `Equipos${torneoID}`
     const TablaJugadores = `Jugadores${torneoID}`
+    const TablaVoluntarios = `Voluntarios${torneoID}`;
+
+    const buscarVoluntario = async (email:string) => {
+        if(!email) return null;
+
+        const { data } = await supabaseAdmin
+            .from(TablaVoluntarios)
+            .select("tipo")
+            .eq("email", email)
+            .single();
+
+        return data?.tipo || null;
+    };
 
     const { data: equips, error: errorEquips } = await supabaseAdmin
     .from(TablaEquipos)
@@ -87,13 +100,41 @@ try {
 
 
     // añadir campo capitan a jugadores
-    const jugadoresConCapitan =
-    (jugadors || []).map((jugador) => ({
-        ...jugador,
-        capitan:
-        jugador.email?.toLowerCase() ===
-        equips.email_capitan?.toLowerCase()
-    }));
+    const jugadoresConCapitan = await Promise.all(
+        (jugadors || []).map(async (jugador) => ({
+            ...jugador,
+            capitan:
+                jugador.email?.toLowerCase() ===
+                equips.email_capitan?.toLowerCase(),
+
+            voluntario: await buscarVoluntario(jugador.email)
+        }))
+    );
+
+    let entrenadorConVoluntario = null;
+
+    if (entrenador) {
+        entrenadorConVoluntario = {
+            ...entrenador,
+            voluntario: await buscarVoluntario(entrenador.email)
+        };
+    }
+
+    let profesorConVoluntario = null;
+
+    if (profesor) {
+        profesorConVoluntario = {
+            ...profesor,
+            voluntario: await buscarVoluntario(profesor.email)
+        };
+    }
+
+    const staffConVoluntario = await Promise.all(
+    (satff || []).map(async (persona)=>({
+        ...persona,
+        voluntario: await buscarVoluntario(persona.email)
+    }))
+);
 
     // respuesta final
     const respuesta = {
@@ -104,12 +145,14 @@ try {
 
         jugadores: jugadoresConCapitan,
 
-        entrenador: entrenador || null,
+        entrenador: entrenadorConVoluntario,
 
-        profesor: profesor || null,
+        profesor: profesorConVoluntario,
 
-        cuerpo_tecnico: satff
+        cuerpo_tecnico: staffConVoluntario
     };
+
+    
 
     // console.log(respuesta)
 

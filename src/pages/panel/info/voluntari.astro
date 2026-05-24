@@ -1,0 +1,25 @@
+---
+import EditVoluntari from "@components/panel/voluntaris/EditVoluntari";
+import PreviewVoluntari from "@components/panel/voluntaris/PreviewVoluntari";
+import LayoutPanel from "@layouts/LayoutPanel.astro";
+
+const url = new URL(Astro.request.url);
+const torneoID = url.searchParams.get('torneoID');
+const voluntariID = url.searchParams.get('voluntarioID');
+const accion = url.searchParams.get('accio');
+
+console.log("Configuración página", torneoID, voluntariID, accion)
+---
+
+<LayoutPanel title="Informació Equip">
+    {
+        accion === "ver" && (
+            <PreviewVoluntari torneoID={torneoID} voluntariID={voluntariID} client:load/>
+        )
+    }
+    {
+        accion === "editar" && (
+            <EditVoluntari  torneoID={torneoID} voluntariID={voluntariID} client:load/>
+        )
+    }
+</LayoutPanel>

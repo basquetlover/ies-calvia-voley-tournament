@@ -20,7 +20,7 @@ siglas: string,
 probl_tit_logo: null,
 inscriptor_email?: string,
 inscriptor_nombre?: string,
-email_capitan: 'hhernandezutrera@alu.ibeducacio.eu',
+email_capitan: string,
 jugadores: any[];
 entrenador: any;
 profesor: any;
@@ -171,8 +171,15 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                         <div className="w-full  h-auto items-center   mt-5 flex flex-wrap gap-5">
                             {
                                 data.entrenador ? (
-                                    <div className="w-96 h-56 bg-gris-claro text-sm rounded-2xl p-5">
-                                        <p className="font-semibold text-lg">{data.entrenador.nombre} {data.entrenador._1r_apellido} {data.entrenador._2n_apellido}</p>
+                                    <div className={`w-96 h-56 bg-gris-claro text-sm rounded-2xl p-5 ${data.entrenador.voluntario && "border border-orange-600"}`}>
+                                        <div className="w-full grid grid-cols-[1fr_auto]">
+                                            <p className="font-semibold text-lg first-letter:uppercase">{data.entrenador.nombre} {data.entrenador._1r_apellido} {data.entrenador._2n_apellido}</p>
+                                            {
+                                                data.entrenador.voluntario && (
+                                                    <p className="bg-orange-400/60 border border-orange-600 text-orange-300 w-max h-max px-2 py-0.5 rounded-full">{data.entrenador.voluntario}</p>
+                                                )
+                                            }
+                                        </div>
                                         <p>{data.entrenador.email}</p>
                                         <div className="flex items-center gap-x-4 mt-1">
                                             <p className="py-1 px-2 bg-azul-claro/10 rounded-lg">{data.entrenador.curso}</p>
@@ -215,8 +222,15 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                         <div className="w-full max-sm:place-content-center h-auto items-center grid grid-cols-3  mt-5 max-sm:flex max-sm:flex-wrap gap-5">
                             {
                                         data.jugadores.map((jugador, i) => (
-                                            <div className="w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5">
-                                                <p className="text-xl text-azul-claro">Jugador {i+1}</p>
+                                            <div className={`w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5 ${jugador.voluntario && "border border-orange-600"}`}>
+                                                <div className="w-full grid grid-cols-[1fr_auto]">
+                                                    <p className="text-xl text-azul-claro">Jugador {i+1}</p>
+                                                    {
+                                                        jugador.voluntario && (
+                                                            <p className="bg-orange-400/60 border border-orange-600 text-orange-300 w-max h-max px-2 py-0.5 rounded-full">{jugador.voluntario}</p>
+                                                        )
+                                                    }
+                                                </div>
                                                 <p className="font-semibold text-lg">{jugador.nombre} {jugador._1r_apellido} {jugador._2n_apellido}</p>
                                                 <p>{jugador.email}</p>
                                                 <div className="flex items-center gap-x-4 mt-1">
@@ -253,8 +267,15 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                         <div className="w-full  h-auto items-center   mt-5 flex flex-wrap gap-5">
                             {
                                 data.profesor ? (
-                                    <div className="w-96 h-56 bg-gris-claro text-sm rounded-2xl p-5">
-                                        <p className="font-semibold text-lg">{data.profesor.nombre} {data.profesor._1r_apellido} {data.profesor._2n_apellido}</p>
+                                    <div className={`w-96 h-56 bg-gris-claro text-sm rounded-2xl p-5 ${data.profesor.voluntario && "border border-orange-600"}`}>
+                                        <div className="w-full grid grid-cols-[1fr_auto]">
+                                            <p className="font-semibold text-lg first-letter:uppercase">{data.profesor.nombre} {data.profesor._1r_apellido} {data.profesor._2n_apellido}</p>
+                                            {
+                                                data.profesor.voluntario && (
+                                                    <p className="bg-orange-400/60 border border-orange-600 text-orange-300 w-max h-max px-2 py-0.5 rounded-full">{data.profesor.voluntario}</p>
+                                                )
+                                            }
+                                        </div>
                                         <p>{data.profesor.email}</p>
                                         <div className="flex items-center gap-x-4 mt-1">
                                             <p className="py-1 px-2 bg-azul-claro/10 rounded-lg">{data.profesor.curso}</p>
@@ -299,8 +320,15 @@ export default function PreviewEquipo({ torneoID, equipoID }: Props) {
                                 data.cuerpo_tecnico.length > 0 ? (
                                     
                                         data.cuerpo_tecnico.map((staff, i) => (
-                                            <div className="w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5">
-                                                <p className="text-xl text-azul-claro">Cos Técnic {i+1}</p>
+                                            <div className={`w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5 ${staff.voluntario && "border border-orange-600"}`}>
+                                                <div className="w-full grid grid-cols-[1fr_auto]">
+                                                    <p className="text-xl text-azul-claro">Cos Técnic {i+1}</p>
+                                                    {
+                                                        staff.voluntario && (
+                                                            <p className="bg-orange-400/60 border border-orange-600 text-orange-300 w-max h-max px-2 py-0.5 rounded-full">{staff.voluntario}</p>
+                                                        )
+                                                    }
+                                                </div>
                                                 <p className="font-semibold text-lg">{staff.nombre} {staff._1r_apellido} {staff._2n_apellido}</p>
                                                 <p>{staff.email}</p>
                                                 <div className="flex items-center gap-x-4 mt-1">

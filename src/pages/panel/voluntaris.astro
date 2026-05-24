@@ -1,0 +1,19 @@
+---
+import BuscadorVoluntaris from "@components/panel/voluntaris/buscadorVoluntaris";
+import LayoutPanel from "@layouts/LayoutPanel.astro";
+import { supabaseAdmin } from "src/lib/supabase";
+
+const url = new URL(Astro.request.url);
+const torneoID = url.searchParams.get('torneoID');
+
+const { data: ConfTorneo } = await supabaseAdmin
+  .from('Configuracion')
+  .select('id_torneo, fecha, nombre, estado')
+  .eq('id_torneo', torneoID)
+  .single();
+
+---
+
+<LayoutPanel title="Equips Inscrits">
+    <BuscadorVoluntaris torneoID={torneoID} estado={ConfTorneo?.estado} client:load />
+</LayoutPanel>
