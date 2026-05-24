@@ -5,11 +5,14 @@ import LayoutPanel from "@layouts/LayoutPanel.astro";
 import { tieneAcceso, verificarAdminSesion } from "src/lib/usuario_panel";
 
 const url = new URL(Astro.request.url);
-
-
+let accion = url.searchParams.get("accio")
+const torneoID = url.searchParams.get('torneoID');
+if(!accion){
+    accion = "ver"
+}
 const usuario = await verificarAdminSesion(Astro.request);
 
-const accion = "editar"
+// const accion = "editar"
 const permitido = await tieneAcceso(
    url.pathname,
     accion,
@@ -19,5 +22,5 @@ const permitido = await tieneAcceso(
 ---
 
 <LayoutPanel title="Edicións">
-    <BuscadorAdmin client:load />
+    <BuscadorAdmin torneoID={torneoID} accion={accion} client:load />
 </LayoutPanel>

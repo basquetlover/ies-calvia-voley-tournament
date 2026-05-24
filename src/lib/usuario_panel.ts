@@ -3,8 +3,8 @@ import { Paginas } from "src/const/menuPanel";
 
 function getNivelSeguridad(rango: string): number {
   const map: Record<string, number> = {
-    Owner: 3,
-    "Co-Owner": 3,
+    Owner: 4,
+    "Co-Owner": 4,
     Admin: 3,
     Staff: 2,
     Voluntari: 1,

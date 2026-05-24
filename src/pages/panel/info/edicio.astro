@@ -8,7 +8,7 @@ import { verificarAdminSesion } from "src/lib/usuario_panel";
 const url = new URL(Astro.request.url);
 const pathname = url.pathname;
 const torneoID = url.searchParams.get('torneoID');
-const equipoID = url.searchParams.get('equipoID');
+
 const accion = url.searchParams.get('accio');
 
 const sessionId = Astro.cookies.get("session_id")?.value;
@@ -26,7 +26,7 @@ if(accion === "editar"){
     title = "Crear nova Edició"
 }
 
-console.log("Configuración página", torneoID, equipoID, accion)
+console.log("Configuración página", torneoID, accion)
 ---
 
 <LayoutPanel title={title}>

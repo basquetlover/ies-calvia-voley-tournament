@@ -1,4 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useToast } from '@components/panel/Toast';
+import "@components/panel/StylesReact.css"
+
+interface Props {
+  setTipoAccion: React.Dispatch<React.SetStateAction<"ver" | "editar" | "crear">>;
+}
 
 interface Admins {
 email_microsoft: string;
@@ -8,10 +14,81 @@ apellidos: string;
 rango: string;
 permisos_panel: any;
 }
+type ErrorData = {
+    mensaje: string;
+};
+type ApiResponse = {
+    ok: boolean;
+    data?: string;
+    error?: ErrorData;
+};
 
+import { Menu } from "@const/menuPanel";
+type PermisoKey = (typeof Menu)[number]["id"];
 type TipoAccion = "crear" | "editar";
-
-const roles = ["Voluntari", "Staff", "Admin", "Co-Owner", "Owner"];
+type PermisoItem = Record<string, boolean>;
+type PermisosUI = Record<PermisoKey, PermisoItem>;
+const roles = ["Voluntari", "Staff", "Admin", "Co-Owner", "Owner"] as const;
+const permisos: Record<PermisoKey, any> ={
+  "equips": {
+    "ver": false,
+    "editar": false,
+    "evaluar": false,
+    "eliminar": false
+  },
+  "panell": {
+    "ver": false
+  },
+  "pistes": {
+    "ver": false
+  },
+  "alumnes": {
+    "ver": false,
+    "exportar": false
+  },
+  "partits": {
+    "ver": false,
+    "crear": false,
+    "editar": false,
+    "eliminar": false
+  },
+  "usuaris": {
+    "ver": false,
+    "crear": false,
+    "editar": false,
+    "eliminar": false,
+  },
+  "edicions": {
+    "ver": false,
+    "crear": false,
+    "editar": false,
+    "eliminar": false
+  },
+  "permisos": {
+    "ver": false,
+    "crear": false,
+    "editar": false
+  },
+  "voluntaris": {
+    "ver": false,
+    "crear": false,
+    "editar": false,
+    "eliminar": false
+  },
+  "acta-digital": {
+    "ver": false,
+    "editar": false,
+  },
+  "designacions": {
+    "ver": false,
+  },
+  "historial-jugadors": {
+    "ver": false,
+    "editar": false,
+    "exportar": false
+  }
+}
+type Role = (typeof roles)[number];
 
 const selectStyles: Record<string, string> = {
 Owner: "border-red-500 bg-red-500/40",
@@ -21,18 +98,32 @@ Staff: "border-green-500 bg-green-500/40",
 Voluntari: "border-gray-400 bg-gray-400/40",
 };
 
-export default function CrearAdmin() {
+type MenuPermiso = (typeof Menu)[number] & {
+  permisos: PermisoItem;
+};
+
+export default function CrearAdmin({setTipoAccion}: Props) {
+   
+    const { addToast } = useToast();
 const [usuarios, setUsuarios] = useState<Admins[]>([]);
 const [admins, setAdmins] = useState<Admins[]>([]);
 const [busqueda, setBusqueda] = useState("");
 
 const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Admins | null>(null);
-const [tipoAccion, setTipoAccion] = useState<TipoAccion>("crear");
 
-const [nuevoRango, setNuevoRango] = useState<string>("Voluntari");
+
+const [nuevoRango, setNuevoRango] = useState<Role>("Voluntari");
+const [nuevoNS, setNuevoNS] = useState<number>(0);
 const [open, setOpen] = useState(false);
 
 const [inputActivo, setInputActivo] = useState(false);
+
+const [menuPermisos, setMenuPermisos] = useState<MenuPermiso[]>([]);
+const [permisosEstablecidos, setPermisosEstablecidos] = useState(permisos)
+
+const [enviando, setEnviando] = useState(false)
+const [error, setError] = useState<ErrorData | null>(null);
+const errorRef = useRef<HTMLDivElement | null>(null);
 
 // USUARIOS
 useEffect(() => {
@@ -56,178 +147,481 @@ useEffect(() => {
     .catch(() => console.log("Error admins"));
 }, []);
 
-// FILTRO BUSQUEDA
+useEffect(() => {
+  const menuOrdenado = Menu.map((item) => {
+    const permisosBase =
+      permisosEstablecidos[item.id as PermisoKey] ||
+      permisos[item.id as PermisoKey];
+
+    const nivelSeguridad = (item as any).nivel_seguridad ?? 999;
+
+    // Clonamos permisos para no mutar el original
+    const permisosFinales = { ...permisosBase };
+
+    // Si el nuevo nivel de seguridad tiene acceso
+    if (nuevoNS >= nivelSeguridad) {
+      if ("ver" in permisosFinales) {
+        permisosFinales.ver = true;
+      }
+
+      if ("editar" in permisosFinales) {
+        permisosFinales.editar = true;
+      }
+    }
+
+    return {
+      ...item,
+      permisos: permisosFinales,
+    };
+  }).sort((a, b) => {
+    const nivelA = (a as any).nivel_seguridad ?? 999;
+    const nivelB = (b as any).nivel_seguridad ?? 999;
+
+    return nivelA - nivelB;
+  });
+
+//   console.log("Menú con permisos:", menuOrdenado);
+
+  setMenuPermisos(menuOrdenado);
+}, [nuevoNS, permisosEstablecidos]);
+
+    // FILTRO BUSQUEDA
 const usuariosFiltrados = usuarios.filter((u) => {
-    const texto = busqueda.toLowerCase();
+    const texto = busqueda.toLowerCase().trim();
+
+    const nombreCompleto =
+        `${u.nombre_real} ${u.apellidos}`.toLowerCase();
 
     return (
-    u.email_microsoft?.toLowerCase().includes(texto) ||
-    u.nombre_real?.toLowerCase().includes(texto) ||
-    u.apellidos?.toLowerCase().includes(texto)
+        u.email_microsoft?.toLowerCase().includes(texto) ||
+        nombreCompleto.includes(texto)
     );
 });
+
+useEffect(() => {
+  setNuevoNS(getSecurityLevel(nuevoRango));
+}, [nuevoRango]);
+
+const getSecurityLevel = (role: Role): number => {
+  const levels: Record<Role, number> = {
+    Owner: 4,
+    "Co-Owner": 3,
+    Admin: 3,
+    Staff: 2,
+    Voluntari: 1,
+  };
+
+  return levels[role];
+};
+
+const cambiarPermiso = (idMenu: string, nombrePermiso: string) => {
+  setMenuPermisos(prev =>
+    prev.map(item => {
+      if (item.id !== idMenu) return item;
+
+      return {
+        ...item,
+        permisos: {
+          ...item.permisos,
+          [nombrePermiso]: !item.permisos[nombrePermiso]
+        }
+      };
+    })
+  );
+};
 
 // CHECK ADMIN POR RANGO
 const esAdmin = (user: Admins) => {
     return admins.some((a) => a.id === user.id);
 };
 
+//Enviar datos:
+const handleCreate = async () => {
+    // datos a enviar:
+    console.log("Datos a enviar a la api: ", usuarioSeleccionado, menuPermisos)
+
+    setEnviando(true)
+    try {
+        setError(null);
+
+        const res = await fetch("/api/panel/CrearAdmin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                usuarioSeleccionado, menuPermisos, nuevoRango
+            })
+        });
+
+        const result: ApiResponse = await res.json();
+
+        // error de API
+        if (!res.ok || !result.ok) {
+
+            if (result.error) {
+
+                setError(result.error);
+                errorRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                });
+
+            }
+            setEnviando(false)
+            return;
+        }
+
+        // éxito
+        
+        addToast({
+        type: 'success',
+        message: 'Configuració actualitzada correctament',
+        duration: 5000,
+        });
+        setError(null);
+        setEnviando(false)
+        window.location.reload();
+        console.log(result.data);
+
+    } catch (e) {
+        console.error(e);
+
+        setError({
+            mensaje: "Error del servidor"
+        });
+    }
+};
+
+
+// console.log(menuRender)
+
 return (
-    <div className="w-full h-full">
-    <div className="w-full h-full min-h-0 grid grid-rows-[auto_1fr] rounded-2xl overflow-hidden">
+    <div className="w-full h-full min-h-0 md:overflow-hidden">
+    <div className="w-full h-full min-h-0 grid grid-rows-[auto_1fr] rounded-2xl md:overflow-hidden ">
 
         {/* HEADER */}
-        <div className="border-b border-gris-claro p-4 bg-gris-claro flex flex-col gap-4">
+        <div className="border-b border-gris-claro p-4 bg-gris-claro h-auto min-h-0 rounded-2xl flex flex-col gap-4">
+            <div className="w-full md:grid md:items-center grid-cols-[auto_1fr] max-md:flex max-md:flex-col gap-4">
+                <h2 className="font-bold text-xl">
+                    Afegir nou administrador
+                </h2>
 
-        <h2 className="font-bold text-xl">
-            Afegir nou administrador
-        </h2>
+                {/* INPUT */}
+                <div className="w-full rounded-2xl px-2 h-10 bg-gray-600 border border-gray-500 flex items-center gap-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#fff" viewBox="0 -960 960 960">
+                        <path d="M440-480q-66 0-113-47t-47-113 47-113 113-47 113 47 47 113-47 113-113 47m0-80q33 0 56.5-23.5T520-640t-23.5-56.5T440-720t-56.5 23.5T360-640t23.5 56.5T440-560M884-20 756-148q-21 12-45 20t-51 8q-75 0-127.5-52.5T480-300t52.5-127.5T660-480t127.5 52.5T840-300q0 27-8 51t-20 45L940-76zM731-229q29-29 29-71t-29-71-71-29-71 29-29 71 29 71 71 29 71-29m-611 69v-111q0-34 17-63t47-44q51-26 115-44t142-18q-12 18-20.5 38.5T407-359q-60 5-107 20.5T221-306q-10 5-15.5 14.5T200-271v31h207q5 22 13.5 42t20.5 38zm287-80"/>
+                    </svg>
+                    <input
+                    type="text"
+                    className="w-full mx-2 rounded-xl h-8 px-2 text-white bg-transparent"
+                    onChange={(e) => setBusqueda(e.target.value)}
+                    onFocus={() => setInputActivo(true)}
+                    onBlur={() => setTimeout(() => setInputActivo(false), 150)}
+                    placeholder="Cercar per nom, cognoms o correu..."
+                    />
+                </div>
+            </div>
+            
 
-        {/* INPUT */}
-        <div className="w-full rounded-2xl px-2 h-10 bg-gray-600 border border-gray-500 flex items-center gap-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#fff" viewBox="0 -960 960 960">
-                <path d="M440-480q-66 0-113-47t-47-113 47-113 113-47 113 47 47 113-47 113-113 47m0-80q33 0 56.5-23.5T520-640t-23.5-56.5T440-720t-56.5 23.5T360-640t23.5 56.5T440-560M884-20 756-148q-21 12-45 20t-51 8q-75 0-127.5-52.5T480-300t52.5-127.5T660-480t127.5 52.5T840-300q0 27-8 51t-20 45L940-76zM731-229q29-29 29-71t-29-71-71-29-71 29-29 71 29 71 71 29 71-29m-611 69v-111q0-34 17-63t47-44q51-26 115-44t142-18q-12 18-20.5 38.5T407-359q-60 5-107 20.5T221-306q-10 5-15.5 14.5T200-271v31h207q5 22 13.5 42t20.5 38zm287-80"/>
-            </svg>
-            <input
-            type="text"
-            className="w-full mx-2 rounded-xl h-8 px-2 text-white bg-transparent"
-            onChange={(e) => setBusqueda(e.target.value)}
-            onFocus={() => setInputActivo(true)}
-            onBlur={() => setTimeout(() => setInputActivo(false), 150)}
-            placeholder="Cercar per nom, cognoms o correu..."
-            />
-        </div>
+            {/* LISTA RESULTADOS */}
+            {inputActivo && busqueda.length > 0 && (
+                <div className="flex flex-col gap-2 max-h-60 overflow-y-auto">
 
-        {/* LISTA RESULTADOS */}
-        {inputActivo && busqueda.length > 0 && (
-            <div className="flex flex-col gap-2 max-h-60 overflow-y-auto">
+                {usuariosFiltrados.map((user) => {
+                    const bloqueado = esAdmin(user);
 
-            {usuariosFiltrados.map((user) => {
-                const bloqueado = esAdmin(user);
+                    return (
+                    <div
+                        key={user.id}
+                        onClick={() => {
+                        if (bloqueado) return;
+                        setUsuarioSeleccionado(user);
+                        // setTipoAccion("editar");
+                        setInputActivo(false);
+                        setBusqueda(user.nombre_real);
+                        }}
+                        className={`
+                        p-3 rounded-xl border transition
+                        flex flex-col gap-1
+                        ${
+                            bloqueado
+                            ? "opacity-40 cursor-not-allowed bg-gray-700"
+                            : "cursor-pointer hover:bg-white/10 bg-gray-800"
+                        }
+                        ${
+                            usuarioSeleccionado?.id === user.id
+                            ? "border-primary"
+                            : "border-gray-600"
+                        }
+                        `}
+                    >
+                        <div className="flex justify-between items-center">
+                        <p className="font-semibold text-white">
+                            {user.nombre_real} {user.apellidos}
+                        </p>
 
-                return (
+                        {bloqueado && (
+                            <span className="text-xs px-2 py-1 rounded bg-red-500/30 text-red-200">
+                            {user.rango}
+                            </span>
+                        )}
+                        </div>
+
+                        <p className="text-xs text-gray-300">
+                        {user.email_microsoft}
+                        </p>
+                    </div>
+                    );
+                })}
+                </div>
+            )}
+
+            {/* USER + ROL */}
+            <div className="w-full md:grid grid-cols-[1fr_auto] gap-x-4">
+
+                <div>
+                {usuarioSeleccionado ? (
+                    <div className="p-4 rounded-xl flex flex-col">
+                    <p className="text-white font-bold">
+                        Usuari seleccionat:
+                    </p>
+
+                    <p className="text-gray-300">
+                        {usuarioSeleccionado.nombre_real} {usuarioSeleccionado.apellidos}
+                    </p>
+
+                    <p className="text-xs text-gray-400">
+                        {usuarioSeleccionado.email_microsoft}
+                    </p>
+                    </div>
+                ) : (
+                    <p className="text-gray-400">
+                    Seleccionar un usuario per continuar
+                    </p>
+                )}
+                </div>
+
+                {/* SELECT ROL */}
+                <div className="relative p-4 w-48 mt-2 flex flex-col">
+
+                <p className="text-sm mb-1 text-gray-200">
+                    Rol d'usuari
+                </p>
+
                 <div
-                    key={user.id}
-                    onClick={() => {
-                    if (bloqueado) return;
-                    setUsuarioSeleccionado(user);
-                    setTipoAccion("editar");
-                    setInputActivo(false);
-                    setBusqueda(user.nombre_real);
-                    }}
+                    onClick={() => setOpen(!open)}
                     className={`
-                    p-3 rounded-xl border transition
-                    flex flex-col gap-1
-                    ${
-                        bloqueado
-                        ? "opacity-40 cursor-not-allowed bg-gray-700"
-                        : "cursor-pointer hover:bg-white/10 bg-gray-800"
-                    }
-                    ${
-                        usuarioSeleccionado?.id === user.id
-                        ? "border-primary"
-                        : "border-gray-600"
-                    }
+                    h-12 px-3 rounded-xl flex items-center justify-between
+                    cursor-pointer border transition text-white
+                    ${selectStyles[nuevoRango]}
                     `}
                 >
-                    <div className="flex justify-between items-center">
-                    <p className="font-semibold text-white">
-                        {user.nombre_real} {user.apellidos}
-                    </p>
+                    <span>{nuevoRango}</span>
 
-                    {bloqueado && (
-                        <span className="text-xs px-2 py-1 rounded bg-red-500/30 text-red-200">
-                        {user.rango}
-                        </span>
-                    )}
-                    </div>
-
-                    <p className="text-xs text-gray-300">
-                    {user.email_microsoft}
-                    </p>
+                    <svg
+                    className={`w-4 h-4 transition ${open ? "rotate-180" : ""}`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 -960 960 960"
+                    fill="white"
+                    >
+                    <path d="M480-360 280-560h400L480-360Z" />
+                    </svg>
                 </div>
-                );
-            })}
+
+                {open && (
+                    <div className="absolute top-full left-0 mt-2 w-full rounded-xl overflow-hidden border border-gray-600 bg-gray-800 shadow-xl z-50">
+                    {roles.map((role) => (
+                        <div
+                        key={role}
+                        onClick={() => {
+                            setNuevoRango(role);
+                            setOpen(false);
+                        }}
+                        className="px-3 py-2 cursor-pointer hover:bg-white/10"
+                        >
+                        {role}
+                        </div>
+                    ))}
+                    </div>
+                )}
+                </div>
+
+            </div>
+
+        </div>
+
+        {/* BODY CON USUARIO SELECCIONADO*/}
+        {usuarioSeleccionado ? (
+            <div className="min-h-0 max-md:h-full md:overflow-y-auto p-4 flex bg-gris-claro/60 flex-wrap gap-4  max-md:pb-2">
+                <div ref={errorRef}>
+                    {
+                    error && (
+                            <div className="max-w-150 w-full p-4 bg-red-500/30 rounded-2xl border-l-5 border-red-500">
+                                <p className="text-red-500 uppercase text-lg flex items-center gap-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 fill-red-500" viewBox="0 -960 960 960">
+                                        <path d="M440-280h80v-240h-80zm68.5-331.5Q520-623 520-640t-11.5-28.5T480-680t-28.5 11.5T440-640t11.5 28.5T480-600t28.5-11.5M480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m0-80q134 0 227-93t93-227-93-227-227-93-227 93-93 227 93 227 227 93m0-320"/>
+                                    </svg>
+                                    {error.mensaje}
+                                </p>
+                            </div>
+                        )
+                    }
+                </div>
+                
+            {
+                menuPermisos.map((permiso) =>(
+                    
+                    <div className={`max-w-full w-full min-w-[48%]  p-4 rounded-2xl ${permiso.nivel_seguridad <= nuevoNS ? 'bg-gris-claro':'bg-gris/40'}`}>
+                        <div className="flex gap-x-2 text-lg items-center">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 -960 960 960"
+                                fill="currentColor"
+                                className={`w-6 h-6  ${permiso.nivel_seguridad <= nuevoNS ? 'text-azul-claro':'text-red-300'}`}
+                                dangerouslySetInnerHTML={{
+                                __html: permiso.icono,
+                                }}
+                            />
+                            <p>{permiso.nombre}</p>
+                        </div>
+                        <div className="w-full relative flex flex-wrap items-center gap-10 mt-2">
+                            
+                        {
+                            permiso.nivel_seguridad <= nuevoNS ? (
+                                <>
+                                    {Object.entries(permiso.permisos).map(([nombrePermiso, activo]) => {
+                                        const editable = permiso.nivel_seguridad <= nuevoNS;
+
+                                        const bloqueadoGlobal =
+                                            nombrePermiso === "eliminar" && nuevoNS < 3;
+
+                                        const puedeEditar = editable && !bloqueadoGlobal;
+
+                                        return (
+                                            <>
+                                            {puedeEditar ? (
+                                                <div key={nombrePermiso} className="flex items-center gap-x-2">
+                                                    <p className="first-letter:uppercase">{nombrePermiso}</p>
+                                                <button
+                                                onClick={() => cambiarPermiso(permiso.id, nombrePermiso)}
+                                                className={`w-12 h-6 cursor-pointer rounded-full p-1 flex items-center ${
+                                                    activo ? "justify-end bg-azul-claro" : "justify-start bg-gray-500"
+                                                }`}
+                                                >
+                                                <div className="w-4 h-4 bg-white rounded-full" />
+                                                </button>
+                                                </div>
+                                            ) : (
+                                                <div key={nombrePermiso} className={`flex flex-row items-center gap-x-2 text-lg px-3 py-2 text-gray-400 bg-gris/60 rounded-2xl`} >
+                                                    <p className="first-letter:uppercase">{nombrePermiso}</p>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 fill-gray-400" viewBox="0 -960 960 960">
+                                                        <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920t141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80zm0-80h480v-400H240zm296.5-143.5Q560-327 560-360t-23.5-56.5T480-440t-56.5 23.5T400-360t23.5 56.5T480-280t56.5-23.5M360-640h240v-80q0-50-35-85t-85-35-85 35-35 85zM240-160v-400z"/>
+                                                    </svg>
+                                                </div>
+                                            )}
+                                            </>
+                                            
+                                        );
+                                        })}
+                                </>
+                            ):(
+                                <>
+                                    {Object.entries(permiso.permisos).map(
+                                        ([nombrePermiso, activo]) => (
+                                            <div key={nombrePermiso} className={`flex flex-row items-center gap-x-2 text-lg px-3 py-2 text-gray-400 bg-gris/60 rounded-2xl`} >
+                                            <p className="first-letter:uppercase">{nombrePermiso}</p>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 fill-gray-400" viewBox="0 -960 960 960">
+                                                <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920t141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80zm0-80h480v-400H240zm296.5-143.5Q560-327 560-360t-23.5-56.5T480-440t-56.5 23.5T400-360t23.5 56.5T480-280t56.5-23.5M360-640h240v-80q0-50-35-85t-85-35-85 35-35 85zM240-160v-400z"/>
+                                            </svg>
+                                            </div>
+                                        )
+                                        )}
+                                </>
+                            )
+                        }
+                        </div>
+                        {
+                            permiso.nivel_seguridad > nuevoNS && (
+                                <p className="text-xs mt-2 italic font-light">Només els administradors principals poden modificar aquets permisos de seguretat</p>
+                        )}
+                    </div>
+                    
+                ))
+            }
+
+            <div className="w-full grid grid-cols-2 gap-x-4">
+                <div onClick={ () => handleCreate()} className="w-full cursor-pointer bg-accent text-center rounded-2xl py-3 px-4">
+                    Afegir Administrador
+                </div>
+                <div onClick={() => setTipoAccion("ver")} className="w-full bg-gray-600 text-red-400 border cursor-pointer border-red-400 text-center rounded-2xl py-3 px-4">
+                    Cancelar
+                </div>
+            </div>
+            <div className="w-full h-20">
+                &nbsp;
+            </div>
+        </div>
+        ):(
+            // {/* BODY CON USUARIO SELECCIONADO*/}
+            <div className="min-h-0 overflow-y-auto flex items-center place-content-center p-4 bg-gris-claro/60 flex-wrap gap-4">
+                <div className="w-96 h-74 bg-gris flex flex-col items-center gap-y-3 rounded-2xl p-4">
+                    <span className=" w-max h-max rounded-full flex place-items-center border-3 border-primary mt-5 p-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-14 h-14 fill-primary" viewBox="0 -960 960 960">
+                            <path d="M440-480q-66 0-113-47t-47-113 47-113 113-47 113 47 47 113-47 113-113 47m0-80q33 0 56.5-23.5T520-640t-23.5-56.5T440-720t-56.5 23.5T360-640t23.5 56.5T440-560M884-20 756-148q-21 12-45 20t-51 8q-75 0-127.5-52.5T480-300t52.5-127.5T660-480t127.5 52.5T840-300q0 27-8 51t-20 45L940-76zM731-229q29-29 29-71t-29-71-71-29-71 29-29 71 29 71 71 29 71-29m-611 69v-111q0-34 17-63t47-44q51-26 115-44t142-18q-12 18-20.5 38.5T407-359q-60 5-107 20.5T221-306q-10 5-15.5 14.5T200-271v31h207q5 22 13.5 42t20.5 38zm287-80"/>
+                        </svg>
+                    </span>
+                    <p className="text-2xl text-primary font-bold mt-3">Selecció d’usuari</p>
+                    <p className="text-center font-light">És necessari seleccionar un usuari per continuar amb la gestió d’accessos i permisos.</p>
+                    <div onClick={() => setTipoAccion("ver")} className="text-red-400 hover:underline cursor-pointer">Cancelar</div>
+                </div>
             </div>
         )}
+        
 
-        {/* USER + ROL */}
-        <div className="w-full grid grid-cols-[1fr_auto] gap-x-4">
+        
 
-            <div>
-            {usuarioSeleccionado ? (
-                <div className="p-4 rounded-xl flex flex-col">
-                <p className="text-white font-bold">
-                    Usuario seleccionado:
-                </p>
-
-                <p className="text-gray-300">
-                    {usuarioSeleccionado.nombre_real} {usuarioSeleccionado.apellidos}
-                </p>
-
-                <p className="text-xs text-gray-400">
-                    {usuarioSeleccionado.email_microsoft}
-                </p>
-                </div>
-            ) : (
-                <p className="text-gray-400">
-                Selecciona un usuario para continuar
-                </p>
-            )}
-            </div>
-
-            {/* SELECT ROL */}
-            <div className="relative w-48 mt-2 flex flex-col">
-
-            <p className="text-sm mb-1 text-gray-200">
-                Rol d'usuari
-            </p>
-
-            <div
-                onClick={() => setOpen(!open)}
-                className={`
-                h-12 px-3 rounded-xl flex items-center justify-between
-                cursor-pointer border transition text-white
-                ${selectStyles[nuevoRango]}
-                `}
-            >
-                <span>{nuevoRango}</span>
-
-                <svg
-                className={`w-4 h-4 transition ${open ? "rotate-180" : ""}`}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 -960 960 960"
-                fill="white"
-                >
-                <path d="M480-360 280-560h400L480-360Z" />
-                </svg>
-            </div>
-
-            {open && (
-                <div className="absolute top-full left-0 mt-2 w-full rounded-xl overflow-hidden border border-gray-600 bg-gray-800 shadow-xl z-50">
-                {roles.map((role) => (
-                    <div
-                    key={role}
-                    onClick={() => {
-                        setNuevoRango(role);
-                        setOpen(false);
-                    }}
-                    className="px-3 py-2 cursor-pointer hover:bg-white/10"
-                    >
-                    {role}
+{
+            enviando && (
+                <div className="fixed inset-0 z-100 flex items-center justify-center p-lg glass-overlay bg-gris/60">
+                    <div className="w-full max-w-100 bg-gris p-10 dark:bg-gris rounded-xl p-xl shadow-xxl border border-primary/30 flex flex-col gap-y-3 items-center text-center animate-in fade-in zoom-in duration-300">
+                    {/* <!-- Loading Illustration/Animation Container --> */}
+                    <div className="relative w-20 h-20 mb-lg">
+                    {/* <!-- Circular Spinner Base --> */}
+                    <div className="absolute inset-0 border-4 border-primary/10 rounded-full"></div>
+                    {/* <!-- Spinning Top Part --> */}
+                    <div className="absolute inset-0 border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+                    {/* <!-- Icon in the middle --> */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="material-symbols-outlined fill-primary text-4xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" viewBox="0 -960 960 960">
+                            <path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H520q-33 0-56.5-23.5T440-240v-206l-64 62-56-56 160-160 160 160-56 56-64-62v206h220q42 0 71-29t29-71-29-71-71-29h-60v-80q0-83-58.5-141.5T480-720t-141.5 58.5T280-520h-20q-58 0-99 41t-41 99 41 99 99 41h100v80zm220-280"/>
+                        </svg>
+                    </span>
                     </div>
-                ))}
+                    </div>
+                    {/* <!-- Text Content --> */}
+                    <h3 className="text-lg font-semibold mb-sm">Enviant dades...</h3>
+                    <p className="text-gray-300 font-light mb-xl px-md">
+                                    Si us plau, espera mentre s'actualitza la configuració del torneig. No tanquis aquesta finestra.
+                                </p>
+                    {/* <!-- Custom Progress Bar --> */}
+                    <div className="loading-progress-bar">
+                    <div className="loading-progress-fill"></div>
+                    </div>
+                    {/* <!-- Footer Help Text --> */}
+                    <div className="mt-lg flex items-center gap-xs text-primary/60">
+                    <span className="fill-primary" >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 -960 960 960">
+                            <path d="m438-338 226-226-57-57-169 169-84-84-57 57zm42 258q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80m0-84q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132m0-316"/>
+                        </svg>
+                    </span>
+                    <span className="font-ajuda-text text-ajuda-text">Connexió segura establerta</span>
+                    </div>
+                    </div>
                 </div>
-            )}
-            </div>
-
-        </div>
-
-        </div>
-
-        {/* BODY */}
-        <div className="min-h-0 overflow-y-auto p-4 flex bg-gris-claro/60 flex-col gap-4" />
-
+            )
+        }
     </div>
     </div>
 );
