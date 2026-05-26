@@ -484,8 +484,6 @@ try {
 
 } catch (EmailError) {
   console.error("Error enviando email:", EmailError);
-
-  
 }
 
   // console.log({ data });

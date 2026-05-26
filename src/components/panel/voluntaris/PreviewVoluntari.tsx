@@ -124,7 +124,64 @@ export default function PreviewVoluntari({ torneoID, voluntariID }: Props) {
             });
             setError(null);
             setEnviando(false)
-            //window.location.reload();
+            window.location.replace(`/panel/voluntaris?torneoID=${torneoID}`);
+            console.log(result.data);
+
+        } catch (e) {
+            console.error(e);
+
+            setError({
+                seccion: "observacion",
+                mensaje: "Error del servidor"
+            });
+        }
+    };
+
+    const DenegarVol = async () => {
+        setEnviando(true)
+        try {
+            setError(null);
+
+            const res = await fetch("/api/panel/voluntaris/Denegar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    observaciones, torneoID, data
+                })
+            });
+
+            const result: ApiResponse = await res.json();
+
+            // error de API
+            if (!res.ok || !result.ok) {
+
+                if (result.error) {
+
+                    setError(result.error);
+
+                    // refs[result.error.seccion]
+                    //     ?.current
+                    //     ?.scrollIntoView({
+                    //         behavior: "smooth",
+                    //         block: "center"
+                    //     });
+                }
+                setEnviando(false)
+                return;
+            }
+
+            // éxito
+            
+            addToast({
+            type: 'success',
+            message: 'Configuració actualitzada correctament',
+            duration: 5000,
+            });
+            setError(null);
+            setEnviando(false)
+            window.location.replace(`/panel/voluntaris?torneoID=${torneoID}`);
             console.log(result.data);
 
         } catch (e) {
@@ -237,9 +294,14 @@ export default function PreviewVoluntari({ torneoID, voluntariID }: Props) {
                                         <p className="w-full min-h-20 px-2 py-1 bg-gris/40 rounded border border-gray-600">{data.descripcion}</p>
                                     </div>
 
-                                    <div className="w-full flex flex-col gap-y-1">
-                                        <p>Observacions <span className="text-xs">( Visible per a l'usuari )</span></p>
-                                        <textarea onChange={(e) => setObservaciones(e.target.value)} placeholder="Afegeix qualsevol informació addicional o comentari rellevant..." className="w-full min-h-20 px-2 py-1 bg-gris/40 rounded border border-gray-600">{data.observacion}</textarea>
+                                    <div className={`w-full flex flex-col gap-y-1 `}>
+                                        <p className={`${error?.seccion === "observacion" && "text-red-400"}`}>Observacions <span className="text-xs">( Visible per a l'usuari )</span></p>
+                                        <textarea onChange={(e) => setObservaciones(e.target.value)} placeholder="Afegeix qualsevol informació addicional o comentari rellevant..." className={`w-full min-h-20 px-2 py-1 bg-gris/40 rounded border border-gray-600 ${error?.seccion === "observacion" && "border-red-400"}`}>{data.observacion}</textarea>
+                                        {
+                                            error?.seccion === "observacion" && (
+                                                <p className="text-sm text-red-400">{error.mensaje}</p>
+                                            )
+                                        }
                                     </div>
 
                                     <div className="w-full grid grid-cols-2 gap-5">
@@ -249,7 +311,7 @@ export default function PreviewVoluntari({ torneoID, voluntariID }: Props) {
                                             </svg>
                                             <p className="uppercase text-center">Acceptar Voluntari</p>
                                         </div>
-                                        <div className="w-full h-16 cursor-pointer rounded px-3 flex hover:bg-red-600/30 duration-300 border border-red-400 text-red-400 fill-red-400 items-center place-content-center gap-x-2">
+                                        <div onClick={() => DenegarVol()} className="w-full h-16 cursor-pointer rounded px-3 flex hover:bg-red-600/30 duration-300 border border-red-400 text-red-400 fill-red-400 items-center place-content-center gap-x-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 -960 960 960">
                                                 <path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144zM480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m0-80q134 0 227-93t93-227-93-227-227-93-227 93-93 227 93 227 227 93m0-320"/>
                                             </svg>

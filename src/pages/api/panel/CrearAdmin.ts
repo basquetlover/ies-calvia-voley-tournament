@@ -1,5 +1,7 @@
+import { generarEmailAdminCrear } from "src/lib/genEmailAdminCrear";
 import { supabaseAdmin } from "src/lib/supabase";
 import { tieneAcceso } from "src/lib/usuario_panel";
+import { enviarEmailApi } from "src/utils/emailSend";
 
 export async function POST({ request }: { request: Request }) {
   const { usuarioSeleccionado, menuPermisos, nuevoRango } = await request.json();
@@ -36,6 +38,25 @@ export async function POST({ request }: { request: Request }) {
         }
     }), { status: 500 });
     }
+
+    const email = usuarioSeleccionado.email;
+    const rol = nuevoRango
+    
+        console.log("Datos a email", email, rol)
+    
+        const html = generarEmailAdminCrear({email, rol, })
+    
+        try {
+          await enviarEmailApi({
+            to: email,
+            subject: "Accés activat al panell d’administració | IES Calvià Voley Tournament",
+            html: html,
+            origen: "voley_tournament"
+          });
+        
+        } catch (EmailError) {
+          console.error("Error enviando email:", EmailError);
+        }
 
   return new Response(JSON.stringify({ok:true, data: "Edició actualizada correctament"  }), { status: 200 });
 }

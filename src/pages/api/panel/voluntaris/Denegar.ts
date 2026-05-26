@@ -1,4 +1,4 @@
-import { generarEmailVolAce } from "src/lib/genEmailVolAce";
+import { generarEmailVolDen } from "src/lib/genEmailVolDen";
 import { supabaseAdmin } from "src/lib/supabase";
 import { tieneAcceso } from "src/lib/usuario_panel";
 import { enviarEmailApi } from "src/utils/emailSend";
@@ -67,35 +67,19 @@ const permisosVol={
 export async function POST({ request }: { request: Request }) {
     const { observaciones, torneoID, data } = await request.json();
 
-    const estado = "Acceptat"
+    const estado = "Denegat"
     const TablaVoluntarios = `Voluntarios${torneoID}`
 
     // console.log(data)
-
-    let { data: usuario, error } = await supabaseAdmin
-        .from('Usuarios')
-        .select('*')
-        .eq('email_microsoft', data.email)
-        .single();
-    
-    // console.log(usuario)
-    let usuario_permisos = usuario?.permisos_panel
-    let usuario_rango = usuario?.rango
-
-    if(!usuario.rango){
-        console.log("Usuari sense acces al panell", permisosVol)
-        usuario_permisos = permisosVol
-        usuario_rango = "Voluntari"
-        const { data: Usuar, error: errorUsuar } = await supabaseAdmin
-        .from('Usuarios')
-        .update({ 
-            permisos_panel: usuario_permisos,
-            rango: usuario_rango,
-            panel_concedido: 'sistema',
-        })
-        .eq('id', usuario.id)
-        .select()
+    if(!observaciones){
+        return new Response(JSON.stringify({
+        ok: false, error: {
+            seccion: "observacion",
+            mensaje: "Has d’indicar les observacions del procés de revisió abans de denegar la sol·licitud."
+        }
+        }), { status: 400 });
     }
+    
 
     const getCurrentDateInCatalan = () => {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -135,7 +119,7 @@ export async function POST({ request }: { request: Request }) {
 
     console.log("Datos a email", nombre, email, rol)
 
-    const html = generarEmailVolAce({email, rol, nombre})
+    const html = generarEmailVolDen({email, rol, nombre})
 
     try {
       await enviarEmailApi({
