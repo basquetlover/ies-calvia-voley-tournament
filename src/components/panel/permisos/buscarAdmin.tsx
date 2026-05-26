@@ -5,7 +5,7 @@ import EditAdmin from "./EditAdmin";
 type Props = {
 torneoID?: string | null;
 accion: string;
-
+usuario: any;
 };
 
 interface Admins {
@@ -18,7 +18,7 @@ interface Admins {
   panel_concedido: string,
 }
 
-export default function BuscadorAdmin({accion, torneoID}:Props) {
+export default function BuscadorAdmin({accion, torneoID, usuario}:Props) {
     
     const [data, setData] = useState<Admins[]>([])
     const [admin, setAdmin] = useState<Admins[]>([]);
@@ -88,6 +88,14 @@ Staff: "border-green-500 bg-green-500/40",
 Voluntari: "border-gray-400 bg-gray-400/40",
 } as const;
 
+const ordenRangos = {
+  Owner: 1,
+  "Co-Owner": 2,
+  Admin: 3,
+  Staff: 4,
+  Voluntario: 5,
+};
+
 
     return(
         <>
@@ -112,7 +120,7 @@ Voluntari: "border-gray-400 bg-gray-400/40",
                         <p>Afegir Administrador</p> 
                 </div>
                 {
-                    admin.map((user) =>(
+                    admin.sort((a, b) => (ordenRangos[b.rango as keyof typeof ordenRangos] ?? 999) - (ordenRangos[a.rango as keyof typeof ordenRangos] ?? 999)).map((user) =>(
                         <div
                         className={`w-full p-3 grid grid-cols-[auto_1fr_auto] gap-x-2 items-center rounded-xl border transition 
                         ${rangoStyles[user.rango as keyof typeof rangoStyles] ?? "bg-gray-100"}`}
@@ -174,7 +182,7 @@ Voluntari: "border-gray-400 bg-gray-400/40",
                 }
                 {
                    tipoAccion === "editar" && adminSeleccionado && (
-                        <EditAdmin key={adminSeleccionado.id} admin={adminSeleccionado} setTipoAccion={setTipoAccion} />
+                        <EditAdmin key={adminSeleccionado.id} admin={adminSeleccionado} usuario={usuario} setTipoAccion={setTipoAccion} />
                     )
                 }
                 {

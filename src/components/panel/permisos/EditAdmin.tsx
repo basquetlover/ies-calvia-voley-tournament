@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useToast } from '@components/panel/Toast';
 import "@components/panel/StylesReact.css"
 type Props = {
-
+usuario: any;
 admin:any;
 setTipoAccion: React.Dispatch<React.SetStateAction<"ver" | "editar" | "crear">>;
 };
@@ -44,13 +44,12 @@ type MenuPermiso = (typeof Menu)[number] & {
   permisos: PermisoItem;
 };
 
-export default function EditAdmin({admin, setTipoAccion}:Props) {
+export default function EditAdmin({admin, setTipoAccion, usuario}:Props) {
    
-    const { addToast } = useToast();
-
-
+const { addToast } = useToast();
 
 const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Admins | null>(admin);
+const [adminLever, setAdminLevel] = useState(2)
 
 
 const [nuevoRango, setNuevoRango] = useState<Role>(admin.rango);
@@ -130,12 +129,15 @@ useEffect(() => {
 
 useEffect(() => {
   setNuevoNS(getSecurityLevel(nuevoRango));
+
+  const admin = getSecurityLevel(usuario.rango)
+  setAdminLevel(admin)
 }, [nuevoRango]);
 
 const getSecurityLevel = (role: Role): number => {
   const levels: Record<Role, number> = {
-    Owner: 4,
-    "Co-Owner": 3,
+    Owner: 5,
+    "Co-Owner": 4,
     Admin: 3,
     Staff: 2,
     Voluntari: 1,
@@ -145,19 +147,22 @@ const getSecurityLevel = (role: Role): number => {
 };
 
 const cambiarPermiso = (idMenu: string, nombrePermiso: string) => {
-  setMenuPermisos(prev =>
-    prev.map(item => {
-      if (item.id !== idMenu) return item;
+    if(nuevoNS <= adminLever){
+        setMenuPermisos(prev =>
+            prev.map(item => {
+            if (item.id !== idMenu) return item;
 
-      return {
-        ...item,
-        permisos: {
-          ...item.permisos,
-          [nombrePermiso]: !item.permisos[nombrePermiso]
-        }
-      };
-    })
-  );
+            return {
+                ...item,
+                permisos: {
+                ...item.permisos,
+                [nombrePermiso]: !item.permisos[nombrePermiso]
+                }
+            };
+            })
+        );
+    }
+  
 };
 
 // CHECK ADMIN POR RANGO
@@ -360,7 +365,13 @@ return (
 
         {/* HEADER */}
         <div className="border-b border-gris-claro p-4 bg-gris-claro h-auto rounded-2xl min-h-0 flex flex-col gap-4">
-
+            {
+                nuevoNS > adminLever && (
+                    <div className="p-3 bg-red-700/40 text-red-300 rounded-md text-sm">
+                    L’administrador seleccionat és de rang superior, per tant no es poden modificar els seus permisos.
+                    </div>
+                )
+            }
 
             {/* USER + ROL */}
             <div className="w-full md:grid grid-cols-[1fr_auto] gap-x-4">
@@ -382,11 +393,16 @@ return (
                             {usuarioSeleccionado.email_microsoft}
                         </p>
                         </div>
-                        <span onClick={() => setEliminar(true)} className="w-max h-max flex items-center cursor-pointer bg-red-600/30 border border-red-400 rounded-lg p-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 fill-red-400" viewBox="0 -960 960 960">
-                                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120zm400-600H280v520h400zM360-280h80v-360h-80zm160 0h80v-360h-80zM280-720v520z"/>
-                            </svg>
-                        </span>
+                        {
+                            nuevoNS <= adminLever && (
+                                <span onClick={() => setEliminar(true)} className="w-max h-max flex items-center cursor-pointer bg-red-600/30 border border-red-400 rounded-lg p-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 fill-red-400" viewBox="0 -960 960 960">
+                                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120zm400-600H280v520h400zM360-280h80v-360h-80zm160 0h80v-360h-80zM280-720v520z"/>
+                                    </svg>
+                                </span>
+                            )
+                        }
+                        
                     </div>
                 ) : (
                     <p className="text-gray-400">
@@ -424,23 +440,28 @@ return (
                     <path d="M480-360 280-560h400L480-360Z" />
                     </svg>
                 </div>
-
-                {open && (
-                    <div className="absolute top-full left-0 mt-2 w-full rounded-xl overflow-hidden border border-gray-600 bg-gray-800 shadow-xl z-50">
-                    {roles.map((role) => (
-                        <div
-                        key={role}
-                        onClick={() => {
-                            setNuevoRango(role);
-                            setOpen(false);
-                        }}
-                        className="px-3 py-2 cursor-pointer hover:bg-white/10"
-                        >
-                        {role}
-                        </div>
-                    ))}
-                    </div>
-                )}
+                
+                {
+                    nuevoNS <= adminLever && (
+                        open && (
+                            <div className="absolute top-full left-0 mt-2 w-full rounded-xl overflow-hidden border border-gray-600 bg-gray-800 shadow-xl z-50">
+                            {roles.map((role) => (
+                                <div
+                                key={role}
+                                onClick={() => {
+                                    setNuevoRango(role);
+                                    setOpen(false);
+                                }}
+                                className="px-3 py-2 cursor-pointer hover:bg-white/10"
+                                >
+                                {role}
+                                </div>
+                            ))}
+                            </div>
+                        )
+                    )
+                }
+                
                 </div>
 
             </div>
@@ -474,7 +495,8 @@ return (
 
         {/* BODY CON USUARIO SELECCIONADO*/}
         {usuarioSeleccionado ? (
-            <div className={`min-h-0 max-md:h-full md:overflow-y-auto p-4 flex bg-gris-claro/60 flex-wrap gap-4  max-md:pb-2 ${eliminar ? 'overflow-hidden':'md:overflow-y-auto'}`}>
+            <div className={`min-h-0 max-md:h-full md:overflow-y-auto p-4 flex bg-gris-claro/60 flex-wrap gap-4 relative max-md:pb-2 ${eliminar ? 'overflow-hidden':'md:overflow-y-auto'}`}>
+                
                 {
                     loading ? (
 
@@ -615,9 +637,18 @@ return (
                                     }
 
                                     <div className="w-full grid grid-cols-2 gap-x-4">
-                                        <div onClick={ () => handleSave()} className="w-full cursor-pointer bg-accent text-center rounded-2xl py-3 px-4">
-                                            Guardar Canvis
-                                        </div>
+                                        {
+                                            nuevoNS > adminLever ? (
+                                                <div className="w-full cursor-not-allowed bg-gray-400 text-center rounded-2xl py-3 px-4">
+                                                    Guardar Canvis
+                                                </div>
+                                            ):(
+                                                <div onClick={ () => handleSave()} className="w-full cursor-pointer bg-accent text-center rounded-2xl py-3 px-4">
+                                                    Guardar Canvis
+                                                </div>
+                                            )
+                                        }
+                                        
                                         <div onClick={() => setTipoAccion("ver")} className="w-full bg-gray-600 cursor-pointer text-red-400 border border-red-400 text-center rounded-2xl py-3 px-4">
                                             Cancelar
                                         </div>

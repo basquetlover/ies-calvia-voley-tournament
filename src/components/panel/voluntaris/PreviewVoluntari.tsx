@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useRef } from "react";
+import { useToast } from '@components/panel/Toast';
 type Props = {
 torneoID?: string | null;
 voluntariID?: string | null;
@@ -25,13 +25,31 @@ interface VoluntariData {
     aceptado_equipo?:string | null
 }
 
+type Seccion =
+    | "nombre"
+    | "apellidos"
+    | "curso"
+    | "tipo"
+    | "descripcion"
+    | "email"
+    | "estado"
+    | "observacion"
+    ;
+
+type ErrorData = {
+    seccion: Seccion;
+    mensaje: string;
+};
+
 export default function PreviewVoluntari({ torneoID, voluntariID }: Props) {
     const [data, setData] = useState<VoluntariData | null>(null);
-    const [error, setError] = useState(false);
-
+    const [error, setError] = useState<ErrorData | null>(null);
+    const [enviando, setEnviando] = useState(false)
+    const { addToast } = useToast();
+    const [observaciones,setObservaciones] = useState("")
 
     useEffect(() => {
-        setError(false);
+        
 
         fetch("/api/panel/InfoVoluntario", {
             method: "POST",
@@ -42,17 +60,82 @@ export default function PreviewVoluntari({ torneoID, voluntariID }: Props) {
             const data = await res.json();
 
             if (!res.ok) {
-                setError(true);
+
                 return;
             }
 
             setData(data);
             })
             .catch(() => {
-            setError(true);
             console.log("Error carregant dades");
             });
     }, [torneoID, voluntariID]);
+
+    // const refs: Record<Seccion, React.RefObject<HTMLDivElement | null>> = {
+    //     observacion: useRef<HTMLDivElement>(null),
+    // };
+    
+    type ApiResponse = {
+        ok: boolean;
+        data?: string;
+        error?: ErrorData;
+    };
+    const AceptarVol = async () => {
+        setEnviando(true)
+        try {
+            setError(null);
+
+            const res = await fetch("/api/panel/voluntaris/Aceptar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    observaciones, torneoID, data
+                })
+            });
+
+            const result: ApiResponse = await res.json();
+
+            // error de API
+            if (!res.ok || !result.ok) {
+
+                if (result.error) {
+
+                    setError(result.error);
+
+                    // refs[result.error.seccion]
+                    //     ?.current
+                    //     ?.scrollIntoView({
+                    //         behavior: "smooth",
+                    //         block: "center"
+                    //     });
+                }
+                setEnviando(false)
+                return;
+            }
+
+            // éxito
+            
+            addToast({
+            type: 'success',
+            message: 'Configuració actualitzada correctament',
+            duration: 5000,
+            });
+            setError(null);
+            setEnviando(false)
+            //window.location.reload();
+            console.log(result.data);
+
+        } catch (e) {
+            console.error(e);
+
+            setError({
+                seccion: "observacion",
+                mensaje: "Error del servidor"
+            });
+        }
+    };
 
     return(
         <>
@@ -155,12 +238,12 @@ export default function PreviewVoluntari({ torneoID, voluntariID }: Props) {
                                     </div>
 
                                     <div className="w-full flex flex-col gap-y-1">
-                                        <p>Observacions</p>
-                                        <p className="w-full min-h-20 px-2 py-1 bg-gris/40 rounded border border-gray-600">{data.observacion}</p>
+                                        <p>Observacions <span className="text-xs">( Visible per a l'usuari )</span></p>
+                                        <textarea onChange={(e) => setObservaciones(e.target.value)} placeholder="Afegeix qualsevol informació addicional o comentari rellevant..." className="w-full min-h-20 px-2 py-1 bg-gris/40 rounded border border-gray-600">{data.observacion}</textarea>
                                     </div>
 
                                     <div className="w-full grid grid-cols-2 gap-5">
-                                        <div className="w-full h-16 cursor-pointer rounded px-3 bg-primary text-azul-suave fill-azul-suave flex hover:bg-accent duration-300 items-center place-content-center gap-x-2 font-medium">
+                                        <div onClick={() => AceptarVol()} className="w-full h-16 cursor-pointer rounded px-3 bg-primary text-azul-suave fill-azul-suave flex hover:bg-accent duration-300 items-center place-content-center gap-x-2 font-medium">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 -960 960 960">
                                                 <path d="m424-296 282-282-56-56-226 226-114-114-56 56zm56 216q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m0-80q134 0 227-93t93-227-93-227-227-93-227 93-93 227 93 227 227 93m0-320"/>
                                             </svg>
@@ -178,6 +261,48 @@ export default function PreviewVoluntari({ torneoID, voluntariID }: Props) {
                             </>
                         )
                     }
+
+                    {
+            enviando && (
+                <div className="fixed inset-0 z-100 flex items-center justify-center p-lg glass-overlay bg-gris/60">
+                    <div className="w-full max-w-100 bg-gris p-10 dark:bg-gris rounded-xl p-xl shadow-xxl border border-primary/30 flex flex-col gap-y-3 items-center text-center animate-in fade-in zoom-in duration-300">
+                    {/* <!-- Loading Illustration/Animation Container --> */}
+                    <div className="relative w-20 h-20 mb-lg">
+                    {/* <!-- Circular Spinner Base --> */}
+                    <div className="absolute inset-0 border-4 border-primary/10 rounded-full"></div>
+                    {/* <!-- Spinning Top Part --> */}
+                    <div className="absolute inset-0 border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+                    {/* <!-- Icon in the middle --> */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="material-symbols-outlined fill-primary text-4xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" viewBox="0 -960 960 960">
+                            <path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H520q-33 0-56.5-23.5T440-240v-206l-64 62-56-56 160-160 160 160-56 56-64-62v206h220q42 0 71-29t29-71-29-71-71-29h-60v-80q0-83-58.5-141.5T480-720t-141.5 58.5T280-520h-20q-58 0-99 41t-41 99 41 99 99 41h100v80zm220-280"/>
+                        </svg>
+                    </span>
+                    </div>
+                    </div>
+                    {/* <!-- Text Content --> */}
+                    <h3 className="text-lg font-semibold mb-sm">Enviant dades...</h3>
+                    <p className="text-gray-300 font-light mb-xl px-md">
+                                    Si us plau, espera mentre s'actualitza la configuració del torneig. No tanquis aquesta finestra.
+                                </p>
+                    {/* <!-- Custom Progress Bar --> */}
+                    <div className="loading-progress-bar">
+                    <div className="loading-progress-fill"></div>
+                    </div>
+                    {/* <!-- Footer Help Text --> */}
+                    <div className="mt-lg flex items-center gap-xs text-primary/60">
+                    <span className="fill-primary" >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 -960 960 960">
+                            <path d="m438-338 226-226-57-57-169 169-84-84-57 57zm42 258q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80m0-84q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132m0-316"/>
+                        </svg>
+                    </span>
+                    <span className="font-ajuda-text text-ajuda-text">Connexió segura establerta</span>
+                    </div>
+                    </div>
+                </div>
+            )
+        }
             
         </div>
         </>
