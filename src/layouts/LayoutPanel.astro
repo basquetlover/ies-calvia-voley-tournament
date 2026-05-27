@@ -28,10 +28,11 @@ const usuario = await verificarAdminSesion(Astro.request);
 
 if(usuario && usuario.rango !== "") {
 	var usuario_admin = usuario;
+	console.log("Admin detectado", usuario_admin)
 } else {
 	var usuario_admin = null;
 
-	console.log("Admin detectado", usuario_admin)
+	
 }
 
 

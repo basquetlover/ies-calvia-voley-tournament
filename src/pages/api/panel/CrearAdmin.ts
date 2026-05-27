@@ -39,7 +39,7 @@ export async function POST({ request }: { request: Request }) {
     }), { status: 500 });
     }
 
-    const email = usuarioSeleccionado.email;
+    const email = usuarioSeleccionado.email_microsoft;
     const rol = nuevoRango
     
         console.log("Datos a email", email, rol)
