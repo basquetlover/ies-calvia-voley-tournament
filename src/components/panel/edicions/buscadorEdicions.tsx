@@ -88,7 +88,7 @@ const formatearFecha = (fecha: string) => {
                             <p>Partits</p>
                         </div>     
                     </div>
-                    <div className="w-full grid grid-cols-2 gap-4 font-light place-items-center">
+                    <div className="w-full grid grid-cols-[1fr_1fr_auto] gap-4 font-light place-items-center">
                         {
                             edicion.estado === "Finalitzat" ? (
                                 <a href={`/panel/info/edicio?torneoID=${edicion.id_torneo}&accio=editar`} className="bg-gray-200/10 w-full h-10 flex items-center place-content-center rounded-xl border border-transparent hover:border-red-400 hover:text-red-400 duration-300 cursor-not-allowed">
@@ -103,6 +103,11 @@ const formatearFecha = (fecha: string) => {
                         
                         <a href={`/panel/info/edicio?torneoID=${edicion.id_torneo}&accio=ver`} className="border border-gray-500 w-full h-10 flex items-center place-content-center rounded-xl hover:bg-gray-200/10 duration-300 cursor-pointer">
                             Veure dades
+                        </a>
+                        <a href={`/panel/info/edicio?torneoID=${edicion.id_torneo}&accio=crear`} title="Duplicar Edició" className="border border-gray-500 w-10 h-10 flex items-center place-content-center rounded-xl hover:bg-gray-200/10 duration-300 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#fff" viewBox="0 -960 960 960">
+                                <path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240zm0-80h360v-480H360zM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80zm160-240v-480z"/>
+                            </svg>
                         </a>
                     </div>        
                 </div>

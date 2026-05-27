@@ -276,6 +276,9 @@ const ordenRangos = {
                                     <p>Accés automàtic</p>
                                 </div>
                             </div>
+                            <div className="w-full h-20">
+                                        &nbsp;
+                                    </div>
 
                         </div>
                     </div>
