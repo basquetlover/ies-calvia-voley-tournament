@@ -5,7 +5,7 @@ import { supabaseAdmin } from "src/lib/supabase";
 import { tieneAcceso, verificarAdminSesion } from "src/lib/usuario_panel";
 
 const url = new URL(Astro.request.url);
-
+const torneoID = url.searchParams.get('torneoID');
 
 const usuario = await verificarAdminSesion(Astro.request);
 
@@ -48,5 +48,5 @@ const permitido = await tieneAcceso(
             Nova Edició
         </a> -->
     </div>
-    <BuscarEdiciones client:load/>
+    <BuscarEdiciones torneoID={torneoID} client:load/>
 </LayoutPanel>

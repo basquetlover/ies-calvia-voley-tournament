@@ -8,6 +8,7 @@ torneoID?: string | null;
 url: string;
 accion: string;
 usuario: any;
+importar?:string |null;
 };
 
 type Seccion =
@@ -59,11 +60,13 @@ type ApiResponse = {
     error?: ErrorData;
 };
 
-export default function CrearEdicion({torneoID, url, accion, usuario} : Props){
+export default function CrearEdicion({torneoID, url, accion, usuario, importar} : Props){
     const { addToast } = useToast();
     const [data, setData] = useState<Edicio | null>(null);
     const [error, setError] = useState<ErrorData | null>(null);
     const [enviando, setEnviando] = useState(false)
+    const [importarID, setImportarID] = useState(importar)
+
 
     useEffect(() => {
         const inicializar = async () => {
@@ -93,10 +96,35 @@ export default function CrearEdicion({torneoID, url, accion, usuario} : Props){
                     cursos: { cursos: [] }   // estructura correcta
                 });
             }
-            
+        
+        if(importar){
+            fetch("/api/panel/ImportarEdicion", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ importarID }),
+        })
+            .then(async (res) => {
+                const json = await res.json();
 
+                if (!res.ok) {
+                    
+                    return;
+                }
+
+                setData(json); // 👈 FIX IMPORTANTE
+                
+            })
+            .catch(() => {
+                setError({
+                    seccion: "general",
+                    mensaje: "Error al cargar los datos"
+                });
+            });
+        }
+        
         inicializar();
-    }, [torneoID]);
+    }, [importar]);
+
 
 
     const handleChange=(
@@ -393,9 +421,11 @@ const deleteCurso = (cursoIndex: number) => {
                             Tancar
                         </a>
                         <div className="flex items-center gap-10">
-                            {/* <a href={`/panel/info/edicio?torneoID=${torneoID}&accio=editar`} className="px-3 py-2 border border-gray-500 rounded-xl">
-                                Editar edició
-                            </a> */}
+                            <div className="p-2 border border-primary cursor-pointer rounded-xl">
+                                <svg xmlns="http://www.w3.org/2000/svg"className="w-5 h-5 fill-primary" viewBox="0 -960 960 960">
+                                    <path d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326zM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160z"/>
+                                </svg>
+                            </div>
                             <div onClick={handleSave} className="px-3 py-2 cursor-pointer rounded-xl flex flex-row items-center gap-x-2 bg-accent">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 fill-blanco" viewBox="0 -960 960 960">
                                     <path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480zm-80 34L646-760H200v560h560zM565-275q35-35 35-85t-35-85-85-35-85 35-35 85 35 85 85 35 85-35M240-560h360v-160H240zm-40-86v446-560z"/>

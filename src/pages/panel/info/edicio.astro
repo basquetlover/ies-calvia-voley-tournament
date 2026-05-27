@@ -10,6 +10,7 @@ const pathname = url.pathname;
 const torneoID = url.searchParams.get('torneoID');
 
 const accion = url.searchParams.get('accio');
+const importar = url.searchParams.get('importa');
 
 const sessionId = Astro.cookies.get("session_id")?.value;
 
@@ -42,7 +43,7 @@ console.log("Configuración página", torneoID, accion)
     }
     {
         accion === "crear" && (
-            <CrearEdicion torneoID={torneoID} url={pathname} accion={accion} usuario={sessionId} client:load/>
+            <CrearEdicion torneoID={torneoID} url={pathname} accion={accion} usuario={sessionId} importar={importar} client:load/>
         )
     }
 </LayoutPanel>
