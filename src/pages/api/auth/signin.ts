@@ -72,7 +72,13 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   
       if(id_session !== ""){
          
-          cookies.set('session_id', id_session, { path: '/' });
+          cookies.set('session_id', id_session, {
+            path: '/',
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+            maxAge: 60 * 60 * 24 * 30 // 30 días
+          });
       }
         
   
