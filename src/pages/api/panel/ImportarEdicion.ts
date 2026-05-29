@@ -26,7 +26,6 @@ const camposAVaciar = [
   'id',
   'id_torneo',
   'nombre',
-  'estado',
   'fecha',
   'in_inicio',
   'in_fin',
@@ -39,15 +38,20 @@ const camposAVaciar = [
 const ConfiguracionLimpia = Object.fromEntries(
   Object.entries(Configuracion).map(([key, value]) => [
     key,
-    camposAVaciar.includes(key) ? '' : value
+    key === 'estado'
+      ? 'En Preparació'
+      : camposAVaciar.includes(key)
+        ? ''
+        : value
   ])
 );
+
 
 console.log(ConfiguracionLimpia);
 
 
-
-    return new Response(JSON.stringify(ConfiguracionLimpia), {
+console.log(Configuracion);
+    return new Response(JSON.stringify(Configuracion), {
     status: 200,
     headers: { "Content-Type": "application/json" }
     });

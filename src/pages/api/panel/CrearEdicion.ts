@@ -2,7 +2,8 @@ import { supabaseAdmin } from "src/lib/supabase";
 import { tieneAcceso } from "src/lib/usuario_panel";
 
 export async function POST({ request }: { request: Request }) {
-  const { data, url, accion, usuario } = await request.json();
+
+const { data, url, accion, usuario } = await request.json();
   console.log("Datos recibidos en API:", { data, url, accion, usuario });
   const sessionId = usuario; // Asumiendo que 'usuario' es el sessionId
   const permitido = await tieneAcceso(
@@ -31,6 +32,13 @@ export async function POST({ request }: { request: Request }) {
     .eq('id', data.id)
     .single();
 
+    console.log("Configuracion actual:", ConfiguracionActual);
+
+    if(error){
+        console.log("Error al obtener configuraciones:", error);
+        return new Response(JSON.stringify({ok: false, error: { seccion: "general", mensaje: "Error al obtener configuraciones" } }), { status: 500 });
+    }
+
     if(!data.id_torneo || !data.nombre || !data.fecha){
       return new Response(JSON.stringify({ok: false, error: { seccion: "info", mensaje: "Falten dades per omplir" } }), { status: 400 });
     }
@@ -55,7 +63,7 @@ export async function POST({ request }: { request: Request }) {
     const actual = Configuracion?.some((c) =>
       c.id !== data.id &&
       (
-        c.estado === "Actual"
+        c.estado === "Actual" && data.estado === "Actual"
       )
     );
     if (actual) {
@@ -68,16 +76,27 @@ export async function POST({ request }: { request: Request }) {
       }), { status: 400 });
     }
 
-    let finalizado;
-    if(data.estado === "Finalitzat" && data.estado !== ConfiguracionActual.estado){
-      finalizado = new Date().toISOString;
+    if(data.estado === "Finalitzat"){
+        return new Response(JSON.stringify({
+        ok: false, error: {
+          seccion: "general",
+          mensaje: "No es pot crear una edició com a finalitzada."
+        }
+      }), { status: 400 });
+    }
+
+    if(!data.in_inicio || !data.in_inicio){
+      return new Response(JSON.stringify({ok: false, error: { seccion: "equipos", mensaje: "Falten dades per omplir" } }), { status: 400 });
+    }
+    if(!data.vo_inicio || !data.vo_inicio){
+      return new Response(JSON.stringify({ok: false, error: { seccion: "voluntarios", mensaje: "Falten dades per omplir" } }), { status: 400 });
     }
 
     const dataEntrada = new Date(data.fecha);
-    const fechaActual = new Date(ConfiguracionActual.fecha);
+    // const fechaActual = new Date(ConfiguracionActual?.fecha);
     const ara = new Date();
 
-    if (dataEntrada < ara && dataEntrada.getTime() !== fechaActual.getTime()) {
+    if (dataEntrada < ara ) {
       return new Response(JSON.stringify({
         ok: false, error: {
           seccion: "info",
@@ -203,35 +222,35 @@ export async function POST({ request }: { request: Request }) {
     }), { status: 400 });
   }
 
-    const { data: updated, error: updateError } = await supabaseAdmin
+  const { data: updated, error: updateError } = await supabaseAdmin
     .from("Configuracion")
-    .update({
-      nombre: data.nombre,
-      fecha: data.fecha,
-      estado: data.estado,
-      in_inicio: data.in_inicio,
-      in_fin: data.in_fin,
-      vo_inicio: data.vo_inicio,
-      vo_fin: data.vo_fin,
-      min_jugadores: data.min_jugadores,
-      max_jugadores: data.max_jugadores,
-      min_staff: data.min_staff,
-      max_staff: data.max_staff,
-      entrenador: data.entrenador,
-      profesor: data.profesor,
-      cursos: data.cursos,
-      dom_alumnos: data.dom_alumnos,
-      dom_profesores: data.dom_profesores,
-      equipo_mixto: data.equipo_mixto,
-      min_masc: data.min_masc,
-      min_fem: data.min_fem,
-      fecha_cierre: finalizado
+    .insert({
+        id_torneo: data.id_torneo,
+        nombre: data.nombre,
+        fecha: data.fecha,
+        estado: data.estado,
+        in_inicio: data.in_inicio,
+        in_fin: data.in_fin,
+        vo_inicio: data.vo_inicio,
+        vo_fin: data.vo_fin,
+        min_jugadores: data.min_jugadores,
+        max_jugadores: data.max_jugadores,
+        min_staff: data.min_staff,
+        max_staff: data.max_staff,
+        entrenador: data.entrenador,
+        profesor: data.profesor,
+        cursos: data.cursos,
+        dom_alumnos: data.dom_alumnos,
+        dom_profesores: data.dom_profesores,
+        equipo_mixto: data.equipo_mixto,
+        min_masc: data.min_masc,
+        min_fem: data.min_fem,
+      
     })
-    .eq("id", data.id)
-    .select()
-    .single();
+    .select();
 
   if (updateError) {
+    console.log("Error al guardar configuración:", updateError);
   return new Response(JSON.stringify({
     ok: false, error: {
       seccion: "general",
@@ -239,28 +258,6 @@ export async function POST({ request }: { request: Request }) {
     }
   }), { status: 500 });
 }
-  
 
-  return new Response(JSON.stringify({ok:true, data: "Edició actualizada correctament"  }), { status: 200 });
+    return new Response(JSON.stringify({ok:true, data: "Edició actualizada correctament"  }), { status: 200 });
 }
-
-// {
-//   id: 6,
-//   id_torneo: 'SS26',
-//   nombre: 'Setmana Santa 2026',
-//   fecha: '2026-04-01',
-//   estado: 'Actual',
-//   in_inicio: '2026-02-09T00:00:00',
-//   in_fin: '2026-03-08T23:59:00',
-//   vo_inicio: '2026-02-09T00:00:00',
-//   vo_fin: '2026-03-01T23:59:00',
-//   min_jugadores: 6,
-//   max_jugadores: 9,
-//   min_staff: 0,
-//   max_staff: 5,
-//   entrenador: 'Permitido',
-//   profesor: 'Permitido',
-//   cursos: { cursos: [ [Object], [Object], [Object], [Object], [Object] ] },
-//   dom_alumnos: '@alu.ibeducacio.eu',
-//   dom_profesores: '@ibeducacio.eu'
-// }
