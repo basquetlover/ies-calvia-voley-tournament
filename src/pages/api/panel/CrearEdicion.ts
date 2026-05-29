@@ -275,7 +275,7 @@ if(updated){
         const { data: ac, error:bc } = await supabase.rpc("create_partidos_tables", {
         torneoid: data.id_torneo, // 👈 el parámetro debe coincidir con el de la función
     });
-        const { data: ad, error: bd } = await supabase.rpc("create_partidos_tables", {
+        const { data: ad, error: bd } = await supabase.rpc("create_voluntarios_tables", {
         torneoid: data.id_torneo, // 👈 el parámetro debe coincidir con el de la función
     });
     
