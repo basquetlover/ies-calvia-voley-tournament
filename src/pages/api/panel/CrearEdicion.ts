@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "src/lib/supabase";
+import { supabase, supabaseAdmin } from "src/lib/supabase";
 import { tieneAcceso } from "src/lib/usuario_panel";
 
 export async function POST({ request }: { request: Request }) {
@@ -249,6 +249,8 @@ const { data, url, accion, usuario } = await request.json();
     })
     .select();
 
+
+
   if (updateError) {
     console.log("Error al guardar configuración:", updateError);
   return new Response(JSON.stringify({
@@ -257,6 +259,36 @@ const { data, url, accion, usuario } = await request.json();
       mensaje: "Error al guardar la configuració"
     }
   }), { status: 500 });
+
+}
+if(updated){
+    
+        const { data:aa, error } = await supabase.rpc("create_equipos_tables", {
+        torneoid: data.id_torneo, // 👈 el parámetro debe coincidir con el de la función
+    });
+        const { data: a, error: b } = await supabase.rpc("create_historial_tables", {
+        torneoid: data.id_torneo, // 👈 el parámetro debe coincidir con el de la función
+    });
+        const { data: ab, error: bb } = await supabase.rpc("create_jugadores_tables", {
+        torneoid: data.id_torneo, // 👈 el parámetro debe coincidir con el de la función
+    });
+        const { data: ac, error:bc } = await supabase.rpc("create_partidos_tables", {
+        torneoid: data.id_torneo, // 👈 el parámetro debe coincidir con el de la función
+    });
+        const { data: ad, error: bd } = await supabase.rpc("create_partidos_tables", {
+        torneoid: data.id_torneo, // 👈 el parámetro debe coincidir con el de la función
+    });
+    
+    if(error || b || bb || bc || bd){
+        console.log("Error al crear tablas:", { error, b, bb, bc, bd });
+        return new Response(JSON.stringify({
+            ok: false, error: {
+              seccion: "general",
+              mensaje: "Error al configurar la edició després de crear-la"
+            }
+          }), { status: 500 });
+        }
+
 }
 
     return new Response(JSON.stringify({ok:true, data: "Edició actualizada correctament"  }), { status: 200 });
