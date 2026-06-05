@@ -15,6 +15,7 @@ interface Props{
     usuario: {
         nombre: string;
         email: string;
+        rango: string;
         nivel_seguridad: 0 | 1 | 2 | 3;
     };
 }   
@@ -86,6 +87,13 @@ const pathname = urlActual.pathname;
         );
     })}
 
+    <div class="mt-auto border-t border-gray-400 p-2 text-sm flex flex-col gap-y-1">
+        <p>Usuari: {usuario.nombre}</p>
+        <p>Rol: {usuario.rango}</p>
+        <a href="/" class="text-primary hover:underline text-center">
+            Sortir del panell
+        </a>
+    </div>
 </div>
 
 <!-- {

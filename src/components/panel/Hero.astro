@@ -12,35 +12,78 @@ const torneoID = url.searchParams.get('torneoID');
 
 // torneo por defecto (más reciente)
 const torneoSeleccionado =
-  ConfTorneo?.find(t => t.id_torneo === torneoID) ?? ConfTorneo?.[0];
+  ConfTorneo?.find(t => t.id_torneo === torneoID) ??
+  ConfTorneo?.find(t => t.estado === "Actual") ??
+  ConfTorneo?.sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())[0];
+
+// estilos según estado
+type EstadoTorneo = "Actual" | "En Preparació" | "Finalitzat";
+
+const estadoStyles: Record<
+  EstadoTorneo,
+  { badge: string; item: string }
+> = {
+  Actual: {
+    badge: "bg-green-500/10 text-green-400 fill-green-400",
+    item: "hover:bg-green-500/5",
+  },
+
+  "En Preparació": {
+    badge: "bg-yellow-500/10 text-yellow-300 fill-yellow-300",
+    item: "hover:bg-yellow-500/5",
+  },
+
+  Finalitzat: {
+    badge: "bg-gray-500/10 text-gray-400 fill-gray-400",
+    item: "opacity-60",
+  },
+};
+
+const estadoSVG: Record<EstadoTorneo, string> = {
+  Actual: `
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 -960 960 960">
+      <path d="m380-300 280-180-280-180zM480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m0-80q134 0 227-93t93-227-93-227-227-93-227 93-93 227 93 227 227 93m0-320"/>
+    </svg>
+  `,
+
+  "En Preparació": `
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 -960 960 960">
+      <path d="M200-640h560v-80H200zm0 0v-80zm0 560q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v227q-19-9-39-15t-41-9v-43H200v400h252q7 22 16.5 42T491-80zm378.5-18.5Q520-157 520-240t58.5-141.5T720-440t141.5 58.5T920-240 861.5-98.5 720-40 578.5-98.5M787-145l28-28-75-75v-112h-40v128z"/>
+    </svg>
+  `,
+
+  Finalitzat: `
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 -960 960 960">
+      <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920t141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80zm0-80h480v-400H240zm296.5-143.5Q560-327 560-360t-23.5-56.5T480-440t-56.5 23.5T400-360t23.5 56.5T480-280t56.5-23.5M360-640h240v-80q0-50-35-85t-85-35-85 35-35 85zM240-160v-400z"/>
+    </svg>
+  `,
+};
 ---
 
 <div class="flex items-center max-md:justify-end md:justify-between mr-2 w-full">
-  
+
   <!-- TÍTULO -->
   <h2 class="text-azul-claro max-md:hidden text-2xl font-semibold">
     Tauler de Control
   </h2>
 
   <!-- DROPDOWN -->
-  <div class="relative">
+  <div class="relative group">
 
     <!-- BOTÓN -->
     <button
       id="torneoBtn"
       data-id={torneoSeleccionado?.id_torneo}
-      class="px-4 py-2 bg-gris-claro rounded flex items-center gap-2"
+      class="flex items-center cursor-pointer gap-3 bg-gris-claro border border-white/10 text-white font-semibold py-2.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-azul-claro transition-all shadow-lg hover:bg-white/5"
     >
-      <span id="torneoText" class="flex flex-row">
-        {
-            torneoSeleccionado?.estado === "Finalitzat" && (
-              <>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#e3e3e3" viewBox="0 -960 960 960">
-                <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920t141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80zm0-80h480v-400H240zm296.5-143.5Q560-327 560-360t-23.5-56.5T480-440t-56.5 23.5T400-360t23.5 56.5T480-280t56.5-23.5M360-640h240v-80q0-50-35-85t-85-35-85 35-35 85zM240-160v-400z"/>
-              </svg>
-              </>
-            )
-          }
+
+      <!-- aqui va svg -->
+      <span
+          class="w-5 h-5 flex items-center justify-center"
+          set:html={estadoSVG[torneoSeleccionado?.estado as EstadoTorneo]}
+      />
+
+      <span id="torneoText">
         {torneoSeleccionado?.nombre ?? "Selecciona torneig"}
       </span>
 
@@ -48,7 +91,7 @@ const torneoSeleccionado =
       <svg
         id="arrowIcon"
         xmlns="http://www.w3.org/2000/svg"
-        class="w-4 h-4 transition-transform duration-200"
+        class="w-4 h-4 text-gray-400 transition-transform duration-200"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -61,29 +104,70 @@ const torneoSeleccionado =
     <!-- LISTA -->
     <div
       id="torneoList"
-      class="hidden absolute right-0 mt-2 w-64 bg-gris-claro shadow-lg rounded z-50 overflow-hidden"
+      class="hidden absolute top-full mt-2 right-0 w-72 bg-gris-claro border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-sm"
     >
-      {ConfTorneo?.map(t => (
-        <button
-          data-id={t.id_torneo}
-          class="w-full flex flex-row text-left px-4 py-2 hover:bg-azul-claro/20 cursor-pointer"
-        >
-          {
-            t.estado === "Finalitzat" && (
-              <>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#e3e3e3" viewBox="0 -960 960 960">
-                <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920t141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80zm0-80h480v-400H240zm296.5-143.5Q560-327 560-360t-23.5-56.5T480-440t-56.5 23.5T400-360t23.5 56.5T480-280t56.5-23.5M360-640h240v-80q0-50-35-85t-85-35-85 35-35 85zM240-160v-400z"/>
-              </svg>
-              </>
-            )
-          }
-          {t.nombre}
-        </button>
-      ))}
+
+      <div class="p-2 space-y-1">
+
+        {ConfTorneo?.map((t, index) => {
+          const style =
+          estadoStyles[t.estado as EstadoTorneo] ??
+          estadoStyles["Actual"];
+
+          return (
+            <>
+              {
+                index !== 0 &&
+                ConfTorneo[index - 1].estado !== t.estado && (
+                  <div class="h-px bg-white/10 my-1 mx-2"></div>
+                )
+              }
+
+              <button
+                data-id={t.id_torneo}
+                class={`w-full flex items-center justify-between p-3 rounded-xl transition-all border border-transparent ${
+                  t.estado === "Finalitzat"
+                    ? "bg-white/20 cursor-pointer"
+                    : "cursor-pointer hover:border-white/10"
+                } ${style.item}`}
+              >
+
+                <!-- LEFT -->
+                <div class="flex items-center gap-3">
+
+                  <!-- aqui va svg -->
+                  <span
+                      class="w-5 h-5 flex items-center justify-center"
+                      set:html={estadoSVG[t.estado as EstadoTorneo]}
+                  />
+
+                  <span
+                    class={`font-semibold ${
+                      t.estado === "Finalitzat"
+                        ? "text-gray-400"
+                        : "text-white"
+                    }`}
+                  >
+                    {t.nombre}
+                  </span>
+                </div>
+
+                <!-- BADGE -->
+                {/* <span
+                  class={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wide ${style.badge}`}
+                >
+                  {t.estado} 
+                </span>*/}
+
+              </button>
+            </>
+          );
+        })}
+
+      </div>
     </div>
 
   </div>
-
 
 </div>
 
@@ -99,6 +183,7 @@ btn?.addEventListener('click', (e) => {
   e.stopPropagation();
 
   open = !open;
+
   list?.classList.toggle('hidden');
   arrow?.classList.toggle('rotate-180');
 });
@@ -108,31 +193,36 @@ document.addEventListener('click', () => {
   if (!open) return;
 
   open = false;
+
   list?.classList.add('hidden');
   arrow?.classList.remove('rotate-180');
 });
 
 // seleccionar torneo
 list?.querySelectorAll('button[data-id]').forEach((item) => {
-  const el = item as HTMLElement;
+  const el = item as HTMLButtonElement;
 
   el.addEventListener('click', () => {
-    const id = el.dataset.id!;
+    const id = el.dataset.id;
+
+    if (!id) return;
 
     const url = new URL(window.location.href);
+
     url.searchParams.set('torneoID', id);
 
     window.location.href = url.toString();
   });
 });
-
 // asegurar torneo por defecto en URL
 const params = new URLSearchParams(window.location.search);
 const hasTorneo = params.get('torneoID');
 
 if (!hasTorneo && btn?.dataset.id) {
   const url = new URL(window.location.href);
+
   url.searchParams.set('torneoID', btn.dataset.id);
+
   window.location.replace(url.toString());
 }
 </script>

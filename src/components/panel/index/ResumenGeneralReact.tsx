@@ -84,7 +84,7 @@ useEffect(() => {
                   {seccion.cantidad}
                   <span className={`flex flex-row ${seccion.variacion > 0 ? 'text-green-500 fill-green-500' : seccion.variacion < 0 ? 'text-red-500 fill-red-500' : 'text-gray-500 fill-500'}`}>
                     {getArrow(seccion.variacion, seccion.positivo)}
-                    <span className="ml-1 text-sm">{Math.abs(seccion.variacion)}%</span>
+                    <span className="ml-1 text-sm">{Math.abs(seccion.variacion)}</span>
                   </span>
                 </>
               )}

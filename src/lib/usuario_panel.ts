@@ -195,3 +195,13 @@ export async function tieneAcceso(
     // acceso normal requiere ver
     return permisosPagina?.ver === true;
 }
+
+export async function estadoEdicion(edicionId: string) {
+  const { data: ConfTorneo } = await supabaseAdmin
+  .from('Configuracion')
+  .select('fecha, nombre, estado')
+  .eq('id_torneo', edicionId)
+  .single();
+
+  return ConfTorneo?.estado || "desconocido";
+};

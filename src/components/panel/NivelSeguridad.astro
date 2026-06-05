@@ -1,5 +1,6 @@
 ---
 import { Paginas } from "src/const/menuPanel";
+import { tieneAcceso } from "src/lib/usuario_panel";
 
 const usuario_admin = Astro.props;
 const usuario = usuario_admin.usuario;
@@ -39,11 +40,17 @@ const tienePermisoVer =
 permisos_panel?.[menuItem.id]?.ver === true;
 
 let puedeEntrar = tieneNivel && tienePermisoVer;
-
+let permitido = false;
 if (accion) {
-  puedeEntrar =
-    tieneNivel &&
-    permisosPagina?.[accion] === true;
+    console.log("Verificando permisos para acción", accion)
+    permitido = await tieneAcceso(
+        url.pathname,
+        accion,
+        usuario
+    );
+
+    console.log("Permiso para acción", accion, permitido)
+    puedeEntrar = puedeEntrar && permitido;
 }
 ---
 

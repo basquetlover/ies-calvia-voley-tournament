@@ -59,7 +59,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     const calcularVariacion = (actual: number, anterior: number) => {
       if (!anterior) return 0;
-      return ((actual - anterior) / anterior) * 100;
+      return ((actual - anterior));
     };
 
     /**

@@ -1,25 +1,52 @@
 ---
 import EditEquipo from "@components/panel/equips/EditEquipo";
 import PreviewEquipo from "@components/panel/equips/PreviewEquipo";
+import ErrorFinalizado from "@components/panel/ErrorFinalizado.astro";
 import LayoutPanel from "@layouts/LayoutPanel.astro";
+import { estadoEdicion, tieneAcceso, verificarAdminSesion } from "src/lib/usuario_panel";
 
 const url = new URL(Astro.request.url);
 const torneoID = url.searchParams.get('torneoID');
 const equipoID = url.searchParams.get('equipoID');
 const accion = url.searchParams.get('accio');
 
+if (!torneoID) {
+    throw new Error("torneoID is required");
+}
+
 console.log("Configuración página", torneoID, equipoID, accion)
+// const usuario = await verificarAdminSesion(Astro.request);
+// const permitido = await tieneAcceso(
+//    url.pathname,
+//     accion,
+//     usuario
+// );
+
+const estadoTorneo = await estadoEdicion(torneoID);
 ---
 
 <LayoutPanel title="Informació Equip">
-    {
-        accion === "ver" && (
-            <PreviewEquipo torneoID={torneoID} equipoID={equipoID} client:load/>
-        )
-    }
-    {
-        accion === "editar" && (
-            <EditEquipo  torneoID={torneoID} equipoID={equipoID} client:load/>
-        )
-    }
+  {
+    accion === "ver" && (
+      <PreviewEquipo
+        torneoID={torneoID}
+        equipoID={equipoID}
+        client:load
+      />
+    )
+  }
+
+  {
+    accion === "editar" && (
+      estadoTorneo === "Finalitzat" ? (
+        <ErrorFinalizado />
+      ) : (
+        <EditEquipo
+          torneoID={torneoID}
+          equipoID={equipoID}
+          client:load
+        />
+      )
+    )
+  }
 </LayoutPanel>
