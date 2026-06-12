@@ -38,7 +38,11 @@ export const Menu: MenuItem[] = [
         id: "alumnes",
         ruta: "/panel/alumnes", nivel_seguridad: 2, 
         icono: `<path d="M440-480q-66 0-113-47t-47-113 47-113 113-47 113 47 47 113-47 113-113 47m0-80q33 0 56.5-23.5T520-640t-23.5-56.5T440-720t-56.5 23.5T360-640t23.5 56.5T440-560M884-20 756-148q-21 12-45 20t-51 8q-75 0-127.5-52.5T480-300t52.5-127.5T660-480t127.5 52.5T840-300q0 27-8 51t-20 45L940-76zM731-229q29-29 29-71t-29-71-71-29-71 29-29 71 29 71 71 29 71-29m-611 69v-111q0-34 17-63t47-44q51-26 115-44t142-18q-12 18-20.5 38.5T407-359q-60 5-107 20.5T221-306q-10 5-15.5 14.5T200-271v31h207q5 22 13.5 42t20.5 38zm287-80"/>` },
-
+    { 
+        nombre: "Notícies", 
+        id: "noticies",
+        ruta: "/panel/noticies", nivel_seguridad: 2, 
+        icono: `<path d="M160-120q-33 0-56.5-23.5T80-200v-640l67 67 66-67 67 67 67-67 66 67 67-67 67 67 66-67 67 67 67-67 66 67 67-67v640q0 33-23.5 56.5T800-120zm0-80h280v-240H160zm360 0h280v-80H520zm0-160h280v-80H520zM160-520h640v-120H160z"/>` },
     { 
         nombre: "Designacions", 
         id: "designacions",
@@ -97,6 +101,12 @@ export const Paginas = [
     nombre: "Info Voluntaris",
     id: "voluntaris",
     ruta: "/panel/info/voluntari",
+    nivel_seguridad: 2,
+  },
+  {
+    nombre: "Editor Notícies",
+    id: "noticies",
+    ruta: "/panel/info/noticia",
     nivel_seguridad: 2,
   }
 ];

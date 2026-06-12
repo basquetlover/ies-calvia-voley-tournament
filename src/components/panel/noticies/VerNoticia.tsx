@@ -1,0 +1,232 @@
+import { useEffect, useState, useRef } from "react";
+import { useToast } from '@components/panel/Toast';
+import "../StylesReact.css"
+    type BloqueTexto = {
+        id: string;
+        order: number;
+        type: "text";
+        title: string;
+        body: string;
+    };
+
+    type BloqueImagen = {
+        id: string;
+        order: number;
+        type: "imagen";
+        title: string;
+        body: {
+            id: string;
+            url: string;
+            alt: string;
+            autor: string;
+            file?: File;
+        };
+    };
+
+    type BloqueCita = {
+        id: string;
+        order: number;
+        type: "cita";
+        title: string;
+        body: {
+            text: string;
+            autor: string;
+        };
+    };
+
+    type BloqueGaleria = {
+        id: string;
+        order: number;
+        type: "galeria";
+        title: string;
+        body: any[];
+    };
+
+    type Bloque = BloqueTexto | BloqueImagen | BloqueCita | BloqueGaleria;
+
+    type NoticiaData = {
+        id: string;
+        titular: string;
+        subtitulo: string;
+        cover_image: string;
+        slug: string;
+        author: string;
+        author_curso: string;
+        status: string;
+        created_at: string;
+        publication_date: string;
+        content: Bloque[];
+        last_save?: string;
+        tiempo_lectura: string;
+        categoria: string;
+    };
+
+const mesosCatala = ['gen.', 'febr.', 'març', 'abr.', 'maig', 'juny', 'jul.', 'ag.', 'set.', 'oct.', 'nov.', 'des.'];
+export function formatDataCatalaFromISO(isoString?: string): string {
+  if (!isoString) {
+    return "Data inválida";
+  }
+
+  const date = new Date(isoString);
+  
+  if (isNaN(date.getTime())) {
+    return "Data inválida";
+  }
+
+  const dia = date.getDate();
+  const mes = mesosCatala[date.getMonth()];
+  const any = date.getFullYear();
+
+  return `${dia} ${mes} ${any}`;
+}
+export default function VerNoticia({slug}:{slug:any}) {
+    const { addToast } = useToast();
+
+    const [data, setData] = useState<NoticiaData>();
+
+
+    useEffect(() => {
+    const borrador = recuperarPrimerBorrador();
+
+    if (borrador) {
+
+        setData(borrador);
+        addToast({
+        type: "info",
+        message: "Esborrany carregat correctament",
+        duration: 5000,
+        });
+    } else{
+        
+    }
+}, []);
+
+const obtenerUltimoNumeroBloque = (content: Bloque[]) => {
+    return content.reduce((max, bloque) => {
+        const numero = Number(
+            bloque.id.replace("bloque_", "")
+        );
+
+        return numero > max ? numero : max;
+    }, 0);
+};
+
+const recuperarPrimerBorrador = () => {
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+
+        if (!key?.startsWith("noticia_")) continue;
+
+        const contenido = localStorage.getItem(key);
+
+        if (!contenido) continue;
+
+        try {
+            const parsedContenido = JSON.parse(contenido);
+
+    
+            return parsedContenido;
+        } catch (error) {
+            console.error(`Error leyendo ${key}:`, error);
+        }
+    }
+
+    return null;
+};
+ 
+
+    return(<>
+    <div className="w-full h-full relative">
+        <div className="relative w-full aspect-2/1 flex flex-col items-center">
+            {
+                data?.cover_image && (
+                    <img src={data.cover_image} className="w-full h-full object-cover degradado-img z-0" />
+                )
+            }
+            
+        </div>
+        <div className="w-full mx-auto flex flex-col items-center -mt-20 px-5">
+            <div className=" max-w-4xl rounded-2xl w-full min-h-76 border border-gris-claro shadow-gris-claro shadow-md bg-gris z-10 flex flex-col p-4">
+                <div className="w-full flex items-center text-gray-400">
+                    <p>{data?.categoria}</p>
+                    <span className="w-1 h-1 mx-3 bg-gray-400 rounded-full"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 fill-gray-400" viewBox="0 -960 960 960">
+                        <path d="m612-292 56-56-148-148v-184h-80v216zM480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m0-80q133 0 226.5-93.5T800-480t-93.5-226.5T480-800t-226.5 93.5T160-480t93.5 226.5T480-160"/>
+                    </svg>
+                    <p className="ml-1">{data?.tiempo_lectura} min</p>
+                </div>
+                <h1 className="text-3xl font-semibold mt-2">{data?.titular}</h1>
+                <h2 className="mt-5 text-2xl italic text-gray-200">{data?.subtitulo}</h2>
+                <div className="w-[98%] h-px rounded bg-gray-500 mx-auto my-5">&nbsp;</div>
+
+                <div className="w-full flex flex-row items-center place-content-between">
+                    <div className="text-sm font-light space-y-0.5">
+                        <p>{data?.author}, {data?.author_curso}</p>
+                        <p>{formatDataCatalaFromISO(data?.created_at)}</p>
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+
+                
+            </div>
+
+            <div className="max-w-200 mx-auto w-full h-full mt-5 mb-10 tracking-wider">
+            {/* Imatge de portada */}
+            
+                {/* Sección de contenido (bloques) */}
+                <div className="w-full h-auto mb-20 font-light">
+                    {/* Contenedor 1 (solo texto) */}
+                    {data?.content.sort((a, b) => a.order - b.order).map((bloque) => {
+                        if (bloque.type === "text") {
+                            return(
+                                <div key={bloque.id} className="w-full h-auto mt-10 rounded-2xl relative group">
+                                    <h3 className="text-2xl font-normal text-white mb-3">{bloque.title}</h3>
+                                        <div className="font-light text-gray-50"
+                                        dangerouslySetInnerHTML={{
+                                            __html: bloque.body
+                                        }}
+                                        ></div>  
+                                </div>
+                            )
+                        }
+
+                    
+                        if(bloque.type === "cita") {
+                            return(
+                                <div key={bloque.id} className="w-full h-auto rounded-lg mt-10 bg-gris-claro border-l-4 border-primary p-2">
+                                    <p className="italic  text-primary fill-primary">
+                                        <span className="text-xl font-medium">"</span>{bloque.body.text}<span className="text-xl font-medium">"</span>
+                                    </p>
+                                    <p className="mt-3 text-sm flex flex-row items-center">
+                                        —
+                                        {bloque.body.autor}
+                                    </p>
+                                </div>
+                            )
+                        }
+
+                        if(bloque.type === "imagen"){
+                            return(
+                                <div key={bloque.id} className="w-full flex flex-col gap-y-1 items-center h-auto mt-10 rounded-2xl relative group">
+                                    <img src={bloque.body.url} alt={bloque.body.alt} className="w-max h-auto object-cover rounded" />
+                                    <p className="text-sm text-gray-400 italic">{bloque.body.autor}</p>
+                                </div>
+                            )
+                        }
+                    })}
+                    
+
+                </div>
+                
+
+
+            </div>
+        </div>
+        
+
+    </div>
+        
+    </>)
+}

@@ -28,7 +28,7 @@ const usuario = await verificarAdminSesion(Astro.request);
 
 if(usuario && usuario.rango !== "") {
 	var usuario_admin = usuario;
-	console.log("Admin detectado", usuario_admin)
+	console.log("Admin detectado", usuario_admin.nombre_real, usuario_admin.rango);
 } else {
 	var usuario_admin = null;
 
@@ -96,7 +96,7 @@ if(usuario && usuario.rango !== "") {
 
 						<!-- CONTENIDO (ÚNICO SCROLL) -->
 						<NivelSeguridad usuario={usuario_admin} accion={accion}>
-							<main class="w-full mx-auto min-h-0 overflow-y-auto p-2">
+							<main class="w-full mx-auto min-h-0 overflow-y-auto ">
 								<slot />
 							</main>
 						</NivelSeguridad>

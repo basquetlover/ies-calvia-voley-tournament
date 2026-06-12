@@ -32,6 +32,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
     const [data, setData] = useState<EquipoData | null>(null);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [confTorneo, setConfTorneo] = useState(null);
 
 
     useEffect(() => {
@@ -59,7 +60,64 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
             setLoading(false);
     }, [torneoID, equipoID]);
 
-    // console.log(data)
+    console.log(data)
+
+    const anadirParticipante = (tipo: string) => {
+        setData((prev) => {
+            if (!prev) return prev; // <- clave
+
+            const participanteBase = {
+            id: -1,
+            nombre: '',
+            _1r_apellido: '',
+            _2n_apellido: '',
+            curso: '',
+            genero: '',
+            email: '',
+            observaciones: '',
+            voluntario: null
+            };
+
+            if (tipo === 'jugador') {
+            return {
+                ...prev,
+                jugadores: [
+                ...prev.jugadores,
+                {
+                    ...participanteBase,
+                    capitan: false
+                }
+                ]
+            };
+            }
+
+            if (tipo === 'cuerpo_tecnico') {
+            return {
+                ...prev,
+                cuerpo_tecnico: [
+                ...prev.cuerpo_tecnico,
+                { ...participanteBase }
+                ]
+            };
+            }
+
+            if (tipo === 'entrenador') {
+            return {
+                ...prev,
+                entrenador: { ...participanteBase }
+            };
+            }
+
+            if (tipo === 'profesor') {
+            return {
+                ...prev,
+                profesor: { ...participanteBase }
+            };
+            }
+
+            return prev;
+        });
+        };
 
     return(
         <>
@@ -104,7 +162,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                             <div className="flex flex-col gap-y-4">
                                 <span className="flex flex-col">
                                     <p className="text-gray-400 text-sm">Nom de l'equip</p>
-                                    <input type="text" className="font-semibold px-2 border border-gray-600 border-dashed rounded-lg py-1" value={data.nombre_equipo}/>
+                                    <input type="text" onChange={(e) => setData({...data, nombre_equipo: e.target.value})} className="font-semibold px-2 border border-gray-600 border-dashed rounded-lg py-1" value={data.nombre_equipo}/>
                                 </span>
                                 <span className="flex flex-col">
                                     <p className="text-gray-400 text-sm">Responsable del registre</p>
@@ -219,7 +277,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                         <div className="w-full max-sm:place-content-center h-auto items-center grid grid-cols-3  mt-5 max-sm:flex max-sm:flex-wrap gap-5">
                             {
                                         data.jugadores.map((jugador, i) => (
-                                            <div className="w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5">
+                                            <div key={i} className="w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5">
                                                 <p className="text-xl text-azul-claro">Jugador {i+1}</p>
                                                 <p className="font-semibold text-lg">{jugador.nombre} {jugador._1r_apellido} {jugador._2n_apellido}</p>
                                                 <p>{jugador.email}</p>
@@ -236,7 +294,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                                                 </div>
                                                 <div className="mt-3">
                                                     <p className="text-lg font-medium text-blue-300">Observacions</p>
-                                                    <textarea className="bg-gris w-full min-h-10 rounded-xl p-2 text-blanco resize-none" disabled placeholder="No hi ha observacions disponibles.">{jugador.observaciones}</textarea>
+                                                    <textarea className="bg-gris w-full min-h-10 rounded-xl p-2 text-blanco resize-none" disabled placeholder="No hi ha observacions disponibles." value={jugador.observaciones} />
                                                 </div>
                                             </div>
                                         ))
@@ -284,7 +342,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                                             </svg>
                                         </span>
                                         No s'ha assignat cap professor jugador per a aquest equip.
-                                        <p className="max-md:bottom-3 max-md:left-1/2 max-md:-translate-x-1/2 absolute md:right-5 hover:underline cursor-pointer text-azul-claro">Afegir professor</p>
+                                        <p onClick={() => anadirParticipante('profesor')} className="max-md:bottom-3 max-md:left-1/2 max-md:-translate-x-1/2 absolute md:right-5 hover:underline cursor-pointer text-azul-claro">Afegir professor</p>
                                     </div>
                                 )
                             }
@@ -304,7 +362,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                                 data.cuerpo_tecnico.length > 0 && (
                                     <div className="w-full  h-auto items-center grid grid-cols-3  mt-5 max-sm:flex max-sm:flex-wrap gap-5">
                                         {data.cuerpo_tecnico.map((staff, i) => (
-                                            <div className="w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5">
+                                            <div key={i} className="w-80 h-72 bg-gris-claro text-sm rounded-2xl p-5">
                                                 <p className="text-xl text-azul-claro">Cos Técnic {i+1}</p>
                                                 <p className="font-semibold text-lg">{staff.nombre} {staff._1r_apellido} {staff._2n_apellido}</p>
                                                 <p>{staff.email}</p>
@@ -321,7 +379,7 @@ export default function EditEquipo({ torneoID, equipoID }: Props) {
                                                 </div>
                                                 <div className="mt-3">
                                                     <p className="text-lg font-medium text-blue-300">Observacions</p>
-                                                    <textarea className="bg-gris w-full min-h-10 rounded-xl p-2 text-blanco resize-none" disabled placeholder="No hi ha observacions disponibles."/>
+                                                    <textarea className="bg-gris w-full min-h-10 rounded-xl p-2 text-blanco resize-none" disabled placeholder="No hi ha observacions disponibles.">{staff.observacions}</textarea>
                                                 </div>
                                             </div>
                                         ))}

@@ -86,6 +86,12 @@ const permisos: Record<PermisoKey, any> ={
     "ver": false,
     "editar": false,
     "exportar": false
+  },
+  "noticies": {
+    "ver": false,
+    "crear": false,
+    "editar": false,
+    "eliminar": false
   }
 }
 type Role = (typeof roles)[number];

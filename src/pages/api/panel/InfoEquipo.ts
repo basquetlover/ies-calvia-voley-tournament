@@ -154,7 +154,7 @@ try {
 
     
 
-    // console.log(respuesta)
+    console.log(respuesta)
 
     return new Response(JSON.stringify(respuesta), {
     status: 200,

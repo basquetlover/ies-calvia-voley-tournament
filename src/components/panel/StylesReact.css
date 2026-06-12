@@ -102,3 +102,38 @@ input[type="datetime-local"] {
 }
 
 .toast-blur { backdrop-filter: blur(8px);}
+
+ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+}
+
+li {
+  display: list-item;
+}
+
+b {
+  /* color: #60a5fa; */
+  font-weight: 700;
+}
+
+.degradado-img {
+    mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        black 80%,
+        transparent 100%
+    );
+
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        black 80%,
+        transparent 100%
+    );
+}

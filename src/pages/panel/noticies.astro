@@ -1,0 +1,48 @@
+---
+
+import LayoutPanel from "@layouts/LayoutPanel.astro";
+
+const url = new URL(Astro.request.url);
+const torneoID = url.searchParams.get('torneoID');
+import { tieneAcceso, verificarAdminSesion } from "src/lib/usuario_panel";
+const usuario = await verificarAdminSesion(Astro.request);
+
+const accion = "crear"
+const permitido = await tieneAcceso(
+   url.pathname,
+    accion,
+    usuario
+);
+---
+
+<LayoutPanel title="Notícies">
+    <div class="max-w-7xl mt-5 px-2 w-auto mx-auto max-md:flex flex-col gap-y-3 md:grid grid-cols-[1fr_auto] items-center">
+        <div>
+            <h2 class="text-5xl max-md:text-4xl text-blanco font-bold">Gestió de Notícies</h2>
+            <p class="text-gray-500 mt-2 text-xl font-semibold">Publica, edita i programa les actualitzacions del torneig.</p>
+        </div>
+        {
+            permitido ? (
+                <a href="/panel/info/noticia?accio=crear" class="px-4 py-3 bg-accent rounded-xl flex items-center gap-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-blanco" viewBox="0 -960 960 960">
+                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80z"/>
+                    </svg>
+                    Nova Notícia
+                </a>
+            ):(
+                <div class="px-4 py-3 bg-gray-200/10 border border-transparent duration-300 hover:border-red-400 hover:text-red-400 cursor-not-allowed group rounded-xl flex items-center gap-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-blanco group-hover:fill-red-400 duration-300" viewBox="0 -960 960 960">
+                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80z"/>
+                    </svg>
+                    Nova Notícia
+                </div>
+            )
+        }
+        <!-- <a href="/panel/info/edicio?accio=crear" class="px-4 py-3 bg-accent rounded-xl flex items-center gap-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-blanco" viewBox="0 -960 960 960">
+                <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80z"/>
+            </svg>
+            Nova Edició
+        </a> -->
+    </div>
+</LayoutPanel>

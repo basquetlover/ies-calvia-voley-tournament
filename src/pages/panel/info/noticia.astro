@@ -1,0 +1,43 @@
+---
+
+import CrearNoticia from "@components/panel/noticies/CrearNoticia";
+import VerNoticia from "@components/panel/noticies/VerNoticia";
+import LayoutPanel from "@layouts/LayoutPanel.astro";
+import { verificarAdminSesion } from "src/lib/usuario_panel";
+
+
+const url = new URL(Astro.request.url);
+const torneoID = url.searchParams.get('torneoID');
+const usuario = await verificarAdminSesion(Astro.request);
+const accion = url.searchParams.get('accio');
+const slug = url.searchParams.get("slug");
+
+
+// console.log("Configuración página", torneoID, equipoID, accion)
+// const usuario = await verificarAdminSesion(Astro.request);
+// const permitido = await tieneAcceso(
+//    url.pathname,
+//     accion,
+//     usuario
+// );
+
+
+---
+
+<LayoutPanel title="Editor Notícies">
+  {
+    accion === "crear" && (
+      <CrearNoticia
+        user={usuario}
+        client:load
+      />
+    )
+  }
+  {
+    accion === "ver" && (
+      <VerNoticia slug={slug} client:load />
+    )
+  }
+
+ 
+</LayoutPanel>
