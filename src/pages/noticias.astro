@@ -6,6 +6,7 @@ import NoticiasList from "@sections/NoticiasList.astro";
 import LayoutMenu from "@layouts/LayoutMenu.astro";
 import DescripcionSection from "@components/DescripcionSection.astro";
 import InfoRedactores from "@components/InfoRedactores.astro";
+import NoticiaList from "@sections/Noticias";
 
 
 ---
@@ -15,12 +16,13 @@ import InfoRedactores from "@components/InfoRedactores.astro";
         <!-- <h1 class="text-center text-accent font-bold text-5xl">
             Notícies
         </h1> -->
-        <DescripcionSection>
+        <!-- <DescripcionSection>
             <h1 class="text-accent text-center font-bold text-6xl">Notícies</h1>
             <p class="text-blanco text-center text-xl my-4">
                 Posat al dia de les darreres novetats de l'IES Calvià Voley Tournament. Aquí trobaràs totes les notícies i darreres novetats del torneig.
             </p>
-        </DescripcionSection>
-        <NoticiasList />
-        <InfoRedactores />
+        </DescripcionSection> -->
+        <!-- <NoticiasList /> -->
+        <NoticiaList client:load/>
+        <!-- <InfoRedactores /> -->
 </LayoutMenu>

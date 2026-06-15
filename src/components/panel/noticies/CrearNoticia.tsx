@@ -84,7 +84,8 @@ const CATEGORIAS = [
     "Inscripció",
     "Equips",
     "Voluntaris",
-    "Actualitat"
+    "Actualitat",
+    "Clasificació"
 
 ]
 export default function CrearNoticia({user}:{user:any}) {
@@ -162,29 +163,34 @@ export default function CrearNoticia({user}:{user:any}) {
             crearBloque("text", 1)
         ]
     };
+
+   
     const [data, setData] = useState<NoticiaData>(defaultData);
     const [bloqueActivo, setBloqueActivo] = useState<string | null>(null);
     const [cantidadBloques, setCantidadBloques] = useState(1);
     const [ borradorCargado, setBorradorCargado] = useState(false);
     const editorRefs = useRef<Map<string, HTMLDivElement>>(new Map());
     const [slug, setSlug] = useState("");
+    const [enviando, setEnviando] = useState(false);
+    const [imgSubidas, setImgSubidas] = useState(false);
 
-    useEffect(() => {
-    const borrador = recuperarPrimerBorrador();
 
-    if (borrador) {
+//     useEffect(() => {
+//     const borrador = recuperarPrimerBorrador();
 
-        setData(borrador);
-        addToast({
-        type: "info",
-        message: "Esborrany carregat correctament",
-        duration: 5000,
-        });
-        setBorradorCargado(true);
-    } else{
-        setData(defaultData);
-    }
-}, []);
+//     if (borrador) {
+
+//         setData(borrador);
+//         addToast({
+//         type: "info",
+//         message: "Esborrany carregat correctament",
+//         duration: 5000,
+//         });
+//         setBorradorCargado(true);
+//     } else{
+//         setData(defaultData);
+//     }
+// }, []);
 
 const obtenerUltimoNumeroBloque = (content: Bloque[]) => {
     return content.reduce((max, bloque) => {
@@ -781,10 +787,7 @@ const subirBloque = (bloqueId: string) => {
 const subirImagenes = async () => {
     const imagenes = obtenerImagenes();
 
-    if (imagenes.length === 0) {
-        console.log("No hay imágenes para subir.");
-        return;
-    }
+    let nuevoData = structuredClone(data);
 
     for (const imagen of imagenes) {
         const formData = new FormData();
@@ -796,67 +799,85 @@ const subirImagenes = async () => {
             formData.append("bloqueId", imagen.bloqueId);
         }
 
-        try {
-            const response = await fetch(
-                "/api/panel/noticias/upload-imagen",
-                {
-                    method: "POST",
-                    body: formData
-                }
-            );
-
-            const result = await response.json();
-
-            if (!result.success) {
-                throw new Error("Upload failed");
+        const response = await fetch(
+            "/api/panel/noticias/upload-imagen",
+            {
+                method: "POST",
+                body: formData,
             }
+        );
 
-            console.log("URL recibida:", result.url);
+        const result = await response.json();
 
-            setData((prev) => ({
-                ...prev,
+        if (!result.success) {
+            throw new Error("Upload failed");
+        }
 
-                // Actualizar portada
-                cover_image:
-                    imagen.tipo === "cover"
-                        ? result.url
-                        : prev.cover_image,
+        if (imagen.tipo === "cover") {
+            nuevoData.cover_image = result.url;
+        }
 
-                // Actualizar bloque de imagen
-                content: prev.content.map((bloque) => {
-                    if (
-                        imagen.tipo === "bloque" &&
-                        bloque.id === imagen.bloqueId &&
-                        bloque.type === "imagen"
-                    ) {
-                        return {
-                            ...bloque,
-                            body: {
-                                ...bloque.body,
-                                url: result.url
-                            }
-                        };
-                    }
+        if (imagen.tipo === "bloque") {
+            nuevoData.content = nuevoData.content.map((bloque) => {
+                if (
+                    bloque.id === imagen.bloqueId &&
+                    bloque.type === "imagen"
+                ) {
+                    return {
+                        ...bloque,
+                        body: {
+                            ...bloque.body,
+                            url: result.url,
+                        },
+                    };
+                }
 
-                    return bloque;
-                })
-            }));
-
-            console.log(
-                `Imagen ${imagen.file.name} subida correctamente`
-            );
-        } catch (error) {
-            console.error(
-                `Error subiendo ${imagen.file.name}:`,
-                error
-            );
+                return bloque;
+            });
         }
     }
+
+    setData(nuevoData);
+    setImgSubidas(true);
+
+    return nuevoData;
 };
 
-const publicarNotiAhora = async () =>{
-    subirImagenes()
-}
+const publicarNotiAhora = async () => {
+    setEnviando(true);
+
+    try {
+        let noticiaFinal = data;
+
+        if (!imgSubidas) {
+            noticiaFinal = await subirImagenes();
+        }
+
+        const respuesta = await fetch(
+            "/api/panel/noticias/crear-noticia",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(noticiaFinal),
+            }
+        );
+
+        const result = await respuesta.json();
+
+        if (!result.ok) {
+            console.log(result.error);
+            setEnviando(false);
+            return;
+        }
+
+        window.location.replace("/panel/noticies");
+    } catch (error) {
+        console.error(error);
+        setEnviando(false);
+    }
+};
 
 
 
@@ -864,15 +885,44 @@ const publicarNotiAhora = async () =>{
     <div className="w-full h-full grid grid-rows-[auto_1fr] gap-y-4 overflow-hidden">
         <div className="w-full h-auto py-2 border-b flex items-center place-content-around border-gris-claro">
             {/* <a href={`/panel/info/noticia?accio=ver&slug=${slug}`} target="_blank">Previsualització</a> */}
+            <p className="max-md:hidden flex items-center gap-x-1">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 fill-blanco" viewBox="0 -960 960 960">
+                    <path d="m612-292 56-56-148-148v-184h-80v216zM480-80q-83 0-156-31.5T197-197t-85.5-127T80-480t31.5-156T197-763t127-85.5T480-880t156 31.5T763-763t85.5 127T880-480t-31.5 156T763-197t-127 85.5T480-80m0-80q133 0 226.5-93.5T800-480t-93.5-226.5T480-800t-226.5 93.5T160-480t93.5 226.5T480-160"/>
+                </svg>
+                    <span className="max-md:hidden">Temps de lectura:</span> {data.tiempo_lectura} min
+            </p>
             <div onClick={() => publicarNotiAhora()} className="w-max h-max rounded-2xl px-3 py-2 bg-azul-suave cursor-pointer">
                 Publicar Notícia
             </div>
+            
+            <select
+                value={data.categoria}
+                onChange={(e) =>
+                    setData((prev) => ({
+                        ...prev,
+                        categoria: e.target.value
+                    }))
+                }
+                className="border border-primary mt-2 bg-gris rounded px-3 py-2"
+            >
+                <option value="">Selecciona una categoría</option>
+
+                {CATEGORIAS.map((categoria) => (
+                    <option
+                        key={categoria}
+                        value={categoria}
+                    >
+                        {categoria}
+                    </option>
+                ))}
+            </select>
+            
         </div>
-        <div className="w-full h-full flex flex-col items-center gap-y-4 relative overflow-y-scroll ">
+        <div className="w-full h-full flex flex-col items-center gap-y-4 relative max-md:p-2 overflow-y-scroll ">
         
         <div className="max-w-200 w-full h-full mb-20">
             {/* Imatge de portada */}
-            <div className="w-200 h-100 bg-gris-claro/50 backdrop-blur-sm rounded-2xl p-4 flex flex-col gap-y-3 border border-dashed border-gray-400 hover:border-gray-500 transition-colors">
+            <div className="max-w-200 w-full h-100 bg-gris-claro/50 backdrop-blur-sm rounded-2xl p-4 flex flex-col gap-y-3 border border-dashed border-gray-400 hover:border-gray-500 transition-colors">
 
                 {preview ? (
                     // Vista de previsualización (AHORA ES CLICKABLE)
@@ -942,11 +992,9 @@ const publicarNotiAhora = async () =>{
             <input type="text" value={data.titular} onChange={(e) => actualizarTitular(e.target.value)} placeholder="Titular" className="w-full text-2xl mt-10 font-bold bg-transparent border-b border-gris-claro focus:border-primary outline-none transition-colors" />
             <input type="text" value={data.subtitulo} onChange={(e) => setData({...data, subtitulo: e.target.value})} placeholder="Subtítol" className="w-full text-lg mt-5 font-light bg-transparent border-b border-gris-claro focus:border-primary outline-none transition-colors" />
             {/* Seleccionar categoria, con desplegable y en el caso de otros, con input */}
-            <div>
-
-            </div>
+            
             {/* Datos generales: autor, fecha, slug */}
-            <div className="w-full grid grid-cols-[1fr_1fr_2fr] gap-x-6 mt-5">
+            <div className="w-full grid md:grid-cols-[1fr_1fr_2fr] space-y-4 gap-x-6 mt-5">
                 <div className="flex flex-col gap-y-1">
                     <p>Autor</p>
                     <p className="font-light">{data.author} <br/> {data.author_curso}</p>
@@ -1023,7 +1071,7 @@ const publicarNotiAhora = async () =>{
                                 />
                             </div>
                             {/* Menu lateral acciones bloque */}
-                            <div className={`absolute w-10  top-0 -right-16 opacity-0 group-hover:opacity-100 flex flex-col gap-y-4  transition-opacity ${bloqueActivo === bloque.id ? "opacity-100" : ""} rounded-lg p-2 cursor-pointer z-10`}>
+                            <div className={`absolute md:w-10  md:top-0 md:-right-16 max-md:-top-10 opacity-0 group-hover:opacity-100 flex max-md:flex-row md:flex-col gap-y-4  transition-opacity ${bloqueActivo === bloque.id ? "opacity-100" : ""} rounded-lg p-2 cursor-pointer z-10`}>
                                 <div onClick={() => elminarBloque(bloque.id)} className="w-8 h-8 rounded-md bg-red-600 text-white flex items-center place-content-center fill-red-400 hover:bg-red-700 transition-colors duration-300">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 -960 960 960">
                                         <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120zm400-600H280v520h400zM360-280h80v-360h-80zm160 0h80v-360h-80zM280-720v520z"/>
@@ -1370,6 +1418,47 @@ const publicarNotiAhora = async () =>{
                 
             </div>
         </div> */}
+        {
+            enviando &&(
+                <div className="w-full h-full fixed z-20 top-0 left-0 flex flex-col items-center place-content-center bg-gris/60 backdrop-blur-sm">
+                    <div className="w-full max-w-100 bg-gris p-10 dark:bg-gris rounded-xl p-xl shadow-xxl border border-primary/30 flex flex-col gap-y-3 items-center text-center animate-in fade-in zoom-in duration-300">
+                    {/* <!-- Loading Illustration/Animation Container --> */}
+                    <div className="relative w-20 h-20 mb-lg">
+                    {/* <!-- Circular Spinner Base --> */}
+                    <div className="absolute inset-0 border-4 border-primary/10 rounded-full"></div>
+                    {/* <!-- Spinning Top Part --> */}
+                    <div className="absolute inset-0 border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+                    {/* <!-- Icon in the middle --> */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="material-symbols-outlined fill-primary text-4xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" viewBox="0 -960 960 960">
+                            <path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H520q-33 0-56.5-23.5T440-240v-206l-64 62-56-56 160-160 160 160-56 56-64-62v206h220q42 0 71-29t29-71-29-71-71-29h-60v-80q0-83-58.5-141.5T480-720t-141.5 58.5T280-520h-20q-58 0-99 41t-41 99 41 99 99 41h100v80zm220-280"/>
+                        </svg>
+                    </span>
+                    </div>
+                    </div>
+                    {/* <!-- Text Content --> */}
+                    <h3 className="text-lg font-semibold mb-sm">Enviant dades...</h3>
+                    <p className="text-gray-300 font-light mb-xl px-md">
+                                    Si us plau, espera mentre s'actualitza la configuració del torneig. No tanquis aquesta finestra.
+                                </p>
+                    {/* <!-- Custom Progress Bar --> */}
+                    <div className="loading-progress-bar">
+                    <div className="loading-progress-fill"></div>
+                    </div>
+                    {/* <!-- Footer Help Text --> */}
+                    <div className="mt-lg flex items-center gap-xs text-primary/60">
+                    <span className="fill-primary" >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 -960 960 960">
+                            <path d="m438-338 226-226-57-57-169 169-84-84-57 57zm42 258q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80m0-84q104-33 172-132t68-220v-189l-240-90-240 90v189q0 121 68 220t172 132m0-316"/>
+                        </svg>
+                    </span>
+                    <span className="font-ajuda-text text-ajuda-text">Connexió segura establerta</span>
+                    </div>
+                    </div>
+                </div>
+            )
+        }
     </div>
         
     </>)

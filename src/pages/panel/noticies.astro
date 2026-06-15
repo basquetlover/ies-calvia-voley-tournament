@@ -1,5 +1,6 @@
 ---
 
+import BuscadorNoticias from "@components/panel/noticies/buscadorNoticias";
 import LayoutPanel from "@layouts/LayoutPanel.astro";
 
 const url = new URL(Astro.request.url);
@@ -44,5 +45,6 @@ const permitido = await tieneAcceso(
             </svg>
             Nova Edició
         </a> -->
+        <BuscadorNoticias client:load />
     </div>
 </LayoutPanel>

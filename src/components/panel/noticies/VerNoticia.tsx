@@ -79,60 +79,13 @@ export function formatDataCatalaFromISO(isoString?: string): string {
 
   return `${dia} ${mes} ${any}`;
 }
-export default function VerNoticia({slug}:{slug:any}) {
+export default function VerNoticia({noticiaData}:{noticiaData:any}) {
     const { addToast } = useToast();
 
-    const [data, setData] = useState<NoticiaData>();
+    const [data, setData] = useState<NoticiaData>(noticiaData);
 
 
-    useEffect(() => {
-    const borrador = recuperarPrimerBorrador();
 
-    if (borrador) {
-
-        setData(borrador);
-        addToast({
-        type: "info",
-        message: "Esborrany carregat correctament",
-        duration: 5000,
-        });
-    } else{
-        
-    }
-}, []);
-
-const obtenerUltimoNumeroBloque = (content: Bloque[]) => {
-    return content.reduce((max, bloque) => {
-        const numero = Number(
-            bloque.id.replace("bloque_", "")
-        );
-
-        return numero > max ? numero : max;
-    }, 0);
-};
-
-const recuperarPrimerBorrador = () => {
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-
-        if (!key?.startsWith("noticia_")) continue;
-
-        const contenido = localStorage.getItem(key);
-
-        if (!contenido) continue;
-
-        try {
-            const parsedContenido = JSON.parse(contenido);
-
-    
-            return parsedContenido;
-        } catch (error) {
-            console.error(`Error leyendo ${key}:`, error);
-        }
-    }
-
-    return null;
-};
  
 
     return(<>
@@ -145,7 +98,7 @@ const recuperarPrimerBorrador = () => {
             }
             
         </div>
-        <div className="w-full mx-auto flex flex-col items-center -mt-20 px-5">
+        <div className="w-full mx-auto flex flex-col items-center -mt-20 px-5 text-blanco">
             <div className=" max-w-4xl rounded-2xl w-full min-h-76 border border-gris-claro shadow-gris-claro shadow-md bg-gris z-10 flex flex-col p-4">
                 <div className="w-full flex items-center text-gray-400">
                     <p>{data?.categoria}</p>

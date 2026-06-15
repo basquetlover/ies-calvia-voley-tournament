@@ -126,14 +126,14 @@ b {
     mask-image: linear-gradient(
         to bottom,
         black 0%,
-        black 80%,
+        black 40%,
         transparent 100%
     );
 
     -webkit-mask-image: linear-gradient(
         to bottom,
         black 0%,
-        black 80%,
+        black 40%,
         transparent 100%
     );
 }
