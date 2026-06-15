@@ -17,25 +17,7 @@ type AdministradorProps = {
 
 
 // Genera rutas dinámicas
-export async function getStaticPaths() {
-  // Consulta a la base de datos para obtener user_email y rango
-  const { data, error } = await supabaseAdmin
-    .from('Noticias')
-    .select('id_noticia');
 
-  if (error) {
-    console.error('Error fetching administradores:', error.message);
-    return { paths: [] };
-  }
-
-  // Genera las rutas dinámicas con datos adicionales
-  const paths = data.map((equipo) => ({
-    params: { id_noticia: equipo.id_noticia },
-     // Pasamos rango como parte de los props
-  }));
-
-  return { paths };
-}
 const id_noticia = Astro.url.pathname.split('/').pop();
 
 let titulo = 'Sin Nombre';
