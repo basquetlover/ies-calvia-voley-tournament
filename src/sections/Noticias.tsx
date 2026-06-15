@@ -130,7 +130,7 @@ export default function NoticiaList() {
                                         className="w-full h-full object-cover degradado-img group-hover:scale-105 duration-300 transition-all rounded-2xl"
                                     />
 
-                                    <div className="absolute left-5 flex flex-col gap-y-5  bottom-5 w-2/3">
+                                    <div className="absolute left-5 flex flex-col gap-y-5 max-md:gap-y-1.5  bottom-5 w-2/3">
                                         <span className="w-max px-2 py-0.5 rounded text-gris font-medium max-md:text-sm bg-amarillo">{noticiaPrincipal.categoria}</span>
 
                                         <h2 className="text-4xl max-md:text-xl font-extrabold text-blanco max-md:line-clamp-2">{noticiaPrincipal.titular}</h2>
