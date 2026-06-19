@@ -69,6 +69,9 @@ if(usuario && usuario.rango !== "") {
 	</head>
 	<body class="bg-gris overflow-hidden text-blanco fill-blanco">
 		<Cargando />
+		<div class="w-full h-7 bg-warning-stripes flex items-center max-md:hidden">
+			<p class="bg-amarillo w-max text-black mx-auto px-2 rounded-2xl font-medium"><span class="uppercase">Entorn de desenvolupament</span> - Aquesta plataforma està en fase de proves</p>
+		</div>
 		<ToastContainer client:load/>
         {
             usuario_admin ? (<>
@@ -97,6 +100,9 @@ if(usuario && usuario.rango !== "") {
 						<!-- CONTENIDO (ÚNICO SCROLL) -->
 						<NivelSeguridad usuario={usuario_admin} accion={accion}>
 							<main class="w-full mx-auto min-h-0 overflow-y-auto ">
+								<div class="w-full h-max p-2 bg-warning-stripes flex items-center md:hidden">
+									<p class="bg-amarillo text-center w-max text-black mx-auto px-2 rounded-2xl font-medium"><span class="uppercase">Entorn de desenvolupament</span> - Aquesta plataforma està en fase de proves</p>
+								</div>
 								<slot />
 							</main>
 						</NivelSeguridad>
@@ -151,6 +157,18 @@ if(usuario && usuario.rango !== "") {
 	font-weight: <weight>;
 	font-style: normal;
 }
+
+.bg-warning-stripes {
+    background:
+      repeating-linear-gradient(
+        45deg,
+        rgb(255, 199, 0),
+        rgb(255, 199, 0) 10px,
+        rgb(0, 0, 0) 10px,
+        rgb(0, 0, 0) 20px
+      )
+      rgb(255, 199, 0);
+  }
 </style>
 <script>
 const btnsMenuDesktop = document.querySelectorAll('.btn-MenuDesktop');
