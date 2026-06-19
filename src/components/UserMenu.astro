@@ -13,120 +13,131 @@ let modificar = false;
 let accesoModificar = true;
 let voluntario = false;
 const usuario_email = usuario.email;
-if(usuario){
-    const usuario_nombre = usuario.nombre;
-   
-    const curso = usuario.curso;
-    let acceso_inscripcion = false;
-    let acceso_modificacion = false;
+if (usuario) {
 
-    if(curso === "Professor"){
+    // =========================
+    // VARIABLES
+    // =========================
+
+    // =========================
+    // PROFESOR
+    // =========================
+    if (usuario.curso === "Professor") {
         profesor = true;
     }
 
-    let { data: AccesoInscripcion, error } = await supabaseAdmin
+    // =========================
+    // ADMIN (desde usuario.rango)
+    // =========================
+    if (usuario.rango) {
+        admin = true;
+
+        console.log(`👑 Usuario con rango: ${usuario.rango}`);
+    }
+
+    // =========================
+    // ACCESO INSCRIPCIÓN
+    // =========================
+    const { data: accesoInscripcion } = await supabaseAdmin
         .from('AccesoUsuarios')
         .select('acceso')
         .eq('pagina', '/usuario/inscripcion')
         .single();
-    if(AccesoInscripcion){
-        acceso_inscripcion = AccesoInscripcion.acceso;
-        if( acceso_inscripcion === true ){
-        inscripcion = true
-        }
+
+    if (accesoInscripcion?.acceso) {
+        inscripcion = true;
     }
 
-    let { data: AccesoModificar, error: a } = await supabaseAdmin
+    // =========================
+    // ACCESO MODIFICACIÓN
+    // =========================
+    const { data: accesoModificar } = await supabaseAdmin
         .from('AccesoUsuarios')
         .select('acceso')
         .eq('pagina', '/usuario/modificar')
         .single();
-    if(AccesoModificar){
-        acceso_modificacion = AccesoModificar.acceso;
-        if( acceso_modificacion === true ){
-            accesoModificar = false
-        }
-    }
-    let { data: Voluntarios, error: errorV } = await supabaseAdmin
-    .from('Voluntarios')
-    .select('tipo, estado')
-    .eq('email', usuario_email)
-    .single(); // Use .single() to get a single record
 
-    if(Voluntarios){
+    if (accesoModificar?.acceso) {
+        modificar = true;
+    }
+
+    // =========================
+    // VOLUNTARIO
+    // =========================
+    const { data: voluntarioData } = await supabaseAdmin
+        .from('Voluntarios')
+        .select('tipo, estado')
+        .eq('email', usuario_email)
+        .single();
+
+    if (voluntarioData) {
         voluntario = true;
     }
 
-    let { data: Jugador, error: errorJ } = await supabaseAdmin
-    .from('JugadoresSS')
-    .select('pertenece_equipo')
-    .eq('email', usuario_email)
-    .single(); // Use .single() to get a single record
-
-    if (errorJ) {
-    // console.error('Jugador sin equipo', errorJ.message);
-    // Handle the error appropriately
-    }
-    
-    if (!Jugador) {
-        // console.error('Jugador no encontrado');
-        let { data: Administradores, error } = await supabaseAdmin
-        .from('Administradores')
-        .select('rango')
-        .or(`user_email.eq.${usuario.email},user_email.eq.${usuario.email_microsoft}`)
+    // =========================
+    // JUGADOR
+    // =========================
+    const { data: jugador } = await supabaseAdmin
+        .from('JugadoresSS')
+        .select('pertenece_equipo')
+        .eq('email', usuario_email)
         .single();
 
-    if(!Administradores){
-            // console.error("Este usuario no es Staff");
-        } else{
-            admin = true;
+    // =========================
+    // SI NO ES JUGADOR
+    // =========================
+    if (!jugador) {
+
+        if (admin) {
             equipo = "IES Calvià Voley Team";
             escudo = "/web-app-manifest-192x192.png";
         }
+
     } else {
-    let { data: Equipos, error: errorE } = await supabaseAdmin
-        .from('EquiposSS')
-        .select('nombre_equipo, escudo, id_equipo, inscrito, estado, email_capitan, capitan_edit')
-        .eq('id', Jugador.pertenece_equipo)
-        .single(); // Use .single() to get a single record
 
-    if (errorE) {
-        // console.error('Error fetching Equipos:', errorE);
-        // Handle the error appropriately
-    }
-    if(Equipos){
-        let { data: Administradores, error } = await supabaseAdmin
-        .from('Administradores')
-        .select('rango')
-        .eq('user_email', usuario_email)
-        .single();
+        // =========================
+        // EQUIPO
+        // =========================
+        const { data: equipoData } = await supabaseAdmin
+            .from('EquiposSS')
+            .select(`
+                nombre_equipo,
+                escudo,
+                id_equipo,
+                inscrito,
+                estado,
+                email_capitan,
+                capitan_edit
+            `)
+            .eq('id', jugador.pertenece_equipo)
+            .single();
 
-    if(!Administradores){
-            // console.error("Este usuario no es Staff");
-        } else{
-            admin = true;
-        }
-        equipo_id = Equipos.id_equipo
-        equipo = Equipos.nombre_equipo
-        escudo = Equipos.escudo
-        inscripcion = true;
+        if (equipoData) {
 
-        if(Equipos.inscrito === usuario.id){
-            modificar = true;
-        }
-        if(Equipos.capitan_edit === "si_edit")
-            if(Equipos.email_capitan === usuario.email){
+            equipo_id = equipoData.id_equipo;
+            equipo = equipoData.nombre_equipo;
+            escudo = equipoData.escudo;
+            inscripcion = true;
+
+            // =========================
+            // PERMISOS DE MODIFICACIÓN
+            // =========================
+            if (
+                equipoData.inscrito === usuario.id ||
+                (
+                    equipoData.capitan_edit === "si_edit" &&
+                    equipoData.email_capitan === usuario.email
+                )
+            ) {
                 modificar = true;
             }
-        
+        }
     }
-    }
-
 }
 ---
         {/* Datos usuario */}
         
-        <div class="w-[95%] h-[2px] mb-4 bg-accent rounded-full mx-auto">&nbsp;</div>
+        <div class="w-[95%] h-0.5 mb-4 bg-accent rounded-full mx-auto">&nbsp;</div>
             {/* Email */}
         <div class="w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2 text-blanco items-center">
                 <span class="w-5 h-5">
@@ -182,7 +193,7 @@ if(usuario){
         </a>
         {/* Acceso usuario */}
         
-        <div class="w-[95%] h-[2px] my-4 bg-accent rounded-full mx-auto">&nbsp;</div>
+        <div class="w-[95%] h-0.5 my-4 bg-accent rounded-full mx-auto">&nbsp;</div>
            
         <nav class="flex flex-col gap-y-2">
             <a href="/usuario/galeria" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all `}>
@@ -204,10 +215,10 @@ if(usuario){
             </a>
             {/* Modificar Equipo */}
             {modificar === true ? (<>
-            <a href={`/usuario/modificarSS/${equipo_id}`} class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2 text-gray-500 items-center ${accesoModificar === false ? " text-white hover:text-amarillo group duration-300 transition-all" : " text-gray-500 cursor-not-allowed pointer-events-none "}`}>
+            <a href={`/usuario/modificarSS/${equipo_id}`} class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all`}>
                 <span class="w-5 h-5">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 -960 960 960">
-                        <path class={` ${accesoModificar === false ? "fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all" : " fill-gray-500 "}`} d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 27-17t30-6q16 0 31 6t26 18l55 56q12 11 18 26t5 30q0 16-5 31t-18 26L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
+                        <path class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all`} d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 27-17t30-6q16 0 31 6t26 18l55 56q12 11 18 26t5 30q0 16-5 31t-18 26L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
                     </svg>
                 </span>
                 Modificar Equip
@@ -261,7 +272,7 @@ if(usuario){
             }
         </nav>
         {admin === true ? (
-            <div class="w-[95%] h-[2px] my-4 bg-accent rounded-full mx-auto">&nbsp;</div>
+            <div class="w-[95%] h-0.5 my-4 bg-accent rounded-full mx-auto">&nbsp;</div>
             
             <a href="/usuario/staff/equipos" class={`w-full px-1 h-auto rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all`}>
                     <span class="w-5 h-5">
@@ -277,7 +288,7 @@ if(usuario){
         {admin === true ? (
             
             
-            <a href="/admin" class={`w-full px-1 h-auto mt-2 rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all`}>
+            <a href="/panel" class={`w-full px-1 h-auto mt-2 rounded-lg text-base flex flex-row gap-2  items-center  text-white hover:text-amarillo group duration-300 transition-all`}>
                     <span class="w-5 h-5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 -960 960 960">
                             <path  class={` fill-[#E8EAED] group-hover:fill-amarillo duration-300 transition-all`} d="M480-440q-59 0-99-40t-41-100q0-59 41-99t99-41q59 0 100 41t40 99q0 59-40 100t-100 40Zm0-80q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0 440q-139-35-229-159t-91-277v-244l320-120 320 120v244q0 152-90 277T480-80Zm0-400Zm0-315-240 90v189q0 54 15 105t41 96q42-21 88-33t96-12q50 0 96 12t88 33q26-45 41-96t15-105v-189l-240-90Zm0 515q-36 0-70 8t-65 22q29 30 63 52t72 34q38-12 72-34t63-52q-31-14-65-22t-70-8Z"/>
@@ -292,7 +303,7 @@ if(usuario){
     
         
         {/* <!--Cerrar Session --> */}
-        <div class="w-[95%] h-[2px] bg-accent rounded-full mx-auto mt-4">&nbsp;</div>
+        <div class="w-[95%] h-0.5 bg-accent rounded-full mx-auto mt-4">&nbsp;</div>
         <form action="/api/sesiones/cerrar" class="mx-auto w-max">
             <button class="text-center text-base text-blanco hover:text-amarillo duration-300 transition-all group my-4 flex flex-row items-center place-content-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 30 31">
