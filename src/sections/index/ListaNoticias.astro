@@ -1,0 +1,158 @@
+---
+const news = [
+  {
+    id: 1,
+    title: "Preparatius per l'edició 2024 a tota màquina",
+    desc: "L'equip organitzador ja té gairebé enllestits tots els detalls pel gran torneig d'enguany.",
+    img: "https://aimtsdmsojunxazbxfue.supabase.co/storage/v1/object/public/NoticiasIMG/un-pas-endavant-cap-a-una-competicio-mes-justa-i-equilibrada.png",
+  },
+  {
+    id: 2,
+    title: "Noves samarretes oficials revelades",
+    desc: "Nova equipació del torneig presentada avui als equips participants.",
+    img: "https://aimtsdmsojunxazbxfue.supabase.co/storage/v1/object/public/NoticiasIMG/img_galeria_brillo.png",
+  },
+  {
+    id: 3,
+    title: "Reunió de voluntaris: Pròxim dimarts",
+    desc: "Es convoca tots els voluntaris per preparar l'esdeveniment.",
+    img: "https://aimtsdmsojunxazbxfue.supabase.co/storage/v1/object/public/NoticiasIMG/nou-sistema-de-visualitzacio-de-partits-1781524851749.webp",
+  },
+  {
+    id: 4,
+    title: "Obertura del termini de reclamacions",
+    desc: "Ja està obert el període oficial per incidències i reclamacions.",
+    img: "https://aimtsdmsojunxazbxfue.supabase.co/storage/v1/object/public/NoticiasIMG/important-canvi-en-el-torneig-1781524731385.webp",
+  },
+];
+
+// CLON PARA LOOP INFINITO VISUAL
+const loopNews = [...news, ...news, ...news];
+---
+
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-6xl mx-auto">
+
+  <!-- HERO -->
+  <div class="md:col-span-8 relative rounded-2xl overflow-hidden">
+
+    <div id="heroTrack" class="flex h-125">
+      {loopNews.map((item) => (
+        <article class="hero-slide min-w-full relative">
+          <img src={item.img} class="w-full h-full object-cover" />
+
+          <div class="absolute inset-0 flex flex-col justify-end p-8 bg-linear-to-t from-black/70">
+            <span class="bg-yellow-400 text-black px-3 py-1 rounded-full w-fit mb-4 text-sm uppercase">
+              Destacat
+            </span>
+
+            <h2 class="text-white text-3xl font-bold mb-2">
+              {item.title}
+            </h2>
+
+            <p class="text-white/80 max-w-xl">
+              {item.desc}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="absolute bottom-6 right-6 flex gap-3 z-10">
+      <button id="prevBtn" class="w-10 h-10 rounded-full bg-black/40 text-white backdrop-blur">‹</button>
+      <button id="nextBtn" class="w-10 h-10 rounded-full bg-black/40 text-white backdrop-blur">›</button>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="md:col-span-4 ">
+
+    <div
+      id="sidebarViewport"
+      class="overflow-hidden h-125 "
+    >
+      <div id="sidebarTrack" class="flex flex-col  h-full place-content-between">
+
+        {loopNews.map((item) => (
+          <article class="news-card flex gap-4 p-4 bg-gris-claro shadow rounded-2xl">
+            <img src={item.img} class="w-24 h-24 object-cover rounded-xl" />
+
+            <div>
+              <span class="text-xs text-gray-500">Notícia</span>
+              <h3 class="font-bold text-sm leading-tight mt-1">
+                {item.title}
+              </h3>
+              <p class="text-xs text-gray-500 line-clamp-2 mt-1">
+                {item.desc}
+              </p>
+            </div>
+          </article>
+        ))}
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import gsap from "gsap";
+
+  let index = 0;
+  let animating = false;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const heroTrack = document.getElementById("heroTrack");
+    const sidebarTrack = document.getElementById("sidebarTrack");
+    const sidebarViewport = document.getElementById("sidebarViewport");
+
+    const heroSlides = document.querySelectorAll<HTMLElement>(".hero-slide");
+    const sidebarCards = document.querySelectorAll<HTMLElement>(".news-card");
+
+    const heroWidth = heroSlides[0].offsetWidth;
+
+    const cardHeight =
+      sidebarCards[0].offsetHeight +
+      parseFloat(getComputedStyle(sidebarCards[0]).marginBottom || "0");
+
+    const visibleCards = 3;
+    const total = 4;
+
+    // 🔥 ALTURA EXACTA = igual que hero (h-125 = 500px)
+    if (sidebarViewport) {
+      sidebarViewport.style.height = "500px";
+    }
+
+    function goTo(i: number) {
+      if (animating) return;
+      animating = true;
+
+      gsap.timeline({
+        onComplete() {
+          animating = false;
+        },
+      })
+      .to(heroTrack, {
+        x: -(i * heroWidth),
+        duration: 0.8,
+        ease: "power3.inOut",
+      }, 0)
+      .to(sidebarTrack, {
+        y: -(i * cardHeight),
+        duration: 0.8,
+        ease: "power3.inOut",
+      }, 0);
+    }
+
+    document.getElementById("nextBtn")?.addEventListener("click", () => {
+      index++;
+      goTo(index);
+    });
+
+    document.getElementById("prevBtn")?.addEventListener("click", () => {
+      index--;
+      if (index < 0) index = total - 1;
+      goTo(index);
+    });
+  });
+</script>

@@ -3,17 +3,17 @@ import { supabaseAdmin } from '../../lib/supabase';
 
 interface Noticia {
   id: number;
-  id_noticia: string;
-  titulo: string;
-  category: string;
-  fecha: string;
-  imagen_noticia: string | null;
+  slug: string;
+  titular: string;
+  categoria: string;
+  publication_date: string;
+  cover_image: string | null;
 }
 
 // Obtener las noticias de la base de datos
 const { data: equipos, error } = await supabaseAdmin
-  .from('Noticias')
-  .select('titulo, category, fecha, id_noticia, id, imagen_noticia ')
+  .from('Noticis')
+  .select('titular, categoria, publication_date, slug, id, cover_image ')
   .order('id', { ascending: false }); // Ordenar de mayor a menor
 
 if (error) {
@@ -21,6 +21,26 @@ if (error) {
 }
 
 const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
+
+const mesosCatala = ['gen.', 'febr.', 'març', 'abr.', 'maig', 'juny', 'jul.', 'ag.', 'set.', 'oct.', 'nov.', 'des.'];
+
+function formatDataCatalaFromISO(isoString?: string): string {
+  if (!isoString) {
+    return "Data inválida";
+  }
+
+  const date = new Date(isoString);
+  
+  if (isNaN(date.getTime())) {
+    return "Data inválida";
+  }
+
+  const dia = date.getDate();
+  const mes = mesosCatala[date.getMonth()];
+  const any = date.getFullYear();
+
+  return `${dia} ${mes} ${any}`;
+}
 ---
 
 <div class="flex justify-center mt-10">
@@ -41,18 +61,18 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
             style={isCenter ? 'grid-column: 2; grid-row: 1;' : (index === 1 ? 'grid-column: 1; grid-row: 1; -z-10' : 'grid-column: 3; grid-row: 1; -z-10')}
           >
           <a 
-            href={`/noticias/${noticia.id_noticia}`}
+            href={`/noticias/${noticia.slug}`}
             class={`w-80 h-96 relative rounded-lg bg-gris-claro pointer group  transition-all  duration-300 ${sizeClass}`}
             style={isCenter ? 'grid-column: 2; grid-row: 1;' : (index === 1 ? 'grid-column: 1; grid-row: 1; -z-10' : 'grid-column: 3; grid-row: 1; -z-10')}
           >
             <div class="flex flex-col h-full">
               <div class="flex items-center justify-center w-full h-auto max-h-44 overflow-hidden">
-                {noticia.imagen_noticia ? (
+                {noticia.cover_image ? (
                   <img 
                     class="w-full h-full rounded-lg" 
-                    src={noticia.imagen_noticia} 
+                    src={noticia.cover_image} 
                     loading="lazy"
-                    alt={`escudo noticia ${noticia.titulo}`} 
+                    alt={`escudo noticia ${noticia.titular}`} 
                   />
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40" fill="none" viewBox="0 0 650 650">
@@ -62,10 +82,10 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
                 )}
               </div>
               <div class="flex flex-row items-center px-3 my-2 justify-between">
-                <p class="text-accent text-xl underline max-w-[50%] w-full">{noticia.category}</p>
-                <p class="text-amarillo  text-xl max-w-[50%] w-full">{noticia.fecha}</p>
+                <p class="text-accent text-xl underline max-w-[50%] w-full">{noticia.categoria}</p>
+                <p class="text-amarillo  text-xl max-w-[50%] w-full">{formatDataCatalaFromISO(noticia.publication_date)}</p>
               </div>
-              <p class="text-accent text-4xl puntos font-semibold px-2" translate="no">{noticia.titulo}</p>
+              <p class="text-accent text-4xl puntos font-semibold px-2" translate="no">{noticia.titular}</p>
             </div>
           </a>
         </article>
@@ -98,16 +118,16 @@ const topNoticias = equipos && equipos.length > 0 ? equipos.slice(0, 3) : [];
 import { supabaseAdmin } from '../../lib/supabase';
 interface Noticia {
    id: number;
-  id_noticia: string;
-  titulo: string;
-  category: string;
-  fecha: string;
+  slug: string;
+  titular: string;
+  categoria: string;
+  publication_date: string;
   imagen_noticia: string | null; // o string dependiendo de si puede ser nulo
 }
 // Obtener los equipos de la base de datos
 const { data: equipos, error } = await supabaseAdmin
   .from('Noticias')
-  .select('titulo, category, fecha, id_noticia, id, imagen_noticia ')
+  .select('titular, categoria, publication_date, slug, id, imagen_noticia ')
   .order('id', { ascending: true });
 
 
@@ -156,11 +176,11 @@ if (error) {
             )}
           </div>
           <div class="w-full h-auto flex flex-row items-center px-3 my-2 place-content-between">
-            <p class="text-accent text-2xl underline ">{noticia.category}</p>
-            <p class="text-amarillo text-xl  ">{noticia.fecha}</p>
+            <p class="text-accent text-2xl underline ">{noticia.categoria}</p>
+            <p class="text-amarillo text-xl  ">{noticia.publication_date}</p>
             
           </div>
-          <p class="text-accent text-4xl font-semibold px-2" translate="no">{noticia.titulo}</p>
+          <p class="text-accent text-4xl font-semibold px-2" translate="no">{noticia.titular}</p>
           
         </div>
 
