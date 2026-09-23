@@ -25,182 +25,188 @@ const edicion4Disponible = true; // Cambia a true cuando la edición 4 esté dis
             e.preventDefault();
         }, false);
     </script>
-<LayoutMenu title="Galeria | IES Calvià Voley Tournament" descripcion="Galeria d'imatges de la edició de Nadal" >
-    <!-- <SpamDescarga /> -->
-    <PortadaGaleria />
-    <section class="w-full h-auto flex flex-col my-5">
-        <div class="w-[95%] mx-auto flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden text-lg relative">
-    <div class="w-full rounded h-[2px] bg-accent -z-10 absolute bottom-[1px]">&nbsp;</div>
-    
-    <div id="btn-edicion-4" class={` ${edicion4Disponible ? "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0" : "p-3 text-blanco cursor-not-allowed relative rounded-t shrink-0"} `}>
-        <p>Setmana Santa 2026</p>
-        {
-            !edicion4Disponible && (
-                <span class="absolute bottom-0 text-amarillo left-1/2 transform -translate-x-1/2 text-[10px]">
-                    Pròximament
-                </span>
-        )
-        }
-        
-    </div>
 
-    <div id="btn-edicion-3" class={` ${!edicion4Disponible ? "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0" : "p-3 text-blanco cursor-pointer relative rounded-t shrink-0"} `}>
-        <p>Nadal 2025</p>
-        {
-            !edicion3Disponible && (
-                <span class="absolute bottom-0 text-amarillo left-1/2 transform -translate-x-1/2 text-[10px]">
-                    Pròximament
-                </span>
-        )
-        }
-        
-    </div>
+    <!--
+    <LayoutMenu title="Galeria | IES Calvià Voley Tournament" descripcion="Galeria d'imatges de la edició de Nadal" >
+        <PortadaGaleria />
+        <section class="w-full h-auto flex flex-col my-5">
+            <div class="w-[95%] mx-auto flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden text-lg relative">
+                <div class="w-full rounded h-[2px] bg-accent -z-10 absolute bottom-[1px]">&nbsp;</div>
+                
+                <div id="btn-edicion-4" class={` ${edicion4Disponible ? "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0" : "p-3 text-blanco cursor-not-allowed relative rounded-t shrink-0"} `}>
+                    <p>Setmana Santa 2026</p>
+                    {
+                        !edicion4Disponible && (
+                            <span class="absolute bottom-0 text-amarillo left-1/2 transform -translate-x-1/2 text-[10px]">
+                                Pròximament
+                            </span>
+                    )
+                    }
+                </div>
 
-    <div id="btn-edicion-2" class={` ${edicion3Disponible ? "p-3 text-blanco cursor-pointer rounded-t shrink-0" : "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0"} `}>
-        <p>Setmana Santa 2025</p>
-    </div>
+                <div id="btn-edicion-3" class={` ${!edicion4Disponible ? "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0" : "p-3 text-blanco cursor-pointer relative rounded-t shrink-0"} `}>
+                    <p>Nadal 2025</p>
+                    {
+                        !edicion3Disponible && (
+                            <span class="absolute bottom-0 text-amarillo left-1/2 transform -translate-x-1/2 text-[10px]">
+                                Pròximament
+                            </span>
+                    )
+                    }
+                </div>
 
-    <div id="btn-edicion-1" class="p-3 text-blanco cursor-pointer rounded-t shrink-0">
-        <p>Nadal 2024</p>
-    </div>
-</div>
-        <div class="w-full h-auto my-5">
+                <div id="btn-edicion-2" class={` ${edicion3Disponible ? "p-3 text-blanco cursor-pointer rounded-t shrink-0" : "p-3 text-blanco cursor-pointer bg-gris border-2 border-accent border-b-gris font-semibold rounded-t shrink-0"} `}>
+                    <p>Setmana Santa 2025</p>
+                </div>
 
-             <!-- Torneo Navidad 2026 -->
-             <div id="edicio-4" class={`edicio-3 ${edicion4Disponible ? "" : "hidden"}`}>
-             {
-                edicion4Disponible ? (
-                    
-                        <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa 2026</h2>
-                         <GaleriaSS26 />
-                    
-                ) : (
-                   <div>
-                        <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa 2026</h2>
-                        <div class="w-full h-64 flex items-center place-content-center">
-                            <p class="text-amarillo text-xl">Aquest contingut estarà disponible a partir d'Abril de 2026</p>
-                        </div>
-                   </div>
-                )
-             }
-             </div>
-            
-            <!-- Torneo Navidad 2025 -->
-             <div id="edicio-3" class={`edicio-3 ${edicion4Disponible ? "hidden" : ""}`}>
-             {
-                edicion3Disponible ? (
-                    
-                        <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2025</h2>
-                        <GaleriaN25 />
-                    
-                ) : (
-                   <div>
-                        <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2025</h2>
-                        <div class="w-full h-64 flex items-center place-content-center">
-                            <p class="text-amarillo text-xl">Aquest contingut estarà disponible a partir de Març de 2026</p>
-                        </div>
-                   </div>
-                )
-             }
-             </div>
-            
-            <!-- Torneo Semana Santa 2025 -->
-            <div id="edicio-2" class={`edicio-2 ${edicion4Disponible ? "hidden" : ""}`}>
-                <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa</h2>
-                <GaleriaSS />
+                <div id="btn-edicion-1" class="p-3 text-blanco cursor-pointer rounded-t shrink-0">
+                    <p>Nadal 2024</p>
+                </div>
             </div>
+            <div class="w-full h-auto my-5">
+                <div id="edicio-4" class={`edicio-3 ${edicion4Disponible ? "" : "hidden"}`}>
+                    {
+                        edicion4Disponible ? (
+                            <>
+                                <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa 2026</h2>
+                                <GaleriaSS26 />
+                            </>
+                        ) : (
+                            <div>
+                                <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa 2026</h2>
+                                <div class="w-full h-64 flex items-center place-content-center">
+                                    <p class="text-amarillo text-xl">Aquest contingut estarà disponible a partir d'Abril de 2026</p>
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
 
-            <!-- Torneo Navidad 2024 -->
-            <div id="edicio-1" class="hidden">
-                <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2024</h2>
-                <GaleriaFotos />
+                <div id="edicio-3" class={`edicio-3 ${edicion4Disponible ? "hidden" : ""}`}>
+                    {
+                        edicion3Disponible ? (
+                            <>
+                                <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2025</h2>
+                                <GaleriaN25 />
+                            </>
+                        ) : (
+                            <div>
+                                <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2025</h2>
+                                <div class="w-full h-64 flex items-center place-content-center">
+                                    <p class="text-amarillo text-xl">Aquest contingut estarà disponible a partir de Març de 2026</p>
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
+
+                <div id="edicio-2" class={`edicio-2 ${edicion4Disponible ? "hidden" : ""}`}>
+                    <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Setmana Santa</h2>
+                    <GaleriaSS />
+                </div>
+
+                <div id="edicio-1" class="hidden">
+                    <h2 class="text-4xl text-accent font-semibold text-center">Imatges Torneig Nadal 2024</h2>
+                    <GaleriaFotos />
+                </div>
             </div>
+        </section>
+
+        <div class="w-full h-10 mt-10 flex items-center place-content-center">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=voley_tournament@iescalvia.com&su=Descarregar%20Imatges%20|%20IES%20Calvià%20Voley%20Tournament" target="_blank" class=" bg-amarillo px-3 py-2 rounded-full mx-auto text-xl hover:scale-105 transition-all duration-300">
+                Vols descarregar alguna imatge?
+            </a>
         </div>
-    </section>
-    
-    
-    <div class="w-full h-10 mt-10 flex items-center place-content-center">
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=voley_tournament@iescalvia.com&su=Descarregar%20Imatges%20|%20IES%20Calvià%20Voley%20Tournament" target="_blank" class=" bg-amarillo px-3 py-2 rounded-full mx-auto text-xl hover:scale-105 transition-all duration-300">
-            Vols descarregar alguna imatge?
-        </a>
-    </div>
-</LayoutMenu>
-<style>
-    *{
-        user-select: none;
-    }
-</style>
+    </LayoutMenu>
+
+    <style>
+        *{
+            user-select: none;
+        }
+    </style>
+
+    <script>
+        const btnEdicion1 = document.getElementById("btn-edicion-1")!;
+        const btnEdicion2 = document.getElementById("btn-edicion-2")!;
+        const btnEdicion3 = document.getElementById("btn-edicion-3");
+        const btnEdicion4 = document.getElementById("btn-edicion-4");
+        const edicion1 = document.getElementById("edicio-1")!;
+        const edicion2 = document.getElementById("edicio-2")!;
+        const edicion3 = document.getElementById("edicio-3");
+        const edicion4 = document.getElementById("edicio-4");
+
+        btnEdicion1.addEventListener("click", () => {
+            btnEdicion1.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion1.classList.remove("cursor-not-allowed");
+            btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion2.classList.add("cursor-not-allowed");
+            btnEdicion3?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion3?.classList.add("cursor-not-allowed");
+            btnEdicion4?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion4?.classList.add("cursor-not-allowed");
+            edicion1.classList.remove("hidden");
+            edicion2.classList.add("hidden");
+            edicion3?.classList.add("hidden");
+            edicion4?.classList.add("hidden");
+        });
+
+        btnEdicion2.addEventListener("click", () => {
+            btnEdicion2.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion2.classList.remove("cursor-not-allowed");
+            btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion1.classList.add("cursor-not-allowed");
+            btnEdicion3?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion3?.classList.add("cursor-not-allowed");
+            btnEdicion4?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion4?.classList.add("cursor-not-allowed");
+            edicion2.classList.remove("hidden");
+            edicion1.classList.add("hidden");
+            edicion3?.classList.add("hidden");
+            edicion4?.classList.add("hidden");
+        });
+
+        btnEdicion3?.addEventListener("click", () => {
+            btnEdicion3?.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion3?.classList.remove("cursor-not-allowed");
+            btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion1.classList.add("cursor-not-allowed");
+            btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion2.classList.add("cursor-not-allowed");
+            btnEdicion4?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion4?.classList.add("cursor-not-allowed");
+
+            edicion3?.classList.remove("hidden");
+            edicion1.classList.add("hidden");
+            edicion2.classList.add("hidden");
+            edicion4?.classList.add("hidden");
+        });
+
+        btnEdicion4?.addEventListener("click", () => {
+            btnEdicion4?.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion4?.classList.remove("cursor-not-allowed");
+            btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion1.classList.add("cursor-not-allowed");
+            btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion2.classList.add("cursor-not-allowed");
+            btnEdicion3?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
+            btnEdicion3?.classList.add("cursor-not-allowed");
+            edicion4?.classList.remove("hidden");
+            edicion1.classList.add("hidden");
+            edicion2.classList.add("hidden");
+            edicion3?.classList.add("hidden");
+        });
+    </script>
+    -->
+
+    <LayoutMenu title="Galeria | IES Calvià Voley Tournament" descripcion="Galeria d'imatges de la edició de Nadal">
+        <section class="w-full min-h-[50vh] flex items-center justify-center px-6 py-16">
+            <div class="max-w-2xl text-center rounded-2xl border border-accent/40 bg-gris/80 px-6 py-10 shadow-lg">
+                <p class="text-sm uppercase tracking-[0.2em] text-amarillo">Avís</p>
+                <h1 class="mt-4 text-3xl md:text-5xl font-bold text-blanco">Galeria temporalment desactivada</h1>
+                <p class="mt-4 text-base md:text-lg text-grisClaro">
+                    La galeria estarà disponible de nou en breu. Gràcies per la teva paciència.
+                </p>
+            </div>
+        </section>
+    </LayoutMenu>
 </ControlAcces>
-
-<script>
-    const btnEdicion1 = document.getElementById("btn-edicion-1")!;
-    const btnEdicion2 = document.getElementById("btn-edicion-2")!;
-    const btnEdicion3 = document.getElementById("btn-edicion-3");
-    const btnEdicion4 = document.getElementById("btn-edicion-4");
-    const edicion1 = document.getElementById("edicio-1")!;
-    const edicion2 = document.getElementById("edicio-2")!;
-    const edicion3 = document.getElementById("edicio-3");
-    const edicion4 = document.getElementById("edicio-4");
-
-    btnEdicion1.addEventListener("click", () => {
-        btnEdicion1.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion1.classList.remove("cursor-not-allowed");
-        btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion2.classList.add("cursor-not-allowed");
-        btnEdicion3?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion3?.classList.add("cursor-not-allowed");
-        btnEdicion4?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion4?.classList.add("cursor-not-allowed");
-        edicion1.classList.remove("hidden");
-        edicion2.classList.add("hidden");
-        edicion3?.classList.add("hidden");
-        edicion4?.classList.add("hidden");
-    });
-
-    btnEdicion2.addEventListener("click", () => {
-        btnEdicion2.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion2.classList.remove("cursor-not-allowed");
-        btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion1.classList.add("cursor-not-allowed");
-        btnEdicion3?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion3?.classList.add("cursor-not-allowed");
-        btnEdicion4?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion4?.classList.add("cursor-not-allowed");
-        edicion2.classList.remove("hidden");
-        edicion1.classList.add("hidden");
-        edicion3?.classList.add("hidden");
-        edicion4?.classList.add("hidden");
-    });
-
-    btnEdicion3?.addEventListener("click", () => {
-        btnEdicion3?.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion3?.classList.remove("cursor-not-allowed");
-        btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion1.classList.add("cursor-not-allowed");
-        btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion2.classList.add("cursor-not-allowed");
-        btnEdicion4?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion4?.classList.add("cursor-not-allowed");
-
-        edicion3?.classList.remove("hidden");
-        edicion1.classList.add("hidden");
-        edicion2.classList.add("hidden");
-        edicion4?.classList.add("hidden");
-
-    });
-
-    btnEdicion4?.addEventListener("click", () => {
-        btnEdicion4?.classList.add("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion4?.classList.remove("cursor-not-allowed");
-        btnEdicion1.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion1.classList.add("cursor-not-allowed");
-        btnEdicion2.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion2.classList.add("cursor-not-allowed");
-        btnEdicion3?.classList.remove("bg-gris", "border-2", "border-accent", "border-b-gris", "font-semibold");
-        btnEdicion3?.classList.add("cursor-not-allowed");
-        edicion4?.classList.remove("hidden");
-        edicion1.classList.add("hidden");
-        edicion2.classList.add("hidden");
-        edicion3?.classList.add("hidden");
-    });
-</script>
