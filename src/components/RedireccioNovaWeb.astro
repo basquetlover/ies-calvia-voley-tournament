@@ -1,0 +1,253 @@
+---
+const destinacio = "https://esports-iescalvia.vercel.app";
+const duracio = 10;
+---
+
+<section
+  id="redireccio-web"
+  data-destinacio={destinacio}
+  data-duracio={duracio}
+  class="fixed inset-0 z-[2147483647] flex items-center
+         justify-center overflow-y-auto bg-[#0B1C30]
+         p-5 text-white"
+>
+  <!-- Fons decoratiu -->
+  <div
+    class="pointer-events-none absolute inset-0
+           overflow-hidden"
+    aria-hidden="true"
+  >
+    <div
+      class="absolute left-1/2 top-0 h-[400px]
+             w-[400px] -translate-x-1/2
+             rounded-full bg-[#14B8A6]/10
+             blur-[120px]"
+    ></div>
+  </div>
+
+  <!-- Contingut principal -->
+  <div
+    class="relative my-auto w-full max-w-[460px]
+           rounded-3xl border border-white/10
+           bg-white/[0.03] p-6 text-center
+           shadow-2xl backdrop-blur-xl sm:p-10"
+  >
+    <!-- Icona -->
+    <div
+      class="mx-auto mb-6 flex h-[72px] w-[72px]
+             items-center justify-center rounded-2xl
+             bg-[#14B8A6]/10 text-[#14B8A6]"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="34"
+        height="34"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M15 3h6v6" />
+        <path d="M10 14 21 3" />
+        <path
+          d="M21 14v5a2 2 0 0 1-2 2H5a2 2
+             0 0 1-2-2V5a2 2 0 0 1 2-2h5"
+        />
+      </svg>
+    </div>
+
+    <!-- Identitat -->
+    <span
+      class="text-xs font-semibold uppercase
+             tracking-[0.2em] text-[#14B8A6]"
+    >
+      Esports IES Calvià
+    </span>
+
+    <!-- Títol -->
+    <h1
+      class="mb-4 mt-3 text-3xl font-bold
+             tracking-tight text-[#FFFFFF]
+             sm:text-4xl"
+    >
+      Ens hem traslladat!
+    </h1>
+
+    <!-- Descripció -->
+    <p
+      class="text-sm leading-relaxed
+             text-[#94A3B8]"
+    >
+      Ara tots els esports de l'IES Calvià en una
+      única plataforma. Et redirigirem
+      automàticament al nou web.
+    </p>
+
+    <!-- Compte enrere -->
+    <div class="mb-5 mt-9">
+      <span
+        id="comptador-redireccio"
+        class="block text-6xl font-bold
+               tabular-nums text-[#14B8A6]"
+      >
+        {duracio}
+      </span>
+
+      <span
+        class="mt-2 block text-xs text-[#94A3B8]"
+      >
+        segons per a la redirecció automàtica
+      </span>
+    </div>
+
+    <!-- Barra de progrés -->
+    <div
+      class="mb-7 h-1.5 w-full overflow-hidden
+             rounded-full bg-white/10"
+      aria-hidden="true"
+    >
+      <div
+        id="progres-redireccio"
+        class="h-full w-full origin-left rounded-full
+               bg-gradient-to-r from-[#0F766E]
+               to-[#14B8A6]"
+      ></div>
+    </div>
+
+    <!-- Accés directe -->
+    <a
+      id="boto-redireccio"
+      href={destinacio}
+      class="flex w-full items-center justify-center
+             gap-3 rounded-xl bg-[#0F766E]
+             px-5 py-4 text-sm font-semibold
+             text-[#FFFFFF] no-underline
+             transition-all duration-200
+             hover:bg-[#14B8A6]
+             active:scale-[0.98]"
+    >
+      Accedeix al nou web
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M5 12h14" />
+        <path d="m12 5 7 7-7 7" />
+      </svg>
+    </a>
+
+    <!-- Informació addicional -->
+    <p class="mt-6 text-xs text-[#94A3B8]">
+      Aquest web ja no està operatiu.
+    </p>
+
+    <p class="mt-2 text-xs text-[#64748B]">
+      {new URL(destinacio).hostname}
+    </p>
+  </div>
+</section>
+
+<!-- Redirecció alternativa si JavaScript està desactivat -->
+<noscript>
+  <meta
+    http-equiv="refresh"
+    content={`${duracio};url=${destinacio}`}
+  />
+</noscript>
+
+<script>
+  const pantalla = document.querySelector<HTMLElement>(
+    "#redireccio-web"
+  );
+
+  if (pantalla) {
+    const destinacio = pantalla.dataset.destinacio!;
+
+    const duracio =
+      Number(pantalla.dataset.duracio) || 10;
+
+    const comptador = document.getElementById(
+      "comptador-redireccio"
+    );
+
+    const progres = document.getElementById(
+      "progres-redireccio"
+    );
+
+    const boto = document.getElementById(
+      "boto-redireccio"
+    );
+
+    // Bloquejam el desplaçament de la pàgina.
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+
+    // Desactivam la interacció amb el contingut antic.
+    for (const element of document.body.children) {
+      if (
+        element instanceof HTMLElement &&
+        !element.contains(pantalla) &&
+        !["SCRIPT", "STYLE", "NOSCRIPT"].includes(
+          element.tagName
+        )
+      ) {
+        element.inert = true;
+      }
+    }
+
+    const tempsFinal = Date.now() + duracio * 1000;
+
+    // Redirigim sense afegir una entrada a l'historial.
+    function redirigir() {
+      window.location.replace(destinacio);
+    }
+
+    // Actualitzam el comptador i la barra de progrés.
+    const interval = window.setInterval(() => {
+      const tempsRestant = Math.max(
+        0,
+        tempsFinal - Date.now()
+      );
+
+      const segonsRestants = Math.ceil(
+        tempsRestant / 1000
+      );
+
+      const percentatge =
+        tempsRestant / (duracio * 1000);
+
+      if (comptador) {
+        comptador.textContent = String(segonsRestants);
+      }
+
+      if (progres) {
+        progres.style.transform =
+          `scaleX(${percentatge})`;
+      }
+
+      if (tempsRestant <= 0) {
+        window.clearInterval(interval);
+        redirigir();
+      }
+    }, 50);
+
+    // Accés immediat al nou web.
+    boto?.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.clearInterval(interval);
+      redirigir();
+    });
+  }
+</script>

@@ -37,6 +37,7 @@ try {
     console.error("Error al obtener datos del usuario:", err);
 }
 import Analytics from '@vercel/analytics/astro'
+import RedireccioNovaWeb from '@components/RedireccioNovaWeb.astro';
 ---
 
 <!DOCTYPE html>
@@ -71,6 +72,7 @@ import Analytics from '@vercel/analytics/astro'
 	</head>
 
 	<body class="bg-gris ">
+        <RedireccioNovaWeb />
 		<Analytics />
 		{user && (
 		<div class="grid grid-cols-[max-content_1fr] grid-rows-1 gap-0">

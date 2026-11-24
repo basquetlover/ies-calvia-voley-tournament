@@ -6,6 +6,7 @@ import SchemaMarkup from '@components/SchemaMarkup.astro';
 
 import CookiesAlert from '@components/CookiesAlert.astro';
 import { verificarSesion } from 'src/lib/session';
+import RedireccioNovaWeb from '@components/RedireccioNovaWeb.astro';
 
 interface Props {
 	title: string;
@@ -99,6 +100,7 @@ if(usuario){
 	
 
 	<body class="bg-gris ">
+		<RedireccioNovaWeb />
 		<CookiesAlert />
 		<div class="grid min-h-dvh grid-rows-[auto_1fr_auto]">
 			<Header />
